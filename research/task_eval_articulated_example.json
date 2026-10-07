@@ -1,0 +1,96 @@
+{
+  "schema_version": "task_evaluation_v1",
+  "run_id": "trial-1",
+  "task_id": "synthetic-articulated-goal-schema-example",
+  "mode": "simulation",
+  "claims": [
+    {
+      "id": "initial_condition",
+      "required_facts": [
+        "initial_condition_visible"
+      ],
+      "after_claims": [],
+      "after_events": [],
+      "min_observations": 1,
+      "min_span_s": 0,
+      "terminal": false
+    },
+    {
+      "id": "articulated_goal",
+      "required_facts": [
+        "articulation_goal_visible"
+      ],
+      "after_claims": [
+        "initial_condition"
+      ],
+      "after_events": [],
+      "min_observations": 2,
+      "min_span_s": 2,
+      "terminal": true
+    }
+  ],
+  "observations": [
+    {
+      "id": "rgb-initial",
+      "run_id": "trial-1",
+      "at": 1,
+      "origin": "simulation_rgb",
+      "rgb_references": [
+        "fixtures/rgb-initial.png"
+      ]
+    },
+    {
+      "id": "rgb-goal-first",
+      "run_id": "trial-1",
+      "at": 2,
+      "origin": "simulation_rgb",
+      "rgb_references": [
+        "fixtures/rgb-goal-first.png"
+      ]
+    },
+    {
+      "id": "rgb-goal-second",
+      "run_id": "trial-1",
+      "at": 5,
+      "origin": "simulation_rgb",
+      "rgb_references": [
+        "fixtures/rgb-goal-second.png"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "initial",
+      "run_id": "trial-1",
+      "at": 1,
+      "source": "simulator_oracle",
+      "reference": "review/initial.json",
+      "observation_id": "rgb-initial",
+      "facts": {
+        "initial_condition_visible": true
+      }
+    },
+    {
+      "id": "goal-first",
+      "run_id": "trial-1",
+      "at": 2,
+      "source": "simulator_oracle",
+      "reference": "review/goal-first.json",
+      "observation_id": "rgb-goal-first",
+      "facts": {
+        "articulation_goal_visible": true
+      }
+    },
+    {
+      "id": "goal-second",
+      "run_id": "trial-1",
+      "at": 5,
+      "source": "simulator_oracle",
+      "reference": "review/goal-second.json",
+      "observation_id": "rgb-goal-second",
+      "facts": {
+        "articulation_goal_visible": true
+      }
+    }
+  ]
+}

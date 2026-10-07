@@ -1,0 +1,146 @@
+Task evaluation research — 2026-10-07
+Scope: offline source review only; no ROS, SDK, CAN or camera connection.
+
+Pinned upstreams
+1. GPT6-ARX5: 2a722748fa2adedd096c8fd7f9461d2b2ba48af6
+   Commit time: 2026-10-06T13:32:33Z
+   https://github.com/zijianzhang30/GPT6-ARX5/tree/2a722748fa2adedd096c8fd7f9461d2b2ba48af6
+2. ManiSkill: 62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3
+   Commit time: 2026-08-02T03:59:43Z
+   https://github.com/mani-skill/ManiSkill/blob/62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3/mani_skill/envs/tasks/tabletop/turn_faucet.py
+Branches are mutable; the commit and source digest accompany these findings.
+
+ManiSkill findings
+The exact registered environment ID is TurnFaucet-v1, with a 200-step episode
+limit. Current reward modes are sparse and none; dense reward code is commented
+out. Success uses the simulated faucet joint: target_angle-current_angle < 0.
+This is an evaluator oracle, not an RGB-visible success measurement. The target
+normally lies 90% along a finite joint range; infinite-range handling is special.
+The environment varies faucet assets, switch links, positions and orientations.
+
+_get_obs_extra includes target_joint_axis, target_link_pos and target_angle_diff
+even outside state mode; angle_dist additionally appears for state mode. Merely
+setting an RGB observation mode therefore does not establish calibration-free,
+RGB-only evaluation. A future simulation adapter must whitelist model inputs;
+all object poses, axes, target joint angles and oracle success stay in the grader.
+Robot proprioception and robot FK remain separately labelled permissible inputs.
+No ManiSkill installation or simulation was run in this review.
+
+Transferable design: freeze task goal/initial condition, bound the episode,
+separate agent proposal from evaluator outcome, and test varied scene layouts.
+Do not transfer simulator object state, metric reward, 128x128 camera resolution,
+or faucet threshold directly into the real Piper visual task.
+
+ARX5 findings
+The task skill is a versioned supervised workflow, not a trained autonomous
+policy or reusable sequence of absolute commands. Its pen variant distinguishes
+a thick marker placed in a wide cup from a thin pen/small opening. Historical
+success depends on the exact initial state, assistance and goal variant.
+Source: skills/arx-r5-tabletop-tasks/SKILL.md and references/pen.md, pinned above.
+
+The startup guide separates a healthy existing controller from cold startup;
+records a frozen return reference; and distinguishes placement success, controlled
+return and video completion. Arrival and image overlap alone are insufficient.
+Source: https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/NEW_TASK_START_GUIDE.md
+
+Common execution guidance calls for fresh complementary views and verification
+after release, with two spaced observations of independent support. An observer
+arm is for visibility, not secretly holding the object. Failed grasp retries
+need new scene evidence. Prior commands, openings, host identifiers and safety
+limits are not transferable to Piper.
+Source: https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/common-execution.md
+
+Local assessment
+fast_pipeline.py already keeps admission, single dispatch, receipt, fresh
+observation and visual verification distinct. The declared coordinated modes
+are offline contracts; runtime configuration rejects silent fallback into the
+single-right-arm pen runner. Observer motion requires worker hold.
+
+fast_task_session.py persists a frozen contract and cumulative budget in SQLite;
+revision/event IDs prevent duplicate advancement. Restart/init cannot reset
+the same run's budget. This is an offline host-receipt ledger, not proof that a
+receipt is true or that a physical controller is qualified.
+
+fast_task_pipeline.py currently accepts numeric progress_measurement with
+arbitrary metric/unit when values continue in one direction. Its tests use mm
+of object displacement. This is legal as an offline fixture but must not be
+presented as RGB-only metric object localization. Replacing this with fabricated
+image millimeters would violate the experimental constraint. A separate visual
+assessment may report qualitative, evidence-bound progress without metric pose.
+
+fast_live_loop.py labels visual assertions model_visual_report. Recorder.finish
+does not accept that label as independent success evidence; it accepts named
+manual/vision/sensor review sources with ordered lift/transport/release/stable
+events. Therefore DONE or a model success claim can still produce null task
+success. Preserve this distinction rather than renaming model evidence.
+
+Implemented evaluation module
+fast_task_evaluation.py is a pure evidence module with no device/model imports.
+It validates
+RGB observation identity and evidence provenance; retain model judgments as
+model judgments. Evaluate post-release independent support over two distinct
+frames, separately from robot arrival, controlled return and human assistance.
+Provide no object coordinates or simulator state to the controller. A future
+integration can use qualitative progress for bounded control without claiming
+an independent measurement. Do not migrate archived task-session contracts.
+
+Additional reproduced budget issue
+An approach cycle with unknown progress sets worker no_progress=1. Entering the
+observer branch and completing its view change returns to the same worker stage
+with no_progress=0. This conflates visibility improvement with object progress.
+The reproduction imported only the pure offline BoundedTaskPipeline. Existing
+test_fast_task*.py baseline: 30 tests passed, so a regression case is needed.
+Implemented correction: separate worker/observer no-progress counters; total
+cycles, model calls, elapsed time and observer move budget remain shared.
+
+Public API and fixtures
+from right_pick.fast_task_evaluation import evaluate_task_evidence
+result = evaluate_task_evidence(document)
+
+document fields: schema_version='task_evaluation_v1', run_id, task_id, mode,
+claims, observations, events. Modes: physical, offline_replay, simulation.
+Claim fields: id, required_facts, after_claims, after_events,
+min_observations, min_span_s, terminal. All fields are explicit. after_events
+requires completed robot receipts but never makes those receipts object facts.
+Observation fields: id, run_id, at, origin, rgb_references.
+All at values must share a host time basis; visual ordering uses capture time,
+not the later time at which a reviewer happened to write the report.
+Event fields: id, run_id, at, source, reference plus source-specific fields.
+model_visual_report / independent_rgb_review / simulator_oracle use
+observation_id and facts; independent review additionally names a reviewer.
+robot_receipt uses outcome; human_intervention uses scope and description.
+Facts are boolean or null, not numeric object coordinates or simulator angles.
+
+placement_evaluation_contract() supplies grasp/lift/release/retreat/stability
+claims. articulated_goal_evaluation_contract() supplies an initial view and a
+visible articulated goal. Both return ordinary declarations; callers freeze
+the actual goal variant. They do not detect objects or add actuation support.
+
+research/task_eval_placement_example.json and task_eval_articulated_example.json
+are synthetic schema examples. References do not point to actual images. The
+first uses offline_replay, the second simulation; neither proves any real task.
+
+task_success stays null without complete independent physical-RGB review or
+when execution outcome is uncertain. Model reports and simulation oracle have
+separate result fields. A late explicit terminal refutation can mark failure;
+missing or occluded evidence stays unknown. Old milestone evidence cannot be
+used as post-release support, and stable support needs the declared number of
+distinct observation IDs and capture-time separation. Distinct IDs alone do
+not prove distinct actual frames; the module does not decode/authenticate them.
+The capture/review host owns frame authenticity and the frozen task contract.
+Human interventions are retained; absence of records does not imply autonomy.
+Task success is separate from return, video integrity and hardware qualification.
+
+Validation and cross-review
+- Pre-change task pipeline/session suite: 30 tests passed.
+- After evaluation and observer regressions: 52 task* tests passed.
+- Added two explicit provenance-limit tests: evaluation suite 21 tests passed.
+- research_memory independently reviewed evaluator channel/time boundaries;
+  frame-authenticity and frozen-claim limits were made explicit.
+- research_task_eval independently reviewed memory and builders; report is
+  research/review_memory_by_eval.txt. The memory owner handles its refinements.
+- inspect_control found that a completed command or intervention after the last
+  stable image could leave task_success true. Terminal claims now require new
+  evidence after every later completed robot command or human intervention,
+  including a full new stability window. Milestones retain historical meaning.
+  Added both motion and intervention regressions; evaluation suite: 23 passed.

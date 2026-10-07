@@ -19,7 +19,7 @@ Codex 外层 → L3 单项任务：初态、目标、角色、阶段、总预算
 | L3 | `fast_task_pipeline.py:TASK_RECIPES / BoundedTaskPipeline`，`fast_task_session.py`；[任务入口](../../../.agents/skills/piper-task-pipeline/SKILL.md) | 18 项离线任务编排，持久化宿主事件账本，不发送动作。 |
 | L2 | `COMPOSITIONS / composition_contract()`；[操作入口](../../../.agents/skills/piper-manipulation/SKILL.md) | 20 项有界操作显式引用原子接口；通用操作未接实机。现有夹笔 phase runner 通过 `pen_phase_contract()` 对应部分阶段。 |
 | L1 | `fast_pipeline.py`；[原子总路由](../../../.agents/skills/piper-atomic-runtime/SKILL.md)、[25 个单项 Codex 入口](../../../ATOMIC_SKILLS.md) | 每项独立查询输入、输出、副作用和失败契约；纯校验函数不代表已完成硬件能力。 |
-| 协同 | `pipeline_contract / validate_pair_*`；[协同入口](../../../.agents/skills/piper-arm-coordination/SKILL.md) | 共同场景、held-side、独立回执和整对故障语义，当前离线。 |
+| 协同 | `pipeline_contract / validate_pair_*`；[协同入口](../../../.agents/skills/piper-arm-coordination/SKILL.md) | 通用协同契约仍离线；另有独立持久双臂宿主，见下文。 |
 | L0 | `fast_ros / fast_observation / fast_safety / fast_qualification` | 已有单右臂 ROS 与三相机适配源码；当前现场准入撤回。 |
 
 四个层级入口与 25 个轻量原子 SKILL.md 按需加载。原子接口放在代码目录中逐项查询；Codex 只读当前操作需要的入口，避免每轮加载整个目录。模型只在 decide 阶段选择动作；校验、计数、发送和回执由宿主执行，不为每层新建模型会话。
@@ -146,9 +146,11 @@ cups、拔帽、双臂旋盖、旋螺母必须用 dual_arm。其余可声明单�
 
 现有 `projects/piperx_cloth_demo/robot_tools/execution.py` paired 是校验后顺序 near-time send 加完成 barrier，不是原子提交或硬同步。`single_supervised_actions.py` 的被动臂 TX-block 必须保留，旧链不能直接拼接成新双臂执行器。
 
-| 待接能力 | 当前缺口 | 可复用离线接口 |
+现有固定工具共 31 项，其中六个 `robot_pair_*` 工具构成独立的持续连接有界串行执行器：同一宿主保留两臂连接，共同新场景及另一臂独立回执准入，每次只动一臂，持久账本保留预算与故障。详见 [持久双臂有界宿主](../../piperx_cloth_demo/docs/PAIR_HOST.md)。通用 `astra` 及下列 fast 协同契约仍离线；接触支撑与实际停止尚未实机验证。
+
+| 能力 | 当前状态与缺口 | 可复用离线接口 |
 | --- | --- | --- |
-| 共同控制宿主 | fast 仅绑定右臂，无双臂 ROS 资格/执行实例 | validate_pair_admission / validate_pair_receipt |
+| 共同控制宿主 | 独立 SDK 持久双臂宿主已实现；fast 仍仅绑定右臂，无双臂 ROS 资格 | validate_pair_admission / validate_pair_receipt |
 | 保持与交接 | Piper timeout 为有限目标完成，不是已验证 powered hold | prepare_held_side / validate_hold_handoff |
 | 整臂路径与时序 | 端点限制不证明连杆、腕相机和线缆净空 | validate_swept_corridors / synchronize_duration |
 | 通用操作执行 | L2/L3 未接具备接触能力的物理适配器 | composition_contract / BoundedTaskPipeline |

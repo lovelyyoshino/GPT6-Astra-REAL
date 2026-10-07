@@ -1,0 +1,32 @@
+完整性校验器独立审查
+时间：2026-10-07T01:52:08.643175+00:00
+结论：本次四项机器私有配置缺失登记未发现明显扩大豁免范围的问题，现有15项独立测试全部通过。没有修改实现、原source_manifest、优化manifest或SHA256SUMS；仅新增本报告。
+
+核对范围
+允许的缺失路径固定为 projects/piper_right_pick_demo/configs/ 下：
+site.local.json、gpt_tools.local.json、astra_fast_live.local.json、astra_fast_codex.local.json。
+只凭名字不豁免。必须有合法 runtime_omissions_v1 登记，字段精确、路径规范且在白名单、source_sha256 与原source_manifest同一路径一致、reason为固定machine_private_runtime_configuration_not_imported_or_activated。任何登记错误都会使全部豁免无效并使总体失败。
+
+已保留的校验
+- 普通缺失文件失败；普通文件内容变化必须匹配原hash或已有明确optimization记录，否则失败。
+- 四项白名单文件一旦存在，仍执行常规hash校验；不会因名字或登记而跳过实际字节。
+- source/optimization的base hash仍绑定；缺失优化文件也只有同四路径及合法源登记能解释。
+- 缺失项的SHA256SUMS声明仍须匹配source或已登记optimized hash；未知hash不能通过。
+- 任意额外豁免、错误源hash、错误reason、重复项、未知字段均拒绝。
+- 路径越界、外部符号链接、悬空符号链接不会变成缺失豁免；目录不能被当普通文件通过。
+- 输出明确区分 verified 与 with_runtime_omissions，不宣称缺失的配置字节已经读取验证，也不加载/激活配置。
+
+独立验证
+命令：python3 -m unittest discover -s tools/tests -p 'test_verify_bundle.py' -v
+结果：15/15 OK，0.360 s。测试使用临时最小bundle，复制真实校验器到子进程执行；每次核对source_manifest字节不变。覆盖普通缺失/改动、私有文件存在/改动、四项解释、多层hash、越界与符号链接。
+当前仓库 metadata/source_manifest.json 的git diff为空，原文件未改。
+
+边界
+本工具证明的是已登记文件相对于本地manifest的完整性与显式优化解释，不是数字签名认证，也不会自动把目录中未登记的新文件纳入审查。root刷新最终optimization_manifest/SHA256SUMS时仍须只纳入已审文件。原有显式optimization覆盖机制不是本次新增任意缺失豁免；本次仅扩充固定四项缺失说明。
+未运行真机、ROS、相机、模型或额外模拟；未新建镜像测试、未重复整个项目测试。
+
+审查版本SHA256：
+8bf07723e7a5b3aa3ecfb929a57115e2fc673fb053686c1f36ecbc1e1f44f98b  tools/verify_bundle.py
+c37d68f80b4fe826be532a824bd458be51796560477939364a858a72ab6c1493  tools/tests/test_verify_bundle.py
+cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03  metadata/source_manifest.json
+8b77ee400144483cc28c134c5a8dd35468d7c07398c60b130186decd44ed5e3b  metadata/runtime_omissions.json

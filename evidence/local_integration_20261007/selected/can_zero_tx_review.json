@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-06T17:05:54.267108+00:00",
+  "reviewer": "hold_commission_review",
+  "scope": "Independent static and system Python3.8 offline fake/file checks only",
+  "source_files": {
+    "entry": {
+      "path": "/home/agilex/piper_right_pick_demo/scripts/ros_zero_tx_continuation_entry.py",
+      "sha256": "545a527bb5ea54d0c38c1cdc34ecf068d3ca36e0ff169f83e2385f2caebd61ad"
+    },
+    "client": {
+      "path": "/home/agilex/piper_right_pick_demo/scripts/ros_zero_tx_continuation_client.py",
+      "sha256": "1c501491bcfaa63d1c3237075856c90b9de71458e187db340921032d6555190d"
+    },
+    "tests": {
+      "path": "/home/agilex/piper_right_pick_demo/tests/test_zero_tx_continuation.py",
+      "sha256": "31d57ffce6f20c3a4e58013be7966b693405bfe3ba8e523f154fd01281999f27"
+    }
+  },
+  "blocking_findings": [],
+  "test_result": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:scripts:tests /usr/bin/python3 -m unittest discover -s tests -p test_zero_tx_continuation.py -v",
+    "tests": 8,
+    "passed": 8,
+    "duration_s": 3.044,
+    "exit_code": 0,
+    "devices_accessed": false,
+    "full_suite_not_repeated": true
+  },
+  "findings": [
+    "Only a private copy of pure scoped_target marks the exact J5 request-increment>200mdeg assertion as PreDispatchJ5Refusal. Threshold and requested target remain unchanged.",
+    "All send_once, physical envelope, RX, nominal, hold, arrival and I/O guards retain their frozen behavior; 201mdeg request is still rejected.",
+    "Soft refusal requires active task joint preflight, exact pending attempted0, no transaction start/receipt/ticket/hold/sessionfailure/broken/RX fault. Same plain error text, post-dispatch typed error, partial send and RX violation remain hard failures.",
+    "Refusal persistence/logging errors fall back to hard failure. No automatic retry, clipping, old goal replay or automatic target rebasing is introduced.",
+    "The client retains frozen rejected_preflight handling as terminal, without automatic hold or retry.",
+    "Exact prior seq93 zero-TX failure, seq92 successful receipt/raw report, previous clearance review and current visual materials are bound. Fourteen parent files stay byte-identical and a unique child prevents repeated adoption.",
+    "Startup retains zero-actuator admission and fresh3s baseline with old successful goal proximity and held jaw bounds. Actual handoff remains root-only and must recheck unchanged parent bytes."
+  ],
+  "limits_unchanged": {
+    "j5_request_increment_mdeg": 200,
+    "j5_joint_tracking_mdeg": 300,
+    "other_joint_tracking_rad": 0.003,
+    "max_translation_m": 0.03,
+    "max_rotation_rad": 0.05,
+    "velocity_percent": 1,
+    "feedback_age_s": 0.1,
+    "gripper_effort": 0.2
+  },
+  "limitations": [
+    "This offline review is not new physical stop/crash/placement qualification.",
+    "Original seq93 remains failed; no old failure latch or frozen source was modified.",
+    "Future invalid requests are rejected; only a separately explicit valid request may execute."
+  ],
+  "hardware_access": false,
+  "controller_sources_changed": false,
+  "permission_to_issue_hardware_commands": false
+}

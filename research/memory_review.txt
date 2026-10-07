@@ -1,0 +1,40 @@
+Research scope: historical experience, bounded harness improvement (2026-10-07)
+
+Verified sources
+
+1. Zetta, official repository and paper.
+https://github.com/air-embodied-brain/Zetta-Embodiment
+Pinned repository: 21d7a3afd6ca5a34de9d0350f0158252c5c55467, committed 2026-10-04T11:26:34Z.
+Paper: Zetta ζ: An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence.
+Xin Ding et al.; arXiv:2608.16590v1, submitted 2026-08-17.
+https://arxiv.org/abs/2608.16590v1
+The repository separates diagnosis, candidate construction, runtime criticism, recovery acceptance and execution. Development failures feed frozen candidates and shadow replay/paired gates. Pinned zetta/evolution/protocol.py explicitly defaults heldout_mode to test: held-out outcomes are report-only and cannot promote or reject candidates. Only preregistered validation mode uses that block as a promotion gate. This supports audited, bounded improvement around a fixed base model. It does not establish simulator-to-Piper transfer. We reuse separation and validation principles, not recovery programs or simulator state.
+Source file checksums: shadow_replay.py 13ecbcd4b149cf61f68ee02910f4d599e2fa7be4226405f1b831204b31a71136; protocol.py 2cec127061a5570f7edc39ead51c13cc78c8dfe57e9bb6de3641418dc9003c94.
+
+2. Self-Harness: Harnesses That Improve Themselves.
+Hangfan Zhang, Shao Zhang, Kangcong Li, Chen Zhang, Yang Chen, Yiqun Zhang, Lei Bai, Shuyue Hu.
+User URL resolves to arXiv:2606.09498v3, revised 2026-08-20.
+https://arxiv.org/abs/2606.09498v3
+https://arxiv.org/html/2606.09498v3
+This is a software-agent study, not a physical robot trial. It mines trace weaknesses, proposes small harness edits and tests regressions. The paper accepts a proposal only when at least one evaluation split improves without harming the other. We borrow trace-linked edits and comparison with a frozen baseline. Offline schema tests alone do not establish faster manipulation or physical safety.
+
+3. Physical RSI 1.0: Recursive Self-Harness for Scaling Embodied Skills.
+https://mmlab.hk/research/PhysicalRSI
+Official project text was accessible through web search on 2026-10-07. Direct browser open failed and an independent HTTP request returned 403. The retrieved page describes a 2026-09-28 leaderboard snapshot; named authors, associated code revision and paper version were not independently established. Treat this source as a project page, not an independently reproduced result.
+The page describes candidate harness variation, evaluation and inheritance, persistent skills with reset episode state, and staged alignment/insertion. Its examples also include pixel-to-world grounding and saved-pose return. Those mechanisms exceed this project's RGB-only, calibration-free and no historical-pose-replay constraints. We adopt bounded stages and episode-state reset; we do not adopt those grounding or replay examples.
+
+Local findings and proposed change
+
+fast_model.build_fast_payload and fast_codex.build_codex_packet already project compact controller state. Neither resends an entire interaction history. fast_policy bounds controller memory to 240 characters and preserves only the previous action/result plus current proprioception, phase and retry count. The old model.py still has bounded recent_text_history; it is not the fast path.
+
+The missing reusable component is reviewed experience selection. Add a deterministic, bounded lookup of brief historical lessons by current phase and explicit result flags. Select at most two cards; do not use image processing, object positions, historical joint targets, movement directions, model reasoning history, or extra model calls. Label all cards as historical advice. Their text may guide Astra's current visual judgment but cannot establish current contact, clearance, grasp, success, phase transition, permission or execution eligibility.
+
+Cards must cite immutable local evidence hashes. Reports containing human side guidance remain human-assisted evidence; they are not autonomous visual proof. A claimed failure cause remains unverified when the original report says so. No card grants permission to replay a command after an uncertain send, modify limits, or change timeout/hold behavior.
+
+Improvement protocol for later rounds: preserve a baseline -> isolate one trace-linked prompt/memory/routing change -> offline contract/replay tests -> independent review -> evaluate matched new trials under an unchanged task and safety contract -> promote only from measured evidence. Keep infrastructure failures distinct from task failures. No runtime self-modifying executable code is introduced here. Current benchmark gains are unknown until new controlled trials; no speedup or success-rate claim is made.
+
+Implemented: right_pick.fast_experience and source-pinned reviewed_experiences.json; both fast_model and fast_codex attach the same bounded historical_advisories field beside, not inside, controller_state. The selection uses task/phase or generic skill/operation aliases and explicit result flags. No raw arbitrary memory is searched. Missing, changed or out-of-bundle evidence excludes a card; changed deck bytes exclude the deck until its source pin is explicitly reviewed and updated. Standalone installed code without the evidence bundle runs without cards. No runtime promotion or code execution is added. The prompt includes the deck and evidence hashes for the existing local input audit.
+
+The final deck has eight short lessons drawn from the pen reports, the timeout incident, and the newly copied can/charger outcome reports. It preserves the difference between grasp success and insertion success, actual object-axis and tool-axis alignment, bounded recovery after no progress, view changes without budget reset, and post-release independent support. Can evidence reports long elapsed time but does not substantiate a detailed repeated-historical-angle causal narrative, so that claim was not added. These are static reviewed hints, not a reproduction of an interaction-memory learner or online self-evolution system.
+
+Cross-review by inspect_control found no control bypass. Cross-review by research_task_eval identified and fixed an evidence-root symlink escape and overbroad placement advice for non-placement tasks. Final focused tests: 13/13. Final full fast suite at this integration point: 306/306 in 2.353 seconds; compileall passed. No device or model request occurred. The local forty-lookups-per-phase sweep added at most 1195 bytes to the normal phase packets; the highest phase mean lookup cost was 0.001424 seconds. These are local overhead measurements, not model-token counts or task speedup. Raw measurements are in experience_lookup_offline.json.

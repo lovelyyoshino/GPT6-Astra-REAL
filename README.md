@@ -1,108 +1,124 @@
-# PiPER 控制交接包：单臂闭环与分层技能
+# GPT6-Astra-REAL
 
-本包基于从 `agilex@192.168.2.25` 只读整理的 **2026-10-06 源码快照**，现已加入本地控制链优化。当前执行源码面向右臂夹笔放筒；ARX5 的 18 项任务已整理为分层离线契约，覆盖单臂、双任务臂和主臂执行/辅臂观察的角色与阶段。双臂与通用任务尚未接入实机执行器。
+后续开发统一放在 **`/home/agilex/GPT6-Astra-REAL`**。这里整合了 `piper_right_pick_demo` 和 `piperx_cloth_demo` 的源码、任务经验与失败记录，并增加可复用的任务配方、持久化阶段账本、短经验提示和独立证据评估。目标是让后续复杂任务复用同一条软件流程。
 
-全部修改仅在此交接包内，未启动机械臂、相机、ROS 或真实模型，未修改参考项目与远端。原始来源哈希保留在 [source_manifest.json](metadata/source_manifest.json)，本地改动单列在 [optimization_manifest.json](metadata/optimization_manifest.json)。包内不含视频、原始 CAN 大数据、完整逐帧记录或登录凭据。
+**当前通用入口用于离线编排、回放和评估。** 通用任务、复杂组合及双臂观察保持 `offline_contract_only`、`execution_available=false`。既有单右臂抓笔 ROS 执行器与历史专项入口保留；新建任务 JSON 或通过回放，不会自动获得真机执行能力。本次整合没有启动机械臂、相机、ROS 或真实模型。
 
-## 通过 Codex 使用
+**用户要求实机任务时，现成能力直接复用，不重复验证。** Piper CAN、RealSense RGB 和已有控制宿主不需要每次重做源码审查、环境验证或 prepare；已有有效会话直接接续，初次接入只补必要状态，变化或异常只诊断相关项。不能把通用任务的离线标记扩大为整机不可在线控制。详见 [AGENTS.md 的在线控制使用核心](AGENTS.md#在线控制使用核心)。细微偏差依据执行器现有容差处理；异常立即停止新增指令，通过已有适用停止/保持机制读取回执，不将断连等同实机停止。
 
-从本目录进入 Codex，读取 [AGENTS.md](AGENTS.md) 与 [任务技能入口](.agents/skills/piper-task-pipeline/SKILL.md)。[原子 Codex 技能可见索引](ATOMIC_SKILLS.md)列出隐藏在 `.agents/skills` 下的 25 个独立 `SKILL.md`。沿用现有 Codex 登录与 CLI，默认 `--model codex`、`protocol=codex_cli`，无需 API key。层次为 **L3 任务 pipeline → L2 有界操作 → L1 当前原子技能/契约 → L0 Piper 适配器**；宿主执行检查和回执，不为每个原子再调用模型。
+## 从这里开始
 
-从上一级目录启动的 Codex 不会发现这个子目录中的项目技能。用 `codex -C /Users/pony.ai/Documents/文档/Piper_SingleArm_Handoff` 新开会话，再在 `/skills` 中查找 `piper-task-pipeline`；终端和 Finder 查看隐藏目录的方法见[可见索引](ATOMIC_SKILLS.md)。
+```bash
+cd /home/agilex/GPT6-Astra-REAL
+./astra catalog
+./astra plan --recipe tasks/turn_faucet.json
+./astra session --store artifacts/session.sqlite init --run-id demo --recipe tasks/pen_in_holder.json
+./astra session --store artifacts/session.sqlite current --run-id demo
+./astra replay --recipe tasks/sort_two_objects.json --out artifacts/replay_sort.json
+./astra evaluate research/task_eval_placement_example.json
+./astra experiences --task pen --phase INSERT
+```
 
-[分层技能与任务映射](projects/piper_right_pick_demo/docs/ATOMIC_SKILLS_AND_DUAL_COORDINATION.md)列出 18 个任务、20 个组合操作、25 个原子接口及实现边界。单右臂 fast 默认有 24 次模型调用、2 次连续未知观察和 900 秒预算；达到上限输出具体退出原因。实际 token 降幅和成功率尚待现场对照验证。
+`plan` 展开任务合同；`session` 用同一 `store/run-id` 保存阶段、事件和总预算；`replay` 检查离线流程；`evaluate` 审核声明证据的来源与时序；`experiences` 查看有界历史建议。示例评估输入是合成数据，不能证明真实抓取成功。以 `./astra --help` 为参数依据。
 
-通用离线任务可通过 `right_pick.fast_task_session` 保存进度，供 Codex 跨命令读取当前阶段、记录宿主回执和进入观察分支。重复初始化或重启不会重置阶段与预算，重复事件不会再次推进。它维护任务账本，不发送设备命令。
+| 配方 | 目标与复用点 |
+| --- | --- |
+| [pen_in_holder.json](tasks/pen_in_holder.json) | 抓笔放入笔筒，区分抓稳、插入、释放和稳定 |
+| [can_on_lid.json](tasks/can_on_lid.json) | 空罐底部朝下立在杯盖上，目标支撑与原支撑分开 |
+| [charger_in_unpowered_socket.json](tasks/charger_in_unpowered_socket.json) | 抓取充电头并插入无电插座；无电属于现场条件，不能从 RGB 推断 |
+| [turn_faucet.json](tasks/turn_faucet.json) | 旋转关节物体至声明目标，避免误套螺纹进度判据 |
+| [sort_two_objects.json](tasks/sort_two_objects.json) | 有限次重复抓放，演示多对象复杂组合 |
 
-## 先理解当前进度
+新增任务通过 recipe 描述目标、初态和有限步骤，组合已有 L2 操作。阶段可声明 `goal`、附加 `evidence`、`max_cycles` 和 `arm`；操作前提从注册表继承，不能由 recipe 改写。全局预算由 session 冻结，recipe 不提供全局 budget 字段，也不接受任意 Python、历史运动坐标或设备授权。新增物理技能仍需单独实现和验证适配器。
 
-- **有现场协助的夹笔放筒已成功**：2026-10-05 更换无隔板笔筒后的实验，采用 ROS 逐段执行，现场人员确认过前后对齐；释放、撤离后图像确认笔留在筒内。见 [结果摘要](evidence/piper_pen_repeat_video_20261005/new_holder_result.json) 和 [实验 PDF](evidence/piper_pen_task_report_20261005/夹取笔放入笔筒_实机实验报告_20261005.pdf)。它不是可直接重放的通用自动计划。
-- **后续 fast 自动闭环代码已经存在，但未完成本轮抓笔**：最新保留记录中，一条约 +X 28 mm 的 P 目标实际引起较大的关节重构；客户端报错退出后，驱动继续完成已接受的有限目标。原客户端失败结果与事后确认到位分别保留，不能改记成自主任务成功。
-- **当前复制到的 fast 实机准入已撤回**：参见 [fast_live_commissioned.json](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/fast_live_commissioned.json)，其中 `physical_qualification.evidence_file=null`。同目录有 [command8 复核](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_posthoc_audit.json) 和撤回记录。
-- 原工程 README、AGENTS 和部分文档累积了不同时间的状态。PID、boot ID、会话号、现场授权、旧目标都属于历史记录；本次未查询实时设备状态。特别是 `docs/astra_fast_closed_loop.md` 中较早的“仅 mock”描述已落后于当前源码。
-
-## 文件布局
-
-| 位置 | 内容和用途 |
-|---|---|
-| [projects/piper_right_pick_demo](projects/piper_right_pick_demo) | 当前 `right_pick/fast_*` 模型闭环、ROS 适配、相机进程、测试，以及早期夹取实现 |
-| [projects/piperx_cloth_demo](projects/piperx_cloth_demo) | 名称保留历史叫法；当前任务配置指向夹笔放筒，包含通用工具、只读观测与冻结 ROS 接续入口 |
-| [vendor/piper_ros-noetic](vendor/piper_ros-noetic) | 实际使用的厂家 `piper`、`piper_msgs` 源码、消息/服务定义、launch 和构建文件；未带仿真/MoveIt/描述模型等非本控制链包 |
-| [vendor/piper_sdk_0_6_2](vendor/piper_sdk_0_6_2) | 实际 ROS 控制使用的旧 `piper-sdk 0.6.2` 安装源码及发行元数据，供源码对照；不是完整虚拟环境 |
-| [vendor/pyAgxArm](vendor/pyAgxArm) | 新版 SDK 源码及许可证；用于部分工具/观测/FK，不能代替 ROS 链上的旧 SDK |
-| [vendor/driver_with_health.py](vendor/driver_with_health.py) | 旧低速入口引用的健康遥测包装源码 |
-| [evidence](evidence) | 49 份精选小记录：结果、实际 launch、少量命令示例、模型输入/输出和失败复核，另含一份 PDF、两张最终图片 |
-| [metadata](metadata) | 源文件来源、版本、环境及完整性检查结果 |
-| [ATOMIC_SKILLS.md](ATOMIC_SKILLS.md) / [.agents/skills](.agents/skills) | 可见原子索引；隐藏目录中有 4 个分层入口与 25 个单项原子 Codex 技能，按当前操作加载 |
-| [OPTIMIZATION_GUIDE.md](OPTIMIZATION_GUIDE.md) | 优先阅读的代码入口和优化建议 |
-
-## 工作链与推荐阅读顺序
-
-当前 fast 链：
+## 共用流程
 
 ```text
-right_pick.cli → fast_cli → FastLiveClosedLoop
-  → 新 RGB + ROS 反馈 → 当前阶段的模型单步提案
-  → schema / phase / 新鲜度 / 数值限制 / 实机资格检查
-  → fast_ros → ROS topic/service → ros_resume_entry
-  → 厂家 piper_ctrl_single_node → piper-sdk 0.6.2 → can1
-  → 独立反馈与命令回执 → 记录 → 下一轮
+任务 recipe / 冻结目标与初态
+  → 持久化 session：当前阶段、角色、剩余预算
+  → 当前 L2 有界操作 + 必要 L1 契约
+  → 当前 RGB / 本体状态 / 上次动作结果 / 短历史建议
+  → 单步模型提案 → 具备当前资格的执行适配器 → 回执与新观察
+  → 阶段证据 → 终态稳定评估 → 分别记录任务、回位和录像结果
 ```
 
-Codex 先从任务技能选定当前任务和层次；审查执行实现时按下列入口读：
+执行适配器是架构接口；当前通用离线入口不会打开它。
 
-1. `projects/piper_right_pick_demo/src/right_pick/fast_live_loop.py`：完整真实循环、派发与反馈。
-2. `fast_policy.py`、`fast_live_policy.py`：阶段、动作约束、视觉验证与结束条件。
-3. `fast_codex.py` / `fast_model.py`：模型输入、结构化输出、超时和计时。
-4. `fast_ros.py`、`fast_safety.py`、`fast_qualification.py`：底层合同、资格证据和失败处理。
-5. `projects/piperx_cloth_demo/robot_tools/ros_resume_entry.py`：固定厂家驱动上的接续和发送守卫。
-6. `projects/piperx_cloth_demo/tasks/put_pen_in_holder/task.json`：任务语义与历史记录。该文件约 163 KB，作为实际配置保留；其中历史状态不构成新任务起点。
+| 能力 | 实现与状态 |
+| --- | --- |
+| 通用任务与复杂组合 | recipe 复用操作注册表；新任务合同保持离线 |
+| 跨命令继续 | `fast_task_session.py` 冻结合同；revision/event-id 防重复，重启不清预算 |
+| 阶段闭环 | `fast_policy.py` / `fast_live_loop.py` 为既有单右臂 pen runner；通用任务不静默降级到它 |
+| 历史经验 | `fast_experience.py` 选择至多两条相关建议；卡片及原证据均校验哈希 |
+| 结果评估 | `fast_task_evaluation.py` 分开模型判断、独立 RGB 审核和仿真 oracle |
+| 失败恢复诊断 | `fast_task_recovery.py` 区分视觉问题、确认零发送、未知发送和停止证据；仅提出有限候选，不自动回退或重发 |
+| 通用录像要求 | `fast_recording_contract.py` 绑定任务、必需视角和事件覆盖；元数据审计与视频完好、任务成功分开 |
+| 多臂协作 | worker、peer、observer 角色合同；通用实机适配待验证 |
 
-源码中还保留了红块、杯子及专项恢复工具，方便对照。`scripts/ros_guarded_*` 等入口通常绑定某次现场状态及证据，不应当作通用夹笔入口。早期基线说明放在 `evidence/piper_right_pick_demo/baselines/`。
+模型继续负责 RGB 视觉判断。经验不含可重放目标，不提供本轮授权、接触或成功事实。观察臂改善视野不清零工作臂的无进展计数。仿真的物体坐标、关节目标与奖励留在独立 grader，不能进入 RGB-only / calibration-free 控制输入。
 
-## 本机先做什么
+## 两个旧项目的结果与教训
 
-解压后进入此目录，使用标准 Python 检查文件完整性：
+| 历史任务/问题 | 可核查结果 |
+| --- | --- |
+| 笔放入笔筒 | ROS 逐段执行成功，包含现场前后对齐指导；保留人工参与和容器变体。[结果](evidence/piper_pen_repeat_video_20261005/new_holder_result.json) |
+| 空罐立在杯盖上 | 原记录确认松爪、撤离后独立稳定；杯盖存在由用户确认，等待与录像分段单独保留。[完成记录](evidence/local_integration_20261007/selected/can_task_completion.json) |
+| 充电头插入无电插座 | 抓取、抬起已有证据，最终未形成插入成功；工具轴与持物轴分开判断。[结果](evidence/local_integration_20261007/selected/charger_final_outcome.json) |
+| timeout / stop / hold | 早期超时处理后出现下落；另一次客户端退出后旧目标继续运动。退出、断连、失能不能当作已验证停止。[事故](evidence/piper_right_pick_demo/baselines/model_direct_vendor_ik/INCIDENT.md)、[后续审计](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_posthoc_audit.json) |
+| 零发送拒绝与真正运动失败 | 保留原记录，不改写失败或自动重发不确定命令。[零发送复核](evidence/local_integration_20261007/selected/can_zero_tx_review.json) |
+
+原项目 `/home/agilex/piper_right_pick_demo`、`/home/agilex/piperx_cloth_demo` 原样保留。原始视频、完整 `runs/`、逐帧图片和大体积 CAN 数据继续留在原处；新目录收录源码及精选证据，用[来源索引](evidence/local_integration_20261007/source_inventory.json)和[罐任务录像索引](evidence/local_integration_20261007/selected/can_recording_index.txt)关联原文件。此前放笔录像位于 `/home/agilex/piper_pen_repeat_video_20261005`。
+
+## 参考研究
+
+并行分析与交叉校对见 [通用化综合](research/generalization_synthesis.txt)、[任务评估](research/task_eval_review.txt)、[经验机制](research/memory_review.txt)、[组合架构](research/composition_review.txt)。对应 JSON 保存已核查版本、commit、源摘要和访问限制。
+
+每项参考现在还对应一份[思想—代码—测试—待完成项清单](research/reference_adoption.json)，可用 `./astra references --source arx5` 查看。ARX5 的 [18 个任务/变体核查表](research/arx5_experiment_patterns_round2.json)区分操作要求与实验实际结果；擦板发生滑动不等于擦除，夹稳充电器不等于插入，用户允许残留也不意味着倒入量已测定。
+
+按任务查看，例如 `./astra references --source arx5 --task drawer-push-pull`。这些研究材料按需查询，不会自动全部塞进每轮模型上下文。
+
+| 原始资料 | 采用的原则 |
+| --- | --- |
+| [GPT6-ARX5](https://github.com/zijianzhang30/GPT6-ARX5) | 任务变体、角色、逐段验证、释放后稳定、回位与录像分别记录 |
+| [ManiSkill](https://github.com/mani-skill/ManiSkill)、[TurnFaucet-v1 源码](https://github.com/mani-skill/ManiSkill/blob/main/mani_skill/envs/tasks/tabletop/turn_faucet.py) | 有限任务、清晰完成谓词、控制输入与仿真评估状态隔离 |
+| [Zetta-Embodiment](https://github.com/air-embodied-brain/Zetta-Embodiment) | 诊断、候选改动、独立检验与接受改动分开 |
+| [Self-Harness，2606.09498](https://arxiv.org/abs/2606.09498) | 从轨迹问题提出小改动，保留基线和回归；其研究对象是软件 agent |
+| [PhysicalRSI](https://mmlab.hk/research/PhysicalRSI) | 持久技能与每轮状态分离、有界阶段；仅项目页内容获核查，版本与复现仍有限制 |
+| [RoboICL](https://github.com/Mosi-AI/RoboICL) | 有界经验上下文，区别示范、当前观察与执行回执 |
+| [Code as Policies](https://code-as-policies.github.io/) | 用明确 API 组合任务；本地采用受限 JSON 配方 |
+| [Galbot 的 Astra 具身评估，2609.38537v1](https://arxiv.org/html/2609.38537v1) | 分别衡量发现错误、提出纠正和验证真实效果 |
+
+这些原则用于改进宿主程序。当前没有引入物体三维定位、手眼标定、传统视觉检测或在线修改执行代码，也不以文献结果替代本机实验。
+
+## 局部恢复与录像
 
 ```bash
+./astra recovery-plan research/recovery_example_round2.json
+./astra recording-plan --run-id task-001 --task can_on_lid --include-left
+```
+
+前者是合成输入的诊断示例；看不清或抓取失败时，候选是重新观察、重新对齐等当前局部操作。未知/部分发送、超时、未验证保持、故障锁存或预算耗尽会阻断继续提案。该接口不更改阶段、不消费持久预算、不执行实体回退；未来宿主须把新提案、计数和当前执行证据接入同一 session。
+
+后者只输出录像合同：归零阶段不录，从初始姿态开始任务时录右腕第一视角与机身对面第三视角，左腕可列为额外要求；模型筛选视角不减少本地保存。实际三路 worker 已保留，但通用合同没有启动它，现有 worker 仍要求三路相机。`./astra recording-audit <JSON>` 审核时间戳、帧和事件的声明覆盖，不解码视频、不证明画面或任务成功。控制器退出不应直接结束证据采集；异常后的独立持续录像服务仍待接入。
+
+## 开发与验证
+
+```bash
+cd /home/agilex/GPT6-Astra-REAL
 python3 tools/verify_bundle.py
-```
-
-这只读本地文件，不访问硬件或模型，分别检查原来源哈希、本地优化覆盖与交接清单。本地已运行 fast 回归测试、语法与技能检查，最新结果见 [optimization_validation.json](metadata/optimization_validation.json)；远端历史测试不计入此次结果。
-
-复核本地控制链修改：
-
-```bash
 cd projects/piper_right_pick_demo
 PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast*.py'
 python3 -m compileall -q src
 ```
 
-没有随包复制 Codex 登录文件、API key、SSH 凭据或 Conda 环境。上述回归使用假模型和假适配器；真实 Codex 调用沿用运行环境自己的登录。
+本次整合验证见 [generalization_validation_20261007.json](metadata/generalization_validation_20261007.json)；旧 `optimization_validation.json` 保留历史含义。[source_manifest.json](metadata/source_manifest.json)保留原始来源哈希，本地改动由 [optimization_manifest.json](metadata/optimization_manifest.json)单列。离线测试不代表新任务真机成功、停止资格或性能提升。耗时、调用减少比例和成功率须用目标与现场条件一致的新实验测量，未知项保持未知。
 
-## 运行环境与迁移边界
+历史全量测试尚未全部通过：部分测试依赖未迁入的旧 `runs/` 证据，旧 piperx 有 Python 3.8 与较新标准库 API 的兼容问题及工具 schema 差异，个别旧入口失败仍待定位。新增离线层和历史全量回归分开记录，不为得到通过结果删除检查或修改原项目。
 
-采集结果见 [remote_environment.json](metadata/remote_environment.json)。现场依赖并非单一 Python 环境：
+在本目录进入 Codex，先读 [AGENTS.md](AGENTS.md)、[任务技能](.agents/skills/piper-task-pipeline/SKILL.md)和[原子技能索引](ATOMIC_SKILLS.md)：
 
-| 用途 | 远端实际环境 |
-|---|---|
-| ROS 控制 | Ubuntu 20.04 / ROS Noetic、系统 Python 3.8、`piper-sdk 0.6.2`、`python-can 4.5.0`，需要编译 `piper_msgs` |
-| 部分数值/旧控制脚本 | `aloha` Python 3.8，NumPy 1.24.4、SciPy 1.10.1 |
-| RealSense 相机进程 | `pi0_infer` Python 3.10.18，NumPy 1.26.4、OpenCV 4.11.0.86、pyrealsense2 2.56.5.9235 |
-| fast Codex 后端 | 当前源码精确检查 `codex-cli 0.160.0`，模型配置为 `gpt-6-astra`；需单独安装/登录 |
+```bash
+codex -C /home/agilex/GPT6-Astra-REAL
+```
 
-`pi0_infer` 中同时装有旧 `piper-sdk 0.4.1`，不能因为它能打开相机，就把它用于要求 0.6.2 的 ROS 驱动。`pyproject.toml` 未完整声明依赖，单独 `pip install -e` 不等于环境已经齐备。
-
-现场配置 `*.local.json` 已保留，包括实际右臂 `can1 / USB 1-6.3:1.0` 和三相机身份；旧 example 可能仍写 `can2`。这些是机器绑定，迁移时重新核对。
-
-代码保留了 `/home/agilex/...` 绝对路径，部分路径及源码哈希参与校验，例如 `fast_ros.py` 固定引用接续入口和厂家驱动。修改目录或控制源码之后，需要更新并复核对应合同，不能只用字符串替换就宣称真机可运行。来源到本包的完整映射已记录在 `metadata/source_manifest.json`。
-
-ROS 工作空间只带源码，未复制 `/opt/ros`、`devel` 或系统二进制。典型原现场先加载 `/opt/ros/noetic/setup.bash` 和 `piper_gpt/devel/setup.bash`，再启动经过复核的唯一右臂驱动；真实启动会访问设备，本文不给历史状态自动接管或目标重放的承诺。所选现场 launch 在 `evidence/`，其中接续要求与初始化入口要求不同。
-
-## 有意省略的内容
-
-没有打包视频、完整 `runs/`、逐帧图像、原始 CAN 窗口、多 MB 资格轨迹、虚拟环境、Git 历史、缓存及构建产物。保留的小 JSON 中可能引用这些远端路径，按源证据索引理解即可。
-
-尤其 `qualification_evidence.json` 等大文件没有复制；旧 boot/PID/驱动日志绑定也不能搬成新机器的许可。因此这是可追溯的**源码优化交接包**，跨机器实机复现还需要环境配置、现场验证和新的资格证据。
-
-供应商源码保留原许可证和元数据。本次生成的 `SHA256SUMS` 与 `metadata/source_manifest.json` 是新的交接清单；原 `PLATFORM.sha256` / `SDK_SOURCE.sha256` 作为历史文件保留，未伪造更新。其中旧 PLATFORM 清单的 AGENTS.md 摘要已落后于实际源文件，以本次快照清单为准。
+`projects/` 保留两个项目结构；`vendor/` 保留厂家源码和许可证。真实 ROS、RealSense 与模型环境有各自依赖及路径绑定，详见 [OPTIMIZATION_GUIDE.md](OPTIMIZATION_GUIDE.md)。复制源码或安装 Python 包不会重建这些依赖及当前资格。

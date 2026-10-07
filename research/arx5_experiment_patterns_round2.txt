@@ -1,0 +1,292 @@
+GPT6-ARX5 实验模式第二轮复核（离线）
+复核日期：2026-10-07；HEAD：2a722748fa2adedd096c8fd7f9461d2b2ba48af6
+与第一轮固定 commit 相同，没有上游新版本差异；本轮新增的是 18 项完整覆盖和实验结果语义复核。
+原始仓库：https://github.com/zijianzhang30/GPT6-ARX5
+总报告：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/REAL_ROBOT_EXPERIMENT_REPORT_20261006.md
+
+范围：18 个 task reference + task skill/公共规范 + 各主实验记录的结果段。原始 analysis/video 未独立重看，以下为上游报告陈述。
+技能要求、上游实测陈述、本地离线合同三者分别列出；没有复现真机或新增标定/视觉定位。
+所有源文件的完整 URL、raw URL、SHA256 和审阅范围在同名 JSON source_manifest。
+
+1. 双臂套杯 [cups]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/cups.md
+通用操作：inspect -> approach -> align -> grip_test -> transport -> release_retreat -> stable_verify -> return_reference -> insert_segment
+人工初态/角色：Left places the lower cup and clears its entire arm/camera/cables before right cup work; both are task arms.
+报告变体：5 rounds, evolving v1/v2/v3 | user_accepted_4_of_5; full_supervised_workflow_verified_1_of_5
+  条件：Manual initial placement and supervision; protocols changed between rounds.
+  证据边界：Only trial 3 verifies both returns. Trial 5 nesting succeeded before final return software fault; trials 1/2 lack complete release/retreat evidence.
+独特成功证据：lower cup released and independently stable；left full arm corridor clear before right work；upper cup actually nested, not merely above rim；new views after release and retreat show stable nesting; return reported separately
+可迁移失败策略：Empty lift means change observed depth/alignment before retry.；A combined three-axis approach toppled a cup; separate uncertain depth and descent.；Do not repeatedly re-anchor an already returned peer or overwrite the immutable run reference.
+本地合同：task_contract('cups', mode='dual_arm', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Builtin insert_segment has generic axial/support evidence; explicit nested_cups_stable predicate is still needed for an object-specific acceptance contract.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CUP_STACKING_EXPERIMENT_RECORD_20261001.md
+
+2. 细笔入筒与粗笔入宽口杯 [pen]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen.md
+通用操作：inspect -> approach -> align -> grip_test -> transport -> insert_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left worker; right view only and withdraws before transport when its observation pose blocks the corridor. Props manually reset between runs.
+报告变体：thin pen / original narrow holder | 2 rounds incomplete
+  条件：Original object and receiver.
+  证据边界：No verified completed insertion.
+报告变体：thick marker / wide cup | 4 placements of 6 rounds
+  条件：2 successful placements assisted; 2 pickup/placement sequences unassisted.
+  证据边界：Only overall trial 7 has no scene intervention through return. Trial 8 scene changed during return after saved stable placement.
+独特成功证据：pen leaves original support and stays in jaws；actual pen tip enters the frozen receiver；release and empty-jaw retreat precede two independent stable views
+可迁移失败策略：Use fresh fixed-view pen/support relations to reject empty grasps.；Reobserve object axis instead of adding wrist angles.；Retain historical placement milestone if later scene is changed, but do not call the new scene currently successful.
+本地合同：task_contract('pen', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Builtin pen intentionally forbids silently replacing thin pen/holder; marker/wide-cup variant requires a distinct frozen recipe.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEN_INSERTION_EXPERIMENT_RECORD_20261002.md
+
+3. 抓取充电头并插入无电插座 [charger]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/charger.md
+通用操作：inspect -> approach -> align -> grip_test -> transport -> insert_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Latest left worker and right view only or disabled static camera. Mains disconnection is a human/host fact, not inferred from RGB.
+报告变体：full pickup/insertion across evolving layouts | no insertion success through trial 11
+  条件：Human layout/target changes; early peer-fixing plan later replaced by view-only/static peer.
+  证据边界：Trial 7 grasp/transport/replacement verified; trial 11 four failed grasps. Trial 10 exact closing metadata incomplete, not repaired by inference.
+独特成功证据：both prongs aligned with the specified two holes；actual additional axial insertion and reduced body/socket gap；socket does not follow or tip；release/retreat followed by independent seated stability
+可迁移失败策略：Projected overlap is not insertion; obtain a side view of prongs and gap.；Socket motion requires reassessment, not extra force.；Separate execution fault, failed grasp and failed insertion denominators.
+本地合同：task_contract('charger', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：No calibrated force-control or socket-contact executor was implemented locally; generic insert evidence needs the frozen prong/seat acceptance claims.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERTION_EXPERIMENT_RECORD_20261001.md
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERTION_EXPERIMENT_RECORD_20261005.md
+
+4. 人工预对孔后的继续插入 [charger-insert-only]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/charger-insert-only.md
+通用操作：inspect -> approach -> align -> grip_supported -> insert_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left worker; right view only. Human provides initial alignment or shallow insertion; this cannot count as robot-added progress.
+报告变体：manually aligned/shallowly inserted charger | trial 1 incomplete after 3 local attempts
+  条件：Autonomous pickup omitted; initial insertion must be saved.
+  证据边界：First two attempts lacked grip/insertion proof; a small insertion candidate was rejected before execution. Third approach ended in proxy loss/disable fall; no controlled return.
+独特成功证据：bilateral supported contact without disturbing initial insertion；robot-added insertion relative to saved initial body gap；release/retreat and independent stable seating
+可迁移失败策略：Do not insert a test lift into a preinserted protocol.；A rejected command is zero completed insertion, not a visual failure.；Unknown proxy termination cause remains unknown; no automatic replay.
+本地合同：task_contract('charger-insert-only', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Builtin correctly uses grip_supported and omits grip_test; actual axial contact admission is not a physical implementation.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERT_ONLY_EXPERIMENT_RECORD_20261005.md
+
+5. 插花及预持花放纸杯变体 [flower]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/flower.md
+通用操作：inspect -> validate_preheld -> transport -> align -> insert_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left worker; right view-only/static in later variant. Manual prehold, loosened orientation constraints and receiver change must be explicit.
+报告变体：automatic pickup to narrow bottle | no full success
+  条件：Initial flower supported on cup/fixture.
+  证据边界：Trial 4 eventually lifted flower, then infrastructure fault before insertion/release.
+报告变体：preheld to narrow bottle | release failed
+  条件：Manual prehold and reorientation.
+  证据边界：Flower fell onto table at release; subsequent manual replacement not autonomous regrasp.
+报告变体：preheld to red paper cup v4 | placement and both returns reported successful
+  条件：Receiver and orientation criteria explicitly changed.
+  证据边界：Flower tilted against rim; neither upright placement nor narrow-bottle success.
+独特成功证据：actual stem axis and tip enter the frozen receiver；receiver is stable and supports flower before release；independent post-retreat support satisfies the frozen orientation criterion
+可迁移失败策略：If receiver follows, contact is not cleared: stop lateral/wrist change.；Orient in visible free space only after actual separation.；New receiver/goal gets a new protocol version.
+本地合同：task_contract('flower', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Builtin flower starts preheld; automatic tool acquisition needs a separate recipe. Orientation and receiver claims must be specialized.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FLOWER_INSERTION_EXPERIMENT_RECORD_20261002.md
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FLOWER_INSERTION_EXPERIMENT_RECORD_20261003.md
+
+6. 挂到最低实际挂点 [hat]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/hat.md
+通用操作：inspect -> approach -> align -> grip_test -> transport -> hang_supported -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left worker; right observer, never a rack stabilizer. Target is actual lowest hook, not stand foot.
+报告变体：3 hanging rounds | no verified hanging success
+  条件：Trial 2 began with manually preplaced contact; trial 3 used newly arranged hat.
+  证据边界：Trial 2 grasp/transport/table release succeeded only; trial 3 three failed lifts then both returns. Trial 1 timeout/disable fall was not a return.
+独特成功证据：hat retained after support separation；hat opening crosses the specified free hook end；rack stable；hat independently hanging after release and retreat in repeated new views
+可迁移失败策略：Rack following the hat disproves independent hook support.；No amount of closed-air lift counts as grasp.；Observer motion is bounded and cannot reset worker failure debt.
+本地合同：task_contract('hat', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：hang_supported exists; hook contact geometry and rack force response remain unimplemented physical behavior.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/HAT_HANGING_EXPERIMENT_RECORD_20261003.md
+
+7. 双臂分离笔帽 [pen-uncapping]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen-uncapping.md
+通用操作：inspect -> validate_preheld -> approach -> align -> grip_supported -> extract_segment -> transport -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Right retains body; left retains cap. Both task arms, one new motion at a time. Original tight-cap or autonomous pickup ability is unknown.
+报告变体：trial 4 assisted separation | separation milestone successful; cleanup retention not established
+  条件：Right manually preheld pen; cap manually loosened and repeatedly adjusted.
+  证据边界：Cap/body gap and independent movement observed; later cap on table without release command. Both returns passed before later fault, but controlled cap placement was not proved.
+独特成功证据：cap/body independently separated, not just jaw slip；cap retained by left and body retained by right after separation；cleanup release and stable support each need separate evidence
+可迁移失败策略：Tool travel and cap following together are failed separation.；Preserve separation milestone separately from later loss of cap.；Human loosening changes initial resistance and autonomy scope.
+本地合同：task_contract('pen-uncapping', mode='dual_arm', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Builtin cleanup asks for supported release of both objects, which the upstream successful separation did not establish.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEN_UNCAPPING_EXPERIMENT_RECORD_20261003.md
+
+8. 杯间倒珍珠 [pearl-pouring]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pearl-pouring.md
+通用操作：inspect -> approach -> align -> grip_test -> transport -> pour_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left source-cup worker; right observes. Source identity determined from contents, not language/image left/right alone.
+报告变体：trial 1 contents transfer | user accepted with residue; received quantity unknown
+  条件：Residual contents allowed; spills occurred and were recorded.
+  证据边界：Pickup, pouring, replacement and returns reported; not all contents transferred or zero spills.
+独特成功证据：source cup retained；visible flow received in intended receiver；receiver stable；spill and residue criteria frozen separately; quantity unknown unless actually supported；source cup independently supported after retreat
+可迁移失败策略：Stop flow by reducing tilt before repositioning after a spill.；First failed grip pushed the cup: revise depth, not force.；If withdrawal lifts a rim, reestablish support, open sufficiently, withdraw with a newly reviewed path.
+本地合同：task_contract('pearl-pouring', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：pour_segment requires frozen spill/residue policy but does not measure received quantity or encode numerical acceptance automatically.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEARL_POURING_EXPERIMENT_RECORD_20261005.md
+
+9. 剥皮橘瓣抓放 [orange-pick-place]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/orange-pick-place.md
+通用操作：inspect -> approach -> align -> grip_test -> transport -> lower_to_support -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left worker, right moved for a useful side view. The object was a segment, not a whole fruit.
+报告变体：single peeled segment on blue cup support | trial 1 fourth local grasp succeeded
+  条件：Manual initial placement; no scene intervention after clear area reported.
+  证据边界：Lift about 9.17 cm was kinematic estimate, command sum about 11 cm; no external ruler calibration. Stable replacement and both returns verified in report.
+独特成功证据：segment independently leaves support and remains retained；frozen lift range met with declared measurement provenance；segment replaced on original support and stable after release/retreat
+可迁移失败策略：Side view resolved object behind effective gripping faces after three failures.；Soft-object slip is not permission for force escalation.
+本地合同：task_contract('orange-pick-place', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Builtin supports frozen whole-fruit or segment identity, but this report provides no whole-fruit evidence. Metric lift truth from RGB alone remains unmeasured here.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/ORANGE_PICK_PLACE_EXPERIMENT_RECORD_20261005.md
+
+10. 抽屉拉出后恢复原开度 [drawer-push-pull]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/drawer-push-pull.md
+通用操作：inspect -> approach -> align -> grip_supported -> extract_segment -> push_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left manipulates drawer; right only observes. Cabinet and initial opening must remain reference objects, not robot joint zero.
+报告变体：partly open first drawer, two trials | neither trial established stable grip or required drawer travel
+  条件：Drawer opening manually increased between runs; second run had user-reported fall protection.
+  证据边界：Trial 1 settle rejection led to host exit and disable fall; full live settle samples missing. Trial 2 no runtime fault and both returns, but still no pull/push success.
+独特成功证据：actual drawer travel relative to stationary cabinet；specified additional pull distance, not TCP distance；initial opening restored rather than forced fully shut；drawer/cabinet stable after empty jaw withdrawal
+可迁移失败策略：Compare cabinet and drawer in fixed view; wrist-camera motion can fake progress.；Change contact geometry only with new evidence and remaining budget.；Small final residual does not prove full settle window or contact cause; preserve fault samples.
+本地合同：task_contract('drawer-push-pull', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Specific drawer_relative_travel and initial_opening_restored are present. Generic peer_stable wording is ambiguous for a passive cabinet; no physical drawer contact policy is implemented.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/DRAWER_PUSH_PULL_EXPERIMENT_RECORD_20261005.md
+
+11. 软果冻抓放 [jelly-pick-place]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/jelly-pick-place.md
+通用操作：inspect -> approach -> align -> grip_test -> transport -> lower_to_support -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left worker; right side-view assistance without supporting jelly or platform.
+报告变体：round support then rectangular support | both trials failed grasp; local attempts 2 then 3
+  条件：Platform changed manually between runs.
+  证据边界：Jelly remained supported; neither target lift completed. Both runs had controlled returns without runtime fault.
+独特成功证据：jelly leaves support without slipping；declared target lift applies to jelly, not empty TCP；stable replacement on original frozen support
+可迁移失败策略：Support-edge contact or deformable slip requires new geometry, not tighter squeezing.；Changing platform is a new initial condition; retain earlier failures.
+本地合同：task_contract('jelly-pick-place', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Soft contact dynamics, deformation and slip cannot be validated by offline fact packets. Failure does not establish impossibility.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/JELLY_PICK_PLACE_EXPERIMENT_RECORD_20261005.md
+
+12. 双臂旋盖 [bottle-unscrewing]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/bottle-unscrewing.md
+通用操作：inspect -> approach -> align -> grip_test -> grip_supported -> rotate_segment -> extract_segment -> transport -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left grips/stabilizes bottle; right cap worker. Both task arms; full camera brackets/cables included in swept corridor.
+报告变体：three two-arm trials | no cap thread disengagement or specified separation
+  条件：Left body/right cap roles; manual clearing and user contact report informed trial 2 exit.
+  证据边界：Trial 1 fault before grasp cannot be blamed on tight cap. Trials 2/3 rotation commands did not establish cap-relative rotation; later returns separate from success. Trial 3 short bottle drop on release recorded.
+独特成功证据：bottle support and resistance to torque independently assessed；cap rotates relative to bottle with thread progress；threads disengage then cap separates by frozen amount；objects supported independently during cleanup
+可迁移失败策略：Weight-bearing grasp does not prove torque restraint.；Opposing static arm layout does not prove rotation clearance.；Reserve exit budget before contact; do not infer cap progress from wrist command.
+本地合同：task_contract('bottle-unscrewing', mode='dual_arm', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：rotate_segment/extract_segment express thread evidence; local pair support/torque/physical admission and cleanup are unimplemented.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOTTLE_UNSCREWING_EXPERIMENT_RECORD_20261005.md
+
+13. 外部固定瓶身、左臂旋盖 [fixed-bottle-unscrewing]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/fixed-bottle-unscrewing.md
+通用操作：inspect -> approach -> align -> grip_supported -> rotate_segment -> extract_segment -> transport -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left cap worker; right observer must not grip bottle. Fixture visible does not prove resistance to torque.
+报告变体：three fixture-held bottle trials | no cap removal
+  条件：Fixture supplies body support; human demonstrations are separate evidence.
+  证据边界：Side grips and oblique regrip lost contact. Trial 2 jaw progress timeout caused disable fall before human intervention; trial 3 healthy supported retreat/returns but no thread success.
+独特成功证据：fixture/body stay stable；cap rotates relative to bottle with actual thread progress；thread disengagement and specified cap separation while retained；supported cleanup independently documented
+可迁移失败策略：A moving wrist view of a cap mark is not relative rotation proof.；Local infeasible vertical samples do not prove whole-workspace impossibility; alternative offline candidates are not executions.；A human successful twist does not validate robot grip or capacity.
+本地合同：task_contract('fixed-bottle-unscrewing', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Distinct from dual-arm bottle recipe; cap-force/fixture qualification and contact implementation remain absent.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261005.md
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261006.md
+
+14. 螺母旋入三圈 [bolt-screwing]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/bolt-screwing.md
+通用操作：inspect -> validate_preheld -> approach -> align -> grip_supported -> rotate_segment -> release_retreat -> stable_verify -> transport -> return_reference
+人工初态/角色：Right supports bolt, left turns nut, both task arms. No inference of grasp force from jaw opening.
+报告变体：preheld bolt trial 1 | three-turn target not reached
+  条件：Right preholds bolt; later human removal/hold loss recorded, precise causality unknown.
+  证据边界：Cumulative wrist rotation command was only 72 degrees with later slipping; no full relative turn or axial feed proved; no controlled placement/full return.
+独特成功证据：three actual nut turns relative to bolt；axial feed consistent with thread engagement；bolt stable and both contacts retained or supported for regrasp；cleanup support/retreat separate from turn milestone
+可迁移失败策略：Do not count wrist reset/regrasp angle as extra thread turns.；Slipping contact requires supported reassessment, not torque escalation.
+本地合同：task_contract('bolt-screwing', mode='dual_arm', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：three_actual_thread_turns and axial_feed_verified are explicit; no nut angle tracker, calibrated force or physical screwing controller added.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOLT_SCREWING_EXPERIMENT_RECORD_20261005.md
+
+15. 中间书本抽取 [book-extraction]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/book-extraction.md
+通用操作：inspect -> approach -> align -> grip_supported -> extract_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Default left worker and right observer. Support-worker variant changes role contract and needs separate qualification.
+报告变体：v1 specified extra travel; peer view only | trial 1 incomplete
+  条件：Book initially protruded; remaining stack should stay stable.
+  证据边界：Some follow movement and top-book shift, no target travel measurement; return completed.
+报告变体：v2 then relaxed progress criterion / proposed peer support | trial 2 incomplete under either criterion
+  条件：Right stack support authorized but actual load-bearing unverified; later role reverted to view-only; human scene change during return.
+  证据边界：Three nominal pull commands did not prove book displacement. New relaxed goal does not retroactively pass v1.
+独特成功证据：new book travel relative to saved initial protrusion；remaining books and support meet frozen stability tolerance；target extracted amount visible after jaw retreat
+可迁移失败策略：Do not sum commanded distances into book travel.；Initial protrusion and human scene change are not robot progress.；Freeze target relaxation and role changes as distinct variants.
+本地合同：task_contract('book-extraction', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：Builtin intentionally forbids observer supporting stack; assisted support variant is unsupported by that contract. peer_stable is not a substitute for other_books_stable.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOOK_EXTRACTION_EXPERIMENT_RECORD_20261006.md
+
+16. 擦拭动作与擦除效果 [blackboard-wiping]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blackboard-wiping.md
+通用操作：inspect -> validate_preheld -> transport -> align -> wipe_segment -> release_retreat -> stable_verify -> return_reference
+人工初态/角色：Left preheld tool worker; right view-only/static, cannot hold board. Initial tool acquisition and contact-confirmation provenance retained.
+报告变体：soft cloth trials 1/2, erasure requested | erasure not verified
+  条件：Cloth manually placed; originally requested autonomous pickup not tested.
+  证据边界：Cloth retention/sliding did not remove letters; trial 2 return interrupted by requested tool change.
+报告变体：hard eraser trial 3, motion-only revised criterion | contact wiping motion accepted
+  条件：Eraser manually preplaced; contact partly human-confirmed; explicit no-erasure-required revision.
+  证据边界：Observed sliding supports revised motion goal only. Release initially dragged tool then stable support; returns documented.
+独特成功证据：tool/contact surface sliding with visible or explicitly sourced contact evidence；if erasure is required: frozen surface change criterion, not sliding alone；tool independently supported after release and retreat
+可迁移失败策略：Soft cloth retained in jaws need not make a flat effective wiping pad.；Do not silently replace erase-text goal with wiping-motion goal.；No added downward force merely to infer contact.
+本地合同：task_contract('blackboard-wiping', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：本轮已由 root 修复默认判据：内置合同仅接受接触滑动；擦除为独立冻结 recipe，必须额外提供 erasure_criterion_satisfied，回归测试确认仅滑动不能推进。真实像素上的擦除/接触判断仍由独立审核提供。
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLACKBOARD_WIPING_EXPERIMENT_RECORD_20261006.md
+
+17. 扫两块入簸箕 [blue-blocks-sweeping]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blue-blocks-sweeping.md
+通用操作：inspect -> validate_preheld -> transport -> align -> sweep_segment -> stable_verify -> release_retreat -> return_reference
+人工初态/角色：Left broom worker; right not a dustpan stabilizer. Count all targets at start.
+报告变体：preplaced broom and two target blocks, trial 1 | 2 of 2 inside after brush withdrawal; user accepted
+  条件：Broom manually preplaced; right disabled static camera.
+  证据边界：First pass left one at lip; extra side sweep moved both inside. Released broom toppled to flat table then stable, not a controlled flat lay. Post-recording fault separate.
+独特成功证据：every frozen target block inside dustpan, not on entrance lip；targets stay inside after whole brush withdrawal；dustpan stable; tool cleanup separately supported and stable
+可迁移失败策略：Inspect remaining target/lip state before one bounded corrective sweep.；Include handle/head/bristles in corridor, not only gripper.；Do not add pressure because a target stays outside.
+本地合同：task_contract('blue-blocks-sweeping', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：all_targets_inside and extended tool corridor are represented; no automated RGB target counting or physical sweep executor added.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLUE_BLOCKS_SWEEPING_EXPERIMENT_RECORD_20261006.md
+
+18. 夹爪边缘推块入红三角 [blue-block-triangle-push]
+原参考：https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blue-block-triangle-push.md
+通用操作：inspect -> approach -> align -> push_segment -> stable_verify -> return_reference
+人工初态/角色：Left gripper edge only; right static camera. No two-finger enveloping grasp, no extra exact centering/orientation requirement.
+报告变体：single block edge-push trial 1 | inside-region outcome accepted after withdrawal
+  条件：Manual initial setup; right static observation.
+  证据边界：Initial high contact passed over; side push reached edge; lower rear push moved block inside. No grasp/lift. Video gap retained; returns separately verified.
+独特成功证据：actual block base within frozen visible triangle boundary；contact mode remained edge push without pickup；block stays inside after empty gripper retreat
+可迁移失败策略：Tool motion without block change is no progress.；Use fixed region boundary and block base, not top projection.；New rear contact strategy can follow bounded retreat/reobserve; do not relabel boundary as success.
+本地合同：task_contract('blue-block-triangle-push', mode='worker_with_observer', worker_arm="left")；仅 offline_contract_only。
+尚缺/限制：block_inside_region and edge_push_without_grasp are explicit; real boundary judgment still comes from current RGB reviewer.
+主实验记录：
+  https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLUE_BLOCK_TRIANGLE_PUSH_EXPERIMENT_RECORD_20261006.md
+
+横向结论：
+1. 9/18 类有条件成功案例是覆盖数，不是统一成功率。叠杯 4/5 用户验收与 1/5 完整监督流程、粗笔宽杯 4/6 与原细笔小孔必须分列。
+2. 放置/挂放/插入必须在撤离后留存独立稳定；到位、闭爪、腕转和静态投影不能取代物体效果。
+3. 人工预夹、松帽、支架、接触确认、目标放宽、途中换场均是实验条件，不隐藏成自主完成。
+4. 未完成例尤其提供价值：抽屉/书本需相对固定背景的新进展；螺纹需实际相对转动和轴向进给；倒料需收集量/洒落/残留分别审计；擦拭动作不等于擦除效果。
+5. 故障退出/失能下落不是停止或回位能力；原报告未确定的信号来源和物理因果保持 unknown。
+6. 模型、执行层、物料、传感/观察和基础设施共同影响结果，不能从这些变协议监督记录推出模型独立可靠性。
+
+本地验证映射：
+projects/piper_right_pick_demo/tests/test_fast_reference_catalog.py 将核对恰好18项、固定commit/SHA、合同操作/角色、任务独有事实、可追踪测试和不授权真机执行。
+既有 test_fast_task_pipeline/test_fast_task_session/test_fast_task_evaluation/test_fast_task_spec 覆盖有界进度、持久预算、独立稳定/渠道隔离与通用 recipe；具体方法逐项列在 JSON。
+本轮没有物理实现或物理成功率；模型纯延迟及真实接触能力未知。

@@ -1,0 +1,52 @@
+Legacy-suite portability audit — 2026-10-07
+
+Scope and method
+Read the two copied projects under GPT6-Astra-REAL/projects. No production source, historical source, safety threshold, guard, runtime configuration or admission file was changed. No dependency was installed. Tests used their synthetic fixtures/fake adapters; the Python 3.10 audit additionally prohibited unmocked socket creation in the test runner. No ROS, CAN, camera or robot operation was requested. All results below concern offline tests, not physical qualification.
+
+1. piper_right_pick_demo: one apparent behavioral failure is missing historical evidence
+
+The parent integration run reported 862 tests, one failure, forty errors and ten skips. This audit did not rerun all 862 tests. It inspected and separately reproduced the failing helper in test_direct_sdk_step.SDKStepTests.test_reviewed_readiness_precedes_socket_and_live_pose_without_second_pause.
+
+Reproduction used the existing test's run_reviewed_main_flow(), whose Receiver, collect_stationary, execute_step, binding inspection and controller inspection are mocked and whose socket factory forbids real CAN sockets. The returned report was:
+
+  return_code: 2
+  events: input, receiver, live_preview
+  error_type: FileNotFoundError
+  error: missing runs/geometry_review/ik_reentry_180614_analysis.json
+  phase: receive_only_preview
+  frames_send_attempted: 0
+
+scripts/direct_sdk_step.py main() hashes REENTRY_SOURCE, REENTRY_PROGRESS_SOURCE and REENTRY_OBSERVATION before execute_step(). All three referenced files are absent from this copied project:
+
+  runs/geometry_review/ik_reentry_180614_analysis.json
+  runs/geometry_review/ik_reentry_180614_progress_box.json
+  runs/sdk_step_20261003T180614_69681/report.json
+
+The exception is caught and converted into exit code 2. The test expects 0 and therefore reports “2 != 0”; the mocked execute stage is never reached. This result is consistent with missing source-bound historical test artifacts, not evidence that the new experience/evaluation changes broke readiness ordering. It also does not prove the unavailable historical artifact checks would pass.
+
+Portable follow-up: give this unit test explicit synthetic artifact files in a TemporaryDirectory and patch only the three source-artifact constants within the test. Keep the production source-hash checks intact. Alternatively maintain a separate, provenance-verified archived-fixture suite. Do not fabricate real commissioning records, restore active private configs, or omit guards merely to make the test green. The other forty parent-reported errors remain a separate archive-fixture limitation unless individually reproduced.
+
+2. piperx_cloth_demo: interpreter and dependency requirements differ
+
+robot_tools/arms.py, service.py and server.py use Path.is_relative_to(), unavailable in Python 3.8. Running this source under the default Python 3.8 therefore cannot validate those paths. An existing interpreter, /home/agilex/miniconda3/envs/lingbot/bin/python3.10, reports Python 3.10.20 and supports this method.
+
+That environment does not contain the can module. python-can is genuinely required even by the offline vendor-parser tests: test_arms imports can.Message, and pyAgxArm protocol modules import can. The bundled vendor/pyAgxArm/pyproject.toml declares python-can>=3.3.4 and typing-extensions>=3.7.4.3. Merely copying pyAgxArm source or choosing Python 3.10 does not satisfy this dependency.
+
+A complete discover run under the existing Python 3.10 environment, with unmocked sockets prohibited in the runner, produced:
+
+  tests run: 446
+  errors: 326 — every error ended “ModuleNotFoundError: No module named 'can'”
+  failures: 1 — test_tools_have_explicit_strict_schemas, 25 != 23
+  skipped: 0
+  elapsed: 1.116 seconds
+
+No missing dependency was installed for this audit. These results cannot be presented as 446 passing tests. A future portable environment should declare Python >=3.9 (prefer the tested project interpreter version), install reviewed dependencies in an isolated environment, and explicitly bind the bundled SDK path in the test fixture. Existing tests/configs still contain /home/agilex/pyAgxArm, which is another portability dependency; blindly appending a Python 3.8 site-packages directory to Python 3.10 is not a reproducible solution.
+
+3. Tool-schema count assertion is stale relative to the copied catalog
+
+tests/test_preview_service.py expects len(TOOL_SCHEMAS) == 23. The current service.py list contains 25 entries, including robot_single_arm_move_once and robot_single_arm_gripper_once at the beginning. The failure occurs before the test's per-schema strictness assertions. It is a catalog/test expectation mismatch, not a reason to delete working safety contracts or suppress the test.
+
+Portable follow-up: review and freeze the intended tool-name set, then update the test expectation in a separately tracked change while retaining each schema's additionalProperties=false and description assertions. A name-set check is more informative than only changing a cardinality literal. This audit made no such change and does not retroactively mark the baseline suite passed.
+
+Conclusion for current integration
+The new generic fast tests have their own passing offline result. The full historical suites still depend on absent run artifacts, interpreter/dependency setup, an absolute SDK path and one stale tool-catalog assertion. Report these limitations separately. Historical baselines and all guards remain preserved; no offline passing result grants real-robot execution eligibility.

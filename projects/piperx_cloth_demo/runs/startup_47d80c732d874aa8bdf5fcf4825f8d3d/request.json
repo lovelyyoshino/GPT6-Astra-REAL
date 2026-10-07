@@ -1,0 +1,21 @@
+{
+  "startup_id": "startup_47d80c732d874aa8bdf5fcf4825f8d3d",
+  "started_unix_s": 1791341247.844586,
+  "arms": {
+    "left": {
+      "model": "piper",
+      "firmware": "default",
+      "channel": "can0",
+      "usb_interface": "1-6.2:1.0"
+    },
+    "right": {
+      "model": "piper",
+      "firmware": "default",
+      "channel": "can1",
+      "usb_interface": "1-6.3:1.0"
+    }
+  },
+  "speed_percent": 1,
+  "scope": "standby CAN takeover and arm enable only; no target dispatch",
+  "risk": "Mode/enable can activate motion; no verified holding stop. No automatic retry."
+}

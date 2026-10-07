@@ -1,0 +1,63 @@
+{
+  "schema_version": "astra_recipe_v1",
+  "task_id": "charger_in_unpowered_socket",
+  "initial_condition": "Charger on visible support; specified socket is confirmed disconnected from mains.",
+  "goal": "Mechanically insert the charger plug into the specified disconnected socket; release and verify seating.",
+  "constraints": [
+    "RGB-only object judgment; no calibration, simulator object state or historical motion targets.",
+    "One bounded action proposal per observation cycle; preserve execution limits and uncertainty latches.",
+    "Model visual claims and independently reviewed outcomes must be reported separately.",
+    "Power disconnected and mechanical compatibility confirmed; no energizing commands.",
+    "Grasp success does not establish plug alignment or insertion; stop bounded recovery if actual pin alignment remains unknown."
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "operation": "inspect",
+      "goal": "Identify the specified objects, initial state and available RGB views; freeze the task variant."
+    },
+    {
+      "id": "charger_approach",
+      "operation": "approach",
+      "goal": "Approach the charger body with pins clear along a visually clear route."
+    },
+    {
+      "id": "charger_align",
+      "operation": "align",
+      "goal": "Align the open fingers with a feasible grasp on the charger body with pins clear."
+    },
+    {
+      "id": "charger_grasp",
+      "operation": "grip_test",
+      "goal": "Grasp the charger body with pins clear and verify retention after separation from its support."
+    },
+    {
+      "id": "transport",
+      "operation": "transport",
+      "goal": "Carry the charger toward the specified unpowered socket."
+    },
+    {
+      "id": "align_pins",
+      "operation": "align",
+      "goal": "Align the actual pins and socket openings; tool orientation alone does not prove alignment."
+    },
+    {
+      "id": "insert",
+      "operation": "insert_segment",
+      "goal": "Observe actual insertion progress in bounded contact segments without force escalation."
+    },
+    {
+      "id": "release",
+      "operation": "release_retreat",
+      "goal": "Release the mechanically supported charger and withdraw."
+    },
+    {
+      "id": "verify",
+      "operation": "stable_verify",
+      "goal": "Verify actual seating and independent retention in the specified socket.",
+      "evidence": [
+        "charger_mechanically_seated"
+      ]
+    }
+  ]
+}

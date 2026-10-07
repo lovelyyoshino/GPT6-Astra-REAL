@@ -23,6 +23,16 @@ from .takeover import LIMITS, SIDES, _allowed_integer
 BOUNDS = {**DUAL_BOUNDS, "feedback_age_s": 0.1, "feedback_skew_s": 0.1,
           "rotation_span_rad": 0.003, "minimum_feedback_advances": 20}
 
+# Observation policy, not controller limits, calibration accuracy or IK proof.
+# Larger start offsets are confined to an action that cannot send arm targets.
+FEEDBACK_BOUNDARY_POLICY = {
+    "observation_band_rad": 0.003,
+    "static_gripper_offset_cap_rad": 0.1,
+    "static_exception_directions": {"joint2": "below_minimum", "joint3": "above_maximum"},
+    "source": "User-requested bounded feedback admission; software policy, not physical qualification",
+    "reference_scope": "Frozen first healthy observation of this single action; not a cross-session allowance",
+}
+
 
 class _SingleSupervisedAction(_SupervisedAction):
     SCOPE = "One selected-arm supervised target; other arm observed with all TX forbidden"
@@ -34,6 +44,7 @@ class _SingleSupervisedAction(_SupervisedAction):
         self.passive_arm = "left" if arm == "right" else "right"
         self.enable_states, self.control_modes = {}, {}
         self.baseline_window, self.dispatch_anchor = None, None
+        self.boundary_reference = None
         self.frame_limit = 4 if kind == "move" else 1
         for drift in self.max_drift.values():
             drift["rotation_distance_rad"] = 0.0
@@ -43,6 +54,12 @@ class _SingleSupervisedAction(_SupervisedAction):
             passive_arm_commands_sent=0, task_motion_ready=False,
             joint_limits_changed=False, full_backend_hold_gate_unchanged=True,
             observed_joint_limit_violations={}, selected_arm_strictly_within_limits=None,
+            selected_arm_within_feedback_tolerance=None,
+            static_boundary_exception_accepted=False,
+            static_boundary_exception_ever_used=False,
+            static_boundary_exception_joint_indices=[],
+            feedback_boundary_policy=copy.deepcopy(FEEDBACK_BOUNDARY_POLICY),
+            boundary_recovery_required=False, boundary_recovery=None,
             passive_arm_motion_qualified=False,
             rotation_distance_basis="SO(3), manufacturer Rz(yaw) Ry(pitch) Rx(roll)",
             mode_frame_can_activate_cached_target=kind == "move",
@@ -50,6 +67,73 @@ class _SingleSupervisedAction(_SupervisedAction):
             failure_policy="No retry, stop, reset, disable, target replacement or passive-arm command",
             ok_semantics="One dispatch and bounded stable observation completed; arrival, target error and grasp are separate",
             controller_at_target_scope="Selected arm motion_status only; not Cartesian accuracy, jaw arrival, contact or grasp")
+
+    def check_selected_joint_bounds(self, state, violations):
+        """Keep nominal truth separate from a bounded observation exception.
+
+        No samples or manufacturer limits are adjusted. A jaw action may retain
+        an existing J2/J3 start offset, but cannot acquire a larger exception as
+        later samples arrive. The ordinary stationary envelope still applies.
+        """
+        band = FEEDBACK_BOUNDARY_POLICY["observation_band_rad"]
+        cap = FEEDBACK_BOUNDARY_POLICY["static_gripper_offset_cap_rad"]
+        if self.boundary_reference is None:
+            self.boundary_reference = list(state["joints_rad"])
+            self.report["boundary_reference_joints_rad"] = self.boundary_reference[:]
+        excess = [max(v["minimum_rad"] - v["observed_rad"],
+                      v["observed_rad"] - v["maximum_rad"], 0.0) for v in violations]
+        within_band = all(value <= band for value in excess)
+        accepted, static_indices = [], []
+        for v, amount in zip(violations, excess):
+            index = v["joint_index"]
+            direction_ok = ((index == 2 and v["observed_rad"] < v["minimum_rad"])
+                            or (index == 3 and v["observed_rad"] > v["maximum_rad"]))
+            origin = self.boundary_reference[index - 1]
+            initial_excess = max(v["minimum_rad"] - origin, origin - v["maximum_rad"], 0.0)
+            static_ok = (self.kind == "gripper" and direction_ok and amount <= cap
+                         and initial_excess > 0 and amount <= initial_excess + band)
+            accepted.append(amount <= band or static_ok)
+            if amount > band and static_ok:
+                static_indices.append(index)
+        self.report.update(selected_arm_strictly_within_limits=not violations,
+                           selected_arm_within_feedback_tolerance=within_band,
+                           static_boundary_exception_accepted=bool(static_indices) and all(accepted))
+        if all(accepted):
+            if static_indices:
+                self.report["static_boundary_exception_ever_used"] = True
+                self.report["static_boundary_exception_joint_indices"] = sorted(set(
+                    self.report["static_boundary_exception_joint_indices"] + static_indices))
+            return
+        # This is a diagnostic candidate, never an automatic recovery target.
+        # In-flight uncertainty must not produce an executable-looking retry.
+        if not self.dispatched:
+            from .joint_recovery import RECOVERY
+            q = state["joints_rad"]
+            nearest = [min(high, max(low, value)) for i, value in enumerate(q, 1)
+                       for low, high in [self.joint_limits[self.arm]["joint%d" % i]]]
+            step_ok = all(abs(a - b) <= RECOVERY["joint_excursion_rad"] for a, b in zip(q, nearest))
+            from .startup_recovery import STARTUP_RECOVERY
+            startup_candidate = all(
+                ((v["joint_index"] == 2 and v["observed_rad"] < v["minimum_rad"])
+                 or (v["joint_index"] == 3 and v["observed_rad"] > v["maximum_rad"]))
+                and amount <= STARTUP_RECOVERY["joint_excursion_rad"]
+                for v, amount in zip(violations, excess))
+            self.report.update(boundary_recovery_required=True, boundary_recovery={
+                "nearest_legal_joints_rad": nearest,
+                "candidate_only": True, "automatic_dispatch": False,
+                "existing_recovery_step_limit_rad": RECOVERY["joint_excursion_rad"],
+                "within_existing_recovery_step_limit": step_ok,
+                "existing_recovery_ready": False,
+                "startup_recovery_profile": "startup_j2_j3" if startup_candidate else None,
+                "within_startup_recovery_angle_contract": startup_candidate,
+                "startup_recovery_ready": False,
+                "startup_recovery_requires": ["current empty/no-contact arms", "fresh stable enabled joints",
+                    "caller attachment bound and whole-arm relative clearance", "encoded target and FK contract",
+                    "operator attendance for non-atomic cached/partial target risk"],
+                "remaining_checks": (["initial offset exceeds existing recovery step limit"] if not step_ok else [])
+                                    + ["fresh feedback and encoded target", "whole-arm clearance", "FK displacement and remaining recovery contract"],
+            })
+        raise RuntimeError("Selected joint feedback exceeds action-specific boundary allowance: " + repr(violations))
 
     def connect(self):
         _LinearHold.connect(self)
@@ -131,9 +215,7 @@ class _SingleSupervisedAction(_SupervisedAction):
             violations = _HomeArm.outside(self, side, state["joints_rad"])
             self.report["observed_joint_limit_violations"][side] = violations
             if selected:
-                self.report["selected_arm_strictly_within_limits"] = not violations
-                if violations:
-                    raise RuntimeError("Selected arm outside strict manufacturer joint limits: " + repr(violations))
+                self.check_selected_joint_bounds(state, violations)
             _pose_frames(state["pose_m_rad"])
             if not 0 <= state["gripper"]["width_m"] <= 0.070:
                 raise RuntimeError(side + " jaw width outside 0..70 mm feedback range")

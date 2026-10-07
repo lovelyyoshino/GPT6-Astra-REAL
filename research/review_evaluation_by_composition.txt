@@ -1,0 +1,33 @@
+独立交叉审查：通用证据评估与任务预算
+日期：2026-10-07T01:43:29.140469+00:00
+范围：只读代码/测试及纯函数反例；未改被审模块，未调用模型、ROS、相机、模拟器或机器人。
+
+结论：本次离线合同用途下未见剩余实质阻塞；发现的一处终态时序问题已由负责代理修复，并独立复核了反例修复结果。此结论不授予真机执行资格。
+
+已修问题
+fast_task_evaluation._evaluate_channel 原先会在稳定末图 at=10 之后再发生 completed 动作 at=11 或人工重摆物 at=11 时仍返回 task_success=true。纯函数复现两种情况均成立。
+修复将 terminal 的时间下界额外绑定至最后 completed robot_receipt 或任意 scope 的 human_intervention。独立复核：两种情况下无新图均返回 null；补充 at=12、15 的完整稳定事实后才 true。已有 grasp/lift 非终态里程碑仍按历史动作语义保留。对应新回归测试已读；负责代理报告 eval 23 项通过，我未重复全套。
+
+已核正确边界
+- 同 run/观察 ID、有限时间戳、严格依赖次序、动作回执 completed 与视觉事实分开。
+- 相同来源重复 observation ID 拒绝；终态要求独立样本和时间跨度。迟来的反驳/未知重置终态稳定窗口。
+- model_visual_report、independent_rgb_review、simulator_oracle 独立求值，不拼凑渠道来凑成功。
+- 历史/模拟图不能建立 physical task_success；uncertain/fault 回执阻断物理成功。
+- 输出不启动动作、不推进阶段；没有把 oracle 指标接入模型 RGB 输入。视觉事实仅接受 bool/null，不以机器人到位替代物体事实。
+- observer_no_progress 与 worker no_progress 分离；观察结束不清 worker 债务。SQLite 重放同事件，重开不会靠 observer 分支刷新工作进度预算；对应跨 observer/reopen 测试已读。
+
+必须保留的限制（当前模块文档已有说明）
+该评估器验证的是声明结构与时序，不读图核真、不验证 reviewer 身份或图像帧内容。任意调用者伪造 independent_rgb_review/physical_rgb 标签仍能造出一致的声明；CLI 不得将这种结果描述成自动完成了独立实证核验。宿主须绑定真正证据、捕获时间、冻结任务目标，且绝不能将该 report 当运动许可。
+不同 observation ID 不等于不同物理帧；同一 task_id 不认证 claim 合同。若将来接入自动真实结果汇总，需由受信宿主提供冻结合同与证据索引；当前纯离线模块明确保留此边界即可。
+预算检查仍依赖 host-validated receipts。有限单元测试能检查账本逻辑，不能证明 host 事件内容真实或物理安全。
+
+附带记忆接入审查
+fast_experience 仅注入带固定 deck/evidence hash 的短历史建议，当前两个模型 builder 显式 pen 范围；不将任意历史文本、目标坐标、权限或 oracle 数据变成动作。负责代理后续扩卡及路径防护由其专项覆盖。本方案是静态审阅提示，不等于完整 RoboICL 实时交互记忆或在线学习实现。
+
+本次读取版本 SHA256（其他代理后续合法修改需另复核）：
+aeed5a32d2dc7950eaaea29e1b3c0565cee9ce8118af2d739a5bd240432f0dd9  projects/piper_right_pick_demo/src/right_pick/fast_task_evaluation.py
+42b2d6d0ff9ea6e1851cbb21101261af8a40fdc209766acf3c138e94b7c1f36d  projects/piper_right_pick_demo/src/right_pick/fast_task_pipeline.py
+3115f918274cd22baa142030b45bb4f4e43c707ed7e3d7a2d82d48ffa0524346  projects/piper_right_pick_demo/src/right_pick/fast_task_session.py
+70c7cadbdb318e576381bb6f8cc279641d9f08f8eb412b038f212141c25c2aa6  projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py
+dcda43e8e3492640e8620cf19ae7ebc0d8ab1d4c78d4cd61938d3cc4593215af  projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py
+df47077b634c4c6e290b05cf90650bd574d4975e90fd944695ccf183a304a948  projects/piper_right_pick_demo/tests/test_fast_task_session.py

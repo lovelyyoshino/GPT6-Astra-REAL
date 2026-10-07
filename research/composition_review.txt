@@ -1,0 +1,33 @@
+组合架构研究核查（仅新仓库、离线研究）
+核查时间：2026-10-07T01:40:10.384137+00:00
+
+1. 原始资料与可访问性
+RoboICL 的真实标题为“RoboICL: Embodied In-Context Learning with GPT-6 Astra”，对应 arXiv:2609.34261。它用冻结视觉语言模型、示范与有限实时交互记忆；观察、动作、回执有分明时序。可以借鉴有界经验上下文，不能把历史动作或进度分数当作 Piper 执行资格。
+https://github.com/Mosi-AI/RoboICL
+https://arxiv.org/abs/2609.34261
+检查时 HEAD：a7d652a9f8d4363aa90c0bda00004686af0589d8（2026-10-06T16:51:32Z）。已核 pinned raw source，哈希见 JSON。
+
+Code as Policies 的完整标题是“Code as Policies: Language Model Programs for Embodied Control”。方法将语言组合为调用感知/控制 API 的程序，并递归生成辅助函数。当前工程适合借鉴 API 组合思想，但采用受限 JSON 配方，不直接执行模型生成 Python；这是本地适配建议，不是论文的安全保证。
+https://code-as-policies.github.io/
+https://arxiv.org/abs/2209.07753
+真实代码目录：https://github.com/google-research/google-research/tree/master/code_as_policies
+该目录最近提交 8c116f61a61b4339cbbae92be89ff83d9897d4b5（2024-02-16T21:34:13Z），不是整个 google-research 的 HEAD。目录浏览工具受限，但官方 API/pinned README 可读；不存在的独立仓库名不能据此替代。
+
+第三篇可完整访问，真实标题“Systematically Exploring the Capabilities of GPT-6 Astra as Embodied Policies”，Galbot Team，2609.38537v1（2026-09-29），并非 RoboICL。它强调诊断、修正建议与实际修正效果要分别验证，控制接口/时间预算影响结果，单例改善不能证明可重复迁移。
+https://arxiv.org/html/2609.38537v1
+其链接代码：https://github.com/anonymous-report-421/GPT-as-Policy
+检查时 HEAD 8f3d362b077d8efb77e2a7274d5b2c20e2243846（2026-09-16T01:42:39Z），为无历史的公开发布子集；不应声称公开了所有原运行日志或全部六域资产。
+
+2. 本地结构与最小落点（以下是工程建议）
+现有 fast_pipeline.AtomicSkill、fast_task_pipeline.Composition/TaskRecipe、TaskSessionStore 已提供正确分层。无需新任务专用执行脚本：增加严格 JSON recipe loader，复用 L2 注册表、固定角色、明确初态/目标/证据/预算；冻结规范化合同并沿同一 run_id 追加事件。禁止任意 import/code、未知 skill 和无界循环。
+
+经验检索应短、小、带来源：匹配 task/operation/已明确的前次结果，给条件、建议、失败触发、证据摘要。历史信息是不可信参考，不能替代当前图像、控制回执或执行授权；不注入旧目标坐标。模型只提案，宿主验证后至多派发一次。
+
+通用评估必须区分宿主回执、模型视觉判断、独立结果核验。旧阶段/旧图、夹持稳定、相机视野改善、执行进程 exit 0 都不能独自证明任务完成。成功、人工介入、初态是否预抓取、释放后稳定、返回初态、耗时、调用数和费用应分别记录；未测项记未知。
+
+observer 行为不得重置 worker 的无进展预算；重启也不能清预算。数据库保证事件顺序和去重，不认证证据来源，来源边界仍需明确验证。第三方经验与模拟特权状态不能进入 RGB controller 冒充当前观察。
+
+3. 实施与验证边界
+建议只扩共享配方、证据评估与短经验接口。所有新增复杂任务合同继续标 offline_contract_only / execution_available=false；本次研究不产生任何机械臂资格。不从论文复制硬件参数、重试策略或既往动作序列。
+优先回归：配方非法字段；重启后的合同与预算；跨阶段旧证据；observer 无进展；记忆无法授予控制权限；历史失败保留。
+当前未测：新增任务真机迁移/重复率、停止资格、实际 token 费用。完整来源元数据、固定提交及本地行号见 composition_review.json。

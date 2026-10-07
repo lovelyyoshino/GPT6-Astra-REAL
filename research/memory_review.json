@@ -1,0 +1,118 @@
+{
+  "reviewed_on": "2026-10-07",
+  "scope": "historical_experience_and_bounded_harness_improvement",
+  "hardware_access": false,
+  "sources": [
+    {
+      "id": "zetta",
+      "url": "https://github.com/air-embodied-brain/Zetta-Embodiment",
+      "repository_commit": "21d7a3afd6ca5a34de9d0350f0158252c5c55467",
+      "commit_timestamp": "2026-10-04T11:26:34Z",
+      "paper_url": "https://arxiv.org/abs/2608.16590v1",
+      "title": "Zetta ζ: An Efficient Closed-Loop Embodied Harness for Self-Evolving Physical Intelligence",
+      "authors": [
+        "Xin Ding",
+        "Liang Mi",
+        "Mingzhe Huang",
+        "Zixuan Wang",
+        "Chao Zhang",
+        "Zixu Hao",
+        "Fu Chen",
+        "Xiangyu Li",
+        "Yikai Zheng",
+        "Yaoyu Guo",
+        "Weijun Wang",
+        "Kun Li",
+        "Hao Wu",
+        "Yunxin Liu",
+        "Ting Cao"
+      ],
+      "access": "official_repository_and_arxiv_verified"
+    },
+    {
+      "id": "self_harness",
+      "requested_url": "https://arxiv.org/abs/2606.09498",
+      "versioned_url": "https://arxiv.org/abs/2606.09498v3",
+      "version_date": "2026-08-20",
+      "title": "Self-Harness: Harnesses That Improve Themselves",
+      "authors": [
+        "Hangfan Zhang",
+        "Shao Zhang",
+        "Kangcong Li",
+        "Chen Zhang",
+        "Yang Chen",
+        "Yiqun Zhang",
+        "Lei Bai",
+        "Shuyue Hu"
+      ],
+      "access": "official_abstract_and_full_html_verified",
+      "limitation": "Software-agent benchmarks, not a physical robotics validation."
+    },
+    {
+      "id": "physical_rsi",
+      "url": "https://mmlab.hk/research/PhysicalRSI",
+      "title": "Physical RSI 1.0: Recursive Self-Harness for Scaling Embodied Skills",
+      "page_snapshot_date": "2026-09-28",
+      "access": "official_page_text_in_web_search; direct_open_failed; independent_http_403",
+      "named_authors": null,
+      "paper_version": null,
+      "repository_commit": null,
+      "limitation": "Project-page claims only; no code revision or authors independently established. Pixel-to-world and saved-pose examples are excluded from this implementation."
+    }
+  ],
+  "design_constraints": {
+    "rgb_only": true,
+    "calibration_free": true,
+    "historical_pose_replay": false,
+    "changes_to_safety_limits": false,
+    "runtime_self_modification": false,
+    "model_calls_for_lookup": 0,
+    "max_retrieved_cards": 2,
+    "historical_advice_is_current_evidence": false
+  },
+  "performance_improvement_measured": false,
+  "implementation_status": "implemented_with_offline_contract_tests",
+  "implementation": {
+    "module": "projects/piper_right_pick_demo/src/right_pick/fast_experience.py",
+    "deck": "projects/piper_right_pick_demo/src/right_pick/reviewed_experiences.json",
+    "card_count": 8,
+    "integration": [
+      "fast_model.build_fast_payload",
+      "fast_codex.build_codex_packet"
+    ],
+    "current_model_runner_task": "pen",
+    "generic_offline_aliases": true,
+    "executable_hardware_support_added": false,
+    "runtime_self_improvement_added": false,
+    "tests": {
+      "focused_passed": 13,
+      "full_fast_first_run_passed": 284,
+      "final_full_fast_pending": false,
+      "final_full_fast_passed": 306,
+      "final_full_fast_seconds": 2.353,
+      "compileall_passed": true
+    },
+    "max_mean_lookup_s": 0.0014230961271096021,
+    "max_extra_bytes_in_phase_sweep": 1195,
+    "card_sources": [
+      "original pen reports",
+      "timeout incident report",
+      "copied can task_completion report",
+      "copied charger final_outcome report"
+    ],
+    "uncorroborated_can_historical_pose_strategy_claim_included": false
+  },
+  "cross_reviews": [
+    {
+      "reviewer": "inspect_control",
+      "result": "no control bypass or arbitrary history import observed"
+    },
+    {
+      "reviewer": "research_task_eval",
+      "findings_fixed": [
+        "evidence root symlink escape",
+        "placement advice too broad for non-placement tasks"
+      ]
+    }
+  ]
+}

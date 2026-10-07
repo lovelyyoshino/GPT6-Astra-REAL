@@ -1,42 +1,89 @@
-# Piper 项目执行规则
+# GPT6-Astra-REAL 工作规则
 
-## 已确认的使用方式
+## 项目位置与目标
 
-- 用户通过 Codex 进入本项目并完成控制；模型决策使用现有 Codex 登录和 `codex-cli`，默认 `--model codex`、`protocol=codex_cli`，不要求配置 API key。
-- 本轮任务是本地优化、技能整理和离线验证，写入范围只限此交接包。实机操作必须对应用户实际要求执行的任务及当前现场准入。
-- 已有明确目标及有效授权时直接推进；只询问传感器无法获得且影响目标或执行的必要信息。优化本身不反复确认、不循环 prepare。
+- 后续统一在 `/home/agilex/GPT6-Astra-REAL` 开发。原 `/home/agilex/piper_right_pick_demo`、`/home/agilex/piperx_cloth_demo` 和原始录像/实验目录保留，作为来源与基线。
+- 优先扩展共用任务 recipe、操作契约、持久账本、经验与评估，支持复杂任务复用。不要每新增一个物体就另造一条未经整合的硬件脚本。
+- 代码整合、研究和离线验证不得顺带开启机械臂、相机、ROS 或付费模型调用。用户明确要求操作实物或在线控制 Piper 时，按下述核心规则直接复用现成能力；实机发送仍须对应实际任务及当前现场资格。
+- 已有明确目标及有效授权时直接推进。只询问传感器无法获得且影响目标/执行的必要信息，不反复询问已确认条件，不循环 prepare。
+- 模型路径沿用现有 Codex 登录和 `codex_cli` 配置，不要求用户另配 API key；实际模型、CLI 版本和适配限制以当前代码为准。
 
-## 按层调用
+## 在线控制使用核心
 
-```text
-L3 task pipeline -> L2 当前有界操作 -> L1 原子契约 -> L0 Piper 适配器
-                         ^ 新观测 + 执行回执 + 阶段证据 |
+- **本项目采用图像准入与逐步监督控制。** 当前 RGB 用于判断本段方向、整臂及附件通道、物体与支撑关系；结合当前本体反馈提出一个有限目标，发送后用新反馈和新图决定下一步。没有精确物体坐标、完整场景米制模型或预先实测成功的运动轨迹，不单独构成拒绝首次尝试的理由。参考 `../GPT6-ARX5` 的 `image_grasp` 工作方式，保留 PiPER 自身的关节、速度、单步位移、新鲜度和异常限制，不移用 ARX5 的坐标或命令。图像监督与米制路径认证分别记录；明确的视觉监督入口不伪造数值来源，也不能让模型越过执行器故障。当前发送缓存/分帧状态的核对属于设备协议要求，不等于要求动作事先成功。此方式是项目长期实现约定，适用于后续任务；具体现场条件、接触结果及执行授权仍按当前任务记录。
+- **按图像和操作阶段调整步长。** 用户期望远处可走几厘米，临近夹点、插孔或障碍物时缩到约 1 厘米或更小，接触和插入继续微调；这些是动作尺度示例，不是从 RGB 测出的物体距离，也不是每步必须达到的长度。通道明确时选当前执行器允许的较大接近步长；双爪空载且远离物体时显式选择现有 `coarse_approach` 档，并记录当前远距图像依据，临近物体后改回原小步档。当前姿态或方向不足期望幅度时说明实测结果，不把小步结果写成厘米级。每段后看新图与反馈再决定下一步，不预先排队整条路径、不将全程固定为最小步，也不把“大步长”改成提高速度或取消上限。运动中的有界短暂跟踪偏差与最终到位误差分别处理；在支持暂态收敛的分支内，幅度和累计时间均合格的短暂偏差只记录并继续观察，不立即判失败或补发。仍需最终稳定到位，不把持续偏离或硬边界越界归为细微误差。当前数值及阶段区分见 [图像监督步长选择](.agents/skills/piper-task-pipeline/references/online-readiness.md#图像监督步长选择)。
+- **现成能力直接复用，不重复验证。** Piper CAN 读反馈、RealSense RGB 取图、已有宿主支持的动作直接调用对应入口；不把全量源码审查、环境重验、资格重建或反复 prepare 当作每次任务的前置。已有有效会话中的设备绑定、入口适用范围和用户确认沿用；每步正常读取新图与反馈不属于重新验证能力。
+- **逐段说明幅度并基于证据改进。** 派发前简述本段臂、方向及计划幅度，回执后报告实测关节角／夹爪开口变化、机器人法兰反馈位移和新图中的物体进展，三者分别记录，未知不补造。比较计划与结果，用下一张新图修正下一段；可将带事件与图像来源的短经验固化进技能，不复制旧坐标、现场许可或安全例外。执行中不改控制代码或阈值，也不为解释占用当前图像执行余量。详见[逐段动作报告](.agents/skills/piper-task-pipeline/references/online-readiness.md#逐段动作报告与经验更新)。
+- 初次接入只补当前缺少的必要状态：设备绑定、控制模式、唯一宿主和任务范围。仅在设备/连接/代码/控制宿主/现场条件变化，或出现具体异常时，针对变化项做有限诊断，不重跑全部检查。历史 `can0/can1/can2`、PID 和旧快照不能代替当前有效会话，禁止为探测而新开第二个控制宿主。
+- 用户要求任务开始清除无效控制进程时，先用当前进程身份、宿主状态和独立反馈区分有效控制、持物保持、失效空闲宿主。只有当前独立证据确认所涉臂全部失能、静止、无持物/接触负载且无活动或未决发送，才通过该宿主已有的零 TX 正常 shutdown 退役已识别失效宿主，保留故障与发送记录，并确认旧 owner 已退出后接续。活动、持物或状态未知时走适用的停止/保持与交接；禁止 `killall`、仅凭 PID/存活时间杀进程、删锁抢占或清故障来恢复发送。进程退出不作为机械臂停止证据。项目内 `execution.lock` 不排斥其他项目或 ROS 控制宿主。
+- 未使能是现成准备入口的分流条件，不直接等于能力缺失。已有当前在线任务及使能授权时，按新反馈选择 `robot_startup_arm(s)`（待机 0、所选臂六关节及夹爪全失能）、`robot_request_can_control`（已使能、模式 1/2）或 `robot_prepare_gripper`（已 CAN 控制、关节使能的空爪）；符合合同就执行缺少的步骤并继续任务，已就绪不重做。部分/不确定发送不重试，准备成功不自动授予任务运动或保持资格。准确入口与宿主处理见 [在线接续分流](.agents/skills/piper-task-pipeline/references/online-readiness.md)。
+- 不能仅凭 `./astra` / recipe 的 `offline_contract_only` 或 `execution_available=false` 就断言整机不能在线控制，也不能把实机请求自动替换成离线规划或文档工作。实际调用失败时保留原始错误，据此定位设备、连接或适配问题，不把“还没有重新验证”作为失败结论。
+- 现成入口包括 `projects/piperx_cloth_demo/robot_tools/server.py` 的观测/状态工具、`projects/piper_right_pick_demo/scripts/passive_can_snapshot.py` 的零发送接收、`projects/piper_right_pick_demo/src/right_pick/camera.py` 的 `RealSenseRig(..., depth_enabled=False, rgb_only=True)`，以及已运行宿主的状态/反馈接口。SDK 的 Connect/查询可能发 CAN，不能冒充被动读取。旧 `host_probe.py` 固定探测 can1/can2，初次接入以实际接口为准。
+- ROS/Piper 和 RealSense 沿用各自现成解释器：系统 Python/ROS 与 `pi0_infer` 相机环境。一个 Python 缺少 `pyrealsense2` 时使用已有相机环境，不先重装或断言相机不可用。原项目中仍运行的宿主可以只读访问；迁移代码或改源码/hash 不会自动继承其任务资格。
+- 已有入口确实覆盖当前任务、两臂角色和现场资格时，沿用同一宿主与账本直接推进，不重复索取已确认授权。双臂协作保持一次只动一臂、另一臂具备当前独立保持回执；需要固定物体的臂属于任务臂。仅有右臂专项入口或能读两臂状态不等于双臂任务已可执行。
+- 双任务臂已有独立的 `robot_pair_*` 持久宿主，复用同一组连接、当前场景及另一臂静止回执，跨步保留漂移基线和发送账本；入口与能力范围见 [持久双臂宿主](projects/piperx_cloth_demo/docs/PAIR_HOST.md)。通用 recipe 的离线标记保留。当前适配器的静止观察不能代替接触支撑或物理停止回执。
+- 用户对本任务可行范围净空的明确确认作为当前现场依据沿用，记入会话的 `workspace_clearance_statement`，不反复索取尺寸。保留陈述原意，不凭空换算为厘米、整臂自碰撞结论或特定恢复接口要求的数值；现场变化时只核对变化项，不把本次确认写成其他任务的永久许可。
+- 对细微控制偏差按当前执行器已验证的数值容差和独立反馈判断，不要求目标与测量逐位相等，不因容差内偏差反复确认或重发。结果未知、反馈失效、持续漂移、接触异常和超限不能归为“细微误差”；不修改安全阈值来促成任务通过。
+- 已授权的抓取、固定、拔插包含必要的轻触和有限微调。按 [接触与微调](.agents/skills/piper-manipulation/references/bounded-contact.md) 直接使用现有适用入口，以低速单步接触后的新图和反馈决定下一次修正，不另问是否允许接触。执行器能力与本物体的接触结果分开：首次接触用于建立结果，不能要求结果事先成立；真实接触回执接口缺失则明确记录工程缺口，不用泛泛的“接触未验证”替代诊断，也不绕过宿主拒绝。
+- **发现异常立即停止新增运动指令。** 使用当前宿主已有且适用的停止/保持机制并读取回执；不自动重试、不清除故障、不临时猜测急停命令。未获得停止或静止证据时如实标记停止状态未知，不能用退出进程、断连或失能宣称“已立即停住”。
+- 传感器可获得的信息直接读取；只问传感器不能确定且会影响操作的条件，例如插座是否断电。同一现场已确认的条件沿用，不反复询问，也不把本轮确认存成其他任务的永久授权。确实缺少所需动作能力或当前现场必要条件时，报告具体阻碍及已有证据，一次结束，不循环 prepare。
+
+## 首选入口与分层
+
+先读 [.agents/skills/piper-task-pipeline/SKILL.md](.agents/skills/piper-task-pipeline/SKILL.md)，只读取本轮当前层需要的技能。根目录统一离线入口为 `./astra`：
+
+```bash
+./astra catalog
+./astra plan --recipe tasks/turn_faucet.json
+./astra session --store artifacts/session.sqlite init --run-id demo --recipe tasks/pen_in_holder.json
+./astra session --store artifacts/session.sqlite current --run-id demo
+./astra replay --recipe tasks/sort_two_objects.json --out artifacts/replay_sort.json
+./astra evaluate research/task_eval_placement_example.json
+./astra experiences --task pen --phase INSERT
 ```
 
-- 首先使用 [.agents/skills/piper-task-pipeline/SKILL.md](.agents/skills/piper-task-pipeline/SKILL.md)。只读取当前层需要的技能；不要把全部手册放进每次决策。
-- 25 个可单独调用的 L1 Codex 技能及其真实实现状态见 [ATOMIC_SKILLS.md](ATOMIC_SKILLS.md)；`.agents` 是隐藏目录，从本交接包根目录启动 Codex 才能发现这些项目技能。
-- 从上级目录启动的旧会话不会向下发现本包技能；需新开 `codex -C /Users/pony.ai/Documents/文档/Piper_SingleArm_Handoff`，再用 `/skills` 检查入口。仅在工具命令里切换目录不改变会话的发现范围。
-- L3 负责目标、初态、角色、阶段和总预算；L2 负责操作条件、动作范围、证据与局部预算；L1 校验和发送由宿主代码负责，不为每个原子步骤再发起模型会话。
-- 常规周期至多一次模型提案和一次物理发送；执行回执不确定则锁存，禁止自动重发。
-- 零状态变化的观察不算进展。达到已有观察、阶段、调用或时间预算就返回具体阻碍和退出原因；renew、恢复和会话重启不能清零任务总预算。
-- 跨命令维护通用离线任务时使用 `right_pick.fast_task_session` 的同一 store/run-id；先读 current，再以 revision 和唯一 event-id 记录回执。重复 init 返回已有进度，不能靠更换 ID 自动开启新一轮。
-- Codex 外层读取技能与调用工具；`fast_codex.py` 内层只做隔离的单步 JSON 决策，不读取这些手册或调用控制工具。不要同时开两个控制宿主。
+```text
+L3 冻结任务 recipe -> L2 当前有界操作 -> L1 原子契约 -> L0 设备适配
+                           ^ 新观察、执行回执、阶段证据 |
+```
 
-## 实现边界
+- L3 维护目标、初态、角色、有限阶段与总预算；L2 维护本阶段前提、原子、证据及局部预算；L1 的校验、发送和回执由宿主负责。层次不意味着每层增加一次模型调用。
+- recipe 阶段可声明 goal、附加 evidence、max_cycles 和 arm；前提继承操作注册表，不能改写。全局预算由 session 冻结，recipe 没有全局 budget 字段。
+- `./astra references` 查询参考思想的代码落点和未完成项。`recovery-plan` 是不修改阶段/预算的诊断合同；`recording-plan` 和 `recording-audit` 是录像要求/元数据审核，不启动相机。不能把这些入口的建议或合成测试写成已执行恢复、连续录像或物理成功。
+- 常规周期至多一次模型提案、一次物理派发。结果不确定时锁存，禁止自动重发或用 provider 重试逻辑代替执行回执。
+- 用同一 `store/run-id` 继续任务；先读 current，再以当前 revision、唯一 event-id 提交回执。重复 init 返回旧进度；新进程、renew、观察分支和恢复不能清零总预算。
+- 零变化观察不算任务进展；观察臂改善视野不清零工臂无进展。达到阶段、观察、调用或时间预算时报告具体阻碍和退出原因。
+- 25 个原子技能见 [ATOMIC_SKILLS.md](ATOMIC_SKILLS.md)。从本目录启动 Codex，按需要查找 `$piper-task-pipeline` 或 `$piper-atom-*`，不要每轮加载全部手册：`codex -C /home/agilex/GPT6-Astra-REAL`。
+- 外层 Codex 读技能和调用工具；`fast_codex.py` 内层只做隔离的单步 JSON 决策。不要同时运行两个控制宿主。
 
-- 当前可执行源码仅为单右臂 `pen` fast runner；现场准入已撤回。本机有 Codex 不代表 ROS、相机、保持或路径已具备实机资格。
-- ARX5 的 18 个任务、双臂和主臂执行/辅臂观察目前是离线可调用契约，尚无通用实机执行器。不能静默降级成单右臂夹笔或因配置存在就声称支持。
-- 双臂一次只动一侧，另一侧需要当前独立保持回执；观察臂只改善视角，不能抓取、固定或支撑任务物体。
-- close/disconnect、客户端退出和失能都不能当作已验证的停止。保留被动臂 TX-block 与故障锁存。
-- 抓取、释放后独立稳定、受控回位分别记结果。历史坐标、源快照和 ARX5 成功记录不能成为本轮动作或资格。
+## 输入、经验与评估
 
-## 本地验证
+- RGB-only / calibration-free：当前必要 RGB、本体状态、夹爪、上次动作/结果、重试与短记忆。机器人 FK 可用于机器人运动约束；不得以标定、深度、传统视觉定位或模拟物体真值替代模型视觉判断。
+- 历史经验只作带来源的短建议。禁止带入旧目标坐标、现场授权、当前接触/净空结论或安全例外。卡库与证据哈希保持可核查；不在线自修改可执行控制代码。
+- `evaluate` 审核声明证据结构和时序，不认证图片真伪、真实不同帧或审核员身份。claims 来自冻结任务标准；不得临时放宽标准制造成功。
+- 模型视觉报告、独立 RGB 审核、仿真 oracle 分开。机械臂到位不等于物体进展；后续运动/人工介入后，旧终态图不再证明当前稳定。缺证据保留 null，人工参与、回位、录像与任务结果分别记录。
+- `TurnFaucet-v1` 等仿真环境的物体位置、轴、关节目标和奖励留在 grader；设置 RGB 模式本身不保证去除了特权状态。
 
-在 `projects/piper_right_pick_demo` 下运行：
+## 实现与物理边界
+
+- `./astra` 的通用 recipes、复杂组合和多臂协调保持 `offline_contract_only`、`execution_available=false`。已有 pen runner 与专项历史入口不能静默接管其他任务。
+- 本次没有重建真机资格。历史 fast 撤回记录、后续专项成功和源代码快照分别保留，不能互相替代当前资格。
+- 一次只动一臂，另一臂需要当前独立保持回执。observer 只改善视角，不抓取、固定或支撑任务物体。
+- workspace、关节、速度、单次位移、反馈与超时约束留在执行安全层；不为测速关闭或放宽。
+- close/disconnect、客户端退出、失能不能视为已验证停止。保留被动臂 TX-block、故障锁存和不确定发送记录；现场专项接续必须按原合同判断。
+- 历史 PID、owner、设备号、坐标与 ARX5 成功记录不能直接重播。环境和路径迁移需要独立复核，不能仅改字符串/hash。
+
+## 验证与证据
+
+在 `projects/piper_right_pick_demo` 运行：
 
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast*.py'
 python3 -m compileall -q src
 ```
 
-在交接包根目录运行 `python3 tools/verify_bundle.py`。修改后更新本地优化清单，保留 `metadata/source_manifest.json` 原始来源哈希。
+根目录运行 `python3 tools/verify_bundle.py`。修改后更新本地优化清单；保留 `metadata/source_manifest.json` 原来源哈希。新实验写新目录，不覆盖 baseline。大视频、完整反馈和原日志留原处，用来源索引引用。
+
+本次整合验证写入 `metadata/generalization_validation_20261007.json`；旧 `optimization_validation.json` 保留历史结果。新增离线层和旧库全量测试分开报告，旧库缺失 runs 证据、Python/API 或 schema 兼容问题不能被摘要中的“通过”掩盖。
+
+研究和实现并行后做独立交叉校对，记录发现、修复和实际测试。不要把模拟回放、软件测试或文献成功率写成真机速度/成功率提升；模型接口时间也不等于服务端纯推理时间。

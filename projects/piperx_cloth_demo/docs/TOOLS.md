@@ -1,6 +1,18 @@
-# 固定机器人工具（25 项）
+# 固定机器人工具
 
-v0.9新增 `robot_single_arm_move_once(arm,target_pose_m_rad)` 与 `robot_single_arm_gripper_once(arm,width_m,nominal_force_N)`。与原监督单次的目标/速度边界相同，区别是另一臂可维持原模式0/1/2及已知七使能位，不需为了单臂任务使能它。选中臂和夹爪仍须已使能且关节严格合法；另一臂名义越界只记录、全部发送封锁。双方新鲜健康、示教关闭、起点到位且三秒稳定；移动中只有选中臂可报告未到位。独立年龄上限100ms（包含本地校验/日志耗时），静止姿态补SO(3)检查。分别保存`runs/single_supervised_move_*`或`runs/single_supervised_gripper_*`，与旧工具及完整计划保持停止门禁分开。ok仅代表单次派发和有限稳定观察完成；必须另看原始到位、末端/开口误差和图像，不代表抓住。用户已明确要求无标定尝试，只允许有当前图像依据并标明不确定性的逐段监督尝试。
+`robot_pair_*` 工具提供独立的持续连接有界串行执行器：同一宿主持有两臂连接，每次只动一臂，另一臂持续读取反馈且禁止 TX。接口、持久账本与生命周期见 [持久双臂有界宿主](PAIR_HOST.md)。通用 `astra` recipe 仍为离线合同；接触支撑和实际停止尚未实机验证，软件测试不授予拔插资格。
+
+新增 `kind=joint` 的唯一目标字段为六轴 `target_joints_rad`，与末端位姿和夹爪开口互斥。当前接空载 approach/align，以及同宿主确认释放后、每段有新空爪 RGB 描述的 release_retreat；生产来源读取器、独立首次 MOVE_J 初始化和来源绑定的边界内移已接入，实际现场几何仍需补齐。缺来源会在派发前明确拒绝。调用者不能传入 context、几何证据或权限布尔值。显式 `robot_pair_cancel` 在完整原 MOVE_J、同工作线程/连接且反馈适用时，可领取一次独立计步的有界同模式保持；未知/部分发送、普通故障和 EOF 不走该例外，后续独立故障终止保持。实测保持、原目标取消和物理停止分开报告，MOVE_L/夹爪仍沿用软件锁存。详细范围见 [实现设计](PIPER_X_JOINT_PATH_DESIGN.md)。
+
+普通 joint 内移只接受同 owner/连接、当前完整缓存及全套有效限位对应的完成初始化来源。仅 J2 下界/J3 上界的最多 0.003 rad 观察尾差有此分流；名义限位、目标内侧 0.010 rad、单轴 0.025 rad 和整臂净空保持不变。固定 X 模型的新法兰区间界仍计入原 hold 余量，但原始双臂参考有尾差时 `hold_reference_within_nominal_limits=false`，现有 hold constructor 仍拒绝。MOVE_L 任意发送尝试使该侧旧 joint 来源失效，夹爪动作保留来源。候选/静态夹持的受支撑释放现已接通；带载动作、RGB 物体进展及目标终态仍未接通。内移离线证据见 [对应记录](../../../artifacts/plug_ingress_1791356964575384710/)。
+
+现有状态快照附带可选 `motor_feedback`：六个电机分别报告电流 A、速度 rad/s、位置 rad、SDK 估算力矩 Nm 和原始接收时间/新鲜度。只复制 RX 缓存，不查询、不增加必需反馈分片；缺失或过期时不阻断原本适用的基础动作。它不是腕部力传感器，不产生夹牢、带载支撑或插入力上限结论，故障后的只读反馈也保留这些诊断。
+
+v0.9新增 `robot_single_arm_move_once(arm,target_pose_m_rad)` 与 `robot_single_arm_gripper_once(arm,width_m,nominal_force_N)`。与原监督单次的目标/速度边界相同，区别是另一臂可维持原模式0/1/2及已知七使能位，不需为了单臂任务使能它。选中臂和夹爪仍须已使能；关节反馈按下述有界观察策略判断，名义越界如实保留。另一臂名义越界只记录、全部发送封锁。双方新鲜健康、示教关闭、起点到位且三秒稳定；移动中只有选中臂可报告未到位。独立年龄上限100ms（包含本地校验/日志耗时），静止姿态补SO(3)检查。分别保存`runs/single_supervised_move_*`或`runs/single_supervised_gripper_*`，与旧工具及完整计划保持停止门禁分开。ok仅代表单次派发和有限稳定观察完成；必须另看原始到位、末端/开口误差和图像，不代表抓住。用户已明确要求无标定尝试，只允许有当前图像依据并标明不确定性的逐段监督尝试。
+
+2026-10-07 用户要求处理严格边界误拦：仅 `robot_single_arm_*_once` 使用新增反馈策略。普通反馈允许超出名义边界至多 `0.003 rad`（约 0.172°）；这是软件观察带，不是厂家精度、物理安全或目标关节路径认证。夹爪动作不发送机械臂目标，可额外保留起始 J2 低于下限或 J3 高于上限、各不超过 `0.1 rad`（约 5.73°）的静态偏差；该上限是本轮软件维护选择，不是零点标定。首次健康反馈冻结偏差基准，后续样本不得重建或抬高该基准，并继续执行三秒稳定、原始关节/位置/SO(3)漂移守卫。此策略仅约束单次调用，没有持久化跨调用偏差基准；不能将连续调用当作偏差逐步扩大的许可。
+
+结果独立返回 `selected_arm_strictly_within_limits`、`selected_arm_within_feedback_tolerance` 和 `static_boundary_exception_accepted`，不会把容许观察写成名义合法。超出本动作策略时，零发送结果含 `boundary_recovery_required` 和最近名义边界候选；候选不能自动执行，另列现成恢复入口的 0.05 rad 单轴步长是否满足，FK/协议量化/整臂净空等仍须核对。发送后异常不生成恢复候选。MOVE_L 仍没有目标关节逆解/路径证据，几度的起始偏差不会由这个夹爪例外放行移动。控制器/SDK 限位、旧双臂监督入口、home、速度、发送白名单和故障处置保持原合同；recovery 默认合同保持，显式启动 profile 见下文。
 
 v0.8新增 `robot_home_arm(arm)`，仅接受left/right，固定六零关节目标和1%速度，不接受目标、设零或重试参数。起点限各轴绝对值[45,10,10,15,30,15]°，J2/J3可从名义边界外最多5°向既有零位返回；其它起点/目标名义范围保持。选中臂模式1、六关节使能，另一臂保留模式0/1/2及七使能位，另一臂（本次左臂）与双爪完全禁止发送。
 
@@ -17,6 +29,17 @@ v0.6 按用户“仅右臂，参考旧启动方法自行完善并重新使能”
 
 v0.7 新增独立 `robot_prepare_gripper(arm)`，用于一只空爪按实测当前开口初始化。原双爪准备的5–70mm合同保持；新入口只接受臂名，不接受目标开口，允许实测当前开口0–70mm并固定名义力0.2，不能拿它张爪、闭爪或抓物。该范围是有限准备输入范围，不是现场行程标定。选中臂须CAN模式且六关节已使能；另臂保持原模式/七使能位，只读监测并封锁全部发送。关节范围外读数保留，不授予臂运动资格。需要空爪、无接触及现场看护；当前位置目标与使能同帧，仍可能微调夹指。
 
+
+### 非零起点的显式边界恢复
+
+`robot_recover_joint_boundary` 的 `recovery_profile="startup_j2_j3"` 针对启动时 J2 低于下界或 J3 高于上界的空载情况；最大回归幅度固定 0.10 rad（约 5.73°），不是对厂家运动范围的修改。六个目标由调用者给出，越界轴须回到最近精确边界，其他轴相对起始与新反馈最多 0.003 rad；目标不随观察自动修正。普通 MOVE_L 和默认 standard 恢复限制不变。
+
+此 profile 的 `attachment_radius_m` 必须覆盖两臂从法兰到夹爪、相机、支架、线缆等最远点。`available_clearance_m` 是外界、另一臂和非相邻自身实体的当前最小表面净空，排除本就相连的铰接/刚性安装面；由调用者建立，工具不从 RGB 推定。厂家 MDH 剩余链长、60 mm 壳体余量、全部六轴目标变化与 0.003 rad 跟踪带构成 sweep；相对位移取 `2*max(sweep, passive_sweep)`，必须小于净空减 5 mm。小于 15 mm 的 FK 终点检查仍独立执行，不能代替整臂通道。
+
+两臂六关节均须已使能。两爪允许已知失能但必须空载、无接触、健康且开口稳定，使能位冻结，不发夹爪或被动臂指令。三秒基线及至少 20 次完整反馈推进、发送前 motion_status=0、包括 FK/日志处理后的 50 ms 反馈年龄均核对；固定 1% 一次四帧 MOVE_J 后观察三秒稳定。微小终态残差保留 `selected_arm_strictly_within_limits=false`，另报 `selected_arm_within_feedback_tolerance`，不据此宣称校准或任务资格。
+
+四帧不是原子提交：模式帧可能激活旧缓存，半帧可能混合旧目标，以上包络不覆盖这些未知路径。保持现场看护、部分发送记录、零重试；退出/断连不证明停止。角度适用或恢复成功不自动解锁任务，更不代表拔插已经完成。诊断候选会给出 `within_startup_recovery_angle_contract`，`startup_recovery_ready` 仍为 false，直到该操作完整合同逐项满足。
+
 ## 工具表
 
 通用工具不生成叠衣目标。写操作共享独占锁并先保存请求及发送意图，再保存反馈和结果；锁不能约束平台外控制程序。
@@ -32,7 +55,7 @@ v0.7 新增独立 `robot_prepare_gripper(arm)`，用于一只空爪按实测当�
 | `robot_inspect_joint_limits` | `{}` | 每臂每轴一次 `0x472` 查询，核对 `0x473` 角度上下限；不设置限位。速度注释与解码比例有差异，不据此许可运动 |
 | `robot_prepare_grippers` | `{}` | 确认空爪后按当前开口、名义力 0.2 各至多一次 `0x159` 位置使能。右 J4 观测容差 0.008 rad，其余轴 0.003 rad；不证明抓住或保持停止 |
 | `robot_prepare_gripper` | `arm`：left 或 right | 选中空爪按当前实测开口0–70mm至多一次`0x159`，名义力0.2、使能1、置零0；不接受目标开口或力度。选中臂六关节须已使能且CAN模式，另一臂原模式0/1/2及七使能位保持且零TX。双臂严格0.003rad关节漂移与SO(3)整体旋转差、2mm位置/开口漂移，预发送目标距新实测≤0.5mm，发送后新反馈确认使能及开口误差≤1mm。已使能只观察；无臂目标、模式、复位、失能、停止或重试。保存`runs/single_gripper_prepare_*/`，不授予抓取或保持停止资格 |
-| `robot_recover_joint_boundary` | arm、target_joints_rad | 调用者指定最近边界目标；厂家 FK 校核，一次 1% MOVE_J 四帧，需整臂路径净空和看护。不是标零，不自动重试或故障停止 |
+| `robot_recover_joint_boundary` | arm、target_joints_rad；可选 recovery_profile、attachment_radius_m、available_clearance_m | 默认 standard 最大 0.05 rad；显式 startup_j2_j3 允许 J2 下界/J3 上界最多 0.10 rad 的空载起点，需要附件与净空参数。最近边界目标、1% MOVE_J 四帧；不是标零，不自动重试或故障停止 |
 | `robot_bounded_joint_step` | arm、target_joints_rad、attachment_radius_m、available_clearance_m | 仅 J2/J3 可变，各至多 0.025 rad，编码目标至少离限位 0.010 rad；其它轴与新反馈编码相同。厂家 FK 位移至多 15 mm；MDH 固定起点扫掠加六轴 0.003 rad、附件及 60 mm 壳体余量，须小于净空减 5 mm。一次 1% MOVE_J，实际到位及稳定 3 秒才成功；不是任务轨迹或停止资格 |
 | `robot_qualify_linear_hold` | arm，可选 prior_mode_only_run_id | 固定 6 mm 上移、一次目标覆盖的局部试验；来源绑定的受限历史模式错误分支见 schema。不得据此宣称一般停止能力或解锁后端 |
 | `robot_move_once` | arm、target_pose_m_rad | 模型审查整段路径后，一次厂家 MOVE_L，固定 1%，相对新反馈平移至多 30 mm、旋转至多 0.05 rad。两臂须健康、合法、新鲜且实测静止 3 秒。分别报告稳定、原始到位状态及误差，不自动接续 |
@@ -45,9 +68,24 @@ v0.7 新增独立 `robot_prepare_gripper(arm)`，用于一只空爪按实测当�
 | `robot_check_execution` | `{}` | 不访问设备，列出部署与停止能力缺口；不授予运动权限 |
 | `robot_execution_status` | execution_id 或已知 preview_id，二选一 | 读取持久化结果或最后事件；运行/中断状态不明时不自动续跑 |
 | `robot_cancel_execution` | execution_id 或已知 preview_id，二选一 | 保存取消请求；响应不是已停证明，不使用快速急停/失能/复位兜底 |
+| `robot_pair_open` | run_id、task_id、workspace_clearance_statement；可选预算和 connection_mode | 长期 stdio 唯一宿主；默认 ready 保留已就绪条件，prepare 零 TX 连接并观察未准备状态；冻结原预算，不接受一次性 `--call` |
+| `robot_pair_prepare_gripper` | event_id、observation_id、arm、empty_jaw_observation | 当前空爪图像语义与同连接反馈下，至多一次实测开口 0x159；不接受宽度/力度参数，不自动升级任务就绪 |
+| `robot_pair_inspect_joint_limits` | event_id | 同连接逐臂逐关节至多十二个 0x472 查询；保存独立原始回复，完整成功才安装当前限位来源，无运动或配置帧 |
+| `robot_pair_initialize_joint_target` | event_id、observation_id、arm、unloaded_observation | 同连接、原预算的一次空载当前位置或最近 J2/J3 边界初始化；目标与数值来源由宿主生成，准备态可调用。完整四帧、新 J 反馈及三秒到位后才建立缓存，已有缓存零 TX 返回原记录。部分发送锁存，不重试；不直接授予带载或普通动作资格；边界尾差由普通入口另核当前初始化来源 |
+| `robot_pair_promote_ready` | `{}` | 零 TX 核对原任务条件，跨准备保留原姿态/模式基线；缺条件返回 preparation_required，不重连或自动使能 |
+| `robot_pair_observe` | rgb_observation_path | 读取现成三路 RGB 元数据与新机器人反馈，生成共同场景及另一臂独立回执；不开相机 |
+| `robot_pair_publish_geometry` | observation_id、record_set_id | 从固定本地目录导入实际安装、工作区及当前净空记录，推导保守边界并绑定原 owner/连接/场景；零 TX，不接任意数值/路径/资格布尔值，不采集测量或放行动作 |
+| `robot_pair_submit_once` | event_id、observation_id、peer_receipt_id、arm、kind、operation 及唯一目标；probe 可带 grasp_object_id；释放/撤离语义参数见下文 | 持久 claim 后异步尝试一次；`grip_supported` 夹爪至多 5 mm 闭合观测；有身份的有界开爪到位只记 release_opened，确认分离后可接空爪 joint 撤离；不授予带载拔插资格 |
+| `robot_pair_retain_grasp` | event_id、episode_id、observation_id、当前 RGB 视觉描述及物体/支撑关系 | 新三秒反馈与原目标、锚点、期限建立静态保持；另一空臂可准备或按当前确认记录撤离，机器合同不接受模型传入 |
+| `robot_pair_confirm_release` | event_id、episode_id、observation_id、visual_description、object_relation=`object_clear_of_fingers`、support_relation=`independent_support_present` | 最后开爪后的新保存 RGB 与适配器新三秒 trace，持久确认后零 TX 清理本地未决状态；不证明目标孔正确、终态稳定或停止 |
+| `robot_pair_status` | event_id 可选 | 查询宿主或动作回执；动作期间可响应，物体成功与停止分别报告 |
+| `robot_pair_cancel` | reason | 锁存整对软件故障，阻止后续目标帧；不证明物理停止 |
+| `robot_pair_close` | `{}` | 无未决动作时关闭资源；带未解除接触候选关闭会持久锁存。正常 detach 可按原 run 剩余预算接续，故障不清除 |
 
 严格输入定义在 [service.py](../robot_tools/service.py) 的 `TOOL_SCHEMAS`，MCP `tools/list` 返回同一份定义和详细工具描述。
 未声明字段、非有限数、错单位形式、重复臂、跨臂参考系错误都拒绝；没有执行字符串或任意文件路径参数。
+
+有身份的候选/静态夹持每次 `kind=gripper, operation=release_retreat` 须提供当前 RGB 的 `release_support_observation` 及 `release_support_relation="independent_support_present"`。每次增加最多 5 mm，机械到位后仍为未决 `release_opened`，可新图后继续开爪，再调用确认工具。确认后的每段 `kind=joint, operation=release_retreat` 须带 `release_retreat_observation` 描述当前空爪；新夹爪 claim 使宿主确认 token 失效。未绑定物体的旧 probe 只做机械残余清理，v1 `released` 不自动获得 v2 的分离语义。完整边界见 [受支撑释放流程](PAIR_HOST.md#受支撑释放与空爪撤离)；本轮未验证实物释放，也未开放 loaded 状态。
 
 模式接管不使用 `set_speed_percent()` 的 MOVE=255 报文，也不裸调用带默认 50% 缓存的 `set_motion_mode()`。它在 SDK 模式缓存中明确设定审查过的字段，再调用厂家 `set_motion_mode()`；此处依赖已审计 SDK 内部 `_msg_mode`，SDK 升级需要重新审查。最终总线发送字节必须匹配白名单，CAN send 成功还需新状态反馈验证。检测到漂移、故障或通信失败后，不用快速急停、失能、复位或当前目标覆盖作兜底；断开连接也不是停止证明。与轨迹执行共用独占锁，但该锁不能阻止平台外的控制程序。
 

@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "imported_at": "2026-10-07T01:39:07.215961+00:00",
+  "old_projects_modified": false,
+  "hardware_accessed": false,
+  "files": [
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/task_completion.json",
+      "local_path": "evidence/local_integration_20261007/selected/can_task_completion.json",
+      "sha256": "fb7abf6d7492a99165cc0935aebe43e85e2ef98db8b29dad4c9fa7a65a42c515",
+      "size_bytes": 4698,
+      "scope": "historical_evidence_only_not_motion_plan_or_current_admission"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/seq158_to_170_raw_review.json",
+      "local_path": "evidence/local_integration_20261007/selected/can_final_withdrawal_raw_review.json",
+      "sha256": "a924a0347f56971c102f17ed4c8e9bf66793ef2396781a3861dad11271e67a8b",
+      "size_bytes": 128562,
+      "scope": "historical_evidence_only_not_motion_plan_or_current_admission"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/recording_index.txt",
+      "local_path": "evidence/local_integration_20261007/selected/can_recording_index.txt",
+      "sha256": "d24048e2a5da7417a8cc681af8c68398c4c67db733fd7bd1279da5ba86b79498",
+      "size_bytes": 1907,
+      "scope": "historical_evidence_only_not_motion_plan_or_current_admission"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/charger_tabletop_socket_20261005_234959/task_final_outcome_437.json",
+      "local_path": "evidence/local_integration_20261007/selected/charger_final_outcome.json",
+      "sha256": "0db6c7533d680f80e155232264487657ef4a4a3178512aecede56ae626d0655d",
+      "size_bytes": 2159002,
+      "scope": "historical_evidence_only_not_motion_plan_or_current_admission"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/independent_review.json",
+      "local_path": "evidence/local_integration_20261007/selected/can_zero_tx_review.json",
+      "sha256": "1a4c7853c651eb7e3cd996fe95a9ac62b5cfe957028ddfd4366da92a9ca344b9",
+      "size_bytes": 3167,
+      "scope": "historical_evidence_only_not_motion_plan_or_current_admission"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/docs/ros_guarded_contact_retreat.txt",
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_contact_retreat.txt",
+      "sha256": "ae4fb8178ba8388a07a26c882d58b8c1588bc0da651fd3bc603c6f2e119e8ae4",
+      "size_bytes": 3022,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/docs/ros_guarded_post_contact.txt",
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_post_contact.txt",
+      "sha256": "460260e242b1496490af89944d2b84b34d861c579970b1a9ee4ba6b350296f58",
+      "size_bytes": 4413,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/docs/ros_guarded_readiness.txt",
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_readiness.txt",
+      "sha256": "b87b52afd26f0cdbd998492b61c651c26abc849cf4745e9df89e8e13d2a0d548",
+      "size_bytes": 2793,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/docs/ros_guarded_recorded_probe.txt",
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_recorded_probe.txt",
+      "sha256": "8b5e15eaa80725074f60bf268a33e2fb45d95ab539d993edee6ab93bbad1e9e3",
+      "size_bytes": 2619,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/docs/zero_tx_continuation.txt",
+      "local_path": "projects/piper_right_pick_demo/docs/zero_tx_continuation.txt",
+      "sha256": "60cc60b80304059b5663256f1189fc766990ba4baa923d9b220b9cfdb812b251",
+      "size_bytes": 3642,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_contact_retreat_client.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_contact_retreat_client.py",
+      "sha256": "ee12c9bc0db37c1c1a9e86598ca99cf30289a1172fe5ca3706e21d21923cb9c9",
+      "size_bytes": 3249,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_contact_retreat_entry.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_contact_retreat_entry.py",
+      "sha256": "cfab5fcf874a116705ccdb9d2549385ab69f6a0a6a244bfd0851f5dd68c009d7",
+      "size_bytes": 16444,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_post_contact_client.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_post_contact_client.py",
+      "sha256": "8509db871d478d3feb0d27a5ada1505c088ace66dd0e24327addcfc0f0863203",
+      "size_bytes": 5756,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_post_contact_entry.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_post_contact_entry.py",
+      "sha256": "c776fd1111fc039db8f2a31cdfb3fcd25b227ddaf83b814f9e717af86bd224cb",
+      "size_bytes": 18934,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_readiness_client.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_readiness_client.py",
+      "sha256": "e5e70c71f9b7a76b3917dd1667e58c87485c9f135fa147fa9ce28cc37a046d34",
+      "size_bytes": 5073,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_readiness_entry.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_readiness_entry.py",
+      "sha256": "0a4f3edefeb8799c816b37d6fce6d0b79ae6e4fb4c0b8b39b9ece8463e00f46d",
+      "size_bytes": 14688,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_recorded_probe_client.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_recorded_probe_client.py",
+      "sha256": "8c5777d0bb9a942c0049f89891392a400e89ae9d5f149b73f34b5244d1d99fb8",
+      "size_bytes": 2064,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_guarded_recorded_probe_entry.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_recorded_probe_entry.py",
+      "sha256": "21e773be0b837ef675a74721389da76121b85248c89cbf803e6398e0b7477f65",
+      "size_bytes": 11031,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_zero_tx_continuation_client.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_zero_tx_continuation_client.py",
+      "sha256": "1c501491bcfaa63d1c3237075856c90b9de71458e187db340921032d6555190d",
+      "size_bytes": 2719,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/ros_zero_tx_continuation_entry.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_zero_tx_continuation_entry.py",
+      "sha256": "545a527bb5ea54d0c38c1cdc34ecf068d3ca36e0ff169f83e2385f2caebd61ad",
+      "size_bytes": 14038,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/scripts/sliding_stability.py",
+      "local_path": "projects/piper_right_pick_demo/scripts/sliding_stability.py",
+      "sha256": "fa4ff24d686294bb34a387d651cd9640def0d528e5c494a369a5050d229c1f2e",
+      "size_bytes": 1800,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/tests/test_guarded_contact_retreat.py",
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_contact_retreat.py",
+      "sha256": "98dc548593c0b16b2aef0fce40b7545803bf19243666412f842d610489b32cfa",
+      "size_bytes": 8781,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/tests/test_guarded_post_contact.py",
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_post_contact.py",
+      "sha256": "337a4419ccb420d3d10a87803b62f015b50f934672b9b1274a543d91bbb10db9",
+      "size_bytes": 13948,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/tests/test_guarded_readiness_entry.py",
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_readiness_entry.py",
+      "sha256": "a63898f0286c34897e96e8ab33d646b1fb368feaea80b6d3d10e2f349a7f725b",
+      "size_bytes": 14872,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/tests/test_guarded_recorded_probe.py",
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_recorded_probe.py",
+      "sha256": "7fabeffa13da0124276838be09ca44f3c5bcb81a7566516930ff5d8865183ab4",
+      "size_bytes": 9904,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/tests/test_sliding_stability.py",
+      "local_path": "projects/piper_right_pick_demo/tests/test_sliding_stability.py",
+      "sha256": "6d095e74dfde530fd142c8b51d9143aae0f79dc637d362a3d838b9e1040218f3",
+      "size_bytes": 5903,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/tests/test_zero_tx_continuation.py",
+      "local_path": "projects/piper_right_pick_demo/tests/test_zero_tx_continuation.py",
+      "sha256": "31d57ffce6f20c3a4e58013be7966b693405bfe3ba8e523f154fd01281999f27",
+      "size_bytes": 11626,
+      "scope": "preserved_session_specific_source_not_generic_live_entry"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_127bf53dd9424f8d8370370bd07e71d3/observation.json",
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/observation.json",
+      "sha256": "78e6aa937a5c9ddda525ed4fc1f1cdc6134fe9c03f1696a0a10b15c6413b285f",
+      "size_bytes": 4156,
+      "scope": "historical_RGB_only"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_127bf53dd9424f8d8370370bd07e71d3/front.png",
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/front.png",
+      "sha256": "a84b2cfd3c96838b6d843ee5dd884acfd0efa72e8876e72e9e9b8f8e5035e9ad",
+      "size_bytes": 1213994,
+      "scope": "historical_RGB_only"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_127bf53dd9424f8d8370370bd07e71d3/left_hand.png",
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/left_hand.png",
+      "sha256": "1c7086b2d1fc2065ba5ef7db875aa6ad635379693635da84d61fe249d7c20e16",
+      "size_bytes": 1119438,
+      "scope": "historical_RGB_only"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_127bf53dd9424f8d8370370bd07e71d3/right_hand.png",
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/right_hand.png",
+      "sha256": "298a8ac7f8e1c7da250ead6094dc51bdec38a98e8c9872ea52897e6f826c31d1",
+      "size_bytes": 1149480,
+      "scope": "historical_RGB_only"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_1189eb83d66b45d4814f7101f1298607/observation.json",
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/observation.json",
+      "sha256": "2ad0af125d2d698294aee330b297de9256742b18311e305ceb657a2e75446954",
+      "size_bytes": 4154,
+      "scope": "historical_RGB_only"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_1189eb83d66b45d4814f7101f1298607/front.png",
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/front.png",
+      "sha256": "7dfad911bc13a327e154a00fd23fe2952c508c00162766aa2ddc4a24c11e38d9",
+      "size_bytes": 1213382,
+      "scope": "historical_RGB_only"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_1189eb83d66b45d4814f7101f1298607/left_hand.png",
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/left_hand.png",
+      "sha256": "9d8d52fdfc6344c91f55316ecf73b5522b7cbd6eb1e3beb53cf32385d1a29775",
+      "size_bytes": 1086157,
+      "scope": "historical_RGB_only"
+    },
+    {
+      "source_path": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_1189eb83d66b45d4814f7101f1298607/right_hand.png",
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/right_hand.png",
+      "sha256": "a7cc20d670edfc2e12edd8686e0f408d3b30ef8dd6bdce4f11fc10fc2dc6551e",
+      "size_bytes": 1179363,
+      "scope": "historical_RGB_only"
+    }
+  ]
+}

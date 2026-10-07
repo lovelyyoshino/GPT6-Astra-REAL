@@ -1,0 +1,32 @@
+第二轮录像合同独立交叉审查
+审查者：inspect_control；日期：2026-10-07
+范围：fast_recording_contract.py 及其专项测试。仅阅读源码、纯函数反例和离线合成元数据；未连接相机、ROS、CAN、机器人或网络，未打开/解码视频，未修改被审模块。
+
+结论
+最终版本未发现剩余实质阻断项。该模块提供录像声明和元数据覆盖审计，不启动或监督录像进程。metadata_coverage_complete=true 只证明传入、绑定的元数据满足覆盖合同，不能改称视频解码完好、物体已稳定、任务成功或控制器退出后仍有独立录像进程。
+
+发现与修复复核
+1. 初稿允许无异常时用裸settled代替退离与稳定核验。已改为正常结束必须有最后动作之后的retreat_complete，以及其后的stability_verified。
+2. 初稿允许fault之后仅有stability_verified就结束异常覆盖。已改为异常分支必须有更晚的settled或带原因的unresolved；controller_exit本身不是结束证据。
+3. 原先同时间的旧settled可覆盖后来fault。最终要求异常终点严格晚于最后动作/中断，不依赖相等时间戳证明先后。
+4. 二轮发现旧retreat与后续action同时间仍可复用，以及controller_exit与stability同时间被当正常结束。最终也严格拒绝这两种先后无法证明的边界。
+以上均由research_memory修改并补回归；inspect_control只提供反例与复核。
+
+已核对的其他合同
+- event ID唯一、task/run严格绑定、主时间有序；报告缺少旧worker未写的run/task字段时保持unknown，不自动补标签。
+- 后续动作使早先退离/稳定证据失效；重新出现stability也不能跳过新的退离。
+- right_hand/front必需；left_hand只有请求后才成为覆盖要求。模型少选某路不应停止该路本地录像。
+- 每视角帧索引连续、主机接收时间单调、间隙上限与首末覆盖分别检查；cleanup_closed不能掩盖过早结束。
+- 文件版只读report.json/frames.jsonl；未读取AVI，video_files_checked与video_decode_verified始终false。报告中的引用与标签仍是调用方声明，模块不认证物理证据。
+- reserve_recording_directory拒覆盖既有目录、检查相对路径与符号链接逃逸，但这不是设备占用或独立supervisor。
+- 现有continuous worker仍要求三相机；此合同不实现两路worker适配，也不修复fast_live_loop finally关闭录像的生命周期。该部署缺口已在输出明示。
+
+验证
+独立命令：PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast_recording_contract.py' -v
+初次修复后21/21通过，0.011s。
+末次两处严格时间比较修复后，分别独立运行test_same_timestamp_retreat_cannot_cover_new_action与test_exit_at_stability_time_needs_exception_endpoint，2/2通过，各0.001s。第一次单例命令漏将tests加入PYTHONPATH，仅造成测试发现失败；修正为PYTHONPATH=src:tests后通过，不是实现失败。
+所有证据均为合成JSON/临时目录，不验证真实录像生命周期。完整合并测试由root负责，不重复运行。
+
+冻结SHA256
+39dd0558e33f17220700334a0f2578308d3d067baab649ecdacf86aab0387610  projects/piper_right_pick_demo/src/right_pick/fast_recording_contract.py
+9ae70e27636a54bbce4591dedd30ba7ca8ee7fd9051894288bc16e51bd3cf2af  projects/piper_right_pick_demo/tests/test_fast_recording_contract.py

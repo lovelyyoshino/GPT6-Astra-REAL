@@ -1,0 +1,56 @@
+Zero-execution request refusal correction (offline implementation)
+
+Entry scripts/ros_zero_tx_continuation_entry.py
+Client scripts/ros_zero_tx_continuation_client.py
+Run runs/cola_on_cup_zero_tx_continuation_20261007_010000
+
+Only a pure request-decoding J5 increment >200 millidegrees receives the new
+PreDispatchJ5Refusal type. The request stays rejected: no clipping, rebasing,
+implicit new target, retry, enable, stop, reset, disable, or jaw action.
+After admission this type can become rejected_preflight ONLY when the command
+is still joint preflight, pending attempts=0, initial_transaction_started=false,
+receipts=[], command_sent=null, and there is no ticket, hold, RX fault, broken
+transport, previous failure or stop latch. The result binds first/latest state
+and the unchanged requested target. Durable write failure is a hard failure.
+A same-text ordinary RuntimeError does NOT qualify. send_once's own J5 check
+is not converted. Partial/attempted sending, RX, physical guards, I/O and arrival
+timeouts keep their old hard lock. Existing typed zero-TX BaselineNotReady
+behavior is retained; this is not a general timeout exception.
+
+The frozen readiness client treats rejected_preflight as a terminal zero-action
+result. It does not wait for arrival, request hold or resend. Only a new explicit
+call can request a different freshly checked goal. First-decode rejection before
+admission keeps the existing last_refusal behavior, without a new transaction.
+All limits stay unchanged: J5 requested increment200mdeg, J5 joint tracking300mdeg,
+other joint tracking.003rad, original arrival/slip/stability, jaw/force.2,
+30mm/.05rad/fullbox/workspace/nominal/1%/100ms and raw-RX safeguards.
+
+The one migration is bound to exact gen19 seq93 zero-TX failed parent and original
+result, previous seq92 complete4/4 success, retained task-clearance review,
+independent raw report, config/source/boot and current RGB review. All14 prior
+session files remain unchanged. Old seq93 remains failed. New child
+zero_tx_continuation_<boot>.json is unique, preventing restart/output bypass.
+Fresh3s baseline must match the retained seq92 target within.003rad and held
+jaw57.47mm within.5mm. No mechanical qualification is invented. Held load and
+contact status require visual assessment; clean feedback does not prove them.
+
+Deployment uses the existing right-only ROS node/namespace and private parameters:
+auto_enable=false, exit_teaching_mode=false, gripper_exist=true, speed_percent=1.
+The normal exit path only withdraws software adoption and disconnects the socket;
+no actuator stop/disable/reset. With no new RX fault, the parent's bytes/hash stay
+unchanged across normal exit; check them again after exit. If changed, admission
+must fail rather than silently pinning new content. Startup is the same frozen
+zero-actuator adoption, with no implicit goal or gripper target.
+
+Entry command shape (root alone deploys after review):
+python3 scripts/ros_zero_tx_continuation_entry.py \
+ --entry-config /absolute/run/entry_config.json \
+ --entry-output-dir /absolute/run/runtime --loaded-rim-contact-confirmed \
+ /home/agilex/piper_gpt/src/piper_ros-noetic/src/piper/scripts/piper_ctrl_single_node.py \
+ __ns:=/piper/right __name:=interruptible_driver
+Set existing ROS private parameters by the reviewed launch, not by this entry.
+
+Client keeps existing --operation joint|gripper|resume|status arguments. No home
+or generic failure reset is introduced. Joint --target-raw is an explicit new
+six-integer goal; --execute is required to dispatch. Status remains read-only.
+The implementation and mock tests provide no independent new physical guarantee.

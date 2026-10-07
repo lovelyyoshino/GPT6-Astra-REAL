@@ -1,0 +1,39 @@
+Recorded wrist qualification — one new action, unchanged numerical guard profile
+
+The previous relief67 sequence3 completed, but its independent raw CAN recording
+is absent. That action remains independently unreviewed permanently. The new
+entry does not reconstruct missing evidence, clear a failure or retry a partial
+transaction. Ten parent session files remain byte-identical and locked. A fixed
+boot-bound child prevents repeating this qualification through another output.
+
+Entry: scripts/ros_guarded_recorded_probe_entry.py
+Client: scripts/ros_guarded_recorded_probe_client.py
+Arguments and node remain the existing --entry-config / --entry-output-dir /
+--table-supported-contact-confirmed and __ns:=/piper/right convention. The
+inherited confirmation flag describes preserved ancestry; current RGB review
+explicitly requires separated empty fingers. No opening command is generated.
+
+Root alone performs normal software-owner handoff. Adoption sends zero actuator
+frames and requires the unchanged fresh3s baseline, matching the reviewed prior
+completed endpoint. Initial scope is wrist_ready. The one allowed target uses
+that NEW baseline's six raw joints, reducing only J5 by150mdeg (not the old goal).
+Speed1%, nominal limits, original workspace/30mm/.05rad envelope, 100ms complete
+feedback, joint tracking J5±.30deg / other axes±.003rad, jaw±.5mm and all original
+arrival/pre-send/baseline checks are unchanged. No P/L, automatic stop, reset,
+disable, force increase, opening change or automatic retry is added.
+
+Before sending, root verifies the independent recorder process and a complete
+fresh14-ID tail, saving that check. This is a precondition, not a guarantee of
+future recording. After the single4-frame command, actual J5 progress must be
+at least.10deg and the original arrival/stable3s checks must pass. Completion
+revokes adoption. The existing bound review_probe service alone may promote
+wrist_review→task after NEW full-window raw audit, byte hashes, fresh RGB and
+another fresh3s review. Missing/unclean raw, partial/fault or insufficient
+progress cannot promote or trigger another qualification attempt. The original
+seq3 independent_raw_review_complete flag stays false even after promotion.
+
+Use scripts/audit_joint_probe_raw_window.py for saved-file review. Do not pass
+runtime sample counters or healthy endpoint snapshots as a substitute for the
+missing continuous raw action window. Successful qualification is local evidence,
+not general collision or high-speed stop qualification. No new task is scheduled
+by this entry; all subsequent commands are explicit single actions.

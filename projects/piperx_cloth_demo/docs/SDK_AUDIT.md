@@ -56,7 +56,9 @@
 | `piper` 纯 FK | `[0.0561275,0,0.2132663,0,1.4835299,0]` |
 | 历史右臂全零关节实测 | `[0.056127,0,0.213266,0,约1.483512,0]`，由旧 raw 单位换算 |
 
-历史依据：[同一采样中的零关节与位姿](/home/agilex/piper_right_pick_demo/runs/passive_right_20261003T220927_145802.json:430)。后者更吻合 `piper`。2026-10-04 用户另明确确认两臂均为 PiPER，当前配置已更正；两臂当前关节的厂家 piper FK 位置与控制器反馈仅相差数微米。固件、工具几何及现场有效限位仍需分别核验。
+历史依据：[同一采样中的零关节与位姿](/home/agilex/piper_right_pick_demo/runs/passive_right_20261003T220927_145802.json:430)。该历史控制器位姿更吻合 `piper`。2026-10-04 用户曾确认两臂为 PiPER，当时采用该模型，所测 FK 位置与反馈相差数微米；保留这一历史事实，不能由此推翻后续明确型号更正。
+
+2026-10-07 用户现已明确确认两臂均为 **PiPER X**，当前配置改为 `piper_x`，旧配置保存在 `artifacts/piper_x_capability_review_1791347348345247360/robot_profile_before_model_correction.json`。官方 SDK `841a625f5f4920e776f20b934eb13048b747e6d0` 和 URDF `f6642ce0d7872c686f29c99e9e10cd23d1d49313` 的原始文件、哈希与提取数据已保存到同目录。物理型号已由用户确认，组合的固件/控制器位姿/运动学匹配尚未重建，因此 `physical_models_and_firmware=false`，不复制旧模型运动资格。这个布尔值并非每个专项入口的统一硬门禁，不能靠它代替现场准入。官方资料自身存在 J6 SDK ±180° 与 URDF ±120° 的差异；标准夹爪 URDF 的 100 mm 开口也不替代执行器现有限制。速度、位移、反馈、夹爪及恢复算法的数值常量未改；型号会改变所选 SDK 名义关节范围，J4 从约 ±100° 变为 ±89°、J5 从 ±70° 变为 ±89°、J6 的 RAD 预设从 ±120° 变为 ±180°，不能把这项配置修正称为有效关节边界不变。未写控制器限位；上线前需解决这些范围与控制器读回的对应关系。本次仅离线修正配置，没有连接设备或发送动作。
 
 ## `get_ik_joint_angles()` 的真实含义
 
@@ -119,3 +121,9 @@ v0.4 固定启动工具先在双臂均未使能时逐臂确认 CAN 模式，再�
 ## v0.9 单臂监督动作源码复核
 
 2026-10-05：新增single_supervised_actions.py和两个固定入口。仅做源码人工复核、独立审查及AST语法检查；25个schema名称唯一。用户要求取消模拟测试，本次未运行测试/模拟，也不将此前446项结果归于新增代码。原双臂工具、SDK和完整计划门禁未改。具体记录见`runs/maintenance_single_actions_20261005/review.json`；实机动作单独留证。
+
+## 2026-10-07 首目标语义与可选电机反馈
+
+固定官方 SDK `841a625f5f4920e776f20b934eb13048b747e6d0` 的 `DriverAbstract.__init__` 默认 `_joint_limits_enabled=False`，本项目没有调用 `set_joint_limits_enabled(True)`。`_deal_move_j_msgs` 在关闭该开关时仍调用 `Validator.clamp_joints`，但采用通用 ±2π，只有开关启用时才使用型号限位。因此这里 J2 略负、J3 略正不会被 SDK 自动裁到 0；之前“SDK 必然将该 q 恢复到边界”的判断已纠正。项目自身的准入和固件行为分别核对，不依据此事实关闭任何现有边界。来源：[默认值](https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/protocols/can_protocol/drivers/core/arm_driver_abstract.py#L74)、[分支](https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/protocols/can_protocol/drivers/piper/default/driver.py#L126)、[通用范围](https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/utiles/validator.py#L103)。
+
+当前 `arms.snapshot` 直接复制 `parser.motor_state_1..6` 高速反馈，增加可选 `motor_feedback`。厂家解析器已经完成 A、rad/s、rad 转换和型号 `k*b*c` 估算力矩，适配器不再缩放；每个电机保留独立 RX 时间、缺失/异常/过期状态。该诊断不调用 getter、查询、发送或构造设备，不加入原 `PARTS/DRIVERS` 必需集合，不改变基础健康和到位判据。原始故障快照也能保存它。官方解析器的离线报文回归只验证软件单位与来源，不验证实际电流、外力、夹持力或插入力。来源：[接收解析](https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/protocols/can_protocol/drivers/piper/default/parser.py#L95-L108)。

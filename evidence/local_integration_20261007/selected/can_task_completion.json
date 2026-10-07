@@ -1,0 +1,69 @@
+{
+  "task": "Place empty blue Pepsi can bottom down standing on closed transparent cup lid",
+  "task_success": true,
+  "success_basis": "RGB: can settled during gradual jaw opening, remained stationary throughout open-jaw withdrawal; visible separation in final front and left views; unchanged after 110.685 seconds",
+  "final_verification_unix_s": 1791310410.0798602,
+  "final_verification_local": "2026-10-07T02:13:30.079860+08:00",
+  "first_clear_capture": "capture_127bf53dd9424f8d8370370bd07e71d3",
+  "final_capture": "capture_1189eb83d66b45d4814f7101f1298607",
+  "stationary_verification_s": 110.68534851074219,
+  "final_image_paths": {
+    "front": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_1189eb83d66b45d4814f7101f1298607/front.png",
+    "left_hand": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_1189eb83d66b45d4814f7101f1298607/left_hand.png",
+    "right_hand": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/capture_1189eb83d66b45d4814f7101f1298607/right_hand.png"
+  },
+  "jaw_open_command_mm": 67,
+  "final_actual_jaw_mm": 66.29,
+  "final_joint_goal_raw_mdeg": [
+    46418,
+    103660,
+    -55549,
+    0,
+    -29039,
+    0
+  ],
+  "final_sequence": 170,
+  "controller_state": "completed, idle; existing ROS driver remains running; no disable, home, reset or further motion sent",
+  "camera_recording_closed": true,
+  "camera_frames": {
+    "front": 153088,
+    "left_hand": 153088,
+    "right_hand": 153088
+  },
+  "actual_speed_percent": 1,
+  "control_channel": "ROS guarded right-arm client",
+  "perception": "RGB-only; no depth, extrinsics, calibrated target coordinates or traditional object localization",
+  "lid_present_basis": "user confirmed closed lid",
+  "task_elapsed_including_waits_and_recovery_s": 30389.349882364273,
+  "original_task_start_local": "2026-10-06T17:47:00.729978+08:00",
+  "task_elapsed_scope": "Includes prior attempts, troubleshooting, camera adjustment and user/model waiting; not isolated movement time",
+  "incidents_preserved": [
+    "prior contact tracking failure in sliding seq60",
+    "post-contact seq93 pre-dispatch zero-TX refusal/failure retained in its original parent run"
+  ],
+  "placement_contact_note": "Cup shifted slightly on initial contact/partial relaxation; downward movement stopped, jaw opened gradually, can settled visibly upright; subsequent withdrawal did not move can or cup",
+  "videos": {
+    "segment1": {
+      "right_hand": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_nearzero_20261006_173237/task_observations/continuous_recording/right_hand.avi",
+      "front": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_nearzero_20261006_173237/task_observations/continuous_recording/front.avi",
+      "left_hand": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_nearzero_20261006_173237/task_observations/continuous_recording/left_hand.avi"
+    },
+    "segment2": {
+      "right_hand": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/continuous_recording/right_hand.avi",
+      "front": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/continuous_recording/front.avi",
+      "left_hand": "/home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/continuous_recording/left_hand.avi"
+    },
+    "continuity_note": "Two camera segments, with about 15-16 seconds of stationary camera handoff; no motion sent during this handoff. Do not represent this as a single uninterrupted full-task recording."
+  },
+  "raw_recording_closed": true,
+  "raw_final_segment_frames": 10966181,
+  "raw_final_segment_transport_clean": true,
+  "baseline_outputs_preserved": true,
+  "deliverables": {
+    "first_person_final_placement_clip": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/deliverables/first_person_placement_realtime.mp4",
+    "third_person_final_placement_clip": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/deliverables/third_person_placement_realtime.mp4",
+    "final_front_image": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/deliverables/final_front.png",
+    "final_left_image": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/deliverables/final_left_hand.png",
+    "final_right_image": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/deliverables/final_right_hand.png"
+  }
+}

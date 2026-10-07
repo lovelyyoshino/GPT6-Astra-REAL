@@ -1,0 +1,41 @@
+Guarded task stability/readiness correction
+
+Old sequence10 remains a failed, zero-actuator preflight attempt. Its immutable
+pending record is {kind:preflight,attempted_frames:0}, not a firmware goal. The
+previous qualified wrist result/review and sequence9's completed four-frame
+transaction remain bound. All eleven predecessor files are locked and unchanged.
+No old command is automatically replayed and no mechanical qualification repeats.
+
+sliding_stability.StableWindow keeps a contiguous suffix: remove oldest samples
+until every original predicate is true; never remove an internal exception. The
+same .003rad per-joint span, .5mm XYZ bounding-box diagonal, .003rad SO(3) diameter,
+.5mm jaw span, >=20 groups, >=3s and strict14-fragment/sequence advancement apply.
+Old retained orientation pairs are valid by invariant; every new orientation is
+checked against all retained ones. Baseline, arrival/hold and jaw verification
+use this one implementation through isolated function bindings. No frozen module
+or process globals are changed, and no physical bound is relaxed.
+
+New entry scripts/ros_guarded_readiness_entry.py; matching client
+scripts/ros_guarded_readiness_client.py. Same --entry-config, --entry-output-dir,
+--table-supported-contact-confirmed and ROS namespace convention. The admission
+visual review says table-supported, contact possible, no held load; it does not
+claim empty clearance. Root alone performs reviewed owner handoff. Startup is
+zero actuator TX and must pass a NEW original-threshold3s baseline and endpoint
+match. Original1%, 30mm/.05rad/fulljointbox, J5±.30deg motion tracking, other
+.003rad/jaw-motion .003rad, nominal, workspace,100ms,force.2 and70mm envelope remain.
+
+Only typed BaselineNotReady from this health-checked read-only baseline can
+produce rejected_preflight, and only before an exact joint/jaw transaction has
+started: empty receipts, null send time/ticket, precise zero-attempt preflight
+pending, no active hold, RX fault, broken adapter or prior failure. It records an
+immutable refusal, retires that request and requires a NEW explicit command with
+a fresh baseline. The client treats it as terminal zero execution, never waits
+for motion timeout, requests hold, or republishes automatically. Generic errors,
+health/FK/path/slip violations, RX latch, any attempted/partial TX and all arrival
+failures still use the original permanent failure lock. Logical rejection is not
+successful motion or task completion. Same-string RuntimeError is not sufficient
+to receive the typed readiness treatment.
+
+This startup does not authorize replay of the rejected descent goal. Root chooses
+the next local action from fresh RGB/state; current can remains table supported.
+Independent raw recording and normal post-command observations continue.

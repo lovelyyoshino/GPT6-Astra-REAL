@@ -26,6 +26,7 @@ from .fast_policy import (compact_controller_state, parse_response, controller_p
                           response_schema, select_camera_views, ATOMIC_DECISION_RULE)
 from .fast_pipeline import compact_pipeline, decision_stage
 from .fast_task_pipeline import pen_phase_contract
+from .fast_experience import build_historical_advisories
 from .recording import normalize_usage
 
 
@@ -300,6 +301,9 @@ def build_codex_packet(controller_state, observation, pipeline="single_arm_close
                   "measured object coordinates, depth, clearance or contact force. "
                   "The pose reference is the driver's "
                   "end reference in right_base, metres/radians. Return JSON only; no tools or rationale.")}
+    historical = build_historical_advisories(state, task_id="pen")
+    if historical:
+        packet["historical_advisories"] = historical
     if state.get("action_budget", {}).get("allow_waypoint_chunks") is False:
         packet["instruction"] = packet["instruction"].replace(
             "Waypoint chunks are only for the current allowed approach phase in visibly clear, no-contact free space. ",

@@ -1,0 +1,20 @@
+蓝色空罐放置任务已完成。
+
+结果：空罐瓶底向下立于透明咖啡杯盖上。逐步张爪至67mm指令（实际66.29mm）后撤开空夹爪，两次明确分离的观察相隔110.685秒，罐和杯保持稳定。
+完成时间：2026-10-07T02:13:30.079860+08:00
+本轮实际控制速度为1%，控制通道为ROS。
+从最初任务起点计时包含等待、排查和恢复共506.5分钟，不能作为<30分钟优化成功的数据。
+
+录像索引（以下原始完整文件均保留）：
+第一段：从近零位开始的抓取与早期放置过程
+right_hand: /home/agilex/piper_right_pick_demo/runs/cola_on_cup_nearzero_20261006_173237/task_observations/continuous_recording/right_hand.avi
+front: /home/agilex/piper_right_pick_demo/runs/cola_on_cup_nearzero_20261006_173237/task_observations/continuous_recording/front.avi
+left_hand: /home/agilex/piper_right_pick_demo/runs/cola_on_cup_nearzero_20261006_173237/task_observations/continuous_recording/left_hand.avi
+第二段：相机调整后的后续过程及最终完成
+right_hand: /home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/continuous_recording/right_hand.avi
+front: /home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/continuous_recording/front.avi
+left_hand: /home/agilex/piper_right_pick_demo/runs/left_camera_observation_20261006_232200/wide_observations/continuous_recording/left_hand.avi
+
+两段摄像头切换间约15–16秒静止间隙，期间没有机械臂动作。视频帧时间详见各continuous_recording/frames.jsonl；AVI按配置15fps编码。
+便于查看的最后靠近、放置、撤爪原速MP4已在本目录deliverables中保存；它们是片段，不是完整抓取全过程。
+成功证据、时间及已保留异常见task_completion.json。最终图片见末次capture目录和deliverables副本。

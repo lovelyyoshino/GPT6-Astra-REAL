@@ -1,0 +1,70 @@
+Post-contact loaded-can clearance session (offline implementation; root owns deployment)
+
+This starts from the independently reviewed, successful gen17 single retreat.
+The original gen16 seq60 J5 RX violation remains a real failure in immutable
+parent files. Healthy feedback is not proof of no contact or stable grasp.
+No old source, session, guard threshold or firmware setting is changed.
+
+Entry: scripts/ros_guarded_post_contact_entry.py
+Client: scripts/ros_guarded_post_contact_client.py
+New run: runs/cola_on_cup_post_contact_20261006_233500
+Config stays byte-identical to the existing 70 mm profile. Root review and all
+13 prior sessions, gen17 result and independent raw byte windows are bound.
+The fixed child guarded_post_contact_<boot>.json prevents restart/output bypass.
+Startup and normal exit retain the frozen zero-actuator adoption/exit path.
+Use --loaded-rim-contact-confirmed, NOT an empty-gripper assertion. Namespace
+must remain /piper/right and the pinned vendor node/driver path unchanged.
+
+Initial contact_stage=lifting:
+- At most three explicitly requested completed J goals. J2 decreases by at most
+  1300 millidegrees relative to BOTH fresh measured start and prior nominal goal.
+  Other five targets stay [53018, *, -48249, 0, -52889, 0].
+- Strict initial/current endpoint error .003 rad and jaw57.47 mm +/-0.5 mm.
+- Original independent-box FK30 mm/.05 rad/workspace/nominal joint limits,
+  J5 tracking .30 degrees, other tracking .003 rad, speed1%, complete14 feedback
+  freshness100 ms, pre-send and arrival/3 s sliding stability are unchanged.
+- No jaw, descent, P/L, replacement hold, generic resume or automatic action.
+  Client timeout does not stop the finite accepted goal; no stop/disable/reset.
+- Any admitted lifting failure is hard-latched. Partial TX is never retried.
+- Each completed lift withdraws adoption before exposing completion; the state
+  becomes lift_review. Completion alone does not verify clearance or grasp.
+
+Review (no actuator sends): write runtime/reviews/action_NNNNNN_review.json:
+{
+ "reviewed":true, "stage":"post_contact_lift", "sequence":N,
+ "generation":G, "adoption_token":"TOKEN", "completed_result_sha256":"SHA",
+ "prior_failures_preserved":true, "grasp_retained":true,
+ "next_stage":"lifting", "review_authorization":"explicit root review",
+ "raw_review":{"path":"/absolute/report.json","sha256":"SHA"},
+ "images":[{"path":"/absolute/fresh.png","sha256":"SHA",
+             "captured_at_unix_s":0}]
+}
+Each RGB timestamp must follow the completed result's last feedback timestamp.
+The raw report must bind this seq/gen/token/result, exact target, entire raw
+window from before send through all14 terminal frames, all original guard
+checks clean and source byte windows with SHA256. Missing recordings do not
+pass. Existing independent auditor produces the fields; do not fabricate them.
+
+Only next_stage=task additionally requires clearance_visible=true and
+object_contact_absent=true. grasp_retained=true is required in both cases.
+A third completed lift cannot be followed by another lifting permission; a
+valid clearance review can still promote it to task. Review checks a new3 s
+baseline and original slip/jaw limits under the action lock, then increments
+generation. Old endpoint/token/generation/digest cannot authorize a later lift.
+No automatic review or motion occurs. A failed review's physical/feedback
+check locks the session. Wrong/missing review documents only reject approval.
+
+Client explicit review:
+python3 scripts/ros_guarded_post_contact_client.py --operation review \
+ --config /absolute/run/entry_config.json --runtime /absolute/run/runtime \
+ --output /absolute/new_review_output --reviewed-result-sha256 RESULT_SHA --execute
+Joint/status/gripper/resume use the existing client options. In lifting,
+--operation joint must use an explicit six-integer --target-raw goal; no home.
+After approved task promotion the same session resumes the frozen ReadinessTask:
+J5 goal increment<=200 mdeg, 1% J, independent jaw70 mm/.2, original RX guards,
+original hold/review semantics. Ordinary jaw stable-contact completion is not
+proof of grasp or support. Typed zero-TX baseline refusal is only retryable as
+a NEW explicit request in task phase; no automatic retry or prior-goal replay.
+
+This is no new general stopping, collision or loaded-grasp qualification.
+Nominal FK lift predictions do not prove physical contact clearance.

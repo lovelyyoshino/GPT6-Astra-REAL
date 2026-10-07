@@ -1,0 +1,937 @@
+{
+  "schema_version": 1,
+  "purpose": "Preserve original source hashes and explain the canonical generic task framework, selected evidence imports and local optimizations.",
+  "entries": [
+    {
+      "local_path": ".agents/skills/piper-arm-coordination/SKILL.md",
+      "change_reason": "Provide a scoped project-local Codex entrypoint with progressive layer loading.",
+      "base_source_sha256": null,
+      "optimized_sha256": "21a5da713f0a73474d53be13ab95ceb703ee04d45b4d82fb4c24b141ab3c914f",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-admit-action/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "dd9be4af42888923c0af6a6db11e47806aafbb48f7d04a2299c6682255b47034",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-check-fresh-observation/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a2cb23f6817bba87df8185d097fcf4c94bc05b3fd40c9791851aeb034096baad",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-coordinate-observer/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "e16134c21fdc3dcc3a700e434ca7cb8f192814435ccac7a38821ec8e2c66e64e",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-coordinate-pair/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "b3d690fe91ead40122039cb4fc006d3a1a0ff93628c9df3a0b9303a64c8cbf34",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-decide-one/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "ee58685a427b83db9eb08a925bc126f817d4d644329dc252e39eb7715503405b",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-decide-pair/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "b0b937d77f8a519784db190da9bedeffc00330c0f0c6862362f04c3ee374c60e",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-dispatch-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "f3853a25d32f9a9e0bd5fb2e1bc24eaf183348c5f7103808d681c66c657a6c85",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-dispatch-pair-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1965b2f0db49481221e4150752b38534e3d5c578a3363cb2066dae2e55a1c834",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-freeze-observer/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "92966ae535c328f8c79606fd7718d3272af5ac389a155df0a535660d3ffc6990",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-handoff-hold/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "13285cac844380db48547216938227d4c1cb4eeb366ac72fa500992b677b6555",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-latch-pair-fault/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "4a792ce5b50915dfda1a9275b83fdd6ed1734d2b25690f2d76b6506669352cd8",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-move-eef-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1fc53d99be7aa7f9acda8cb85eeea2eae9bf93abdc00b2c0fd203b2151cf3802",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-observe-scene/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "ee7828f296486e6d4bf9823e7083a2cc2cec4cadc102d1ec0d0f0b721c2deb60",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-plan-swept-corridor/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "d12f8bef6bddcb318fbdd71e14cff5472b6b8bad330b678a9b1060bce48224dc",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-preflight-pair/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "93feab41db1baf905010c1093874bae1777ea8ec6197eae34abe61d25bfee455",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-preflight-single/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "9a4a4d3d02a19498eba69ee56fe81b0c77383da8f29544d7d858257caa1ce051",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-prepare-held-side/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "43053396c819106197bc19479c2d1e4e6bd2aeab828e4db5092d47a78f5c1fb4",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-read-receipt/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "0e676857afba7daebc706b0a92242d45d165390543db594ae4ce0f363158c989",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-renew-session/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "9c988d15ff12cd3a14432452005c6ba700f7ccfbb8066bdea9b439835c07abcf",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-sample-stability/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "7420901462cbff596cc8856a1bc60c398857ec64ce4a150308fa69aa04ea8708",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-set-gripper-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "acd12a3284de5d6070feb83a1b9498a25aea814eaf7928ca89c10032d857f329",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-synchronize-duration/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "59c693d4a79f80559e21cd5e6822b75cfe8692337f4278ffe302db0de2bb9e88",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-verify-return/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "2dc08930c5a5d2139b7a68bf1b3ffc01138ce162cbaf7637416e982b95ec3137",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-verify-task-evidence/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c07df64f6692ea135da3f414adb265032f6b87809e636d9195739e91f4899ee9",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-verify-visual/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1f64ba41de43e50cb9ae6b09247436567d0bcd6665a57029bdd13be368f47c45",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atomic-runtime/SKILL.md",
+      "change_reason": "Provide a scoped project-local Codex entrypoint with progressive layer loading.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1fc7b2d2adf556837e65befa1c9cc78175bd93ab6ae2e6bccb5dcecc02b32f3e",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-manipulation/SKILL.md",
+      "change_reason": "Provide a scoped project-local Codex entrypoint with progressive layer loading.",
+      "base_source_sha256": null,
+      "optimized_sha256": "329544a96017f32098760ccd9ca9c38a490009a67f24ca40e86d73b692fd1ee8",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-task-pipeline/SKILL.md",
+      "change_reason": "Route Codex from the current task stage to its bound L2 operation and require measured progress without loading the full catalog.",
+      "base_source_sha256": null,
+      "optimized_sha256": "213c8076f506c583728b605304af1288a3d5a74b51fec32c0ef64c3eded37387",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".gitignore",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "bf33a906f5c20dc91f3f3a7ded1264399c685555a52a5cabe114f6f17ccd5021",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "AGENTS.md",
+      "change_reason": "Persist Codex CLI preference, layer routing, bounded progress, skill discovery path and implementation boundaries. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "base_source_sha256": null,
+      "optimized_sha256": "c1ec3b53df2966ab4e17370649665142a3c3d0ec97211c0a2c25c91366748507",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "ATOMIC_SKILLS.md",
+      "change_reason": "Make hidden project-local atomic skills visible and document launch-directory discovery and layered on-demand invocation. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "base_source_sha256": null,
+      "optimized_sha256": "f3f43cc925f80d9ec31b2047624f6599cb472e276ef08d0f4b1dd2aa4b26a58c",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "OPTIMIZATION_GUIDE.md",
+      "change_reason": "Record implemented budget/recovery changes and remaining physical adapter gaps. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "base_source_sha256": null,
+      "optimized_sha256": "1f0fc23f096c1ac7856b502e6e4b85f7b532249ad2c50ea393608eafbd38e892",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "README.md",
+      "change_reason": "Document local optimization, current verified usage and the Codex skill launch path. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "base_source_sha256": null,
+      "optimized_sha256": "b18b05f9ebbdb741d5bf8d51c2c943c5eb4b54de1d298260c2802c062edfaf9f",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "astra",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "103ecf973ba44ba5f7157e011eb8abaa267aa1cd343a7f861c62b1b1c7be4fd4",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/front.png",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a84b2cfd3c96838b6d843ee5dd884acfd0efa72e8876e72e9e9b8f8e5035e9ad",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/left_hand.png",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1c7086b2d1fc2065ba5ef7db875aa6ad635379693635da84d61fe249d7c20e16",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/observation.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "78e6aa937a5c9ddda525ed4fc1f1cdc6134fe9c03f1696a0a10b15c6413b285f",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/clear/right_hand.png",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "298a8ac7f8e1c7da250ead6094dc51bdec38a98e8c9872ea52897e6f826c31d1",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/front.png",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "7dfad911bc13a327e154a00fd23fe2952c508c00162766aa2ddc4a24c11e38d9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/left_hand.png",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "9d8d52fdfc6344c91f55316ecf73b5522b7cbd6eb1e3beb53cf32385d1a29775",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/observation.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "2ad0af125d2d698294aee330b297de9256742b18311e305ceb657a2e75446954",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/can_visual/stable/right_hand.png",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a7cc20d670edfc2e12edd8686e0f408d3b30ef8dd6bdce4f11fc10fc2dc6551e",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/selected/can_final_withdrawal_raw_review.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a924a0347f56971c102f17ed4c8e9bf66793ef2396781a3861dad11271e67a8b",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/selected/can_recording_index.txt",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "d24048e2a5da7417a8cc681af8c68398c4c67db733fd7bd1279da5ba86b79498",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/selected/can_task_completion.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "fb7abf6d7492a99165cc0935aebe43e85e2ef98db8b29dad4c9fa7a65a42c515",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/selected/can_zero_tx_review.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1a4c7853c651eb7e3cd996fe95a9ac62b5cfe957028ddfd4366da92a9ca344b9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/selected/charger_final_outcome.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "0db6c7533d680f80e155232264487657ef4a4a3178512aecede56ae626d0655d",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "evidence/local_integration_20261007/source_inventory.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c5d1ecad07818a55b053488ff1e8dc66291a6fa9dae3cb927a3452eab514dded",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "metadata/generalization_validation_20261007.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "71d0104f90a0b119bc7bfc11173f2b5f7f869efd9c88a4534149e17ee6954c72",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "metadata/history/pre_generalization_20261007/SHA256SUMS",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "d11d566522427be06edfc9ae2b09b0edef2aebfc836324141368748ae326ad5f",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "metadata/history/pre_generalization_20261007/optimization_manifest.json",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "91cd8c39c2af9679bad4ec1beef5aa8d45a01240728ab3fc0bfddbded624b4e7",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "metadata/optimization_validation.json",
+      "change_reason": "Record current local verification, project skill discovery by launch directory and unverified physical scope.",
+      "base_source_sha256": null,
+      "optimized_sha256": "4ed3418b3f78e017061cab9da79d363e077c9ebef009c8fadb7be4e6c8a4a1f8",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "metadata/runtime_omissions.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "8b77ee400144483cc28c134c5a8dd35468d7c07398c60b130186decd44ed5e3b",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_dual_barrier.example.json",
+      "base_source_sha256": null,
+      "optimized_sha256": "81548dbe01fa8e62cf28a161f3f3f67897ff6364b8286a70d673be52e43b48eb",
+      "pipeline_id": "dual_arm_barrier_v1",
+      "change_reason": "Declare offline dual task roles with peer_arm, shared admission and independent receipts."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_closed_loop.example.json",
+      "base_source_sha256": "20d13acbbf2fa3f7c5dc1137cc3e3bd2afd9fd7a79b34501bbfe0fa1e964472b",
+      "optimized_sha256": "5184f012c7c1b12b05c6ef29859c747afe9a71d43f3d804a5840d36ab2bc1aa6",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Default to existing Codex login and finite controller/model budgets."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+      "base_source_sha256": "358fb0126bc863143b461ca71014998f2c5db6f097d2793994c71cdc1ab1828e",
+      "optimized_sha256": "abbac336681287c6d69ec18ed833e2066918e8c326febe8c6d49d2fe3998f046",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Declare execution mode and role wiring."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_live.local.json",
+      "base_source_sha256": "38ab1c05ba6fe8759f6cadc62c0ea80eedd302e44db5562f56c00de71b08635a",
+      "optimized_sha256": "d4bca87c452510d241788aa16a236a120c2a476ad3466affaf57a659349ec137",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Declare execution mode and role wiring."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_worker_observer.example.json",
+      "base_source_sha256": null,
+      "optimized_sha256": "bfc3a388906abb2c344c32b2b6e8ff947425091a11fe490334e36720007c201d",
+      "pipeline_id": "single_worker_with_observer_v1",
+      "change_reason": "Declare offline view-only observer roles and hold/scene refresh requirements."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/docs/ATOMIC_SKILLS_AND_DUAL_COORDINATION.md",
+      "base_source_sha256": null,
+      "optimized_sha256": "1ff988d7a6c049d5f1d949a28c304a41fcdfa7eb02285d296368b746be4982de",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Explain four layers, active operation lookup, measured progress receipts, full ARX5 task mapping and physical implementation gaps."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_contact_retreat.txt",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "ae4fb8178ba8388a07a26c882d58b8c1588bc0da651fd3bc603c6f2e119e8ae4",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_post_contact.txt",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "460260e242b1496490af89944d2b84b34d861c579970b1a9ee4ba6b350296f58",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_readiness.txt",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "b87b52afd26f0cdbd998492b61c651c26abc849cf4745e9df89e8e13d2a0d548",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/docs/ros_guarded_recorded_probe.txt",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "8b5e15eaa80725074f60bf268a33e2fb45d95ab539d993edee6ab93bbad1e9e3",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/docs/zero_tx_continuation.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "60cc60b80304059b5663256f1189fc766990ba4baa923d9b220b9cfdb812b251",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/pyproject.toml",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": "61fb4f44e9cfdecb7c962b9e28f2d5a08e87b5617dcddb89d8509dd91d8d0d90",
+      "optimized_sha256": "b2add99239d16e1c0c020d757d8cd370c1ed340e928bb785733f3ceb72ec5ab6",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_contact_retreat_client.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "ee12c9bc0db37c1c1a9e86598ca99cf30289a1172fe5ca3706e21d21923cb9c9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_contact_retreat_entry.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "cfab5fcf874a116705ccdb9d2549385ab69f6a0a6a244bfd0851f5dd68c009d7",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_post_contact_client.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "8509db871d478d3feb0d27a5ada1505c088ace66dd0e24327addcfc0f0863203",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_post_contact_entry.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c776fd1111fc039db8f2a31cdfb3fcd25b227ddaf83b814f9e717af86bd224cb",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_readiness_client.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "e5e70c71f9b7a76b3917dd1667e58c87485c9f135fa147fa9ce28cc37a046d34",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_readiness_entry.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "0a4f3edefeb8799c816b37d6fce6d0b79ae6e4fb4c0b8b39b9ece8463e00f46d",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_recorded_probe_client.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "8c5777d0bb9a942c0049f89891392a400e89ae9d5f149b73f34b5244d1d99fb8",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_guarded_recorded_probe_entry.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "21e773be0b837ef675a74721389da76121b85248c89cbf803e6398e0b7477f65",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_zero_tx_continuation_client.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1c501491bcfaa63d1c3237075856c90b9de71458e187db340921032d6555190d",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/ros_zero_tx_continuation_entry.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "545a527bb5ea54d0c38c1cdc34ecf068d3ca36e0ff169f83e2385f2caebd61ad",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/scripts/sliding_stability.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "fa4ff24d686294bb34a387d651cd9640def0d528e5c494a369a5050d229c1f2e",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/cli.py",
+      "change_reason": "Require explicit fast execution mode so a task cannot silently fall into prepare.",
+      "base_source_sha256": "46a35169218f7a3f5bed8ca66828569750fe0e842ca046d0ba979f1979b364f7",
+      "optimized_sha256": "6ee1ffdb8d29449ff9d4aefdce98a8f62f97be551f20fa7d26e958128feb761e",
+      "pipeline_id": "single_arm_closed_loop_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_cli.py",
+      "base_source_sha256": "7995752cef6bc99133688698e51357ea97ec24f8ce992c4f4f305c5339b69ed1",
+      "optimized_sha256": "4f77e989fcfeeef7642a2820cdb24a2da01b14b1dc7055de4875c5afd9b1c7e4",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Validate pipeline role wiring before runtime resources open."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_codex.py",
+      "base_source_sha256": "90f0d1baed10b77ec8f336a274cb34cdba3f34dd1d1f7aced5df1be116928e55",
+      "optimized_sha256": "a50db844110c17e2bd6afbf2bd5f1a06ff207d0ea0b96b8746ccf0641fbc455f",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Send only current pipeline stage and next stage to Codex. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07)."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_experience.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "dc537b84aacf424e6caca0fbc2e02406965e31301d5f3e1059e81efe858c08b9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_live_loop.py",
+      "base_source_sha256": "7f565969fc6cc6ccc9e039366fd0a5b3ac12a6619ba2808cf40dac4a131cdf41",
+      "optimized_sha256": "97382a4492b9560b809a57365c8aa3748a153f85db140b59e8dbc16b21f2bf39",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Bound current single-arm execution, allow one pre-dispatch recovery, validate new RGB and record truthful visual provenance."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_loop.py",
+      "base_source_sha256": "a8705c3fe2c8135ece3a9ea34333a7e6ab65f58d0e476a9ca3a4387b37903e42",
+      "optimized_sha256": "17676e3734d90591ac033a7879bf1a93a7285b2ce652215ff0bdcabf71dd991b",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Bound replay, allow one correction and keep historical visual claims separate."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_model.py",
+      "base_source_sha256": "c48e8a8b8d9970f76670ddd1c2c1c2509f1cc151158978d1bc787dcac529ae52",
+      "optimized_sha256": "5cb886ee57d6884679a4f756e3a9c4f8ae14faaa8e5dc8f27d741bc8635fee8d",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Send only current pipeline stage and next stage to Responses. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07)."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_pipeline.py",
+      "base_source_sha256": null,
+      "optimized_sha256": "57b02c7f08e76a0d8bfe4ad2befb53b8164a5b6dc126ab0cad41290d8bd2e3e3",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Define 25 atomic contracts, three mode lifecycles, independent held receipts and one-arm dispatch admission."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_policy.py",
+      "base_source_sha256": "104f809f2dc9cb1f1f29e74873070103896b436d5dd2c11ef05713561585f4eb",
+      "optimized_sha256": "6d861081e662917f34df801e5fe0e94e790ae453193446c9ca41aeb2202969c7",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain the existing compact decision policy changes in the local optimization layer."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_task_evaluation.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "aeed5a32d2dc7950eaaea29e1b3c0565cee9ce8118af2d739a5bd240432f0dd9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_task_pipeline.py",
+      "change_reason": "Map 18 ARX5 tasks to 20 bounded compositions; bind the current L2 contract and count only continuous measured changes as progress. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "base_source_sha256": null,
+      "optimized_sha256": "13881549af70dda71b316455ca95a5d0de7fdc32f3dbfd2e752166dd87fd6422",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_task_session.py",
+      "change_reason": "Persist frozen offline task contracts and event history across Codex commands, with active-operation lookup, revision checks and total deadlines. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "pipeline_id": "hierarchical_piper_v1",
+      "base_source_sha256": null,
+      "optimized_sha256": "e1bf33cdedee26f62b138368cd0be7ad37668783bb3d36ef6f27785b7afd2dd5"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_task_spec.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a30f7028eea9f486269eb99f87ea63895adc626bd59f3d224b6bd74da1a09d1c",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/reviewed_experiences.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "b1b588fa93a39deeccbca082e1c16670869d24947e8fd0816302cb769b753efb",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_cli.py",
+      "change_reason": "Reject unavailable modes and mismatched model protocols before resources open.",
+      "base_source_sha256": "be9d8d2cfba56c21babc9ac1f8bbf08bb4de6d06597e20d4020cfd74fc0e2db0",
+      "optimized_sha256": "f65016bd1767c7ffc4790715194fde03620078fb560482f5bfeea32cc8633961",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_codex.py",
+      "base_source_sha256": "5fbbede468b3d6e68f0af44ce64af91a450d7a2f79aa8795dc5a7d1485205c4a",
+      "optimized_sha256": "f4c5f81cbf579f3b09296796fbbec9a6c94240e344c5d37910a67f1bb51c5c2a",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain local regression coverage for compact Codex packets."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_experience.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "d3fff8622368cb61bacadba3b23245424ca5d624e09c72ed6d2c3c259de9a2b9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_live_loop.py",
+      "base_source_sha256": "d02a8b08764d1c783b86f1e891349ed51002094072e065695439d21dcf4035b5",
+      "optimized_sha256": "c97c3044bbd7c6b6e6cee54533f3676d5fe951acbb0ced336a879ad280d338a1",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain local regression coverage for bounded live-loop behavior."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_loop.py",
+      "base_source_sha256": "0fa84c1318f780ecd43da10ef9552ec8132c8e3eb4c4b6c6549dacf4839ec245",
+      "optimized_sha256": "002f761b9f1ef504e0a51e66d10e719c3ba1d6a4660b60ec6a8b48fb9edab88e",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain local regression coverage for bounded replay behavior."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_pipeline.py",
+      "base_source_sha256": null,
+      "optimized_sha256": "0e55e3b69accdace9f8f02b60c69af3f9e30308b5a3a144937ba20ae872ffb7d",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Add contract, role gate, and token compaction regression tests."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_project_entry.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "e365915d8550f6b0c37487066ee16226493ac83dbea054cdd0bb07aac0bc5914",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "70c7cadbdb318e576381bb6f8cc279641d9f08f8eb412b038f212141c25c2aa6",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+      "change_reason": "Verify task variants, layered operation lookup, continuous measured progress, observer branch and budgets. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "base_source_sha256": null,
+      "optimized_sha256": "dcda43e8e3492640e8620cf19ae7ebc0d8ab1d4c78d4cd61938d3cc4593215af",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_task_session.py",
+      "change_reason": "Verify real CLI restarts, active operation lookup, measured-progress replay, concurrent writes and immutable budgets. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07).",
+      "pipeline_id": "hierarchical_piper_v1",
+      "base_source_sha256": null,
+      "optimized_sha256": "df47077b634c4c6e290b05cf90650bd574d4975e90fd944695ccf183a304a948"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_task_spec.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "b26a6c8fb308291d1b018fccf09511785494a53830d73a788d4600443c28ae9d",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_contact_retreat.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "98dc548593c0b16b2aef0fce40b7545803bf19243666412f842d610489b32cfa",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_post_contact.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "337a4419ccb420d3d10a87803b62f015b50f934672b9b1274a543d91bbb10db9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_readiness_entry.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a63898f0286c34897e96e8ab33d646b1fb368feaea80b6d3d10e2f349a7f725b",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_guarded_recorded_probe.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "7fabeffa13da0124276838be09ca44f3c5bcb81a7566516930ff5d8865183ab4",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_sliding_stability.py",
+      "change_reason": "Preserve selected historical source/evidence with original bytes and an explicit origin index.",
+      "base_source_sha256": null,
+      "optimized_sha256": "6d095e74dfde530fd142c8b51d9143aae0f79dc637d362a3d838b9e1040218f3",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_zero_tx_continuation.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "31d57ffce6f20c3a4e58013be7966b693405bfe3ba8e523f154fd01281999f27",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/composition_review.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "71f82f40635f518ce2b4ae9162bd128d039fa85b9acafb167755a758f8ba2930",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/composition_review.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "5609e2473b8f187301d113a29a0358d071b9ff3e1e6e270f3149a0e9fdcd1dc3",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/experience_lookup_offline.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c66752dfcd919d8cf2f246e5cb5b7747831500f2e7f2bea12a88d7891446a8a5",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/generalization_synthesis.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "9922749a33d0c2992c08288535c1b5cf4f3a862077869025c7e1bd2eaa1f6542",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/legacy_test_portability.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "aae9c55ffb67e7dbc3caace8f2280e1b0635a2c98fafb9b53227d9a7f6fb9d57",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/memory_review.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "f6fce6cca0c9395ffe0cd6880215fc561b013e4ded9e9d45e4f5980f6b83eb81",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/memory_review.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a9a10fc741229ad58b859bf4998c14a700b70ea5a846976ccd7f31403b81858b",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/review_evaluation_by_composition.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "3d2c2fae2d545cd8c43ddc69200af245413bd0c16c3d54794699dcba49d916b7",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/review_integrity.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "d78c50a07d3384945c2c3b697beb71dde29fbde8c945c93222f4d2a2870b9eeb",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/review_memory_by_eval.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "5a8d9df8ceb912edcf13c2ab8ae44863c0c61114f3782bb98ef199cd9fc8cf83",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/review_recipe_entry.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "f5530dfdc906e3b0168caaa8d85c6554c7984f57a001c7ac3a7d566d0b67bbde",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/task_eval_articulated_example.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "84a17c99b1d5384aae48e16ce5cd365d5ed6fd6afc57751ee32ef900a3ea78be",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/task_eval_placement_example.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a5ea076e2822a0bf555738a1d3e25df9fcb161977d2c92945e0a06894d4627b6",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/task_eval_review.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1d3b49a4f7e3e7810b59683208df040f2b2faed3825327046d3740eebe8b06b6",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/task_eval_review.txt",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "19270e33d590e948b77e06d879cc8a394b1c8a42504fd5ecce5c7aedc48fdbbc",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/validation/fast-tests.log",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "0d8846f08f59a29b51dc65b885926ed7c962240587f6f2e24a2d8e40c5a958f4",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "research/validation/tool-tests.log",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "74369f638fd3d5a927005fc8c75ac13fb9b9e25a71cdbd036d4b051f2200570a",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tasks/can_on_lid.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "28f97c6244a24343125dcd1d0720d8d6bcd83e98b540a1cab89ba667b17b461f",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tasks/charger_in_unpowered_socket.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "ea4d62a7746f84368e397e3a0fc6a1ceaac549fa47e5a6643a5ff868f8bce240",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tasks/pen_in_holder.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "fe633e8b88195690d516c6b6cfd62f01330fc515117b457cd9222b5a903d15c5",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tasks/sort_two_objects.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "7f5754ec996816116f8383586f907d3730c66d275e8353a5775352b171c2cfe9",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tasks/turn_faucet.json",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c3a95f00872b5ae7a5fb51874604949d733e5cbc645ba57692bba5eeeafdb23e",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tools/astra.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "de1997a1c6db744d7c5e2c670cad88c9df4b0e325162bac41363de8614efb7a0",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tools/tests/test_verify_bundle.py",
+      "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c37d68f80b4fe826be532a824bd458be51796560477939364a858a72ab6c1493",
+      "pipeline_id": "generic_astra_offline_v1"
+    },
+    {
+      "local_path": "tools/verify_bundle.py",
+      "base_source_sha256": null,
+      "optimized_sha256": "8bf07723e7a5b3aa3ecfb929a57115e2fc673fb053686c1f36ecbc1e1f44f98b",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Verify source snapshot and local optimization layer separately. Integrated generic task composition, evidence review, experience or portability documentation in the canonical project (2026-10-07)."
+    }
+  ]
+}

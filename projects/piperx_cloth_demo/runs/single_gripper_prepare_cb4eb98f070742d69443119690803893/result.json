@@ -1,0 +1,584 @@
+{
+  "ok": false,
+  "status": "refused_before_send",
+  "before": null,
+  "after": {
+    "left": {
+      "status": "complete",
+      "timestamp": 1791341306.4676762,
+      "fragment_timestamps_s": {
+        "arm_status": 1791341306.4650424,
+        "joint_12": 1791341306.4655163,
+        "joint_34": 1791341306.4656286,
+        "joint_56": 1791341306.4657197,
+        "end_pose_xy": 1791341306.4651303,
+        "end_pose_zrx": 1791341306.4652662,
+        "end_pose_ryrz": 1791341306.4653802,
+        "driver_state_1": 1791341306.4461064,
+        "driver_state_2": 1791341306.4662442,
+        "driver_state_3": 1791341306.4614253,
+        "driver_state_4": 1791341306.4564688,
+        "driver_state_5": 1791341306.4516296,
+        "driver_state_6": 1791341306.4468334,
+        "gripper": 1791341306.4658365
+      },
+      "fragment_ages_s": {
+        "arm_status": 0.002633810043334961,
+        "joint_12": 0.0021598339080810547,
+        "joint_34": 0.0020475387573242188,
+        "joint_56": 0.001956462860107422,
+        "end_pose_xy": 0.0025458335876464844,
+        "end_pose_zrx": 0.0024099349975585938,
+        "end_pose_ryrz": 0.002295970916748047,
+        "driver_state_1": 0.02156972885131836,
+        "driver_state_2": 0.0014319419860839844,
+        "driver_state_3": 0.006250858306884766,
+        "driver_state_4": 0.011207342147827148,
+        "driver_state_5": 0.016046524047851562,
+        "driver_state_6": 0.020842790603637695,
+        "gripper": 0.0018396377563476562
+      },
+      "timestamp_basis": "CAN_frame_host_unix_receive_time",
+      "arm_telemetry_complete": true,
+      "missing_fragments": [],
+      "stale_fragments": [],
+      "max_fragment_skew_s": 0.020137786865234375,
+      "snapshot_atomic": false,
+      "freshness_limits_s": {
+        "max_age": 0.5,
+        "max_skew": 0.1
+      },
+      "pose_m_rad": [
+        0.048069999999999995,
+        -0.020031,
+        0.16471,
+        -2.7820548276789614,
+        1.2603371594501454,
+        -3.1245582400903285
+      ],
+      "joints_rad": [
+        -0.30578168494940655,
+        -0.03888593573443366,
+        0.05335471523346665,
+        -0.1424537735477772,
+        0.36658895608888903,
+        0.03590142271352336
+      ],
+      "arm_status": {
+        "ctrl_mode": 1,
+        "arm_status": 0,
+        "mode_feedback": 0,
+        "teach_status": 0,
+        "motion_status": 0,
+        "trajectory_num": 0,
+        "err_code": 0,
+        "err_status": {
+          "joint_1_angle_limit": false,
+          "joint_2_angle_limit": false,
+          "joint_3_angle_limit": false,
+          "joint_4_angle_limit": false,
+          "joint_5_angle_limit": false,
+          "joint_6_angle_limit": false,
+          "communication_status_joint_1": false,
+          "communication_status_joint_2": false,
+          "communication_status_joint_3": false,
+          "communication_status_joint_4": false,
+          "communication_status_joint_5": false,
+          "communication_status_joint_6": false
+        }
+      },
+      "drivers": {
+        "1": {
+          "vol": 23.0,
+          "foc_temp": 41.0,
+          "motor_temp": 33.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "2": {
+          "vol": 23.0,
+          "foc_temp": 40.0,
+          "motor_temp": 34.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "3": {
+          "vol": 23.0,
+          "foc_temp": 42.0,
+          "motor_temp": 35.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "4": {
+          "vol": 23.0,
+          "foc_temp": 43.0,
+          "motor_temp": 36.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "5": {
+          "vol": 23.0,
+          "foc_temp": 47.0,
+          "motor_temp": 39.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "6": {
+          "vol": 23.0,
+          "foc_temp": 45.0,
+          "motor_temp": 38.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        }
+      },
+      "hardware_commands_sent": 0,
+      "gripper": {
+        "status": "complete",
+        "timestamp": 1791341306.4658365,
+        "age_s": 0.0018396377563476562,
+        "mode": "width",
+        "value": 0.00014,
+        "value_unit": "m",
+        "width_m": 0.00014,
+        "angle_deg": null,
+        "force_N": 0.0,
+        "status_code": 0,
+        "foc_status": {
+          "voltage_too_low": false,
+          "motor_overheating": false,
+          "driver_overcurrent": false,
+          "driver_overheating": false,
+          "sensor_status": false,
+          "driver_error_status": false,
+          "driver_enable_status": false,
+          "homing_status": false
+        },
+        "force_unit_basis": "manufacturer SDK: N; not independently calibrated"
+      },
+      "telemetry_scope": "arm_status, joints, flange_pose, six_driver_states, gripper",
+      "motion_permitted": false
+    },
+    "right": {
+      "status": "complete",
+      "timestamp": 1791341306.4685438,
+      "fragment_timestamps_s": {
+        "arm_status": 1791341306.4626176,
+        "joint_12": 1791341306.4630506,
+        "joint_34": 1791341306.4631867,
+        "joint_56": 1791341306.463277,
+        "end_pose_xy": 1791341306.462713,
+        "end_pose_zrx": 1791341306.4627974,
+        "end_pose_ryrz": 1791341306.4629555,
+        "driver_state_1": 1791341306.458618,
+        "driver_state_2": 1791341306.4537647,
+        "driver_state_3": 1791341306.44889,
+        "driver_state_4": 1791341306.443981,
+        "driver_state_5": 1791341306.4641604,
+        "driver_state_6": 1791341306.4593887,
+        "gripper": 1791341306.463432
+      },
+      "fragment_ages_s": {
+        "arm_status": 0.0059261322021484375,
+        "joint_12": 0.0054931640625,
+        "joint_34": 0.005357027053833008,
+        "joint_56": 0.005266666412353516,
+        "end_pose_xy": 0.0058307647705078125,
+        "end_pose_zrx": 0.005746364593505859,
+        "end_pose_ryrz": 0.0055882930755615234,
+        "driver_state_1": 0.00992584228515625,
+        "driver_state_2": 0.014779090881347656,
+        "driver_state_3": 0.019653797149658203,
+        "driver_state_4": 0.024562835693359375,
+        "driver_state_5": 0.0043833255767822266,
+        "driver_state_6": 0.009155035018920898,
+        "gripper": 0.0051116943359375
+      },
+      "timestamp_basis": "CAN_frame_host_unix_receive_time",
+      "arm_telemetry_complete": true,
+      "missing_fragments": [],
+      "stale_fragments": [],
+      "max_fragment_skew_s": 0.02017951011657715,
+      "snapshot_atomic": false,
+      "freshness_limits_s": {
+        "max_age": 0.5,
+        "max_skew": 0.1
+      },
+      "pose_m_rad": [
+        0.037133,
+        0.037132,
+        0.170098,
+        2.6986455427261524,
+        1.2782093309905673,
+        -2.848639138642545
+      ],
+      "joints_rad": [
+        0.7047464986627903,
+        -0.03481931857728687,
+        0.04153883619746504,
+        0.1369036265264352,
+        0.34746014748703113,
+        -0.012985249634837812
+      ],
+      "arm_status": {
+        "ctrl_mode": 1,
+        "arm_status": 0,
+        "mode_feedback": 0,
+        "teach_status": 0,
+        "motion_status": 0,
+        "trajectory_num": 0,
+        "err_code": 0,
+        "err_status": {
+          "joint_1_angle_limit": false,
+          "joint_2_angle_limit": false,
+          "joint_3_angle_limit": false,
+          "joint_4_angle_limit": false,
+          "joint_5_angle_limit": false,
+          "joint_6_angle_limit": false,
+          "communication_status_joint_1": false,
+          "communication_status_joint_2": false,
+          "communication_status_joint_3": false,
+          "communication_status_joint_4": false,
+          "communication_status_joint_5": false,
+          "communication_status_joint_6": false
+        }
+      },
+      "drivers": {
+        "1": {
+          "vol": 23.0,
+          "foc_temp": 42.0,
+          "motor_temp": 35.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "2": {
+          "vol": 23.0,
+          "foc_temp": 43.0,
+          "motor_temp": 37.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "3": {
+          "vol": 23.0,
+          "foc_temp": 42.0,
+          "motor_temp": 37.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "4": {
+          "vol": 23.0,
+          "foc_temp": 44.0,
+          "motor_temp": 37.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "5": {
+          "vol": 23.0,
+          "foc_temp": 48.0,
+          "motor_temp": 41.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        },
+        "6": {
+          "vol": 23.0,
+          "foc_temp": 47.0,
+          "motor_temp": 39.0,
+          "foc_status_code": 64,
+          "foc_status": {
+            "voltage_too_low": false,
+            "motor_overheating": false,
+            "driver_overcurrent": false,
+            "driver_overheating": false,
+            "collision_status": false,
+            "driver_error_status": false,
+            "driver_enable_status": true,
+            "stall_status": false
+          },
+          "bus_current": 0.0
+        }
+      },
+      "hardware_commands_sent": 0,
+      "gripper": {
+        "status": "complete",
+        "timestamp": 1791341306.463432,
+        "age_s": 0.0051116943359375,
+        "mode": "width",
+        "value": -0.00357,
+        "value_unit": "m",
+        "width_m": -0.00357,
+        "angle_deg": null,
+        "force_N": 0.0,
+        "status_code": 0,
+        "foc_status": {
+          "voltage_too_low": false,
+          "motor_overheating": false,
+          "driver_overcurrent": false,
+          "driver_overheating": false,
+          "sensor_status": false,
+          "driver_error_status": false,
+          "driver_enable_status": false,
+          "homing_status": false
+        },
+        "force_unit_basis": "manufacturer SDK: N; not independently calibrated"
+      },
+      "telemetry_scope": "arm_status, joints, flange_pose, six_driver_states, gripper",
+      "motion_permitted": false
+    }
+  },
+  "errors": [
+    {
+      "type": "RuntimeError",
+      "detail": "right measured width outside single-gripper preparation range"
+    }
+  ],
+  "arms": {},
+  "samples": 2,
+  "motion_gate_unlocked": false,
+  "hold_not_validated": true,
+  "target_commands_sent": 0,
+  "enable_commands_sent": 0,
+  "stop_commands_sent": 0,
+  "retries": 0,
+  "mode_frame_can_activate_cached_target": false,
+  "external_sender_detection": "Known command frames visible on SDK RX only; silence does not prove bus ownership",
+  "limits": {
+    "warmup_s": 3.0,
+    "stable_s": 1.0,
+    "after_send_s": 2.0,
+    "failure_observe_s": 0.5,
+    "poll_s": 0.05,
+    "joint_rad": 0.003,
+    "position_m": 0.002,
+    "gripper_m": 0.002
+  },
+  "operation": "prepare_gripper",
+  "arm": "right",
+  "selected_arm": "right",
+  "passive_arm": "left",
+  "passive_arm_commands_sent": 0,
+  "task_motion_ready": false,
+  "grasp_verified": false,
+  "arm_target_commands_sent": 0,
+  "gripper_target_commands_sent": 0,
+  "gripper_enable_commands_sent": 0,
+  "mode_commands_sent": 0,
+  "gripper_enabled": {
+    "left": false,
+    "right": false
+  },
+  "force_nominal_N": 0.2,
+  "force_physically_calibrated": false,
+  "gripper_target_may_move_fingers": true,
+  "preparation_does_not_validate_position_hold": true,
+  "joint_limits_changed": false,
+  "joint_values_recorded_without_task_motion_qualification": true,
+  "joint_feedback_tolerances_rad": {
+    "left": [
+      0.003,
+      0.003,
+      0.003,
+      0.003,
+      0.003,
+      0.003
+    ],
+    "right": [
+      0.003,
+      0.003,
+      0.003,
+      0.003,
+      0.003,
+      0.003
+    ]
+  },
+  "rotation_distance_limit_rad": 0.003,
+  "rotation_distance_basis": "SO(3) angle between manufacturer Rz(yaw) Ry(pitch) Rx(roll) quaternions",
+  "pose_rpy_component_rad_diagnostic_only": true,
+  "observed_joint_limit_violations": {},
+  "failure_policy": "No retry, stop, reset, disable or other-arm dispatch",
+  "gripper_limits": {
+    "target_width_min_m": 0.0,
+    "target_width_max_m": 0.07,
+    "pre_send_width_tolerance_m": 0.0005,
+    "after_send_width_tolerance_m": 0.001
+  },
+  "site_attention_required": false,
+  "transmission_counts": {
+    "left": {
+      "attempted_frames": 0,
+      "sent_frames": 0,
+      "blocked_frames": 0
+    },
+    "right": {
+      "attempted_frames": 0,
+      "sent_frames": 0,
+      "blocked_frames": 0
+    }
+  },
+  "transmission_counts_by_kind": {
+    "left": {
+      "gripper": {
+        "attempted_frames": 0,
+        "sent_frames": 0
+      }
+    },
+    "right": {
+      "gripper": {
+        "attempted_frames": 0,
+        "sent_frames": 0
+      }
+    }
+  },
+  "hardware_commands_sent": 0,
+  "drift": {
+    "left": {
+      "joint_rad": 0.0,
+      "position_m": 0.0,
+      "gripper_m": 0.0,
+      "pose_rpy_component_rad": 0.0,
+      "rotation_distance_rad": 0.0
+    },
+    "right": {
+      "joint_rad": 0.0,
+      "position_m": 0.0,
+      "gripper_m": 0.0,
+      "pose_rpy_component_rad": 0.0,
+      "rotation_distance_rad": 0.0
+    }
+  },
+  "guard_violations": [],
+  "cleanup": {
+    "arms": {
+      "left": {
+        "status": "disconnected",
+        "physically_stopped": null
+      },
+      "right": {
+        "status": "disconnected",
+        "physically_stopped": null
+      }
+    },
+    "detail": "Disconnect is cleanup, not a physical stop"
+  },
+  "target_width_raw": null,
+  "passive_initial_enable_flags": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+  ],
+  "run_id": "single_gripper_prepare_cb4eb98f070742d69443119690803893",
+  "record_path": "/home/agilex/GPT6-Astra-REAL/projects/piperx_cloth_demo/runs/single_gripper_prepare_cb4eb98f070742d69443119690803893/result.json",
+  "trajectory_execution_available": false
+}

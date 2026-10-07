@@ -1,0 +1,3722 @@
+{
+  "schema_version": "arx5_experiment_patterns_round2_v1",
+  "reviewed_at": "2026-10-07",
+  "repository": "https://github.com/zijianzhang30/GPT6-ARX5",
+  "head_api_url": "https://api.github.com/repos/zijianzhang30/GPT6-ARX5/commits/HEAD",
+  "head_commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+  "head_committed_at": "2026-10-06T13:32:33Z",
+  "previously_pinned_commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+  "head_changed_since_first_review": false,
+  "scope": "offline research and declarative contract coverage only",
+  "local_root": "/home/agilex/GPT6-Astra-REAL",
+  "task_reference_count": 18,
+  "source_manifest": [
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/blackboard-wiping.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blackboard-wiping.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blackboard-wiping.md",
+      "sha256": "41519101b928f4ecaae825eb7a910bda7699fbd5881f8dc2d2311cddde47de3b",
+      "bytes": 6628,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/blue-block-triangle-push.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blue-block-triangle-push.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blue-block-triangle-push.md",
+      "sha256": "88bdeb1960a8c22a1d0818f864e26eae650233d287eccd2cd8500636dff0fe7e",
+      "bytes": 2971,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/blue-blocks-sweeping.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blue-blocks-sweeping.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/blue-blocks-sweeping.md",
+      "sha256": "6c2c1a1ca5c29adb7a20ec902a997f9ae57a91c6983cf15ef7ee7c8c544765b3",
+      "bytes": 3606,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/bolt-screwing.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/bolt-screwing.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/bolt-screwing.md",
+      "sha256": "e9dec9ea5405728d269d9f4448a5059e717c935a2c43a712f7ddc4d50ec5b0a7",
+      "bytes": 2967,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/book-extraction.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/book-extraction.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/book-extraction.md",
+      "sha256": "e79af5632754dbc590ff24dce8ac59f853e0bca5d718ae1019ccbf35004791ff",
+      "bytes": 4076,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/bottle-unscrewing.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/bottle-unscrewing.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/bottle-unscrewing.md",
+      "sha256": "034017d8c000cd54f26dca527ff29243c68fe44683980d7c833faa98987371b7",
+      "bytes": 9481,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/charger-insert-only.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/charger-insert-only.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/charger-insert-only.md",
+      "sha256": "6dfa838aac0c3849fe3538f8f94c4c297b106d069ca87b38d4f6c4a3e78b6e68",
+      "bytes": 3064,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/charger.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/charger.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/charger.md",
+      "sha256": "6b9e1f899ffc7aecc2b3df8b18cbc8413696cbbfcd6bb572daa38ced0b9062c7",
+      "bytes": 4975,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/common-execution.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/common-execution.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/common-execution.md",
+      "sha256": "6563074a2972019bc460e724968c014494b2b9ec3f5111ec5631734d5e6a3e50",
+      "bytes": 9777,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/cups.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/cups.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/cups.md",
+      "sha256": "d19de79650bb0dc69d6da6201bbdfe15b9592a96de5662d4bbbe7034b49096f0",
+      "bytes": 2374,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/drawer-push-pull.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/drawer-push-pull.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/drawer-push-pull.md",
+      "sha256": "be0a8b6d80676119615d5ae7d2903e6fad58114339d2b2e410fd2b275b826943",
+      "bytes": 4608,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/fixed-bottle-unscrewing.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/fixed-bottle-unscrewing.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/fixed-bottle-unscrewing.md",
+      "sha256": "381e2bafd7fdc327a1d4d0db1970e6976ae05e4ccbc81b455aa152ae148310de",
+      "bytes": 9331,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/flower.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/flower.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/flower.md",
+      "sha256": "e3723aa69d86c86578095a32feea4f8275da9d20228cc9dfb2f3117b071d2e32",
+      "bytes": 3989,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/hat.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/hat.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/hat.md",
+      "sha256": "4064269bf1e935eae548e5a164d88fd8329b8ecb3adedc6db69270d00c16d69e",
+      "bytes": 3540,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/jelly-pick-place.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/jelly-pick-place.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/jelly-pick-place.md",
+      "sha256": "2cf60ca3ab5104e93d223664fd2d71162781450fc00d5a1883379e8eeb66d241",
+      "bytes": 4236,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/orange-pick-place.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/orange-pick-place.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/orange-pick-place.md",
+      "sha256": "8e3f517caf8560899b1a405f908c56d381a9c0597486bc817a8b7a6f3847b41f",
+      "bytes": 3096,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/pearl-pouring.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pearl-pouring.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pearl-pouring.md",
+      "sha256": "bbe90607ab4160f070338b3882f16fac204426f853c50955a4484b9f460ac4ac",
+      "bytes": 3819,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/pen-uncapping.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen-uncapping.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen-uncapping.md",
+      "sha256": "0855bd8d00be177db4133c2676c7f70b043d80f72d5b1aae73205a8b02839225",
+      "bytes": 5131,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/pen.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen.md",
+      "sha256": "365c21532c7e63dff876102336a5ea0a0d1014c8a69805143a0323ef60602d11",
+      "bytes": 2796,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/references/records-and-evidence.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/records-and-evidence.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/records-and-evidence.md",
+      "sha256": "5248ca919a3d19b04802e3349b167aeadfadb3e310ff669250089d178fea9cd0",
+      "bytes": 9672,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "skills/arx-r5-tabletop-tasks/SKILL.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/SKILL.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/SKILL.md",
+      "sha256": "67e5ef31921508ed7413757dacb2ba2cf0e137c24016e70381ca900c341cc503",
+      "bytes": 7732,
+      "review_scope": "complete task reference"
+    },
+    {
+      "path": "BLACKBOARD_WIPING_EXPERIMENT_RECORD_20261006.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLACKBOARD_WIPING_EXPERIMENT_RECORD_20261006.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLACKBOARD_WIPING_EXPERIMENT_RECORD_20261006.md",
+      "sha256": "c5796ee23ac9e4b7e307c4cea1c52fb481e5ead3ee725e812b2cc63c59b97237",
+      "bytes": 3831,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "BLUE_BLOCKS_SWEEPING_EXPERIMENT_RECORD_20261006.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLUE_BLOCKS_SWEEPING_EXPERIMENT_RECORD_20261006.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLUE_BLOCKS_SWEEPING_EXPERIMENT_RECORD_20261006.md",
+      "sha256": "0337154d3f1ee840703cde3f8c7942c3ab572fec4e3eff4f396f21a6a31752fe",
+      "bytes": 1254,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "BLUE_BLOCK_TRIANGLE_PUSH_EXPERIMENT_RECORD_20261006.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLUE_BLOCK_TRIANGLE_PUSH_EXPERIMENT_RECORD_20261006.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BLUE_BLOCK_TRIANGLE_PUSH_EXPERIMENT_RECORD_20261006.md",
+      "sha256": "4c9d45d7f30c01a0a390b48b2107b1d576aafa026d500d4a093d28bbdf032e07",
+      "bytes": 1158,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "BOLT_SCREWING_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOLT_SCREWING_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOLT_SCREWING_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "6d684e09de6fe817b2b4185870189b5ddb49afe44330c5d85dceb68c3a9756d3",
+      "bytes": 980,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "BOOK_EXTRACTION_EXPERIMENT_RECORD_20261006.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOOK_EXTRACTION_EXPERIMENT_RECORD_20261006.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOOK_EXTRACTION_EXPERIMENT_RECORD_20261006.md",
+      "sha256": "dcccdfb3ec7545eb90b3ded1f4dd5fe9573427a099268ec45f254b4ccf248421",
+      "bytes": 2633,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "BOTTLE_UNSCREWING_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOTTLE_UNSCREWING_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/BOTTLE_UNSCREWING_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "952278a6de6e5ba46198983022cadb1934fc2907c661524bec46fdd19d8ff303",
+      "bytes": 5819,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "CHARGER_INSERTION_EXPERIMENT_RECORD_20261001.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERTION_EXPERIMENT_RECORD_20261001.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERTION_EXPERIMENT_RECORD_20261001.md",
+      "sha256": "45f1cb331ab81433a34fe452ff9076bfe73564c4440f74b1b1ab536f62619ad3",
+      "bytes": 100905,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "CHARGER_INSERTION_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERTION_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERTION_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "4968300bbb805df1a7f495edcacb56adb3bfd3e7c415db74a745c779ff6babdd",
+      "bytes": 769,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "CHARGER_INSERT_ONLY_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERT_ONLY_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CHARGER_INSERT_ONLY_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "e20802e4fcfb5ae7278383b276c04228ac3c89b4b74edd5efe1123b278456d33",
+      "bytes": 1103,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "CUP_STACKING_EXPERIMENT_RECORD_20261001.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CUP_STACKING_EXPERIMENT_RECORD_20261001.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/CUP_STACKING_EXPERIMENT_RECORD_20261001.md",
+      "sha256": "2761a2b301be39919c89783137e7a3a0c6a47624fa494d8f3281724769c583bc",
+      "bytes": 18277,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "DRAWER_PUSH_PULL_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/DRAWER_PUSH_PULL_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/DRAWER_PUSH_PULL_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "050d66fb67a98462e195dbf63aebaad13fdf7f11fef7acb13677cd83936f832b",
+      "bytes": 10570,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "661774a9e511ab8b04eee38d28aebfadff31ce3f602adcc0dd7b38349d785cea",
+      "bytes": 1204,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261006.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261006.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261006.md",
+      "sha256": "3e42fb31e1136dd8ac317eec86900e3fd67a5080a9c338c5f2b06e550cb870e1",
+      "bytes": 1304,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "FLOWER_INSERTION_EXPERIMENT_RECORD_20261002.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FLOWER_INSERTION_EXPERIMENT_RECORD_20261002.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FLOWER_INSERTION_EXPERIMENT_RECORD_20261002.md",
+      "sha256": "00ac2b8a2da229e601f3345b7e289ec47c00638e4b08c82c31c02af3303f2583",
+      "bytes": 28499,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "FLOWER_INSERTION_EXPERIMENT_RECORD_20261003.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FLOWER_INSERTION_EXPERIMENT_RECORD_20261003.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/FLOWER_INSERTION_EXPERIMENT_RECORD_20261003.md",
+      "sha256": "f773e10d9e211cbb8c0cee7ece28bbd3fe23200b06b8f6d6fa2cb559085c4d8b",
+      "bytes": 28576,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "HAT_HANGING_EXPERIMENT_RECORD_20261003.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/HAT_HANGING_EXPERIMENT_RECORD_20261003.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/HAT_HANGING_EXPERIMENT_RECORD_20261003.md",
+      "sha256": "ca76492e94c53a4ac574c465ea770a037e7460052b21cfff97d0728131babd66",
+      "bytes": 4179,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "JELLY_PICK_PLACE_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/JELLY_PICK_PLACE_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/JELLY_PICK_PLACE_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "01725b6ee5d0f34b80b321bcba7acd68d205e63539c643a71dd68ebe2490005d",
+      "bytes": 2274,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "ORANGE_PICK_PLACE_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/ORANGE_PICK_PLACE_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/ORANGE_PICK_PLACE_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "05327fa5a9379f84405178adea8d4e52753869f6fb196d42c17a722cae2b67a2",
+      "bytes": 1914,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "PEARL_POURING_EXPERIMENT_RECORD_20261005.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEARL_POURING_EXPERIMENT_RECORD_20261005.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEARL_POURING_EXPERIMENT_RECORD_20261005.md",
+      "sha256": "408c01db47b1cb5cb7f7f314f71c71842d5a9d4536b981c0cc719b56aba6d0c1",
+      "bytes": 2809,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "PEN_INSERTION_EXPERIMENT_RECORD_20261002.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEN_INSERTION_EXPERIMENT_RECORD_20261002.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEN_INSERTION_EXPERIMENT_RECORD_20261002.md",
+      "sha256": "c1acbcf5d97d0c162e9d81ff1e3a9ce3fd43ab6b1ee6dd7a03fda9f0a7176a6a",
+      "bytes": 66434,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "PEN_UNCAPPING_EXPERIMENT_RECORD_20261003.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEN_UNCAPPING_EXPERIMENT_RECORD_20261003.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/PEN_UNCAPPING_EXPERIMENT_RECORD_20261003.md",
+      "sha256": "530a2e79ffea27eea997fb150eb1c795ae98ff49972e00133c3a8712879339eb",
+      "bytes": 11237,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    },
+    {
+      "path": "REAL_ROBOT_EXPERIMENT_REPORT_20261006.md",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/REAL_ROBOT_EXPERIMENT_REPORT_20261006.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/REAL_ROBOT_EXPERIMENT_REPORT_20261006.md",
+      "sha256": "366e7250e072cd05925f35dd279874e4d20d7850e427ce1307aeaf83903c644a",
+      "bytes": 38735,
+      "review_scope": "published summary/outcome sections cross-checked with full task reference; no raw trial/video authentication"
+    }
+  ],
+  "experiments": [
+    {
+      "task_id": "cups",
+      "title": "双臂套杯",
+      "report_paths": [
+        "CUP_STACKING_EXPERIMENT_RECORD_20261001.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "5 rounds, evolving v1/v2/v3",
+          "reported_result": "user_accepted_4_of_5; full_supervised_workflow_verified_1_of_5",
+          "human_or_protocol_conditions": "Manual initial placement and supervision; protocols changed between rounds.",
+          "evidence_scope": "Only trial 3 verifies both returns. Trial 5 nesting succeeded before final return software fault; trials 1/2 lack complete release/retreat evidence.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left places the lower cup and clears its entire arm/camera/cables before right cup work; both are task arms.",
+      "required_success_evidence": [
+        "lower cup released and independently stable",
+        "left full arm corridor clear before right work",
+        "upper cup actually nested, not merely above rim",
+        "new views after release and retreat show stable nesting; return reported separately"
+      ],
+      "transferable_failure_strategies": [
+        "Empty lift means change observed depth/alignment before retry.",
+        "A combined three-axis approach toppled a cup; separate uncertain depth and descent.",
+        "Do not repeatedly re-anchor an already returned peer or overwrite the immutable run reference."
+      ],
+      "local_semantic_gaps": [
+        "Builtin insert_segment has generic axial/support evidence; explicit nested_cups_stable predicate is still needed for an object-specific acceptance contract."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/cups.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "dual_arm",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "transport",
+          "release_retreat",
+          "stable_verify",
+          "return_reference",
+          "insert_segment"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary",
+              "peer_corridor_clear"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "right",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "right",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "right",
+            "evidence": [
+              "object_retained",
+              "support_separated"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "right",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "right",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "insert_segment",
+            "arm": "right",
+            "evidence": [
+              "axial_progress",
+              "support_established"
+            ],
+            "requirements": [
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "right",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "right",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "right",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "one_arm_moves_at_a_time",
+          "left_full_arm_clears_right_corridor"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_pair_tasks_cannot_be_downgraded_to_observer"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "pen",
+      "title": "细笔入筒与粗笔入宽口杯",
+      "report_paths": [
+        "PEN_INSERTION_EXPERIMENT_RECORD_20261002.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "thin pen / original narrow holder",
+          "reported_result": "2 rounds incomplete",
+          "human_or_protocol_conditions": "Original object and receiver.",
+          "evidence_scope": "No verified completed insertion.",
+          "independently_reproduced_here": false
+        },
+        {
+          "variant": "thick marker / wide cup",
+          "reported_result": "4 placements of 6 rounds",
+          "human_or_protocol_conditions": "2 successful placements assisted; 2 pickup/placement sequences unassisted.",
+          "evidence_scope": "Only overall trial 7 has no scene intervention through return. Trial 8 scene changed during return after saved stable placement.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left worker; right view only and withdraws before transport when its observation pose blocks the corridor. Props manually reset between runs.",
+      "required_success_evidence": [
+        "pen leaves original support and stays in jaws",
+        "actual pen tip enters the frozen receiver",
+        "release and empty-jaw retreat precede two independent stable views"
+      ],
+      "transferable_failure_strategies": [
+        "Use fresh fixed-view pen/support relations to reject empty grasps.",
+        "Reobserve object axis instead of adding wrist angles.",
+        "Retain historical placement milestone if later scene is changed, but do not call the new scene currently successful."
+      ],
+      "local_semantic_gaps": [
+        "Builtin pen intentionally forbids silently replacing thin pen/holder; marker/wide-cup variant requires a distinct frozen recipe."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/pen.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "transport",
+          "insert_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "insert_segment",
+            "arm": "left",
+            "evidence": [
+              "axial_progress",
+              "support_established"
+            ],
+            "requirements": [
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "do_not_replace_thin_pen_with_marker",
+          "do_not_replace_holder_with_wide_cup"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "charger",
+      "title": "抓取充电头并插入无电插座",
+      "report_paths": [
+        "CHARGER_INSERTION_EXPERIMENT_RECORD_20261001.md",
+        "CHARGER_INSERTION_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "full pickup/insertion across evolving layouts",
+          "reported_result": "no insertion success through trial 11",
+          "human_or_protocol_conditions": "Human layout/target changes; early peer-fixing plan later replaced by view-only/static peer.",
+          "evidence_scope": "Trial 7 grasp/transport/replacement verified; trial 11 four failed grasps. Trial 10 exact closing metadata incomplete, not repaired by inference.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Latest left worker and right view only or disabled static camera. Mains disconnection is a human/host fact, not inferred from RGB.",
+      "required_success_evidence": [
+        "both prongs aligned with the specified two holes",
+        "actual additional axial insertion and reduced body/socket gap",
+        "socket does not follow or tip",
+        "release/retreat followed by independent seated stability"
+      ],
+      "transferable_failure_strategies": [
+        "Projected overlap is not insertion; obtain a side view of prongs and gap.",
+        "Socket motion requires reassessment, not extra force.",
+        "Separate execution fault, failed grasp and failed insertion denominators."
+      ],
+      "local_semantic_gaps": [
+        "No calibrated force-control or socket-contact executor was implemented locally; generic insert evidence needs the frozen prong/seat acceptance claims."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/charger.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "transport",
+          "insert_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "insert_segment",
+            "arm": "left",
+            "evidence": [
+              "axial_progress",
+              "support_established"
+            ],
+            "requirements": [
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "power_disconnected_confirmed"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "charger-insert-only",
+      "title": "人工预对孔后的继续插入",
+      "report_paths": [
+        "CHARGER_INSERT_ONLY_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "manually aligned/shallowly inserted charger",
+          "reported_result": "trial 1 incomplete after 3 local attempts",
+          "human_or_protocol_conditions": "Autonomous pickup omitted; initial insertion must be saved.",
+          "evidence_scope": "First two attempts lacked grip/insertion proof; a small insertion candidate was rejected before execution. Third approach ended in proxy loss/disable fall; no controlled return.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left worker; right view only. Human provides initial alignment or shallow insertion; this cannot count as robot-added progress.",
+      "required_success_evidence": [
+        "bilateral supported contact without disturbing initial insertion",
+        "robot-added insertion relative to saved initial body gap",
+        "release/retreat and independent stable seating"
+      ],
+      "transferable_failure_strategies": [
+        "Do not insert a test lift into a preinserted protocol.",
+        "A rejected command is zero completed insertion, not a visual failure.",
+        "Unknown proxy termination cause remains unknown; no automatic replay."
+      ],
+      "local_semantic_gaps": [
+        "Builtin correctly uses grip_supported and omits grip_test; actual axial contact admission is not a physical implementation."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/charger-insert-only.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_supported",
+          "insert_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_supported",
+            "arm": "left",
+            "evidence": [
+              "bilateral_contact",
+              "support_unchanged"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "insert_segment",
+            "arm": "left",
+            "evidence": [
+              "axial_progress",
+              "support_established"
+            ],
+            "requirements": [
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "power_disconnected_confirmed",
+          "no_test_lift_or_claim_of_autonomous_pick"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_preinsert_does_not_test_lift_and_variants_keep_distinct_evidence"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "flower",
+      "title": "插花及预持花放纸杯变体",
+      "report_paths": [
+        "FLOWER_INSERTION_EXPERIMENT_RECORD_20261002.md",
+        "FLOWER_INSERTION_EXPERIMENT_RECORD_20261003.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "automatic pickup to narrow bottle",
+          "reported_result": "no full success",
+          "human_or_protocol_conditions": "Initial flower supported on cup/fixture.",
+          "evidence_scope": "Trial 4 eventually lifted flower, then infrastructure fault before insertion/release.",
+          "independently_reproduced_here": false
+        },
+        {
+          "variant": "preheld to narrow bottle",
+          "reported_result": "release failed",
+          "human_or_protocol_conditions": "Manual prehold and reorientation.",
+          "evidence_scope": "Flower fell onto table at release; subsequent manual replacement not autonomous regrasp.",
+          "independently_reproduced_here": false
+        },
+        {
+          "variant": "preheld to red paper cup v4",
+          "reported_result": "placement and both returns reported successful",
+          "human_or_protocol_conditions": "Receiver and orientation criteria explicitly changed.",
+          "evidence_scope": "Flower tilted against rim; neither upright placement nor narrow-bottle success.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left worker; right view-only/static in later variant. Manual prehold, loosened orientation constraints and receiver change must be explicit.",
+      "required_success_evidence": [
+        "actual stem axis and tip enter the frozen receiver",
+        "receiver is stable and supports flower before release",
+        "independent post-retreat support satisfies the frozen orientation criterion"
+      ],
+      "transferable_failure_strategies": [
+        "If receiver follows, contact is not cleared: stop lateral/wrist change.",
+        "Orient in visible free space only after actual separation.",
+        "New receiver/goal gets a new protocol version."
+      ],
+      "local_semantic_gaps": [
+        "Builtin flower starts preheld; automatic tool acquisition needs a separate recipe. Orientation and receiver claims must be specialized."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/flower.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "validate_preheld",
+          "transport",
+          "align",
+          "insert_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "validate_preheld",
+            "arm": "left",
+            "evidence": [
+              "preheld_object_retained"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "insert_segment",
+            "arm": "left",
+            "evidence": [
+              "axial_progress",
+              "support_established"
+            ],
+            "requirements": [
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "preheld_not_autonomous_pick",
+          "freeze_receiver_and_stem_orientation"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "hat",
+      "title": "挂到最低实际挂点",
+      "report_paths": [
+        "HAT_HANGING_EXPERIMENT_RECORD_20261003.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "3 hanging rounds",
+          "reported_result": "no verified hanging success",
+          "human_or_protocol_conditions": "Trial 2 began with manually preplaced contact; trial 3 used newly arranged hat.",
+          "evidence_scope": "Trial 2 grasp/transport/table release succeeded only; trial 3 three failed lifts then both returns. Trial 1 timeout/disable fall was not a return.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left worker; right observer, never a rack stabilizer. Target is actual lowest hook, not stand foot.",
+      "required_success_evidence": [
+        "hat retained after support separation",
+        "hat opening crosses the specified free hook end",
+        "rack stable",
+        "hat independently hanging after release and retreat in repeated new views"
+      ],
+      "transferable_failure_strategies": [
+        "Rack following the hat disproves independent hook support.",
+        "No amount of closed-air lift counts as grasp.",
+        "Observer motion is bounded and cannot reset worker failure debt."
+      ],
+      "local_semantic_gaps": [
+        "hang_supported exists; hook contact geometry and rack force response remain unimplemented physical behavior."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/hat.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "transport",
+          "hang_supported",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "hang_supported",
+            "arm": "left",
+            "evidence": [
+              "hat_on_specified_hook",
+              "rack_stable",
+              "support_established"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "rack_must_not_move"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "pen-uncapping",
+      "title": "双臂分离笔帽",
+      "report_paths": [
+        "PEN_UNCAPPING_EXPERIMENT_RECORD_20261003.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "trial 4 assisted separation",
+          "reported_result": "separation milestone successful; cleanup retention not established",
+          "human_or_protocol_conditions": "Right manually preheld pen; cap manually loosened and repeatedly adjusted.",
+          "evidence_scope": "Cap/body gap and independent movement observed; later cap on table without release command. Both returns passed before later fault, but controlled cap placement was not proved.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Right retains body; left retains cap. Both task arms, one new motion at a time. Original tight-cap or autonomous pickup ability is unknown.",
+      "required_success_evidence": [
+        "cap/body independently separated, not just jaw slip",
+        "cap retained by left and body retained by right after separation",
+        "cleanup release and stable support each need separate evidence"
+      ],
+      "transferable_failure_strategies": [
+        "Tool travel and cap following together are failed separation.",
+        "Preserve separation milestone separately from later loss of cap.",
+        "Human loosening changes initial resistance and autonomy scope."
+      ],
+      "local_semantic_gaps": [
+        "Builtin cleanup asks for supported release of both objects, which the upstream successful separation did not establish."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/pen-uncapping.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "dual_arm",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "validate_preheld",
+          "approach",
+          "align",
+          "grip_supported",
+          "extract_segment",
+          "transport",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "validate_preheld",
+            "arm": "right",
+            "evidence": [
+              "preheld_object_retained"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_supported",
+            "arm": "left",
+            "evidence": [
+              "bilateral_contact",
+              "support_unchanged"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "extract_segment",
+            "arm": "right",
+            "evidence": [
+              "object_relative_progress",
+              "peer_stable",
+              "cap_body_separated",
+              "cap_retained",
+              "body_retained"
+            ],
+            "requirements": [
+              "axis_and_support_visible"
+            ]
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "right",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "right",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "right",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          },
+          {
+            "skill": "return_reference",
+            "arm": "right",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "one_arm_moves_at_a_time",
+          "supported_cleanup_after_separation"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_pair_tasks_cannot_be_downgraded_to_observer"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "pearl-pouring",
+      "title": "杯间倒珍珠",
+      "report_paths": [
+        "PEARL_POURING_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "trial 1 contents transfer",
+          "reported_result": "user accepted with residue; received quantity unknown",
+          "human_or_protocol_conditions": "Residual contents allowed; spills occurred and were recorded.",
+          "evidence_scope": "Pickup, pouring, replacement and returns reported; not all contents transferred or zero spills.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left source-cup worker; right observes. Source identity determined from contents, not language/image left/right alone.",
+      "required_success_evidence": [
+        "source cup retained",
+        "visible flow received in intended receiver",
+        "receiver stable",
+        "spill and residue criteria frozen separately; quantity unknown unless actually supported",
+        "source cup independently supported after retreat"
+      ],
+      "transferable_failure_strategies": [
+        "Stop flow by reducing tilt before repositioning after a spill.",
+        "First failed grip pushed the cup: revise depth, not force.",
+        "If withdrawal lifts a rim, reestablish support, open sufficiently, withdraw with a newly reviewed path."
+      ],
+      "local_semantic_gaps": [
+        "pour_segment requires frozen spill/residue policy but does not measure received quantity or encode numerical acceptance automatically."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/pearl-pouring.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "transport",
+          "pour_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "pour_segment",
+            "arm": "left",
+            "evidence": [
+              "flow_received",
+              "receiver_stable"
+            ],
+            "requirements": [
+              "spill_and_residue_policy_frozen"
+            ]
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "stop_flow_before_reposition",
+          "do_not_infer_received_quantity_from_tilt"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "orange-pick-place",
+      "title": "剥皮橘瓣抓放",
+      "report_paths": [
+        "ORANGE_PICK_PLACE_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "single peeled segment on blue cup support",
+          "reported_result": "trial 1 fourth local grasp succeeded",
+          "human_or_protocol_conditions": "Manual initial placement; no scene intervention after clear area reported.",
+          "evidence_scope": "Lift about 9.17 cm was kinematic estimate, command sum about 11 cm; no external ruler calibration. Stable replacement and both returns verified in report.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left worker, right moved for a useful side view. The object was a segment, not a whole fruit.",
+      "required_success_evidence": [
+        "segment independently leaves support and remains retained",
+        "frozen lift range met with declared measurement provenance",
+        "segment replaced on original support and stable after release/retreat"
+      ],
+      "transferable_failure_strategies": [
+        "Side view resolved object behind effective gripping faces after three failures.",
+        "Soft-object slip is not permission for force escalation."
+      ],
+      "local_semantic_gaps": [
+        "Builtin supports frozen whole-fruit or segment identity, but this report provides no whole-fruit evidence. Metric lift truth from RGB alone remains unmeasured here."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/orange-pick-place.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "transport",
+          "lower_to_support",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated",
+              "lift_range_verified"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "lower_to_support",
+            "arm": "left",
+            "evidence": [
+              "object_on_original_support",
+              "support_established"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "soft_object_no_force_escalation"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "drawer-push-pull",
+      "title": "抽屉拉出后恢复原开度",
+      "report_paths": [
+        "DRAWER_PUSH_PULL_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "partly open first drawer, two trials",
+          "reported_result": "neither trial established stable grip or required drawer travel",
+          "human_or_protocol_conditions": "Drawer opening manually increased between runs; second run had user-reported fall protection.",
+          "evidence_scope": "Trial 1 settle rejection led to host exit and disable fall; full live settle samples missing. Trial 2 no runtime fault and both returns, but still no pull/push success.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left manipulates drawer; right only observes. Cabinet and initial opening must remain reference objects, not robot joint zero.",
+      "required_success_evidence": [
+        "actual drawer travel relative to stationary cabinet",
+        "specified additional pull distance, not TCP distance",
+        "initial opening restored rather than forced fully shut",
+        "drawer/cabinet stable after empty jaw withdrawal"
+      ],
+      "transferable_failure_strategies": [
+        "Compare cabinet and drawer in fixed view; wrist-camera motion can fake progress.",
+        "Change contact geometry only with new evidence and remaining budget.",
+        "Small final residual does not prove full settle window or contact cause; preserve fault samples."
+      ],
+      "local_semantic_gaps": [
+        "Specific drawer_relative_travel and initial_opening_restored are present. Generic peer_stable wording is ambiguous for a passive cabinet; no physical drawer contact policy is implemented."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/drawer-push-pull.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_supported",
+          "extract_segment",
+          "push_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_supported",
+            "arm": "left",
+            "evidence": [
+              "bilateral_contact",
+              "support_unchanged"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "extract_segment",
+            "arm": "left",
+            "evidence": [
+              "object_relative_progress",
+              "peer_stable",
+              "drawer_relative_travel",
+              "cabinet_stable"
+            ],
+            "requirements": [
+              "axis_and_support_visible"
+            ]
+          },
+          {
+            "skill": "push_segment",
+            "arm": "left",
+            "evidence": [
+              "object_relative_progress",
+              "initial_opening_restored",
+              "cabinet_stable"
+            ],
+            "requirements": [
+              "contact_surface_visible"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "drawer_motion_not_tcp_motion",
+          "do_not_force_fully_closed"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "jelly-pick-place",
+      "title": "软果冻抓放",
+      "report_paths": [
+        "JELLY_PICK_PLACE_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "round support then rectangular support",
+          "reported_result": "both trials failed grasp; local attempts 2 then 3",
+          "human_or_protocol_conditions": "Platform changed manually between runs.",
+          "evidence_scope": "Jelly remained supported; neither target lift completed. Both runs had controlled returns without runtime fault.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left worker; right side-view assistance without supporting jelly or platform.",
+      "required_success_evidence": [
+        "jelly leaves support without slipping",
+        "declared target lift applies to jelly, not empty TCP",
+        "stable replacement on original frozen support"
+      ],
+      "transferable_failure_strategies": [
+        "Support-edge contact or deformable slip requires new geometry, not tighter squeezing.",
+        "Changing platform is a new initial condition; retain earlier failures."
+      ],
+      "local_semantic_gaps": [
+        "Soft contact dynamics, deformation and slip cannot be validated by offline fact packets. Failure does not establish impossibility."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/jelly-pick-place.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "transport",
+          "lower_to_support",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated",
+              "lift_range_verified"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "lower_to_support",
+            "arm": "left",
+            "evidence": [
+              "object_on_original_support",
+              "support_established"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "soft_object_no_force_escalation"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "bottle-unscrewing",
+      "title": "双臂旋盖",
+      "report_paths": [
+        "BOTTLE_UNSCREWING_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "three two-arm trials",
+          "reported_result": "no cap thread disengagement or specified separation",
+          "human_or_protocol_conditions": "Left body/right cap roles; manual clearing and user contact report informed trial 2 exit.",
+          "evidence_scope": "Trial 1 fault before grasp cannot be blamed on tight cap. Trials 2/3 rotation commands did not establish cap-relative rotation; later returns separate from success. Trial 3 short bottle drop on release recorded.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left grips/stabilizes bottle; right cap worker. Both task arms; full camera brackets/cables included in swept corridor.",
+      "required_success_evidence": [
+        "bottle support and resistance to torque independently assessed",
+        "cap rotates relative to bottle with thread progress",
+        "threads disengage then cap separates by frozen amount",
+        "objects supported independently during cleanup"
+      ],
+      "transferable_failure_strategies": [
+        "Weight-bearing grasp does not prove torque restraint.",
+        "Opposing static arm layout does not prove rotation clearance.",
+        "Reserve exit budget before contact; do not infer cap progress from wrist command."
+      ],
+      "local_semantic_gaps": [
+        "rotate_segment/extract_segment express thread evidence; local pair support/torque/physical admission and cleanup are unimplemented."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/bottle-unscrewing.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "dual_arm",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_test",
+          "grip_supported",
+          "rotate_segment",
+          "extract_segment",
+          "transport",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_test",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "support_separated"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "approach",
+            "arm": "right",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "right",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_supported",
+            "arm": "right",
+            "evidence": [
+              "bilateral_contact",
+              "support_unchanged"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "rotate_segment",
+            "arm": "right",
+            "evidence": [
+              "object_relative_rotation",
+              "thread_progress"
+            ],
+            "requirements": [
+              "axis_and_support_visible",
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "extract_segment",
+            "arm": "right",
+            "evidence": [
+              "object_relative_progress",
+              "peer_stable",
+              "threads_disengaged",
+              "cap_separation_verified",
+              "bottle_stable"
+            ],
+            "requirements": [
+              "axis_and_support_visible"
+            ]
+          },
+          {
+            "skill": "transport",
+            "arm": "right",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "right",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "right",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "right",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "one_arm_moves_at_a_time",
+          "support_grasp_does_not_prove_torque_capacity"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_pair_tasks_cannot_be_downgraded_to_observer"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "fixed-bottle-unscrewing",
+      "title": "外部固定瓶身、左臂旋盖",
+      "report_paths": [
+        "FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261005.md",
+        "FIXED_BOTTLE_LEFT_CAP_EXPERIMENT_RECORD_20261006.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "three fixture-held bottle trials",
+          "reported_result": "no cap removal",
+          "human_or_protocol_conditions": "Fixture supplies body support; human demonstrations are separate evidence.",
+          "evidence_scope": "Side grips and oblique regrip lost contact. Trial 2 jaw progress timeout caused disable fall before human intervention; trial 3 healthy supported retreat/returns but no thread success.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left cap worker; right observer must not grip bottle. Fixture visible does not prove resistance to torque.",
+      "required_success_evidence": [
+        "fixture/body stay stable",
+        "cap rotates relative to bottle with actual thread progress",
+        "thread disengagement and specified cap separation while retained",
+        "supported cleanup independently documented"
+      ],
+      "transferable_failure_strategies": [
+        "A moving wrist view of a cap mark is not relative rotation proof.",
+        "Local infeasible vertical samples do not prove whole-workspace impossibility; alternative offline candidates are not executions.",
+        "A human successful twist does not validate robot grip or capacity."
+      ],
+      "local_semantic_gaps": [
+        "Distinct from dual-arm bottle recipe; cap-force/fixture qualification and contact implementation remain absent."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/fixed-bottle-unscrewing.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_supported",
+          "rotate_segment",
+          "extract_segment",
+          "transport",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_supported",
+            "arm": "left",
+            "evidence": [
+              "bilateral_contact",
+              "support_unchanged"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "rotate_segment",
+            "arm": "left",
+            "evidence": [
+              "object_relative_rotation",
+              "thread_progress"
+            ],
+            "requirements": [
+              "axis_and_support_visible",
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "extract_segment",
+            "arm": "left",
+            "evidence": [
+              "object_relative_progress",
+              "peer_stable",
+              "threads_disengaged",
+              "cap_separation_verified",
+              "fixture_stable"
+            ],
+            "requirements": [
+              "axis_and_support_visible"
+            ]
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "fixture_resists_rotation_verified",
+          "observer_must_not_grip_bottle"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "bolt-screwing",
+      "title": "螺母旋入三圈",
+      "report_paths": [
+        "BOLT_SCREWING_EXPERIMENT_RECORD_20261005.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "preheld bolt trial 1",
+          "reported_result": "three-turn target not reached",
+          "human_or_protocol_conditions": "Right preholds bolt; later human removal/hold loss recorded, precise causality unknown.",
+          "evidence_scope": "Cumulative wrist rotation command was only 72 degrees with later slipping; no full relative turn or axial feed proved; no controlled placement/full return.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Right supports bolt, left turns nut, both task arms. No inference of grasp force from jaw opening.",
+      "required_success_evidence": [
+        "three actual nut turns relative to bolt",
+        "axial feed consistent with thread engagement",
+        "bolt stable and both contacts retained or supported for regrasp",
+        "cleanup support/retreat separate from turn milestone"
+      ],
+      "transferable_failure_strategies": [
+        "Do not count wrist reset/regrasp angle as extra thread turns.",
+        "Slipping contact requires supported reassessment, not torque escalation."
+      ],
+      "local_semantic_gaps": [
+        "three_actual_thread_turns and axial_feed_verified are explicit; no nut angle tracker, calibrated force or physical screwing controller added."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/bolt-screwing.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "dual_arm",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "validate_preheld",
+          "approach",
+          "align",
+          "grip_supported",
+          "rotate_segment",
+          "release_retreat",
+          "stable_verify",
+          "transport",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "validate_preheld",
+            "arm": "right",
+            "evidence": [
+              "preheld_object_retained"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_supported",
+            "arm": "left",
+            "evidence": [
+              "bilateral_contact",
+              "support_unchanged"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "rotate_segment",
+            "arm": "left",
+            "evidence": [
+              "object_relative_rotation",
+              "thread_progress",
+              "three_actual_thread_turns",
+              "axial_feed_verified",
+              "bolt_stable"
+            ],
+            "requirements": [
+              "axis_and_support_visible",
+              "contact_step_supported"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "right",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "right",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "right",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          },
+          {
+            "skill": "return_reference",
+            "arm": "right",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "one_arm_moves_at_a_time",
+          "wrist_angle_is_not_thread_turn_count"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_pair_tasks_cannot_be_downgraded_to_observer"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_preinsert_does_not_test_lift_and_variants_keep_distinct_evidence"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "book-extraction",
+      "title": "中间书本抽取",
+      "report_paths": [
+        "BOOK_EXTRACTION_EXPERIMENT_RECORD_20261006.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "v1 specified extra travel; peer view only",
+          "reported_result": "trial 1 incomplete",
+          "human_or_protocol_conditions": "Book initially protruded; remaining stack should stay stable.",
+          "evidence_scope": "Some follow movement and top-book shift, no target travel measurement; return completed.",
+          "independently_reproduced_here": false
+        },
+        {
+          "variant": "v2 then relaxed progress criterion / proposed peer support",
+          "reported_result": "trial 2 incomplete under either criterion",
+          "human_or_protocol_conditions": "Right stack support authorized but actual load-bearing unverified; later role reverted to view-only; human scene change during return.",
+          "evidence_scope": "Three nominal pull commands did not prove book displacement. New relaxed goal does not retroactively pass v1.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Default left worker and right observer. Support-worker variant changes role contract and needs separate qualification.",
+      "required_success_evidence": [
+        "new book travel relative to saved initial protrusion",
+        "remaining books and support meet frozen stability tolerance",
+        "target extracted amount visible after jaw retreat"
+      ],
+      "transferable_failure_strategies": [
+        "Do not sum commanded distances into book travel.",
+        "Initial protrusion and human scene change are not robot progress.",
+        "Freeze target relaxation and role changes as distinct variants."
+      ],
+      "local_semantic_gaps": [
+        "Builtin intentionally forbids observer supporting stack; assisted support variant is unsupported by that contract. peer_stable is not a substitute for other_books_stable."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/book-extraction.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "grip_supported",
+          "extract_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "grip_supported",
+            "arm": "left",
+            "evidence": [
+              "bilateral_contact",
+              "support_unchanged"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "extract_segment",
+            "arm": "left",
+            "evidence": [
+              "object_relative_progress",
+              "peer_stable",
+              "new_book_travel_verified",
+              "other_books_stable"
+            ],
+            "requirements": [
+              "axis_and_support_visible"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "initial_protrusion_not_new_progress",
+          "observer_must_not_support_stack"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "blackboard-wiping",
+      "title": "擦拭动作与擦除效果",
+      "report_paths": [
+        "BLACKBOARD_WIPING_EXPERIMENT_RECORD_20261006.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "soft cloth trials 1/2, erasure requested",
+          "reported_result": "erasure not verified",
+          "human_or_protocol_conditions": "Cloth manually placed; originally requested autonomous pickup not tested.",
+          "evidence_scope": "Cloth retention/sliding did not remove letters; trial 2 return interrupted by requested tool change.",
+          "independently_reproduced_here": false
+        },
+        {
+          "variant": "hard eraser trial 3, motion-only revised criterion",
+          "reported_result": "contact wiping motion accepted",
+          "human_or_protocol_conditions": "Eraser manually preplaced; contact partly human-confirmed; explicit no-erasure-required revision.",
+          "evidence_scope": "Observed sliding supports revised motion goal only. Release initially dragged tool then stable support; returns documented.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left preheld tool worker; right view-only/static, cannot hold board. Initial tool acquisition and contact-confirmation provenance retained.",
+      "required_success_evidence": [
+        "tool/contact surface sliding with visible or explicitly sourced contact evidence",
+        "if erasure is required: frozen surface change criterion, not sliding alone",
+        "tool independently supported after release and retreat"
+      ],
+      "transferable_failure_strategies": [
+        "Soft cloth retained in jaws need not make a flat effective wiping pad.",
+        "Do not silently replace erase-text goal with wiping-motion goal.",
+        "No added downward force merely to infer contact."
+      ],
+      "local_semantic_gaps": [
+        "Reviewed default-goal ambiguity was fixed by root in this round: builtin is contact sliding only; an erasure recipe must additionally require erasure_criterion_satisfied. Actual RGB erasure/contact truth remains external to this structural ledger."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/blackboard-wiping.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "validate_preheld",
+          "transport",
+          "align",
+          "wipe_segment",
+          "release_retreat",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "validate_preheld",
+            "arm": "left",
+            "evidence": [
+              "preheld_object_retained"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "wipe_segment",
+            "arm": "left",
+            "evidence": [
+              "tool_surface_sliding"
+            ],
+            "requirements": [
+              "tool_contact_visible"
+            ]
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "motion_not_erasure",
+          "observer_must_not_hold_board"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_spec.py",
+            "test": "test_wiping_motion_cannot_silently_stand_for_an_erasure_goal"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "blue-blocks-sweeping",
+      "title": "扫两块入簸箕",
+      "report_paths": [
+        "BLUE_BLOCKS_SWEEPING_EXPERIMENT_RECORD_20261006.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "preplaced broom and two target blocks, trial 1",
+          "reported_result": "2 of 2 inside after brush withdrawal; user accepted",
+          "human_or_protocol_conditions": "Broom manually preplaced; right disabled static camera.",
+          "evidence_scope": "First pass left one at lip; extra side sweep moved both inside. Released broom toppled to flat table then stable, not a controlled flat lay. Post-recording fault separate.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left broom worker; right not a dustpan stabilizer. Count all targets at start.",
+      "required_success_evidence": [
+        "every frozen target block inside dustpan, not on entrance lip",
+        "targets stay inside after whole brush withdrawal",
+        "dustpan stable; tool cleanup separately supported and stable"
+      ],
+      "transferable_failure_strategies": [
+        "Inspect remaining target/lip state before one bounded corrective sweep.",
+        "Include handle/head/bristles in corridor, not only gripper.",
+        "Do not add pressure because a target stays outside."
+      ],
+      "local_semantic_gaps": [
+        "all_targets_inside and extended tool corridor are represented; no automated RGB target counting or physical sweep executor added."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/blue-blocks-sweeping.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "validate_preheld",
+          "transport",
+          "align",
+          "sweep_segment",
+          "stable_verify",
+          "release_retreat",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "validate_preheld",
+            "arm": "left",
+            "evidence": [
+              "preheld_object_retained"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "sweep_segment",
+            "arm": "left",
+            "evidence": [
+              "all_targets_inside"
+            ],
+            "requirements": [
+              "extended_tool_corridor_checked"
+            ]
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "transport",
+            "arm": "left",
+            "evidence": [
+              "object_retained",
+              "destination_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "release_retreat",
+            "arm": "left",
+            "evidence": [
+              "support_established",
+              "empty_gripper_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "preplaced_not_autonomous_pick",
+          "observer_must_not_hold_dustpan"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    },
+    {
+      "task_id": "blue-block-triangle-push",
+      "title": "夹爪边缘推块入红三角",
+      "report_paths": [
+        "BLUE_BLOCK_TRIANGLE_PUSH_EXPERIMENT_RECORD_20261006.md"
+      ],
+      "reported_variants": [
+        {
+          "variant": "single block edge-push trial 1",
+          "reported_result": "inside-region outcome accepted after withdrawal",
+          "human_or_protocol_conditions": "Manual initial setup; right static observation.",
+          "evidence_scope": "Initial high contact passed over; side push reached edge; lower rear push moved block inside. No grasp/lift. Video gap retained; returns separately verified.",
+          "independently_reproduced_here": false
+        }
+      ],
+      "source_roles_and_human_initial_conditions": "Left gripper edge only; right static camera. No two-finger enveloping grasp, no extra exact centering/orientation requirement.",
+      "required_success_evidence": [
+        "actual block base within frozen visible triangle boundary",
+        "contact mode remained edge push without pickup",
+        "block stays inside after empty gripper retreat"
+      ],
+      "transferable_failure_strategies": [
+        "Tool motion without block change is no progress.",
+        "Use fixed region boundary and block base, not top projection.",
+        "New rear contact strategy can follow bounded retreat/reobserve; do not relabel boundary as success."
+      ],
+      "local_semantic_gaps": [
+        "block_inside_region and edge_push_without_grasp are explicit; real boundary judgment still comes from current RGB reviewer."
+      ],
+      "reference_path": "skills/arx-r5-tabletop-tasks/references/blue-block-triangle-push.md",
+      "local_mapping": {
+        "contract_api": "right_pick.fast_task_pipeline.task_contract",
+        "mode": "worker_with_observer",
+        "worker_arm": "left",
+        "operations": [
+          "inspect",
+          "approach",
+          "align",
+          "push_segment",
+          "stable_verify",
+          "return_reference"
+        ],
+        "steps": [
+          {
+            "skill": "inspect",
+            "arm": "left",
+            "evidence": [
+              "scene_identified"
+            ],
+            "requirements": [
+              "initial_condition_frozen",
+              "run_reference_saved"
+            ]
+          },
+          {
+            "skill": "approach",
+            "arm": "left",
+            "evidence": [
+              "approach_clear"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "align",
+            "arm": "left",
+            "evidence": [
+              "alignment_visible"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "push_segment",
+            "arm": "left",
+            "evidence": [
+              "object_relative_progress",
+              "block_inside_region",
+              "edge_push_without_grasp"
+            ],
+            "requirements": [
+              "contact_surface_visible"
+            ]
+          },
+          {
+            "skill": "stable_verify",
+            "arm": "left",
+            "evidence": [
+              "independent_stability"
+            ],
+            "requirements": []
+          },
+          {
+            "skill": "return_reference",
+            "arm": "left",
+            "evidence": [
+              "run_reference_verified",
+              "stationary"
+            ],
+            "requirements": [
+              "immutable_run_reference"
+            ]
+          }
+        ],
+        "constraints": [
+          "edge_push_only_no_pick_place",
+          "no_extra_centering_requirement"
+        ],
+        "implementation": "offline_contract_only",
+        "execution_available": false,
+        "tests": [
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_arx5_tasks_have_resolvable_bounded_compositions"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_all_tasks_reach_only_offline_completion_with_full_host_evidence"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_robot_arrival_alone_cannot_satisfy_any_object_claim"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "test": "test_human_assistance_is_retained_and_autonomy_not_inferred"
+          },
+          {
+            "file": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "test": "test_preinsert_does_not_test_lift_and_variants_keep_distinct_evidence"
+          }
+        ],
+        "physical_implementation_missing": [
+          "RGB contact/object-effect judgments and their ground-truth verification",
+          "qualified real execution/stop-hold behavior for this ARX5-derived task",
+          "independent physical reproduction on Piper"
+        ]
+      },
+      "upstream_evidence_authentication": "reported in pinned public documents; raw videos/analysis artifacts not independently inspected in this review",
+      "physical_success_in_this_repository": null
+    }
+  ],
+  "interpretation_limits": [
+    "Skill requirements are acceptance criteria, never evidence that a trial met them.",
+    "All upstream outcomes are report claims, not our independent video evaluation or physical reproduction.",
+    "Human setup, in-run assistance, supervision, target changes and cleanup outcomes stay separate.",
+    "18 task/variant coverage, including 9 with conditional successful cases, is not a pooled success rate.",
+    "Command processing and command waiting are not pure motor and model inference times; unrecorded latency remains unknown.",
+    "No coordinates, calibration, privileged simulation state or traditional visual localization are imported into execution.",
+    "Local tests audit contract structure and synthetic evidence; they do not authenticate image pixels or independent reviewers."
+  ],
+  "transfer_priorities": [
+    "Freeze goal variant and task roles before a run; record a new version when the user changes either.",
+    "Use relative object effects and support transitions as progress, not arm arrival or motion commands.",
+    "Separate task milestone, release/stability, controlled return and post-run hardware status.",
+    "Change observation or contact strategy after bounded no-progress; never reset failure debt with observer motion or process restart.",
+    "Treat uncertain/partial sends, timeout and lost hold as execution issues; visual retry suggestions cannot clear them.",
+    "Treat extended tools, grasped objects, camera brackets and cables as relevant to corridor review."
+  ],
+  "semantic_findings": [
+    {
+      "id": "blackboard_goal_criterion",
+      "severity": "acceptance_gap",
+      "detail": "Reviewed ambiguity was fixed in this round: builtin blackboard-wiping now accepts contact sliding only. Erasure is a distinct frozen recipe with erasure_criterion_satisfied; missing effect evidence cannot advance.",
+      "implementation_changed_in_this_round": true,
+      "status": "default_goal_semantics_fixed",
+      "implementation_author": "root agent",
+      "remaining_limitation": "Actual erasure/contact pixel judgment and provenance authentication remain outside this offline ledger.",
+      "regression_test": "projects/piper_right_pick_demo/tests/test_fast_task_spec.py::test_wiping_motion_cannot_silently_stand_for_an_erasure_goal"
+    },
+    {
+      "id": "passive_peer_stability",
+      "severity": "clarification",
+      "detail": "extract_segment peer_stable is ambiguous for cabinet/fixture/stack; use existing task-specific object stability claims and never infer observer physical support.",
+      "implementation_changed_in_this_round": false
+    }
+  ],
+  "validation": {
+    "reference_catalog_test": "projects/piper_right_pick_demo/tests/test_fast_reference_catalog.py",
+    "hardware_used": false,
+    "model_called": false,
+    "performance_claim": null
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "runtime_omissions_v1",
+  "entries": [
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/site.local.json",
+      "source_sha256": "3fb584e35d206afb8bb156a657d55abb2328001cb456af5f2a9d4634a39632f7",
+      "reason": "machine_private_runtime_configuration_not_imported_or_activated"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/gpt_tools.local.json",
+      "source_sha256": "e59d729f15429b15cf71cf2042fb70512b789d8ac3b238de8fa35c4b03a57144",
+      "reason": "machine_private_runtime_configuration_not_imported_or_activated"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_live.local.json",
+      "source_sha256": "38ab1c05ba6fe8759f6cadc62c0ea80eedd302e44db5562f56c00de71b08635a",
+      "reason": "machine_private_runtime_configuration_not_imported_or_activated"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+      "source_sha256": "358fb0126bc863143b461ca71014998f2c5db6f097d2793994c71cdc1ab1828e",
+      "reason": "machine_private_runtime_configuration_not_imported_or_activated"
+    }
+  ]
+}

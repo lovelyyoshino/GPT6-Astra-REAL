@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.env
+artifacts/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+/projects/piperx_cloth_demo/runs/pair_*/
+/projects/piperx_cloth_demo/runs/execution.lock

@@ -1,16 +1,18 @@
-# Piper 原子 Codex 技能索引
+# GPT6-Astra-REAL 原子 Codex 技能索引
 
-项目技能实际位于隐藏目录 [`.agents/skills`](.agents/skills)。从本交接包根目录启动 Codex 后，可按名称调用 `$piper-task-pipeline`；需要某个 L1 原子时再调用对应 `$piper-atom-*`。在 Finder 中没有看到它们，是因为 `.agents` 目录默认隐藏；本页提供可见入口。
+项目技能位于隐藏目录 [`.agents/skills`](.agents/skills)。从 `/home/agilex/GPT6-Astra-REAL` 启动 Codex，按名称调用 `$piper-task-pipeline`；需要某个 L1 原子时再读对应 `$piper-atom-*`。本页提供可见入口。
 
-在终端从任意目录启动时，明确指定本交接包为 Codex 工作目录：
+从任意终端目录启动时，指定当前项目：
 
 ```bash
-codex -C /Users/pony.ai/Documents/文档/Piper_SingleArm_Handoff
+codex -C /home/agilex/GPT6-Astra-REAL
 ```
 
-进入后用 `/skills` 查找 `piper-task-pipeline`，或输入 `$piper-atom-move-eef-once` 检查单项技能。若会话已经从上一级 `…/文档` 启动，仅在工具命令中 `cd` 进本目录不会改变该会话启动时的技能发现范围；请从本目录新开 Codex 会话。Codex 从启动目录向上扫描 `.agents/skills`，不向下搜索子目录。Finder 可用 `Command+Shift+.` 显示隐藏目录。这里不需要安装到用户级技能目录，也不需要 API key。
+进入后用 `/skills` 查找 `piper-task-pipeline`，或输入 `$piper-atom-move-eef-once` 检查单项技能。旧会话的工具命令中 `cd` 不等于重新发现项目技能；技能缺失时从本目录重新进入。无需复制到用户级目录，沿用当前 Codex 登录。
 
-调用顺序是 **L3 单项任务 → L2 当前有界操作 → L1 当前原子 → L0 Piper 适配器**。L3 与 L2 决定本轮需要什么；L1 技能给 Codex 一项工作的边界并查询同名 Python 契约，宿主负责校验、计数、派发和回执。层级不意味着每层调用一次模型。首次读当前任务，后续只读 `fast_task_session current --operation` 给出的当前操作和所需原子；不要一次加载全部 25 个技能。
+调用顺序是 **L3 任务 recipe → L2 当前有界操作 → L1 当前原子 → L0 Piper 适配器**。L3 与 L2 决定本轮需要什么；L1 给出一项工作的边界并查询同名 Python 契约，宿主负责校验、计数、派发与回执。层级不意味着每层调用一次模型。首次读当前任务，后续只读持久 session 的当前操作和所需原子，不一次加载全部 25 个技能。复杂 recipe 复用相同原子，保持有限步骤和共享预算。
+
+根目录 `./astra catalog` 查看任务和组合，`./astra plan --recipe tasks/sort_two_objects.json` 查看组合示例。`place_on_support` 和 `articulated_rotate` 分别表达目标支撑放置与关节物体旋转，其合同不会增加底层执行权限。
 
 | L1 调用时机 | 可单独发现的 Codex 技能 |
 | --- | --- |
@@ -24,4 +26,4 @@ codex -C /Users/pony.ai/Documents/文档/Piper_SingleArm_Handoff
 
 每个链接是一份真实 `SKILL.md`，与 `right_pick.fast_pipeline.ATOMIC_SKILLS` 中的一个同名契约一一对应。查询契约的命令从 `projects/piper_right_pick_demo` 执行，例如 `PYTHONPATH=src python3 -m right_pick.fast_task_pipeline --atomic move_eef_once`。查询不会启动模型、ROS 或机械臂。
 
-**实现状态**：当前只有单右臂 `pen` 的既有物理执行源码，现场连续执行准入已撤回。25 个 Codex 技能和 Python 契约不等于 25 个实机动作。双任务臂、观察臂和通用任务是离线编排与校验能力，不能直接物理执行。
+**实现状态**：既有物理执行路径是单右臂 `pen` runner，另保留历史专项入口。历史 fast 资格曾撤回，本次没有重建通用真机资格。25 个技能文件和 Python 契约不等于 25 个已验证的物理动作；通用 recipe、复杂组合、双任务臂与观察臂仍是离线编排/校验能力。技能、经验和任务 JSON 均不能替代当前执行资格。

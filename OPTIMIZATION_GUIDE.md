@@ -1,66 +1,158 @@
-# 单右臂夹笔工程：优化交接指南
+2026-10-07：将当前图像准入 → 有界动作 → 新图和反馈复核固化为项目长期实现约定，不要求预先取得实测成功轨迹。参考用户确认的 `../GPT6-ARX5` 工作方式，新增显式 RGB 监督首次关节初始化。复用原低速、关节/相对位移、反馈及单次发送，不生成米制净空或绝对工作区证明；默认米制入口和普通/带载入口不变。软件与随后实机证据分别记录在 `artifacts/plug_rgb_initialization_1791361968525226256/`。完整插拔尚未完成。
 
-本包用于源码审阅与后续优化。最新 fast 已有真实 ROS 闭环代码，也发生过一次真实任务运动；**连续实机运行准入现已撤回，优化版尚未完成抓笔放筒**。当前状态以[撤回记录](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/continuous_admission_withdrawn.json)和[撤回后的现场配置](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/fast_live_commissioned.json)为准，后者的 `physical_qualification.evidence_file` 为 `null`。旧 fast 文档中“尚无 live 循环”“只完成感知联调”等描述属于此前阶段。
+# GPT6-Astra-REAL 开发与优化指南
 
-当前源码包含本地优化，变更由 `metadata/optimization_manifest.json` 追踪，原来源哈希不变。已运行离线 fast 测试与契约验证，未调用真实模型或设备。包内保留小型结果、配置和审计摘要；指向未打包视频及原始反馈的路径仍是历史引用。
+统一开发目录是 `/home/agilex/GPT6-Astra-REAL`。目标从单次抓笔扩展为可复用的任务描述、阶段账本、经验检索、操作组合和评估流程，支持后续复杂任务。原项目和历史结果保留；每次改动围绕可核查问题，单独记录来源与验证结果。
 
-本轮已完成的修改：
+## 先复用共用接口
 
-- 默认使用现有 Codex 登录与 CLI；后端/配置协议不一致时在打开资源前拒绝。
-- 新增 L3 任务、L2 操作、L1 原子、L0 适配四层结构，以及 18 个 ARX5 recipe、20 个组合和 25 个原子契约。见[完整映射及实现状态](projects/piper_right_pick_demo/docs/ATOMIC_SKILLS_AND_DUAL_COORDINATION.md)。
-- 单右臂循环限制调用、阶段、观察、恢复和时间预算，模型输入只带当前阶段与短状态；派发后等待新图，不在到位行提前记视觉完成。
-- 修正恢复预算的边界错误：原先设置允许 1 次恢复，却在刚进入 RECOVERY 时退出；现在允许该次有界纠错，第二个恢复阶段才停止。异常发送仍立即锁存，不自动重发。
-- 新观测核对帧身份/新鲜度；模型视觉报告按真实来源记录。双任务臂使用 `peer_arm`，纯观察侧使用 `observer_arm`，禁止角色混用或静默降级。
-- 四个分层入口和 25 个同名原子 Codex skill 已放在隐藏的 `.agents/skills`；见[可见索引](ATOMIC_SKILLS.md)。首次读完整单任务，之后按当前阶段逐层查询，避免每轮加载全部任务手册。
-- `fast_task_session.py` 提供持久化的 init/current/contract/record/observer/end 命令；冻结任务与总预算，通过 revision 防止旧阶段提交，event-id 防止重复计数。跨进程恢复只重建离线账本，不续发任何物理指令。
+2026-10-07 干净到期新轮管理：新增 `pair_round.prepare_round`／`activate_round`，在正常干净结束、原窗口到期及显式新用户预算授权下追加新 run／scope，保留全部原记录与累计次数。本轮用户已明确授权 500 次／3600 秒；用户要求修复后重新计时时，采用 `after_repair_before_online_execution`，离线修复与检验完成后、首次在线执行前冻结起点，起算后不因重连或再次修复自动续时。该管理能力当前按离线实现与验证记录，实机激活及任务结果待实际回执；不改运动阈值，不复制旧缓存，不声明插拔或物理停止成功。准确接口与边界见 [审计接续](.agents/skills/piper-task-pipeline/references/audited-restart.md#干净结束后的显式新轮)。
 
-以下是仍影响实机恢复的证据与缺口。通用 recipe、双臂和辅助观察目前是离线契约，不能因测试通过就记成实机支持。
+2026-10-07 受支撑释放接续：候选/静态夹持的开爪现在保留 `release_opened`，可凭每次新 RGB 的独立支撑描述继续至多 5 mm 开爪；最后 opening 后的新图分离语义和适配器新三秒 trace 经 `robot_pair_confirm_release` 零 TX 确认后才记 `released`。随后关节撤离每段需当前空爪描述与同宿主确认 token，新夹爪 claim 使 token 失效。原 body 锚、总预算、另一侧记录及失败/迟到事实保留，v1 的机械 `released` 不自动获得新语义。本轮仅离线实现与验证，记录在 `artifacts/plug_release_flow_1791359593200793893`；未接通未来 loaded 状态，不证明插对目标、终态稳定或物理停止。实际现场几何、过期实机 run、带载固定/拔插和 RGB 物体进展缺口不变。
 
-先按下面顺序读代码。表内入口均在 `projects/piper_right_pick_demo/src/right_pick/`，底层驱动另列。
+2026-10-07 插拔基础实机验证：在两臂当前非零姿态下，唯一持久宿主实际完成左右空爪按实测开口使能及十二关节限位查询，共 14 帧（2 个夹爪目标、12 个查询），无关节／末端目标。两爪开口误差分别为 0.07/0.14 mm，三路录像各 4768 帧完整解码，覆盖实际发送至持久回执，无未决发送或故障。首次臂目标因当前现场几何来源缺失在 claim 前拒绝，控制与录像正常封口后才继续代码修改。原始与独立审计见 `artifacts/plug_live_validation_1791357436415587512`；不代表已运动、持物、插拔或物理停止。
 
-| 优先阅读 | 文件 | 关注内容 |
+随后的离线补齐新增 `robot_pair_publish_geometry`：由原宿主导入结构化真实安装／测量资料，推导附件上界、保守工作区及当前净空，不接受任意 bounds 或资格布尔值；不制造缺失现场数据，不发 CAN，不改变准备、目标缓存及原预算。资料来源、时效、当前场景和原子落盘分别检查。交叉审查发现并修复发布后诊断 IO 过期及取消 hold 未继承原 RGB 截止时间的问题；过期不会续期或继续发送，迟到事实仍可入账。该轮记录保留了代码修订及来源接续缺口；没有重开设备、重置期限或提交代码。
+
+2026-10-07 来源接续修复：新 owner 或任一侧连接变化时，限位和几何写入该 run 下按完整身份区分的独立目录；旧记录不覆盖、不改绑，同一有效连接复用当前目录。旧版索引仅在精确匹配时只读兼容，新目录缺源不能退回历史来源；首次新目录发布不复制旧目录其他来源，不是透明升级。此修复仅解决来源存储冲突；原实机 run 已到期，代码修订接续、实际现场资料和带载插拔仍未补齐。离线验证与独立审查写入 `artifacts/plug_source_epochs_1791359056398568357`，不宣称本轮新增实机发送或任务成功。
+
+2026-10-07 插拔边界内移接续：普通 joint 已接入同 owner/连接、精确当前缓存和全套有效限位绑定的初始化来源，仅为对应 J2 下界/J3 上界提供 0.003 rad 观察尾差，不改变名义限位、0.010 rad 内侧目标或 0.025 rad 单轴步长。固定 X MDH 的完整独立区间法兰上界替代旧三角界，原 hold 余量、整臂/附件/被动臂净空及故障守卫保留。历史模型算例含 hold 的新上界约为左右 14.17/14.07 mm、0.047 rad，属于离线计算；真实 SDK/FakeCAN 已贯通无注入缓存的初始化、双爪准备、双侧内移及普通小步。原点任一侧含边界外尾差时 `hold_reference_within_nominal_limits=false`，原 hold constructor 仍拒绝，不能以内移接续冒充保持资格；MOVE_L 发送尝试使旧 joint 来源失效，jaw 动作保留来源。现场几何、带载拔插、完整释放及 RGB 物体进展仍缺。本轮记录见 `artifacts/plug_ingress_1791356964575384710`，全量结果由实际运行记录另报；未启动硬件或完成物理任务。
+
+2026-10-07 插拔首次目标接续：新增 `robot_pair_initialize_joint_target`，从同连接新反馈冻结合法当前位置或 J2/J3 最近边界目标，准备态可调用；仅在四帧完整、新 J 模式及三秒稳定到位后建立缓存，保留未命令臂和夹爪原锚。已有缓存只读返回，部分发送锁存且不重发。真实 SDK 集成发现并修复准备事件中 IntEnum 不能写入严格账本的问题。更正上一轮范围判断：普通路径的 0.05 rad 总旋转和已知缓存/hold 门槛不是独立监督 startup 的前提，不能用它们否定启动；现有 startup 数值没有放宽。当轮尚缺的边界恢复后普通向内接续现由上述来源绑定路径实现；实际现场几何、带载接触和完整释放仍需补齐。离线验证记录见 `artifacts/plug_initialization_1791355623893161043`；未启动硬件、录像或模型调用，未完成物理任务或提交代码。
+
+2026-10-07 插拔启动分流与电机诊断：`arms.snapshot` 接入六路可选高速 RX 电流、速度、位置和 SDK 估算力矩，逐路保存新鲜度/缺失/异常，不发送查询、不增加原必需反馈或接触资格。官方 SDK 回归纠正“当前越界 q 必然被 SDK 裁到 0”的错误：型号限位默认未启用，但通用 ±2π 裁剪仍在。设计覆盖历史 P 起点的首目标、J2/J3 边界初始化及恢复后容差残差接续，明确端点合法不代表中间路径满足旋转限制；未增加可发送的 bootstrap 入口或放宽阈值。本轮离线验证记录见 `artifacts/plug_startup_motor_1791354803866676625`；未连接设备、未录像、未完成物理插拔或提交代码。
+
+2026-10-07 插拔准备生产接线：长期 pair 服务新增 prepare 连接分流、按当前 RGB 语义与实测开口准备单爪、同连接十二关节限位查询及零 TX 就绪升级；共用原 owner/连接/账本，部分发送与异常回复保留并锁存，已知准备条件不足零 TX 返回需求。正常服务安装来源 provider，完整原始查询才发布不可覆盖的内容文件及原子索引，固定官方文本随项目版本化；不生成现场几何或首目标历史。真实 SDK＋FakeCAN 的宿主贯通覆盖十二次查询及两次单爪准备，共十四帧。技能已同步同宿主接续，原阈值与带载动作边界不变。验证记录见 `artifacts/plug_preparation_wiring_1791354234580511285`；未连接设备、未开始录像、未完成插拔或提交代码。
+
+2026-10-07 插拔行为设计与准备接续：补齐同连接准备模块（连接观察、按实测开口准备空爪、显式就绪升级）和当前来源读取器；两者尚未生产接线，不宣称 `robot_pair_open` 已改变或首次关节目标可执行。独立审查发现并要求修复准备升级重锚、吸收模式变化的问题，保留原姿态/模式/夹爪目标。进一步设计明确首目标循环依赖、轴向接触路径、持物移动、受支撑释放/继续开爪/撤离及 RGB 物体进展到 L3 的接口缺口；电流和估算关节力矩只能作为辅助反馈，不宣称腕部力控。设计见 [PiPER X 路径设计](projects/piperx_cloth_demo/docs/PIPER_X_JOINT_PATH_DESIGN.md)，本轮验证记录位于 `artifacts/plug_behavior_design_1791353384565353917`。未启动设备、录像或模型调用，尚未完成物理插拔，未提交代码。
+
+2026-10-07 插拔运行时接续第二轮：支持下试夹可先登记物体身份，真实 pair 适配器产生候选测量后进入同库 episode；新 RGB 与新三秒反馈可建立零 TX 静态保持，另一空臂继续接近、对齐和试夹，两侧独立释放。视觉语义、原图哈希与机器测量分别保存；保留原始锚点/总期限，不重发夹持目标、不增加力度。宿主真实适配器联调修复 SDK IntEnum 在动作后写严格账本时报错的问题。另新增未来 MOVE_J 同模式保持的纯帧事务及 PiPER X 关节路径设计；尚未接入实际保持发送、加载证明、拔插段或当前型号恢复。离线验证记录见 `artifacts/plug_retention_iteration_1791350059904114984`；无实机命令，未完成插拔、未提交代码。
+
+2026-10-07 插拔运行时接续第一轮：故障后的任务派发禁令与零 TX 诊断读取分离，保留异常/失能/旧帧，账本用只读快照避免反复写故障。实际 move 回执区分请求、实测、横向偏离和物体进展，避免 5 mm 到位容差吞掉小步无响应。新增按臂抓持状态和同库持久化合同，冻结 owner/epoch、原始锚点及任务期限；仍是内部接入模块，尚未接通真实持夹/加载/拔插工具。多姿态官方模型诊断复核保存反馈，未修改型号、控制器、限位或姿态守卫。代码回归和诊断不构成实机成功；运行记录见 `artifacts/plug_runtime_iteration_1791348600120162737`，后续仍需真实持夹合同、有界拔插及适用保持能力。
+
+2026-10-07 PiPER X 型号更正与官方参数核对：用户重新明确两臂均为 PiPER X，保存旧配置后修正 `configs/robot.json` 两臂型号。固定官方 SDK/URDF 提交与原始文件，区分原厂模型数据、现场附件/净空和特定恢复算法输入；保留旧 GPT RGB 单步实机证据。旧 PiPER 模型下的 FK/通道和组合资格不迁移，当前型号已确认但控制器位姿/模型兼容仍待核，J6 与夹爪的跨来源差异不静默覆盖执行边界。记录见 `artifacts/piper_x_capability_review_1791347348345247360`。本次未启动设备。
+
+2026-10-07 有界接触观测维护：pair 夹爪加入一次至多 5 mm 的闭合观测，区分到位、可辨认闭合后的稳定接触候选与未确认，保留原名义力和反馈边界。候选保留未解除目标，阻止两臂其他动作；只允许依据新图显式同爪小幅开爪，实测开口增加并稳定到位才清除此本地状态。close/EOF 持久锁存，普通位置路径不变。分类原 trace 另存 journal，摘要进入账本。测试与独立审查见 `artifacts/contact_execution_update_1791346455995268845`；本次维护没有发送硬件命令，带载固定/拔插/物理停止和实物任务仍未完成。
+
+2026-10-07 接触策略技能修正：L2 采用低速单步接触、新 RGB/反馈、有限微调的顺序，首次接触结果作为动作后证据，不能反过来作为首次动作前提。当前任务授权涵盖必要的轻触和微调；失败/不确定发送不自动重发，阶段与总预算沿用。执行器能力与物体固定事实分别记录，当前 pair 接触回执缺口仍明确保留。本次只改技能和说明，不开启设备或更改执行器能力标记。
+
+2026-10-07 双臂持久宿主维护：新增六个 `robot_pair_*` 工具，用同一组 SDK 连接交替发送左右臂有界动作；发送前持久 claim、跨进程去重、冻结总预算及整对故障记录。另一臂逐帧禁发并核对跨步静止锚点，用户当前净空陈述进入冻结任务上下文。新增 `plug_transfer_left` recipe 复用现成操作，记录固定、拔出、左孔插入、依次释放及稳定证据。通用 recipe 仍离线，实际接触支撑与物理停止未获实机验证；具体范围见 [持久双臂宿主](projects/piperx_cloth_demo/docs/PAIR_HOST.md)。
+
+2026-10-07 反馈边界维护：单臂监督入口分别报告名义关节合法、0.003 rad 软件观察带和仅夹爪动作的有界静态 J2/J3 偏差；拒绝时给出非自动执行的恢复诊断。SDK/控制器限位及旧执行合同保持，测试不代表实机资格。实现与适用范围见 `projects/piperx_cloth_demo/robot_tools/single_supervised_actions.py` 和该项目 `docs/TOOLS.md`；独立验证追加到 `metadata/generalization_validation_20261007.json`。
+
+2026-10-07 非零启动恢复维护：现成边界恢复入口增加显式 `startup_j2_j3` profile，覆盖 J2 下界/J3 上界最多 0.10 rad 的空载起点；默认 0.05 rad 合同不变。复用完整反馈、三秒基线、1% 单次 MOVE_J，并提取共用 MDH 包络；额外核对相对净空和 FK 后反馈时效。允许保持空爪已知失能状态，关节使能、夹爪健康与漂移约束不省略。原始角度、严格名义范围与反馈带分别记录；离线测试不代表该起点已经恢复或拔插成功。
+
+根目录 `./astra` 提供 `catalog`、`plan`、`session`、`replay`、`evaluate`、`experiences`。这些入口处理离线合同，不发送设备命令。新任务通过 recipe 组合已有 L2 操作；先看 `./astra --help` 和 [README](README.md) 中的命令示例。
+
+补充入口 `references` 将八项研究映射到实际代码、测试和待完成能力；`recovery-plan` 给出有限恢复诊断；`recording-plan` / `recording-audit` 描述并核查录像的声明覆盖。它们同样不连接设备或模型。[ARX5 实验核查](research/arx5_experiment_patterns_round2.json)覆盖全部 18 个任务/变体，并把上游要求、上游报告结果和本机能力分开。
+
+| 层次 | 责任 | 代码 |
 | --- | --- | --- |
-| 总入口 | [cli.py](projects/piper_right_pick_demo/src/right_pick/cli.py)、[fast_cli.py](projects/piper_right_pick_demo/src/right_pick/fast_cli.py) | `astra_fast_closed_loop` 的 `replay / prepare / live-check / live` 分流；`--execution` 必填，live 必须指定真实模型。 |
-| 真实闭环 | [fast_live_loop.py](projects/piper_right_pick_demo/src/right_pick/fast_live_loop.py) | 准入检查、新三图、新 ROS 状态、单次模型决策、重新核对状态、执行及回执、阶段推进、失败收尾。 |
-| 动作和阶段 | [fast_policy.py](projects/piper_right_pick_demo/src/right_pick/fast_policy.py) | 接近笔、对齐、抓取、验证、搬运、插入、释放及最终验证；schema、阶段限制、视角选择和 reasoning effort。 |
-| 真实执行 | [fast_ros.py](projects/piper_right_pick_demo/src/right_pick/fast_ros.py)、[fast_safety.py](projects/piper_right_pick_demo/src/right_pick/fast_safety.py)、[fast_qualification.py](projects/piper_right_pick_demo/src/right_pick/fast_qualification.py) | 固定右臂 ROS 路由、来源／会话校验、数值限制、单次发送、回执核对、资格证据。当前 live 仅支持单个末端目标或夹爪动作，禁用 chunk。 |
-| 模型与图像 | [fast_codex.py](projects/piper_right_pick_demo/src/right_pick/fast_codex.py)、[fast_model.py](projects/piper_right_pick_demo/src/right_pick/fast_model.py)、[fast_observation.py](projects/piper_right_pick_demo/src/right_pick/fast_observation.py)、[fast_camera_worker.py](projects/piper_right_pick_demo/src/right_pick/fast_camera_worker.py) | Codex／Responses 两种后端、紧凑输入、三路 RGB 长驻采集；快照与连续录像共用流。模型只接收选定 RGB、状态及局部目标，不接收深度定位或手眼标定结果。 |
-| 统计 | [fast_recording.py](projects/piper_right_pick_demo/src/right_pick/fast_recording.py) | 模型接口、采图、执行、等待耗时；发送尝试、确认回执、模型报告成功与任务证据的区别。 |
+| L3 任务 | 冻结目标、初态、角色、阶段、证据和总预算 | 声明式 recipe、`fast_task_pipeline.py` |
+| 持久账本 | 同一 run-id 续跑、revision/event-id、累计耗时与调用 | `fast_task_session.py` |
+| L2 操作 | 当前目标、前提、允许原子、局部周期、预期物体证据 | `fast_task_pipeline.COMPOSITIONS` |
+| L1 契约 | 单步提案、准入、一次发送、回执、新观察、故障锁存 | `fast_pipeline.py`、`.agents/skills/piper-atom-*` |
+| L0 适配 | 对接具体机器人和传输，维持原数值与停止约束 | `fast_ros.py`、`fast_safety.py`、`fast_qualification.py` |
+| 经验 | 至多两条相关、带来源哈希的历史建议 | `fast_experience.py`、`reviewed_experiences.json` |
+| 评估 | 声明式证据依赖与终态审核 | `fast_task_evaluation.py` |
 
-1. **P0：先补足全臂路径约束，再讨论恢复连续执行。**
+Python 文件相对 `projects/piper_right_pick_demo/src/right_pick/`。现有 `fast_live_loop.py`、`fast_policy.py` 仍是单右臂 pen 执行路径；通用 recipe 和多臂模式保持 `offline_contract_only`。离线可表达性与真实动作能力分别报告。
 
-   [command 8 审计](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_posthoc_audit.json)确认：只发送一次任务 ROS 命令，驱动在约 24.782 秒后确认到位，但客户端在发送后的等待阶段触发限制并退出。端点位移约 28 mm，J1／J4／J6 分别变化约 +47.1°／+69.4°／−68.1°。因此“末端小步”不能代表整臂小幅运动，也不能用最终到位抹去途中监测失败。
+## 写一个可复用任务
 
-   优先离线审查 `fast_ros.py` 的目标限制与执行中监测语义，分别定义目标步长、关节变化、连杆／附件路径包络和异常结果。结合厂家 FK 比较连续关节解及路径候选，保留原失败作为回归案例。[离线几何复核](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_offline_geometry_review.json)支持近奇异位形放大这一解释，但仅分析前后端点，不能证明固件切换了 IK 分支，也不能还原实际路径或证明净空。不能通过增大阈值、填回证据路径或替换 hash 宣称问题已经解决。
+先固定目标变体和初态：物体是否预抓取、接收容器与支撑是什么、观察臂能做什么、什么实际现象算成功。recipe 阶段可声明 `goal`、附加 `evidence`、`max_cycles` 和 `arm`；前提由操作注册表继承，不能改写。全局预算由 session 冻结，recipe 不提供全局 budget 字段，也不包含任意代码、历史坐标、旧 PID/owner 或放宽保护的选项。
 
-2. **P0：分开处理“客户端停止”和“机器人已停止”，补齐故障后的观测。**
+示例包括 `pen_in_holder`、`can_on_lid`、`charger_in_unpowered_socket`、`turn_faucet` 与 `sort_two_objects`。复杂例通过有限次数组合抓放两个对象，检验共享预算和阶段连续性。`place_on_support` 使用目标支撑，`articulated_rotate` 使用关节物体可见目标，避免把原支撑/螺纹进度语义误套到杯盖/水龙头。
 
-   该次客户端报告为 `action_count=0`、`control_commands_sent=null`、`target_uncertain=true`；事后驱动回执却证实一次真实发送和到位。两者描述的是不同确认阶段，应同时保留。相机随客户端结束，约最后 23.4 秒实际运动未录到，完整实际轨迹也未保留。
+同一轮始终使用同一 `store/run-id`。先 `current`，再用 revision 和唯一 event-id 记录回执；需要完整冻结合同才读 `contract`。重启、恢复、观察分支不增加总预算。观察臂改善视野与工作物体进展分别计数；旧观察、零变化或机械臂到位不能独自清除无进展债务。
 
-   优先检查 `fast_live_loop.py` 的收尾、`fast_ros.py` 的失败锁及 `fast_camera_worker.py` 的生命周期：失败后禁止后续目标，同时让独立被动观测有明确的终止条件，补齐动作结果对账。统计应区分发送尝试、驱动接收、最终到位和抓取成功。当前资格设计采用保留驱动／使能、让已接受的有限目标完成后不再发下一目标；这不等于即时保持或通用急停验证。证据见[原客户端摘要](evidence/piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/fast_summary.json)与上述 command 8 审计。
+如果新任务无法由现有操作表达，先补独立契约和离线测试，再实现实体适配。固定场景成功日志提供经验，不能变成新场景的绝对动作序列。
 
-3. **P1：减少无进展的模型往返，先解决可见性和动作合同。**
+恢复先分类再提出当前局部目标：遮挡/视觉不确定、夹取失败、无进展可以提出一次新观察或局部对齐；确认零发送只能重新审查请求。未知/部分发送、超时、未验证保持和故障锁存需要当前执行证据，不能借视觉失败标签绕过。`fast_task_recovery` 仅构造诊断合同，通用阶段回退、持久恢复计数和实体动作尚未自动接入；已有 pen 的 RECOVERY 路径仍单独保留。恢复不意味着沿历史坐标反向运动。
 
-   [实验对照摘要](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/experiment_comparison_after_visibility_review.json)中，一轮 101.141 秒、11 次模型调用，模型接口累计 97.937 秒，实际动作数为 0；另有多轮因遮挡判断而 pause。这里模型接口等待是主要耗时，不能归因于机械臂速度。后续现场还纠正过前视图中“机器人右侧对应图像左侧”的理解，修改后的实验也不能标为全自主。
+## 精简输入与模型往返
 
-   当前默认第一次 `observe(unknown)` 后提示推进或说明具体阻碍，第二次终止，总计最多 24 次模型调用和 900 秒；常规输入只包含当前阶段。现场采图及状态读取后会再次核对总时限，避免预算已耗尽仍调用模型。模型返回后刷新机器人反馈并检查漂移，尚未重新让模型看场景；对等待期间人、笔或笔筒移动仍没有独立场景变化检测，不能给旧 RGB 重贴新时间戳。该假设和 RGB 年龄已记入运行日志。
+当前入口为 `fast_codex.build_codex_packet` 和 `fast_model.build_fast_payload`。每轮发送当前阶段、必要 RGB、本体和夹爪状态、上次动作及结果、retry count 和短记忆，不重复发送完整 reasoning/history。外层 Codex 按需读取技能；内层只输出一个结构化提案，不拥有工具或硬件入口。
 
-4. **P1：测量模型后端开销，再决定怎样提速。**
+经验模块不新增模型调用，按任务/操作/明确结果检索至多两张卡。卡库与原证据均固定哈希；缺失、改动或越出目录的源文件使卡片失效。建议与 controller state 分开，不授予权限、不建立当前接触/净空/成功事实，也不包含旧运动目标或安全层例外。卡库修改要显式评审并更新固定摘要。
 
-   用户使用 Codex 访问项目控制，沿用已有登录，不需要 API key。Codex 路径每轮启动独立、禁用工具的 ephemeral 会话；固定模型 `gpt-6-astra`，当前适配器检查 `codex-cli 0.160.0`。`agent_decide_s` 包含 CLI、图像处理、网络及服务端等待，不是纯推理时间。后续在相同输入、schema 与推理等级下测量图像选择和会话开销；任何复用都须保留工具隔离、上下文边界和超时后不重放动作的合同。不要将更快的单轮决策直接写成更快的完整抓取。
+阶段决定视角和允许动作尺度；精细抓取、插入、释放后验证保留新图闭环。三路采集录像可以持续，模型只接收当前所需视角。模型接口耗时包含 CLI 启动、编码、传输和服务等待，不能称为纯推理时间。图像裁剪、会话复用与 chunk 必须分别测试；离线支持某动作不改变现有物理传输限制。
 
-5. **P2：统一评估口径，保留人工参与和未知值。**
+## 将两个旧项目的教训放进共用层
 
-   [历史放笔结果](evidence/piper_pen_repeat_video_20261005/new_holder_result.json)记录了松爪、退开后笔仍在筒中的成功证据，也明确记录现场前后对齐指导；它是监督下成功，不是自主成功率。对照摘要给出的重建视觉窗口约 2403.699 秒；3534.980 秒是录像进程窗口，包含准备与等待。49 条 ROS 命令不是模型调用数，48／49 条命令累计 47.160 秒是“意图到稳定反馈”，也不是纯运动时间。
+| 记录中的问题 | 共用规则 |
+| --- | --- |
+| 抓笔成功包含侧视指导 | 保留人工介入和容器变体，当前 RGB 重新判断前后关系 |
+| 夹住充电器但未插入 | grasp、lift、alignment、insertion、release/stability 分开；工具姿态不等于持物轴 |
+| 放罐时接触点被遮挡 | 使用互补视角；人工确认杯盖与视觉验证独立支撑分开 |
+| 长时间小步与观察往返 | 当前阶段局部目标、有界重试和总预算；换视角不清零工臂失败 |
+| timeout 后出现下落 | 单独验证 stop/hold/exit，保留 workspace、关节、速度和步长限制 |
+| 客户端退出后旧目标继续完成 | 保留发送尝试、驱动接受和事后结果；未知结果不自动重发 |
+| 小末端位移伴随大关节变化 | 分别审核末端步长、各关节变化、整臂及附件运动通道 |
+| 零发送预检拒绝混同运动失败 | 依据真实回执分类，保留原失败，不改日志或用重启清状态 |
 
-   后续评估固定同一任务起止点，分别报告模型调用、接口等待、发送至稳定反馈、无进展观察、人工介入和最终视觉验证。基线模型次数及耗时缺失，因此目前无法计算调用下降比例或模型延迟改善；优化版没有完成任务，也尚不能证明小于 30 分钟完成或成功率提升。
+抓笔来源主要在 `projects/piperx_cloth_demo` 及对应 evidence；后续 fast、充电头与空罐来自 `projects/piper_right_pick_demo` 和[新增证据索引](evidence/local_integration_20261007/source_inventory.json)。旧专项 ROS 入口常绑定一次具体会话，不直接充当通用动作。
 
-6. **P2：整理环境与路径，但保持现场资格和源码分离。**
+## 评估回答什么
 
-   两套项目的 local 配置已随包，`rg` 默认会受原 `.gitignore` 影响而隐藏这些文件；核查时使用 `rg --files --no-ignore`。最新撤回配置位于上文 evidence 路径，文件名中的 `commissioned` 不表示现在仍准入。原 `site.example.json` 仍有历史 can2，当前 fast 固定的是 can1／USB `1-6.3:1.0`，不能混用。
+`evaluate_task_evidence(document)` 接收 claims、观察引用和事件。claims 指定所需事实、依赖阶段/执行事件、观察数量与时间跨度。placement 示例覆盖 grasp → lift → release → retreat → stability；articulated 示例覆盖初态与可见关节物体目标，可以替换目标谓词。
 
-   迁移需明确替换原主机的相机 Python、Codex 二进制、图片路径及日志路径。`fast_ros.py` 还硬编码 `/home/agilex/piperx_cloth_demo/.../ros_resume_entry.py` 和 `/home/agilex/piper_gpt/.../piper_ctrl_single_node.py`，固定 SHA256 且拒绝配置覆盖；安全层依赖原始资格 collector、当前 boot ID、驱动 PID及会话 command log。证据摘要不能替代这些运行依赖，也不能直接迁移原主机资格。
+`model_visual_report`、`independent_rgb_review`、`simulator_oracle` 独立计算。模型说完成不被改名为独立审核，仿真 oracle 不计实机成功，robot receipt 不能满足物体事实。后续运动或人工改变场景会使旧终态证据失效，需要新观察重新满足稳定窗口。缺证据与遮挡保持 unknown/null；明确反证和基础设施故障分别记录。
 
-   底层参考源码已补齐：[ROS 执行适配器](projects/piperx_cloth_demo/robot_tools/ros_resume_entry.py)、[厂家 ROS 驱动及 piper_msgs](vendor/piper_ros-noetic/)、[piper-sdk 0.6.2](vendor/piper_sdk_0_6_2/)、[健康遥测 wrapper](vendor/driver_with_health.py)。wrapper 是会启动真实驱动的入口，不能当普通离线检查脚本运行。ROS 消息仍需匹配目标环境构建；相机使用独立 RealSense Python 环境。`pyproject.toml` 没有声明完整运行依赖，两个 requirements 文件是历史环境记录，均不意味着跨机器安装后可直接实机启动。
+这是**声明证据的结构与时序审核**：不会打开图片判断真假，不认证审核员、不同真实帧或事实语义。不同 observation ID 不保证不同像素；调用者负责可信采集和冻结目标标准。`research/task_eval_*_example.json` 是合成输入，只用于接口验证。
 
-本轮已用 `test_fast*.py` 的假模型、假 ROS/相机验证修改，结果见 [optimization_validation.json](metadata/optimization_validation.json)。[远端历史回归摘要](evidence/piper_right_pick_demo/runs/fast_repair_20261005_182331/full_tests_after_stall_patch_summary.json)中的 426 项是另一轮记录，不是本轮测试数量。离线测试不能代替路径、停止行为或实际抓取资格；历史图片回放也不会生成动作后的视觉后果。
+每轮分别记录任务结果、抓持与释放后稳定、受控回位、人工参与、录像覆盖、总耗时、模型调用/接口等待、执行/等待、恢复与退出原因。缺少基线调用数时不能计算调用降幅；回放耗时不能当作实机提速，成功个例不能当作稳定成功率。
+
+`fast_recording_contract` 固定 run/task、必需视角和生命周期要求：归零不录，任务开始到释放、撤爪和稳定验证需要覆盖；异常后不能仅凭控制器退出/文件关闭声称完整。逐帧元数据审核只报告声明覆盖，视频解码、文件真实性和曝光同步分别保持未验证。底层已有三视角持续采集；把它从控制器生命周期中分离的通用录像服务仍属待实现项。
+
+## 研究如何进入实现
+
+八项原始资料及版本限制见 [generalization_synthesis.txt](research/generalization_synthesis.txt)。采用的主要原则是 API 组合、有限阶段、短经验、持久预算、隔离候选改动和独立终态评估。
+
+ManiSkill `TurnFaucet-v1` 用仿真关节判断成功；RGB 模式的 extra observations 仍有目标轴与位置等特权信息。未来仿真适配必须白名单投影模型输入，将特权状态留给 grader。PhysicalRSI 项目页中的像素到世界坐标和历史姿态复用也超出当前约束，不进入控制链。软件 agent 的 Self-Harness 成果与其他平台成功率不构成本机性能证据。
+
+迭代顺序：冻结基线 → 从记录定位一个问题 → 小范围候选修改 → 离线合同与回放 → 不同 agent 独立审查 → 同目标和安全条件的新实验 → 根据测量决定采用。保留失败候选及原失败，不在运行中自修改控制代码，不靠新 run-id 清零失败预算。
+
+## 实机恢复与环境
+
+收到实际操作请求时，按 [在线控制使用核心](AGENTS.md#在线控制使用核心) 直接复用现成 CAN、RealSense RGB 和当前宿主，不重复验证已有有效会话，不将全量源码审查、环境重验或 prepare 作为每次任务前置。初次接入只补必要状态，变化或异常只诊断相关项。状态读取、图像采集、有限单臂动作、双臂任务适配分别报告；一个解释器缺包不代表设备不可用。控制偏差使用既有容差，不为细小误差循环重发。异常立即停止新增指令，使用已有适用停止/保持机制并读取回执；停止状态未知就如实报告。
+
+历史 fast 资格配置含撤回记录。本次整合没有重建通用真机资格，后来的专项成功也不自动恢复全部入口资格。超时后不发下一目标、保留原驱动，与即时停止/保持属于不同能力，要用对应实测确认。
+
+原控制环境使用 ROS Noetic/系统 Python 3.8、`piper-sdk 0.6.2`；RealSense 常在独立 `pi0_infer` Python 3.10。旧 SDK、新版 `pyAgxArm` 与相机环境不能互相替代，详情见[环境记录](metadata/remote_environment.json)。厂家源码和许可证留在 `vendor/`；没有复制全部 `/opt/ros`、Conda 环境或构建产物。
+
+部分入口仍固定旧绝对路径、源码哈希、boot/PID 和会话日志。字符串替换或填回资格路径不能完成迁移；先核对设备身份、唯一宿主、执行适配和资格的关系，再独立验证。本次离线入口不包含历史状态自动接管命令。
+
+## 文件与验证
+
+2026-10-07 显式远距粗接近档：按用户要求新增 `motion_profile=coarse_approach`，实际扩大双爪空载、远离目标时的 RGB `joint/approach` 范围；每轴最多 3°，请求与编码目标的模型末端平移最多 20 mm，完整独立关节包络的过程界为 35 mm／0.08 rad，固定 1% 速度。该档取消仍只锁存，不额外预留不会发送的 hold；须记录当前远距、空载及整臂通道描述，任何活动抓持／接触、对齐、带载、释放或初始化均不适用。省略参数仍走旧档，旧默认及带载接触范围不变。真实 SDK 配合假 CAN 已覆盖 2.5°／3° 编码、厘米级模型目标、四帧一次发送、被动臂零发送及故障不重试；这是离线软件证据，新档尚未实机运行。分项验证与独立审查见[本轮报告](artifacts/plug_coarse_approach_20261007/validation.json)，不合并成一次全量测试。
+
+此前在线有界测试已正常关闭宿主及相机；六段动作只获得毫米级机器人位移／空爪张开，插头仍在原插孔，未接触或完成拔插。末段录像三路各 14,930 帧、段内记录间隙为零，已解码首尾帧，未宣称逐帧完整解码；与此前各 24,524 帧的录像之间有约 1,024.752 秒空档，不能称全任务连续覆盖。退出不证明物理停止。原 run 保留已用 17／500 次及 11:22:22 UTC 截止时间，离线新档不重置或延长该已到期预算。见[实机封口记录](artifacts/plug_rgb_60min_1791368274083686567/online_test_closeout.json)。
+
+2026-10-07 逐段动作报告与经验更新：按用户要求，将每段计划幅度、实测关节角／夹爪开口、控制器法兰反馈位移及新图中的物体进展分开记录，下一步从新图修正；经验带事件和证据来源，不复制旧坐标、现场许可或数值例外，执行中不改代码／阈值。已保存六条实际回执：三次左臂关节段的法兰反馈位移分别约 1.103／1.092／1.117 mm，左右夹爪分别从 8.47／15.47 mm 开到 44.45／44.38 mm，右臂联合关节段法兰反馈位移约 3.752 mm；各段对侧无发送、稳定窗口分别记录。详见[动作幅度报告](artifacts/plug_rgb_60min_1791368274083686567/action_magnitude_report.json)。当前已试姿态与方向受现有模型余量约束，不能报告已经实现厘米级位移；30 mm MOVE_L 也不能在 PiPER X 模型／raw 反馈一致性要求未满足时直接替换。这些是机器人运动与开口结果；当时新图仍无物体接触或插拔进展，不等于任务成功。
+
+2026-10-07 原预算内图像超时接续：仅对完整四帧已返回、唯一故障为 RGB 到期的空载普通接近／对齐，核对旧宿主关闭、新图及故障后被动稳定记录后，追加一次同 run 的独立 continuation scope。原事件、故障、合同、4／500 次已用额度和原 60 分钟截止时间保留，旧目标不重发，不继承旧连接缓存或限位。RGB claim 前不足 6 秒时返回 `refresh_required`，只刷新本段图像、不循环设备准备；已 claim 后普通发送首帧前不足 3 秒仍是零 TX 故障，保留计数，不能刷新后直接续发。最低余量不保证完成。134 项定向测试、独立审查及分开记录的窗口回归见 [接续修复记录](artifacts/plug_rgb_60min_1791368274083686567/continuation_repair_validation.json)。主代理已完成零 TX 管理激活，实物拔插结果仍独立核验。
+
+上述接续后的实机限制：右臂 `inward60_cont_right` 在发送前因“Joint feedback exceeded 50 ms including validation”失败，本事件两臂均零发送；故障后没有重发。宿主正常关闭并退出，三路录像封口各 24,524 帧、报告序号间隙为零；OpenCV 已读取元数据并解码各路首尾帧，未做完整解码。这些回执不证明物理停止。两臂约 3.49 秒被动观察关节跨度为零、错误码为零，物理停止结论仍为 null。当时保存图像的模型观察为双爪空、插头在原插孔，任务未完成。故障时原 run 已用 8／500 次、剩余 492 次，截止时间仍为 2026-10-07 11:22:22 UTC；真实失败、录像与预算见 [实机反馈时限失败记录](artifacts/plug_rgb_60min_1791368274083686567/freshness_fault_diagnosis.json)。当时唯一 RGB 到期 continuation 已用，不能套用它处理此次零发送故障；该失败及当时的软件限制保留，后续独立分支见下文。
+
+2026-10-07 反馈采样调度修复：普通 joint 将可能阻塞的持久 guard 前置，再取新反馈立即校验并记录原样本；三秒窗口同时要求真实采样墙钟和单调时间跨度。保留 50 ms、首帧守卫和不重试策略，83 项适配器测试（含 9 项新增回归）及 5 项独立回归分开记录于 [离线修复报告](artifacts/plug_joint_observation_scheduling_1791370374424391653/validation.json)。该阶段只完成离线验证，代码修复本身不恢复故障。实际控制链是持久宿主经 pyAgxArm 直接使用 SocketCAN，无需 ROS；旧 ROS master 当次仅注册 rosout、无 Piper 节点，见 [只读路由诊断](artifacts/plug_rgb_60min_1791368274083686567/ros_control_route_diagnosis.json)。此前初始化已成功，但不能据此声称普通动作或拔插已跑通。
+
+2026-10-07 独立零发送审计接续：新增只覆盖上述精确 freshness 诊断的一次管理分支，核对当前 owner 的原始查询／初始化／零发送历史、连接身份、关闭和故障后观察，保留旧 scope、故障、合同和失败事件。150 项定向测试及 5 项独立回归通过；主代理已完成[零 TX 激活](artifacts/plug_rgb_60min_1791368274083686567/zero_tx_activation.json)，激活时仍为原 run 的 8／500 次及原截止时间，没有新预算或缓存／限位迁移。全部历史 owner 禁止复用，旧失败事件不重发。实现、审查和有限范围见[验证记录](artifacts/plug_rgb_60min_1791368274083686567/zero_tx_continuation_validation.json)；管理激活不是运动、停止或物体成功证据，后续实机结果另行记录。
+
+2026-10-07 显式预算接续：本次用户明确重新计算为 60 分钟、最多 500 次，新增预算分支只接受故障后的准确用户指令，并绑定 proposal 与已激活的唯一 execution epoch；默认 128 次／900 秒合同不变。原 3 次及故障历史保留，累计上限为 503 次，单次运动和反馈守卫不变。预算修复的 126 项定向测试与独立审查通过；主代理已完成零 TX 管理激活，实际插拔结果另行记录，见 [预算修复记录](artifacts/plug_rgb_60min_1791368274083686567/budget_repair_validation.json)。
+
+2026-10-07 步长说明收敛：将用户要求的远处几厘米、近处约 1 厘米或更小写入核心与 L2/L3，并在在线接续中集中列明当前实际能力：普通目标最多 15 mm 且每轴最多 0.025 rad，拔插目标最多 2 mm；20 mm 过程守卫不充当目标上限。明确已接通的 RGB 暂态处理是记录并等待收敛，每段后新图决定下一目标，不要求完整任务轨迹。本次只修正文档表达，不扩展执行上限或声称已完成实物动作。
+
+2026-10-07 图像监督带载与故障后接续补齐：专用右臂拔出/搬移/插入绑定两侧当前抓持和新图，每段完整到位后等待新图响应，保留左臂及双爪监测、原始抓持锚和累计无进展预算；支持带载后的受支撑释放及显式 RGB 空爪撤离。另增仅限完整初始化暂态失败的管理接续：旧 scope/fault/run/events 不改，需故障后明确的新预算授权才能追加一次 execution epoch；未授权不激活、不发硬件。当前软件验证与实际任务分别记入 [本轮记录](artifacts/plug_loaded_restart_20261007/validation.json)。
+
+2026-10-07 普通图像监督接近补齐：沿用原 pair submit 单步接口，显式绑定当前图像、空载工作臂、整臂通道、编码目标和真实同连接缓存，不要求全任务实测轨迹或伪造现场米数。初始化与普通动作共用暂态计时/诊断，发送中检查和最终到位分别保留；普通动作以原点 ±0.028 rad、原关节及位姿限制进一步约束接收观察范围。新视觉分支取消只锁存、不挪用米制 hold；旧实机故障与到期预算未清除。离线贯通及保留缺口见 [本轮记录](artifacts/plug_rgb_joint_route_20261007/validation.json)。
+
+2026-10-07 步长与暂态策略补齐：核心规则和 L2/L3 skill 采用当前图像下远处较大步、近处逐渐缩小、接触小步修正，均受当前执行器上限约束。RGB 首次初始化原先把过程 ±0.003 rad 跟踪带直接用作即时失败条件；现在仅四帧完整返回后增加有限接收观察，暂态总带宽为起点至编码目标区间外各 0.025 rad，超原带累计最多 1 秒，回带和稳定窗重置不清零。发送阶段、原点/有效关节/位移/新鲜度/另一臂与夹爪守卫保留；最终仍须原误差及三秒稳定。此策略不是厂家精度或普通/带载动作资格，具体回归及原真实失败分析见 [暂态修复记录](artifacts/plug_transient_policy_1791363798129072893/validation.json)。原实机故障不改写，软件验证不计入插拔成功。
+
+2026-10-07 插拔第三轮离线实现：新增 PiPER X 六轴有界关节计划、官方模型空间保持、持久原发送/保持帧账本及同连接 SDK 适配，接入 PairHost 的内部场景来源接口。显式取消与 EOF/普通故障分开，原目标未知或部分发送不发保持；SDK 模式帧去重和细微反馈漂移有独立回归。当轮尚缺生产来源、首目标和边界接续，现已分别接入来源 provider、独立初始化和来源绑定内移；带载固定/拔出/插入仍未接通；假 CAN 测试不代表真实运动或停止。完整实施路线见 [设计](projects/piperx_cloth_demo/docs/PIPER_X_JOINT_PATH_DESIGN.md)，本轮结果写入当前 generalization validation，原来源清单不改。
+
+原项目、旧结果及大视频保留原处；新项目增加精选证据和引用索引，不覆盖 baseline。保留 `metadata/source_manifest.json` 原来源哈希，本地改动单列 optimization manifest，厂家许可证与旧校验文件保留历史含义。
+
+根目录运行 `python3 tools/verify_bundle.py`；在 `projects/piper_right_pick_demo` 运行 `PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast*.py'` 和语法检查。本次整合结果见 [generalization_validation_20261007.json](metadata/generalization_validation_20261007.json)，旧 `optimization_validation.json` 保留历史含义；路径、停止行为、复杂任务成功率与速度收益仍需分别测量。
+
+历史全量回归当前没有全部通过，需要与新增 fast 通用层分列。旧 right 测试中有依赖未迁入 `runs/` 原文件的失败，个别 `direct_sdk_step` readiness 失败仍在定位；旧 piperx 在默认 Python 3.8 下调用 `Path.is_relative_to` 等较新 API，并存在工具 schema 预期与现版本的差异。不要通过放宽检查或改写原记录抹平这些问题。先核对实际解释器和缺失证据，再决定独立的兼容性修复范围。

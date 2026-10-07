@@ -1,0 +1,44 @@
+Independent review by research_task_eval — 2026-10-07
+Reviewed: fast_experience.py, reviewed_experiences.json, fast_model.py and
+fast_codex.py integration, test_fast_experience.py, package-data declaration.
+No hardware/model/network calls were made by this review's tests.
+
+Core findings
+- The shipped deck is pinned by a code SHA256 constant; evidence files are
+  separately content-hashed. Altering a card or its supporting file drops the
+  affected advice rather than creating an unreviewed prompt instruction.
+- Cards only provide short historical caution/advice. Current cards carry no
+  joint target, Cartesian target, old operator authorization, new safety limit,
+  or inferred task success. The packet says current RGB and task prevail.
+- The two existing model builders attach a separate advisory field. They do
+  not change controller state, schema, camera selection or allowed actions.
+- Selection is phase/task/explicit-trigger based, not a second model call or
+  whole-history retrieval. At most two cards and 1800 compact UTF-8 bytes are
+  admitted. Both builders actually serialize prompt JSON compactly, matching
+  the size check. Current packets measured 736/763/754 bytes in alignment,
+  success verification and timeout recovery respectively.
+- Unbundled installations can run without evidence hints. Package data includes
+  the reviewed deck. Tests cover missing/mutated evidence, injected context,
+  symlinked leaf escape, and equivalence of both builders.
+
+Requested refinements, sent to research_memory
+1. The path boundary was checked against (root/evidence).resolve(). If that
+   entire directory is a symlink outside the bundle, an external file could
+   still pass. Add a resolved-root containment check and regression. The
+   current bundled evidence directory is a normal directory, so this is a
+   portability/contract issue rather than evidence of an unsafe current card.
+2. A wildcard stable_verify card used placement-specific receiver wording.
+   General tasks can also reach this operation. Make advice goal-neutral or
+   narrow the task matcher; do not imply every task ends in placing a receiver.
+
+No change to motor protections, object localization, execution authority or
+success evidence was observed. This review does not establish a real latency
+improvement; that remains an experiment metric.
+
+Second review pass
+Both requested refinements are implemented and rechecked: resolved evidence is
+contained by the bundle root as well as the evidence root; the placement card
+uses a task allowlist and turn-faucet does not receive it. The deck now has eight
+cards, including local can/charger evidence, object/tool-axis distinction and
+bounded recovery. Their prose still contains no reusable motion coordinates or
+authority to relax limits. All 13 experience tests passed on this pass.

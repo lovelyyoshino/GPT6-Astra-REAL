@@ -1,0 +1,157 @@
+{
+  "schema_version": "astra_recipe_v1",
+  "task_id": "plug_transfer_left",
+  "initial_condition": "The specified plug is seated in its source socket on a table-supported power strip. The intended empty socket to its left is visible. Power disconnection and mechanical compatibility must be independently confirmed before contact.",
+  "goal": "Use the left arm to stabilize the power strip and the right arm to extract the specified plug and insert it into the frozen left target socket. Release both grasps and verify the source is empty and the plug remains seated in the target.",
+  "constraints": [
+    "Offline contract only; this recipe grants no hardware execution or field qualification.",
+    "Both arms are task arms: left stabilizes the power strip; right transfers the plug. The stabilizer is not a view-only observer.",
+    "Freeze source and target identities from current RGB; left is relative to the initial scene, never a historical coordinate or later view.",
+    "Confirm power disconnected and compatible sockets before contact; never issue energizing commands.",
+    "RGB-only object judgment; no calibration, depth, simulator object truth or historical target poses.",
+    "Only one arm moves per cycle; the other requires a current independent stationary hold receipt from the same scene.",
+    "Maintain table support and the left grasp until the right grasp is released; do not lift the strip or pull on the cable.",
+    "Use supported grasps before extraction; a grasp or robot arrival does not prove unplugging, pin alignment or seating.",
+    "Extraction and insertion need qualified bounded contact capability and whole-arm clearance; no force escalation on sticking or slip.",
+    "One bounded proposal and at most one dispatch per observation cycle; preserve all limits, total budgets and uncertainty latches.",
+    "An uncertain or partial send latches both arms; do not resend, finish the other side or reset the session to clear the fault.",
+    "Final stability needs two fresh observations at least two seconds apart after both grasps are released and both grippers are clear."
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "operation": "inspect",
+      "arm": "right",
+      "goal": "Identify the seated plug, table-supported strip and empty compatible socket to its left; freeze identities, arm roles and the power-disconnection confirmation.",
+      "evidence": [
+        "source_plug_seated",
+        "source_socket_identity_frozen",
+        "left_target_socket_identity_frozen",
+        "left_target_socket_empty",
+        "power_disconnected_confirmed",
+        "socket_compatibility_confirmed"
+      ]
+    },
+    {
+      "id": "stabilizer_approach",
+      "operation": "approach",
+      "arm": "left",
+      "goal": "Approach a grasp on the strip body while the right arm is independently confirmed stationary; preserve access to both sockets and the cable."
+    },
+    {
+      "id": "stabilizer_align",
+      "operation": "align",
+      "arm": "left",
+      "goal": "Align the left fingers with the strip body while it remains supported on the table and the socket faces remain clear."
+    },
+    {
+      "id": "stabilizer_grasp",
+      "operation": "grip_supported",
+      "arm": "left",
+      "goal": "Grasp the strip body without lifting or shifting it; establish a verified left-arm hold before right-arm work.",
+      "evidence": [
+        "power_strip_stabilized",
+        "power_strip_table_supported"
+      ]
+    },
+    {
+      "id": "plug_approach",
+      "operation": "approach",
+      "arm": "right",
+      "goal": "Approach the specified plug body while the left arm holds the strip with a current independent hold receipt."
+    },
+    {
+      "id": "plug_align",
+      "operation": "align",
+      "arm": "right",
+      "goal": "Align the right fingers on the plug body, keeping the cable free and the extraction direction visible."
+    },
+    {
+      "id": "plug_grasp",
+      "operation": "grip_supported",
+      "arm": "right",
+      "goal": "Grasp the plug body while it remains seated; do not perform a trial lift or treat closure as successful extraction.",
+      "evidence": [
+        "plug_body_grasped",
+        "plug_still_seated_in_source"
+      ]
+    },
+    {
+      "id": "extract_plug",
+      "operation": "extract_segment",
+      "arm": "right",
+      "goal": "Extract along the currently visible socket axis in qualified bounded contact segments while the strip stays fixed; complete only when the pins are clear of the source socket.",
+      "evidence": [
+        "source_socket_empty",
+        "plug_pins_clear_of_source",
+        "plug_retained",
+        "power_strip_stabilized"
+      ]
+    },
+    {
+      "id": "transfer_left",
+      "operation": "transport",
+      "arm": "right",
+      "goal": "Carry the retained, fully extracted plug toward the frozen left target socket while clearing the strip, left arm and cable.",
+      "evidence": [
+        "plug_pins_clear_of_source",
+        "left_target_socket_identified"
+      ]
+    },
+    {
+      "id": "align_left_socket",
+      "operation": "align",
+      "arm": "right",
+      "goal": "Align the actual plug pins with the openings of the frozen left target socket; tool orientation alone is insufficient.",
+      "evidence": [
+        "plug_pins_aligned_with_left_target",
+        "power_strip_stabilized"
+      ]
+    },
+    {
+      "id": "insert_left_socket",
+      "operation": "insert_segment",
+      "arm": "right",
+      "goal": "Insert into the frozen left target socket through qualified bounded contact segments; stop on sticking, slip or unknown alignment without escalating force.",
+      "evidence": [
+        "plug_seated_in_left_socket",
+        "source_socket_empty",
+        "power_strip_stabilized"
+      ]
+    },
+    {
+      "id": "release_plug",
+      "operation": "release_retreat",
+      "arm": "right",
+      "goal": "Release the seated plug and withdraw the right gripper while the left arm continues to hold the strip.",
+      "evidence": [
+        "plug_released",
+        "right_gripper_clear",
+        "plug_seated_in_left_socket"
+      ]
+    },
+    {
+      "id": "release_strip",
+      "operation": "release_retreat",
+      "arm": "left",
+      "goal": "With the right arm independently held clear, release the table-supported strip and withdraw the left gripper without disturbing the seated plug.",
+      "evidence": [
+        "power_strip_released",
+        "left_gripper_clear",
+        "power_strip_table_supported"
+      ]
+    },
+    {
+      "id": "verify_transfer",
+      "operation": "stable_verify",
+      "arm": "right",
+      "goal": "After both releases, obtain two fresh views at least two seconds apart proving the source socket empty, plug retained in the frozen left socket, strip independently supported and both grippers clear.",
+      "evidence": [
+        "source_socket_empty",
+        "plug_seated_in_left_socket",
+        "power_strip_table_supported",
+        "both_grippers_clear"
+      ]
+    }
+  ]
+}

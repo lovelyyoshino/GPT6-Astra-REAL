@@ -1,0 +1,231 @@
+{
+  "schema_version": "task_evaluation_v1",
+  "run_id": "trial-1",
+  "task_id": "synthetic-placement-schema-example",
+  "mode": "offline_replay",
+  "claims": [
+    {
+      "id": "grasp",
+      "required_facts": [
+        "object_retained"
+      ],
+      "after_claims": [],
+      "after_events": [],
+      "min_observations": 1,
+      "min_span_s": 0,
+      "terminal": false
+    },
+    {
+      "id": "lift",
+      "required_facts": [
+        "object_retained",
+        "original_support_separated"
+      ],
+      "after_claims": [
+        "grasp"
+      ],
+      "after_events": [],
+      "min_observations": 1,
+      "min_span_s": 0,
+      "terminal": false
+    },
+    {
+      "id": "release",
+      "required_facts": [
+        "object_released",
+        "destination_support_established"
+      ],
+      "after_claims": [
+        "lift"
+      ],
+      "after_events": [
+        "release_command"
+      ],
+      "min_observations": 1,
+      "min_span_s": 0,
+      "terminal": false
+    },
+    {
+      "id": "retreat",
+      "required_facts": [
+        "gripper_clear"
+      ],
+      "after_claims": [
+        "release"
+      ],
+      "after_events": [
+        "retreat_command"
+      ],
+      "min_observations": 1,
+      "min_span_s": 0,
+      "terminal": false
+    },
+    {
+      "id": "stability",
+      "required_facts": [
+        "goal_satisfied",
+        "independent_support",
+        "gripper_clear"
+      ],
+      "after_claims": [
+        "retreat"
+      ],
+      "after_events": [],
+      "min_observations": 2,
+      "min_span_s": 2,
+      "terminal": true
+    }
+  ],
+  "observations": [
+    {
+      "id": "rgb-grasp",
+      "run_id": "trial-1",
+      "at": 1,
+      "origin": "historical_rgb",
+      "rgb_references": [
+        "fixtures/rgb-grasp.png"
+      ]
+    },
+    {
+      "id": "rgb-lift",
+      "run_id": "trial-1",
+      "at": 2,
+      "origin": "historical_rgb",
+      "rgb_references": [
+        "fixtures/rgb-lift.png"
+      ]
+    },
+    {
+      "id": "rgb-release",
+      "run_id": "trial-1",
+      "at": 4,
+      "origin": "historical_rgb",
+      "rgb_references": [
+        "fixtures/rgb-release.png"
+      ]
+    },
+    {
+      "id": "rgb-retreat",
+      "run_id": "trial-1",
+      "at": 6,
+      "origin": "historical_rgb",
+      "rgb_references": [
+        "fixtures/rgb-retreat.png"
+      ]
+    },
+    {
+      "id": "rgb-stable-first",
+      "run_id": "trial-1",
+      "at": 7,
+      "origin": "historical_rgb",
+      "rgb_references": [
+        "fixtures/rgb-stable-first.png"
+      ]
+    },
+    {
+      "id": "rgb-stable-second",
+      "run_id": "trial-1",
+      "at": 10,
+      "origin": "historical_rgb",
+      "rgb_references": [
+        "fixtures/rgb-stable-second.png"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "release_command",
+      "run_id": "trial-1",
+      "at": 3,
+      "source": "robot_receipt",
+      "reference": "robot/release_command.json",
+      "outcome": "completed"
+    },
+    {
+      "id": "retreat_command",
+      "run_id": "trial-1",
+      "at": 5,
+      "source": "robot_receipt",
+      "reference": "robot/retreat_command.json",
+      "outcome": "completed"
+    },
+    {
+      "id": "grasp",
+      "run_id": "trial-1",
+      "at": 1,
+      "source": "independent_rgb_review",
+      "reference": "review/grasp.json",
+      "observation_id": "rgb-grasp",
+      "facts": {
+        "object_retained": true
+      },
+      "reviewer": "independent-reviewer"
+    },
+    {
+      "id": "lift",
+      "run_id": "trial-1",
+      "at": 2,
+      "source": "independent_rgb_review",
+      "reference": "review/lift.json",
+      "observation_id": "rgb-lift",
+      "facts": {
+        "object_retained": true,
+        "original_support_separated": true
+      },
+      "reviewer": "independent-reviewer"
+    },
+    {
+      "id": "release",
+      "run_id": "trial-1",
+      "at": 4,
+      "source": "independent_rgb_review",
+      "reference": "review/release.json",
+      "observation_id": "rgb-release",
+      "facts": {
+        "object_released": true,
+        "destination_support_established": true
+      },
+      "reviewer": "independent-reviewer"
+    },
+    {
+      "id": "retreat",
+      "run_id": "trial-1",
+      "at": 6,
+      "source": "independent_rgb_review",
+      "reference": "review/retreat.json",
+      "observation_id": "rgb-retreat",
+      "facts": {
+        "gripper_clear": true
+      },
+      "reviewer": "independent-reviewer"
+    },
+    {
+      "id": "stable-first",
+      "run_id": "trial-1",
+      "at": 7,
+      "source": "independent_rgb_review",
+      "reference": "review/stable-first.json",
+      "observation_id": "rgb-stable-first",
+      "facts": {
+        "goal_satisfied": true,
+        "independent_support": true,
+        "gripper_clear": true
+      },
+      "reviewer": "independent-reviewer"
+    },
+    {
+      "id": "stable-second",
+      "run_id": "trial-1",
+      "at": 10,
+      "source": "independent_rgb_review",
+      "reference": "review/stable-second.json",
+      "observation_id": "rgb-stable-second",
+      "facts": {
+        "goal_satisfied": true,
+        "independent_support": true,
+        "gripper_clear": true
+      },
+      "reviewer": "independent-reviewer"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+Single loaded-contact retreat (not normal task resumption)
+
+This entry binds the real generation16 sequence60 RX failure and its intact
+four-frame initial transaction. That failure remains failed. Its separately
+recorded ten-second stationary endpoint and the previous successful sequence59
+goal/raw review are inputs; neither proves the contact force or absence of load.
+The user confirmed rim-only contact / suspension. The can remains gripped;
+only the cup is table-supported. Opening the jaw is forbidden.
+
+One allowed target, raw millidegrees:
+  [53018,109860,-48249,0,-52889,0]
+At the reviewed endpoint its nominal FK rises about2.08mm. This is not a proof
+that the entire physical loaded trajectory is monotonic or collision-free.
+
+Deployment arguments (root operator only; no automatic startup):
+  /usr/bin/python3 scripts/ros_guarded_contact_retreat_entry.py
+    --entry-config RUN/entry_config.json --entry-output-dir RUN/runtime
+    --loaded-rim-contact-confirmed PINNED_VENDOR
+    __ns:=/piper/right __name:=interruptible_driver
+Use the existing right-only namespace, can1 binding and speed_percent=1.
+reviewed_contact_retreat.json and reviewed_handoff.json must have identical bytes.
+The fixed boot child preserves/locks all12 ancestor sessions; it cannot be
+reopened by selecting another output directory. Startup adopts via fresh3s
+complete healthy feedback and sends zero actuator frames.
+
+One explicit client invocation, default only proposal unless --execute:
+  /usr/bin/python3 scripts/ros_guarded_contact_retreat_client.py
+    --config RUN/entry_config.json --runtime RUN/runtime --output UNIQUE_OUTPUT
+    --operation joint --target-raw 53018 109860 -48249 0 -52889 0 --execute
+The client also supports --operation status. No automatic repeat or sequence.
+
+All original guards remain: 1% speed, manufacturer nominal limits,
+30mm/.05rad full independent joint-box proof/workspace, J5 tracking0.30degree
+and other axes.003rad, original baseline/arrival/pre-send thresholds, jaw.5mm,
+100ms14-fragment freshness and per-frame RX/TX fault latch. Each baseline must
+remain within.003rad of the settled failed goal and jaw57.47mm±.5mm, enabled.
+The first admissible request consumes its opportunity durably before baseline;
+even zero-TX readiness refusal is a hard failure for this particular recovery.
+
+Only the original action worker may send the four-frame exact joint target.
+Jaw/P/hold replacement/resume/probe review are denied. A timeout or client exit
+does not cancel an accepted firmware goal; refusal of hold is never confirmed
+stopping. No stop/reset/disable/enable/retry is emitted on failure or shutdown.
+
+After healthy arrival and a fresh3s stable window, adoption is revoked BEFORE
+completed status becomes visible. The process remains read-only holding the
+existing controller target. No promotion endpoint is created. Fresh RGB/raw
+review remains necessary to establish actual separation and retained grasp.
+No test result or this restricted retreat grants general task/stop qualification.

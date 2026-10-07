@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+"""Unified offline project entry. Does not connect to robot or model services."""
+from tools.astra import main
+
+if __name__ == "__main__":
+    raise SystemExit(main())

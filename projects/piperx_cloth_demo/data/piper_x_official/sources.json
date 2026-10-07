@@ -1,0 +1,24 @@
+{
+  "description": "Unmodified pinned official model text. No site geometry, attachments, current controller limits, or physical qualification is supplied by these files. URDF mesh paths are retained as source text; meshes are not bundled or loaded by the joint planner.",
+  "files": {
+    "sdk_constants.py": {
+      "upstream": "https://github.com/agilexrobotics/pyAgxArm",
+      "commit": "841a625f5f4920e776f20b934eb13048b747e6d0",
+      "source_url": "https://raw.githubusercontent.com/agilexrobotics/pyAgxArm/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/api/constants.py",
+      "sha256": "b72cd2a0e7499483e1313acf0e98781510cb151de592c3fe1291df712ab23c5b",
+      "upstream_license_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/LICENSE",
+      "license_file": "LICENSE.pyAgxArm.LGPL-3",
+      "modified": false
+    },
+    "piper_x_description.urdf": {
+      "upstream": "https://github.com/agilexrobotics/agx_arm_urdf",
+      "commit": "f6642ce0d7872c686f29c99e9e10cd23d1d49313",
+      "source_url": "https://raw.githubusercontent.com/agilexrobotics/agx_arm_urdf/f6642ce0d7872c686f29c99e9e10cd23d1d49313/piper_x/urdf/piper_x_description.urdf",
+      "sha256": "34126caac7d5b37bc2409f337ac246afbe0bb8cd47fc9f16df5038f19bd21e3a",
+      "upstream_license_url": "https://github.com/agilexrobotics/agx_arm_urdf/blob/f6642ce0d7872c686f29c99e9e10cd23d1d49313/LICENSE",
+      "license_file": "LICENSE.agx_arm_urdf.MIT",
+      "modified": false
+    }
+  },
+  "gpl_companion": "LICENSE.GPL-3"
+}

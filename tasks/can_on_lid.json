@@ -1,0 +1,61 @@
+{
+  "schema_version": "astra_recipe_v1",
+  "task_id": "can_on_lid",
+  "initial_condition": "Empty blue can and transparent cup with its lid closed are visible on the table.",
+  "goal": "Place the empty blue can bottom-down on the closed transparent cup lid.",
+  "constraints": [
+    "RGB-only object judgment; no calibration, simulator object state or historical motion targets.",
+    "One bounded action proposal per observation cycle; preserve execution limits and uncertainty latches.",
+    "Model visual claims and independently reviewed outcomes must be reported separately."
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "operation": "inspect",
+      "goal": "Identify the specified objects, initial state and available RGB views; freeze the task variant."
+    },
+    {
+      "id": "can_approach",
+      "operation": "approach",
+      "goal": "Approach the empty blue can along a visually clear route."
+    },
+    {
+      "id": "can_align",
+      "operation": "align",
+      "goal": "Align the open fingers with a feasible grasp on the empty blue can."
+    },
+    {
+      "id": "can_grasp",
+      "operation": "grip_test",
+      "goal": "Grasp the empty blue can and verify retention after separation from its support."
+    },
+    {
+      "id": "can_transport",
+      "operation": "transport",
+      "goal": "Carry the empty blue can, bottom-down toward the closed cup lid while verifying retention."
+    },
+    {
+      "id": "can_align_target",
+      "operation": "align",
+      "goal": "Visually align the empty blue can, bottom-down over the closed cup lid."
+    },
+    {
+      "id": "can_support",
+      "operation": "place_on_support",
+      "goal": "Establish support of the empty blue can, bottom-down on the closed cup lid without pressing."
+    },
+    {
+      "id": "can_release",
+      "operation": "release_retreat",
+      "goal": "Release the supported the empty blue can, bottom-down and withdraw the empty gripper."
+    },
+    {
+      "id": "can_verify",
+      "operation": "stable_verify",
+      "goal": "Verify the empty blue can, bottom-down remains on the closed cup lid in separated views after gripper withdrawal.",
+      "evidence": [
+        "can_goal_visible"
+      ]
+    }
+  ]
+}

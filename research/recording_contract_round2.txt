@@ -1,0 +1,107 @@
+2026-10-07 本地录像合同与元数据审计，第二轮
+
+落地范围
+  projects/piper_right_pick_demo/src/right_pick/fast_recording_contract.py
+  projects/piper_right_pick_demo/tests/test_fast_recording_contract.py
+  本记录。没有开启相机、机械臂、ROS、外部模型或录像导出。
+
+本轮实现的是通用任务的声明式录像合同和只读元数据审核，不是独立录像
+daemon，也未修复真机控制宿主提前退出导致录像提前结束的问题。原 continuous
+worker 实际写三路 AVI、frames.jsonl 和 report；其默认三相机依赖仍然存在。
+本合同允许未来适配器只请求 right_hand/front，但没有宣称现 worker 已支持两路。
+
+公开 API
+  make_recording_contract(run_id, task_id, *, include_left=False,
+                          output_relative=None) -> dict
+  reserve_recording_directory(contract, root) -> dict
+  audit_recording(document) -> dict
+  audit_recording_files(contract, events, root, report_relative,
+                        frames_relative) -> dict
+
+make 仅产生要求，不读取当前场景、不调用硬件、不声明已经开始录像。
+reserve 只在给定根目录内独占创建新目录及 contract.json，已有目录拒绝覆盖；
+路径必须是相对路径，拒绝 ..、绝对路径及指向根目录之外的符号链接。
+audit_recording 完全无 I/O；audit_recording_files 仅流式读 report/frames 元数据，
+不会打开 AVI，也不积累全部帧历史。接口供根入口 recording-plan/recording-audit
+调用，CLI 修改由主 agent 负责。
+
+合同
+  schema_version: task_recording_contract_v1
+  run_id/task_id: 明确绑定，同 session 的有界 identifier 格式
+  output_relative: 默认 recordings/<run_id>
+  required_views: [right_hand, front]
+  optional_views: [left_hand]
+  requested_local_views: 必需两路，include_left 时三路
+  model_view_selection_affects_recording: false
+  exclude_initial_homing: true
+  start_policy: after_initial_pose_ready_before_first_task_action
+  normal_end_policy: after_retreat_and_stability_verification
+  exception_end_policy: continue_until_settled_or_explicit_unresolved
+  clock: host_receipt_wall_clock_seconds
+  max_interframe_gap_s: 0.25
+  overwrite/recorder_started/execution_available: false
+
+0.25 秒是此录像元数据合同的固定缺帧间隔界限，不是机器人运动阈值，也不是
+曝光同步精度声明。调用方不能以修改合同字段让缺失覆盖通过。
+
+审计输入整包示意（尖括号为占位符，不是可执行真实数据）
+  {
+    "schema_version": "recording_audit_v1",
+    "contract": <make_recording_contract 的完整返回值>,
+    "events": [
+      {"id":"ready-1", "run_id":"run-1", "task_id":"pen",
+       "kind":"initial_pose_ready", "at":10.0, "reference":"<host receipt>"},
+      {"id":"start-1", "run_id":"run-1", "task_id":"pen",
+       "kind":"task_start", "at":10.2, "reference":"<host receipt>"}
+    ],
+    "report": <worker report 或 null>,
+    "frames": <frames.jsonl 对象数组或 null>
+  }
+
+允许事件 kind：initial_homing、initial_pose_ready、task_start、action、
+release_complete、retreat_complete、stability_verified、controller_exit、fault、
+settled、unresolved。每项必须有唯一 id、同 run/task、有限有序非负 host 时间
+和非空 reference；unresolved 另需 reason。未知字段/事件直接拒绝。
+事件和 run 标签仅是调用方声明，模块不认证回执真伪或现场安全。
+
+覆盖判定
+  * 正常路径需要最后一次 action/release 之后的新 retreat，再有新 stability；
+    settled 单独不能替代它们。后续动作使旧撤爪/稳定终点无效。
+  * fault 或未完成前的 controller_exit 转入异常分支，必须在最后中断及最后
+    动作之后有明确 settled/unresolved；cleanup closed、旧稳定或同时间旧
+    settled 都不能替代。相同时间无法证明先后关系时保守判为缺少覆盖。
+  * 每路首帧应在 initial_pose_ready 后、task_start 前/同时；末帧覆盖终点，
+    帧索引从零连续、host_received_at 严格单调、间隔满足固定合同。
+  * 检查 report 的时间/帧计数/相机声明/结束状态与 frames 一致，所有请求视角
+    独立审核。局部模型选择了哪些视角不会减少本地录像要求。
+  * report 必须绑定 run_id/task_id；旧 worker 报告缺这些字段时仍是 unknown，
+    不事后补造绑定使其通过。现有视频没有被本次重新认证。
+  * metadata_coverage_complete 为 true/false/null，分别是元数据合同完整、
+    存在矛盾/确定缺口、必要信息未知；unknown 绝不提升成 true。
+  * task_success 和 physical_outcome_resolved 始终 null；视频存在/可解码、
+    独立 recorder supervisor 均未验证。显式 unresolved 可以说明录像覆盖到
+    已声明未解决终点，但不能表示任务成功或物理问题已解决。
+
+测试与交叉审核
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m unittest discover \
+    -s tests -p 'test_fast_recording_contract.py' -v
+  23/23 通过，0.012 秒；所有元数据是 synthetic，socket/Popen 被测试阻断。
+  覆盖独占目录、越界路径/符号链接、正常终态、异常终态、旧终态作废、提前结束、
+  时序相等边界、缺帧/错计数、缺 run 绑定、未知字段、可选左视角、仅元数据读取。
+
+  inspect_control 两轮只读复核指出 5 个生命周期边界并已修复/新增回归：
+    正常 settled 替代撤爪稳定；fault 后只用 stability；同时间旧 settled/fault；
+    同时间旧 retreat/new action；同时间 controller_exit/stability。
+  对方独立复跑前 21 项及最后两个相等时刻单例均通过；作者完整复跑总数 23。
+
+  本 agent 对 fast_task_recovery.py（源 SHA256
+  56c36ea17b638bad3a994f79dd1bd4ec1892cc0d1bfb5a0f51e3519f90e94cd3）
+  及其测试作只读交叉审，独立 13/13 通过，0.002 秒；未改恢复模块。
+  未发现阻断问题：unknown/partial/锁存异常优先于视觉诊断，unknown hold 只给
+  inspect 候选，任务/阶段/手臂绑定检查，预算零阻断，不重放、不派发、不改阶段、
+  不消费或重置预算；后续宿主必须独立做回执认证、动作准入和持久记账。
+
+未完成项
+  将合同绑定到通用执行 session 并实际启停 recorder；独立 recorder 生命周期
+  和崩溃恢复；当前 worker 的 run/task 元数据；两相机适配；真实异常持续录制；
+  实际视频解码/时间同步和逐任务物理结果审核。本轮不以离线测试代替这些结果。

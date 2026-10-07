@@ -127,10 +127,15 @@ class TaskSessionStore:
             report["termination_detail"] = ledger.termination_detail
         return report
 
-    def initialize(self, run_id, task_id, *, mode="single_arm", worker_arm="right", budget=None):
+    def initialize(self, run_id, task_id, *, mode="single_arm", worker_arm="right", budget=None,
+                   task_definition=None):
         _identifier(run_id, "run_id")
-        ledger = BoundedTaskPipeline(task_id, mode=mode, worker_arm=worker_arm, budget=budget)
-        config = _json(dict(task_id=task_id, mode=mode, worker_arm=worker_arm, budget=ledger.budget))
+        ledger = BoundedTaskPipeline(task_id, mode=mode, worker_arm=worker_arm, budget=budget,
+                                     task_definition=task_definition)
+        values = dict(task_id=task_id, mode=mode, worker_arm=worker_arm, budget=ledger.budget)
+        if task_definition is not None:
+            values["task_definition"] = task_definition
+        config = _json(values)
         contract = _json(ledger.contract)
         with self._transaction(create=True) as connection:
             old = connection.execute("SELECT config, contract FROM task_sessions WHERE run_id=?", (run_id,)).fetchone()
@@ -192,7 +197,9 @@ def main(argv=None):
     parser.add_argument("--store", required=True, help="Local SQLite journal, reused for every command")
     commands = parser.add_subparsers(dest="command", required=True)
     initialize = commands.add_parser("init", help="Create a frozen run, or return its existing progress")
-    initialize.add_argument("--task", required=True)
+    selection = initialize.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--task")
+    selection.add_argument("--recipe", help="Strict declarative task JSON, frozen into this session")
     initialize.add_argument("--mode", choices=("single_arm", "dual_arm", "worker_with_observer"), default="single_arm")
     initialize.add_argument("--worker-arm", choices=("left", "right"), default="right")
     initialize.add_argument("--budget", help="JSON file overriding task budget fields")
@@ -215,7 +222,13 @@ def main(argv=None):
     try:
         if args.command == "init":
             budget = json.loads(Path(args.budget).read_text()) if args.budget else None
-            result = store.initialize(args.run_id, args.task, mode=args.mode, worker_arm=args.worker_arm, budget=budget)
+            if args.recipe:
+                from .fast_task_spec import load_recipe
+                definition = load_recipe(args.recipe, mode=args.mode, worker_arm=args.worker_arm)
+            else:
+                definition = None
+            result = store.initialize(args.run_id, definition["task_id"] if definition else args.task,
+                mode=args.mode, worker_arm=args.worker_arm, budget=budget, task_definition=definition)
         elif args.command in ("current", "contract"):
             result = store.current(args.run_id, include_contract=args.command == "contract",
                                    include_operation=args.command == "current" and args.operation)

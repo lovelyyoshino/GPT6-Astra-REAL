@@ -151,6 +151,23 @@ class PersistentTaskTests(unittest.TestCase):
             self.assertFalse(restored["physical_success_measurable"])
             self.assertFalse(restored["execution_available"])
 
+    def test_observer_completion_preserves_worker_budget_after_reopening(self):
+        report = self.append(self.store.initialize("view-debt", "pen", mode="worker_with_observer"))
+        report = self.append(report, 2, status="unknown")
+        stage = report["next"]["stage"]
+        hold = dict(run_id="view-debt", arm="right", stationary=True, hold_verified=True,
+                    observation_id="frame-2", at=20.)
+        report = self.store.append("view-debt", expected_revision=2, event_id="observer-1",
+                                  kind="observer", payload=hold)
+        report = self.append(report, 3)
+        reopened = TaskSessionStore(self.path, clock=lambda: self.now[0])
+        report = reopened.current("view-debt")
+        self.assertEqual(report["next"]["stage"], stage)
+        report = reopened.append("view-debt", expected_revision=report["revision"], event_id="cycle-4",
+            kind="cycle", payload=receipt(report, 4, status="unknown"))
+        self.assertEqual(report["termination_reason"], "no_progress_budget_exhausted")
+        self.assertEqual(report["model_calls"], 4)
+
     def test_unknown_budget_and_uncertain_receipt_are_sticky(self):
         report = self.store.initialize("unknown", "pen")
         report = self.append(report, status="unknown")

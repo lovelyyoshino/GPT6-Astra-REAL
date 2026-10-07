@@ -1,0 +1,35 @@
+第二轮：有界失败恢复思想与最小落地
+时间：2026-10-07T02:03:20.094446+00:00
+
+原始资料核验
+- Zetta 官方仓库仍可访问：https://github.com/air-embodied-brain/Zetta-Embodiment 。其运行角色将诊断、候选、批评器、接受决定、恢复执行分开；诊断本身不写执行动作，恢复需要接受和范围约束。本轮借鉴这个权责划分，不引入在线改写可执行程序、模拟特权状态或物理资格迁移。此前已核固定版本21d7a3afd6ca5a34de9d0350f0158252c5c55467及具体代码哈希见memory_review.json/txt；本轮只复核官方公开角色说明，未运行外部代码。
+- RoboICL：https://github.com/Mosi-AI/RoboICL 。借鉴观察、动作、回执与后续观察的分离，以及有限上下文；不把示范、provider重试或历史目标作为执行恢复许可。此前固定commit及真实论文ID见composition_review.json。
+- Code as Policies：https://code-as-policies.github.io/ 。借鉴通过受限控制原子表达局部策略的组合性。本实现只输出声明式候选操作，不执行生成代码、坐标或回退轨迹。
+以上是方法借鉴，不构成速度、成功率或Piper物理安全的实验结论。
+
+实现
+新增 right_pick.fast_task_recovery.build_recovery_contract(current_stage, execution_result, remaining_budget)。纯函数无文件/相机/模型/机器人调用，既不推进阶段，也不清锁或扣预算。接口示例research/recovery_example_round2.json明确为合成合同夹具。
+
+current_stage沿当前L2 stage表示，保留通用goal，无笔专用phase或物体坐标。execution_result需绑定task/stage/arm、观察ID、宿主来源声明、发送计数/状态/引用/fault/hold状态。attempted/sent必须使用同一固定计数单位（例如CAN帧），attempted不是恢复请求次数；有些宿主若另定义必须显式转换。预算明确剩余cycles/model_calls/recoveries/time_s，并受stage cycles_left/model_calls_left进一步限制。
+
+分类与边界
+- perception_uncertain/occlusion：建议新RGB检查；不擅自移动观察臂。
+- hold_status=unknown：只建议读取新RGB；必须先取得独立当前停止/保持证据才可产生运动候选。unverified则完全阻断候选。
+- grasp_failed：新RGB后可以考虑重新对齐，但必须独立审查物体支撑/持载；不自动开爪、闭爪或抬起。
+- no_progress：重审当前局部goal与新策略，不按旧pose回退，不假设到位等于物体进展。
+- confirmed zero-TX rejection：需明确confirmed_zero_tx、0/0计数和宿主证据引用；只有0计数或模型自述不算确认。允许的仍只是新观察后新显式提案，不截断/重基旧目标、不自动重发。
+- unknown/partial send、timeout、hold_unverified、execution_fault：发送证据优先于视觉问题标签，阻断所有候选；要求当前停止/保持证据、执行结果处理和另行审查。传入verified hold标签不会自动解除这些历史未决情况。这里不发送急停/reset/disable，也不把退出客户端称停止。
+- current_stage=null、任何termination_reason、任何预算为0：阻断，不重启账本、不复活阶段；预算耗尽不会遮掩同时存在的partial/unknown。
+
+输出始终execution_available=false、phase_transition_applied=false、actual_regression_implemented=false、automatic_retry=false、replay_previous_action=false。候选最多两项且只是至多选择一项的备选，不是连续动作序列；后续提案最多一轮，不改变原总预算。
+
+尚未实现的边界
+本轮没有真正阶段回退、恢复分支事件或持久恢复次数更改。宿主未来如接入，必须在同一TaskSessionStore/run/revision中先记录预算消耗和新证据，再经过原执行资格，不可反复调用纯函数来获得新预算。当前task/stage/arm绑定不是证据认证，也不代替宿主run/revision及图像真伪校验。任何CLI输出只能叫恢复建议合同。
+
+验证
+命令：PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast_task_recovery.py' -v
+结果：13/13 OK，0.002s；仅合成离线数据，不做机械仿真。覆盖soft类别、真实执行风险覆盖视觉标签、zero-TX证据矛盾、任意budget0/terminal、hold标签不得解锁partial、同task/stage/arm、无I/O/不改输入/不消费或重置预算、非法数值及隐式目标字段拒绝。
+
+文件SHA256：
+56c36ea17b638bad3a994f79dd1bd4ec1892cc0d1bfb5a0f51e3519f90e94cd3  projects/piper_right_pick_demo/src/right_pick/fast_task_recovery.py
+e7a35f21adcd633aefe1fcb34109a618dc4d68b9c956b2fd984f49883c398665  projects/piper_right_pick_demo/tests/test_fast_task_recovery.py

@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "cards": [
+    {
+      "id": "pen_side_view_alignment",
+      "status": "reviewed",
+      "tasks": [
+        "pen"
+      ],
+      "operations": [
+        "align",
+        "insert"
+      ],
+      "trigger": "always",
+      "advice": "A past pen placement needed human side-view guidance for front/back ambiguity. Judge alignment from current RGB; an old operator confirmation provides no evidence for this run.",
+      "evidence": [
+        {
+          "path": "evidence/piper_pen_repeat_video_20261005/new_holder_result.json",
+          "sha256": "43024facf5dbe1c8403dd1d8c7b6fead20aa23ca531b6cd4723b4d98862179fc"
+        }
+      ]
+    },
+    {
+      "id": "placement_release_verify",
+      "status": "reviewed",
+      "tasks": [
+        "pen",
+        "charger",
+        "cola-on-cup",
+        "can-on-cup",
+        "cups",
+        "flower",
+        "hat",
+        "orange-pick-place",
+        "jelly-pick-place"
+      ],
+      "operations": [
+        "verify_success"
+      ],
+      "trigger": "always",
+      "advice": "Past placement success was checked after release and retreat: empty jaws and the object retained by its receiver. Current RGB must establish independent support; command arrival alone does not.",
+      "evidence": [
+        {
+          "path": "evidence/piper_pen_repeat_video_20261005/new_holder_result.json",
+          "sha256": "43024facf5dbe1c8403dd1d8c7b6fead20aa23ca531b6cd4723b4d98862179fc"
+        }
+      ]
+    },
+    {
+      "id": "timeout_is_not_safe_hold",
+      "status": "reviewed",
+      "tasks": [
+        "*"
+      ],
+      "operations": [
+        "recovery"
+      ],
+      "trigger": "execution_fault",
+      "advice": "A past timeout handler triggered substantial arm descent. Only the executor determines current stop/hold eligibility; this historical lesson grants no permission to retry or resume.",
+      "evidence": [
+        {
+          "path": "evidence/piper_right_pick_demo/baselines/model_direct_vendor_ik/INCIDENT.md",
+          "sha256": "184dcc67888a0d4b2db9d8b2a30080c9db6cc7e3852a0f39c874009b4189c828"
+        }
+      ]
+    },
+    {
+      "id": "can_independent_support",
+      "status": "reviewed",
+      "tasks": [
+        "cola-on-cup",
+        "can-on-cup"
+      ],
+      "operations": [
+        "release",
+        "verify_success"
+      ],
+      "trigger": "always",
+      "advice": "The past can placement was verified only after open-jaw withdrawal and a later unchanged view. A lid reported by a person and apparent rim contact alone do not establish current independent support.",
+      "evidence": [
+        {
+          "path": "evidence/local_integration_20261007/selected/can_task_completion.json",
+          "sha256": "fb7abf6d7492a99165cc0935aebe43e85e2ef98db8b29dad4c9fa7a65a42c515"
+        }
+      ]
+    },
+    {
+      "id": "grasp_does_not_prove_insertion",
+      "status": "reviewed",
+      "tasks": [
+        "pen",
+        "charger",
+        "charger-insert-only"
+      ],
+      "operations": [
+        "verify_grasp",
+        "lift",
+        "insert",
+        "verify_success"
+      ],
+      "trigger": "always",
+      "advice": "A past charger run achieved grasp and lift but ended without an insertion attempt. Keep grasp, alignment, insertion and final stability claims separate; none follows from a robot arrival receipt.",
+      "evidence": [
+        {
+          "path": "evidence/local_integration_20261007/selected/charger_final_outcome.json",
+          "sha256": "0db6c7533d680f80e155232264487657ef4a4a3178512aecede56ae626d0655d"
+        }
+      ]
+    },
+    {
+      "id": "held_object_axis_not_tool_axis",
+      "status": "reviewed",
+      "tasks": [
+        "charger",
+        "charger-insert-only"
+      ],
+      "operations": [
+        "align",
+        "insert"
+      ],
+      "trigger": "always",
+      "advice": "Past charger alignment stalled because the held object axis differed from the tool axis. Judge the actual object and receiver in current RGB; reproducing an upright tool pose is not alignment evidence.",
+      "evidence": [
+        {
+          "path": "evidence/local_integration_20261007/selected/charger_final_outcome.json",
+          "sha256": "0db6c7533d680f80e155232264487657ef4a4a3178512aecede56ae626d0655d"
+        }
+      ]
+    },
+    {
+      "id": "bounded_alignment_recovery",
+      "status": "reviewed",
+      "tasks": [
+        "*"
+      ],
+      "operations": [
+        "align",
+        "transport",
+        "insert",
+        "recovery",
+        "observer_reposition"
+      ],
+      "trigger": "no_progress",
+      "advice": "Past visual alignment continued without reaching insertion. Review lesson: use the remaining phase/task budget to reconsider the local strategy or report the blockage; do not extend repeated corrections.",
+      "evidence": [
+        {
+          "path": "evidence/local_integration_20261007/selected/charger_final_outcome.json",
+          "sha256": "0db6c7533d680f80e155232264487657ef4a4a3178512aecede56ae626d0655d"
+        }
+      ]
+    },
+    {
+      "id": "view_change_is_not_progress",
+      "status": "reviewed",
+      "tasks": [
+        "pen",
+        "charger",
+        "cola-on-cup",
+        "can-on-cup"
+      ],
+      "operations": [
+        "align",
+        "insert",
+        "observer_reposition"
+      ],
+      "trigger": "uncertain",
+      "advice": "Past pen alignment needed additional side evidence. If current RGB is ambiguous, seek a useful view within the current budget; a new view alone is not task progress and does not reset prior failures.",
+      "evidence": [
+        {
+          "path": "evidence/piper_pen_repeat_video_20261005/new_holder_result.json",
+          "sha256": "43024facf5dbe1c8403dd1d8c7b6fead20aa23ca531b6cd4723b4d98862179fc"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+统一入口与示例配方独立审查
+时间：2026-10-07T01:50:26.260424+00:00
+结论：本次离线工具范围内未见实质阻塞。只新增 test_fast_project_entry.py 和本报告，未改入口/配方/控制模块。
+
+语义核查
+1. can_on_lid 使用 place_on_support 的 target_support，不错误要求 original_support。turn_faucet 使用 articulated_rotate 的 visual_goal_reached/fixture_stable，不借用 thread_progress；固定支撑抓取也不要求抬起夹具。
+2. sort_two_objects 的18阶段最后同时检查两物体目标，第一物体早期完成不代替最终复核。charger 条件明确机械兼容/断电，夹取、对针、插入和稳定分开；这些文字是合同，不是实际状态证明。
+3. 所有配方仅编译离线 L2/L3 合同，不包含动作坐标/可执行程序，不把新增操作当真机资格。
+4. replay 默认 synthetic_contract_fixtures；外部回执明确 historical_receipts_unverified。两种都 actual_model_call_count=0、dispatched_action_count=0、task_success=null。summary.model_calls 可以是历史声明次数，不能误称本次模型调用。
+5. evaluate 明确 scope=declared_evidence_structure_review 与 authenticated_visual_truth=false；声明独立RGB报告可满足结构化目标，但此入口不认证图像或审查者。模型单方报告、跨run、历史/模拟图不形成当前物理成功；后续完成动作使旧终态图失效。
+6. replay 的输出使用独占创建：已有文件和符号链接均拒绝覆盖。session 复用同SQLite账本，重复event去重、已存在run变目标被拒，原recipe文件删除后仍可读取冻结合同与剩余预算。
+
+进程验证
+命令（projects/piper_right_pick_demo 内）：
+PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast_project_entry.py' -v
+结果：8/8 OK，0.825 s。
+每个CLI调用都在独立 Python -S 子进程运行真实 astra 脚本，禁止 ROS/CAN/SDK/相机/模型客户端模块导入，并用审计钩子拒绝 socket、嵌套子进程或设备路径访问。所有例子均通过，不需要已安装ROS/相机/模型服务。不是模拟机器人，也没有设备或模型调用。
+覆盖 catalog、五例 plan/replay、historical故障终止与重复/终止后事件拒绝、已有输出与symlink、跨进程session、evaluate标签与时序边界。未重复全套测试。
+
+限制
+这些测试证明离线入口在测试输入下无live依赖/启动，不替代对未来插件或真实适配器的审查。合成回执事实是构造夹具，不证明新任务成功、感知准确率或实机执行可用性。recipe自然语言目标仍须由后续可信宿主与当前RGB解释，不是自动几何规划。
+
+审查读取版本SHA256：
+103ecf973ba44ba5f7157e011eb8abaa267aa1cd343a7f861c62b1b1c7be4fd4  astra
+de1997a1c6db744d7c5e2c670cad88c9df4b0e325162bac41363de8614efb7a0  tools/astra.py
+28f97c6244a24343125dcd1d0720d8d6bcd83e98b540a1cab89ba667b17b461f  tasks/can_on_lid.json
+ea4d62a7746f84368e397e3a0fc6a1ceaac549fa47e5a6643a5ff868f8bce240  tasks/charger_in_unpowered_socket.json
+fe633e8b88195690d516c6b6cfd62f01330fc515117b457cd9222b5a903d15c5  tasks/pen_in_holder.json
+7f5754ec996816116f8383586f907d3730c66d275e8353a5775352b171c2cfe9  tasks/sort_two_objects.json
+c3a95f00872b5ae7a5fb51874604949d733e5cbc645ba57692bba5eeeafdb23e  tasks/turn_faucet.json
+e365915d8550f6b0c37487066ee16226493ac83dbea054cdd0bb07aac0bc5914  projects/piper_right_pick_demo/tests/test_fast_project_entry.py

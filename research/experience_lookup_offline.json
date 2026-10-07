@@ -1,0 +1,138 @@
+{
+  "nonphysical": true,
+  "model_calls": 0,
+  "robot_calls": 0,
+  "measurement": "local 40 lookups per phase, byte counts not token counts",
+  "result": "schema_and_lookup_only; no manipulation speedup established",
+  "deck_card_count": 8,
+  "rows": [
+    {
+      "phase": "INIT",
+      "advisory_ids": [],
+      "packet_bytes": 2133,
+      "baseline_packet_bytes": 2133,
+      "mean_lookup_s": 0.0014230961271096021,
+      "max_lookup_s": 0.0028193769976496696
+    },
+    {
+      "phase": "APPROACH_PEN",
+      "advisory_ids": [],
+      "packet_bytes": 2382,
+      "baseline_packet_bytes": 2382,
+      "mean_lookup_s": 0.0013555792524130084,
+      "max_lookup_s": 0.0016376290004700422
+    },
+    {
+      "phase": "ALIGN_PEN",
+      "advisory_ids": [
+        "pen_side_view_alignment"
+      ],
+      "packet_bytes": 2895,
+      "baseline_packet_bytes": 2134,
+      "mean_lookup_s": 0.0013548591210565063,
+      "max_lookup_s": 0.001418161002220586
+    },
+    {
+      "phase": "PREGRASP",
+      "advisory_ids": [],
+      "packet_bytes": 2139,
+      "baseline_packet_bytes": 2139,
+      "mean_lookup_s": 0.0013406142490566709,
+      "max_lookup_s": 0.0013710939965676516
+    },
+    {
+      "phase": "GRASP",
+      "advisory_ids": [],
+      "packet_bytes": 2130,
+      "baseline_packet_bytes": 2130,
+      "mean_lookup_s": 0.00134150690282695,
+      "max_lookup_s": 0.0014022079994902015
+    },
+    {
+      "phase": "VERIFY_GRASP",
+      "advisory_ids": [
+        "grasp_does_not_prove_insertion"
+      ],
+      "packet_bytes": 2965,
+      "baseline_packet_bytes": 2171,
+      "mean_lookup_s": 0.0013905186504416633,
+      "max_lookup_s": 0.0019195910135749727
+    },
+    {
+      "phase": "LIFT",
+      "advisory_ids": [
+        "grasp_does_not_prove_insertion"
+      ],
+      "packet_bytes": 2917,
+      "baseline_packet_bytes": 2131,
+      "mean_lookup_s": 0.001357560427277349,
+      "max_lookup_s": 0.0013962170050945133
+    },
+    {
+      "phase": "APPROACH_HOLDER",
+      "advisory_ids": [],
+      "packet_bytes": 2150,
+      "baseline_packet_bytes": 2150,
+      "mean_lookup_s": 0.0013387662496825215,
+      "max_lookup_s": 0.0013900180056225508
+    },
+    {
+      "phase": "ALIGN_HOLDER",
+      "advisory_ids": [
+        "pen_side_view_alignment"
+      ],
+      "packet_bytes": 2915,
+      "baseline_packet_bytes": 2154,
+      "mean_lookup_s": 0.0013572344287240412,
+      "max_lookup_s": 0.0014081379922572523
+    },
+    {
+      "phase": "INSERT",
+      "advisory_ids": [
+        "grasp_does_not_prove_insertion",
+        "pen_side_view_alignment"
+      ],
+      "packet_bytes": 3307,
+      "baseline_packet_bytes": 2146,
+      "mean_lookup_s": 0.0013630034256493673,
+      "max_lookup_s": 0.0014124900044407696
+    },
+    {
+      "phase": "RELEASE",
+      "advisory_ids": [],
+      "packet_bytes": 2118,
+      "baseline_packet_bytes": 2118,
+      "mean_lookup_s": 0.0013339201002963818,
+      "max_lookup_s": 0.001391216996125877
+    },
+    {
+      "phase": "VERIFY_SUCCESS",
+      "advisory_ids": [
+        "grasp_does_not_prove_insertion",
+        "placement_release_verify"
+      ],
+      "packet_bytes": 3373,
+      "baseline_packet_bytes": 2178,
+      "mean_lookup_s": 0.001360335022036452,
+      "max_lookup_s": 0.0014160359860397875
+    },
+    {
+      "phase": "DONE",
+      "advisory_ids": [],
+      "packet_bytes": 2081,
+      "baseline_packet_bytes": 2081,
+      "mean_lookup_s": 0.0013323710241820662,
+      "max_lookup_s": 0.0013654239883180708
+    },
+    {
+      "phase": "RECOVERY",
+      "advisory_ids": [
+        "timeout_is_not_safe_hold"
+      ],
+      "packet_bytes": 3063,
+      "baseline_packet_bytes": 2284,
+      "mean_lookup_s": 0.0013551593263400718,
+      "max_lookup_s": 0.0016853359993547201
+    }
+  ]
+}

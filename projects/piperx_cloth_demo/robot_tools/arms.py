@@ -143,6 +143,71 @@ def _plain(value):
     return {k.lstrip("_"): _plain(v) for k, v in vars(value).items()}
 
 
+def _motor_feedback(robot, now):
+    """Optional RX cache diagnostics; no getters, SDK queries or conversion.
+
+    The audited Piper default driver.get_motor_states(i) returns exactly the
+    parser.motor_state_i cache (and updates Hz). Its parser already decodes
+    current/position/velocity into A/rad/rad/s and estimates torque using the
+    selected model's k*b*c. Copy that torque unchanged; it is not contact force.
+    These independent 0x251..0x256 timestamps never join the required feedback
+    fragments or any existing health/arrival predicate.
+    """
+    def finite(value):
+        try:
+            return (not isinstance(value, bool) and isinstance(value, (int, float))
+                    and math.isfinite(value))
+        except (ValueError, OverflowError, TypeError):
+            return False
+
+    motors = {}
+    fields = {"current_A": "current", "velocity_rad_s": "velocity",
+              "position_rad": "position", "estimated_torque_Nm": "torque"}
+    for index in range(1, 7):
+        item = {"status": "unavailable", "timestamp_s": None, "age_s": None,
+                "fresh": None, **dict.fromkeys(fields), "invalid_fields": [], "read_error": None}
+        motors[str(index)] = item
+        try:
+            fragment = copy.deepcopy(getattr(robot._parser, "motor_state_%d" % index, None))
+            if fragment is None:
+                continue
+            stamp = getattr(fragment, "timestamp", None)
+            if finite(stamp) and stamp > 0:
+                item["timestamp_s"] = stamp
+                if finite(now) and finite(now-stamp):
+                    item["age_s"] = now-stamp
+                    item["fresh"] = 0 <= item["age_s"] <= MAX_AGE_S
+                else:
+                    item["invalid_fields"].append("observed_at_s")
+            else:
+                item["invalid_fields"].append("timestamp_s")
+            msg = getattr(fragment, "msg", None)
+            for name, attribute in fields.items():
+                value = getattr(msg, attribute, None)
+                if finite(value):
+                    item[name] = value
+                else:
+                    item["invalid_fields"].append(name)
+            item["status"] = ("partial" if item["invalid_fields"] else
+                              "fresh" if item["fresh"] else "stale")
+        except Exception as exc:
+            # An unsupported/malformed optional fragment must not break the
+            # base snapshot or prevent RX diagnostics after a task fault.
+            item["status"] = "read_error"
+            item["read_error"] = type(exc).__name__
+    states = [item["status"] for item in motors.values()]
+    return {"schema": "piper_motor_feedback_v1",
+            "status": "complete" if all(s == "fresh" for s in states) else
+                      "unavailable" if all(s == "unavailable" for s in states) else "partial",
+            "observed_at_s": now if finite(now) else None, "motors": motors,
+            "timestamp_basis": "CAN_frame_host_unix_receive_time_per_motor",
+            "freshness_limits_s": {"max_age": MAX_AGE_S},
+            "source": "pyAgxArm.parser.motor_state_1..6 (get_motor_states RX cache)",
+            "torque_basis": "manufacturer SDK estimate: current * model joint_torque_k * joint_torque_b * joint_torque_c; copied without additional scaling; not independently calibrated",
+            "diagnostic_only": True, "contact_force_measured": False,
+            "motion_permitted": False, "hardware_commands_sent": 0}
+
+
 def snapshot(robot, gripper=None):
     """Copy manufacturer-decoded arm AND gripper feedback; never query or transmit.
 
@@ -206,6 +271,7 @@ def snapshot(robot, gripper=None):
     if robot.has_comm_error():
         result["status"] = "partial"
         result["communication_error"] = str(robot.get_comm_error())
+    result["motor_feedback"] = _motor_feedback(robot, time.time())
     result["motion_permitted"] = False  # Complete telemetry does not certify safety.
     return result
 

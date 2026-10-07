@@ -1,0 +1,22 @@
+{
+  "run_id": "single_gripper_prepare_f2b9db4d9fd14f8198ce8244fa0fc9c3",
+  "started_unix_s": 1791341736.1268914,
+  "arms": {
+    "left": {
+      "model": "piper",
+      "firmware": "default",
+      "channel": "can0",
+      "usb_interface": "1-6.2:1.0"
+    },
+    "right": {
+      "model": "piper",
+      "firmware": "default",
+      "channel": "can1",
+      "usb_interface": "1-6.3:1.0"
+    }
+  },
+  "scope": "One empty jaw at measured current width only; passive other arm; no joint or task-motion qualification",
+  "arguments": {
+    "arm": "left"
+  }
+}

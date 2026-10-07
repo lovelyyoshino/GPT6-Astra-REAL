@@ -220,7 +220,13 @@ def main(argv=None):
             protocol_output.flush()
             return exit_code
         else:
-            StdioServer(service, TOOL_SCHEMAS, args.root).serve(sys.stdin, protocol_output)
+            service.persistent = True
+            try:
+                StdioServer(service, TOOL_SCHEMAS, args.root).serve(sys.stdin, protocol_output)
+            finally:
+                cleanup = getattr(service, "shutdown", None)
+                if callable(cleanup):
+                    cleanup()
 
 
 if __name__ == "__main__":

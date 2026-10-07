@@ -1,0 +1,4758 @@
+{
+  "schema_version": 1,
+  "scope": "Completed withdrawal J actions in gen20; complete independent raw windows; physical object stability assessed separately by RGB",
+  "sequences": [
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170
+  ],
+  "all_review_pass": true,
+  "summary": {
+    "nominal_violations": 0,
+    "joint_tracking_violations": 0,
+    "jaw_guard_violations": 0,
+    "health_violations": 0,
+    "transport_violations": 0,
+    "feedback_frame_count": 88515,
+    "max_joint_box_excess_mdeg": [
+      0,
+      83,
+      36,
+      0,
+      124,
+      0
+    ],
+    "jaw_range_m": [
+      0.06629,
+      0.06629
+    ],
+    "max_observed_translation_m": 0.0035542539301518447,
+    "max_observed_rotation_rad": 0.003996803987061828,
+    "max_per_id_gap_s": 0.02552628517150879,
+    "max_host_frame_age_s": 0.0021309852600097656,
+    "first_origin_raw": [
+      46450,
+      111453,
+      -63369,
+      0,
+      -29041,
+      0
+    ],
+    "last_terminal_raw": [
+      46450,
+      103663,
+      -55560,
+      0,
+      -29028,
+      0
+    ]
+  },
+  "actions": [
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310062.7655487,
+      "last_kernel_unix_s": 1791310066.3858383,
+      "feedback_frame_count": 6664,
+      "feedback_counts": {
+        "0x261": 145,
+        "0x262": 144,
+        "0x263": 145,
+        "0x264": 145,
+        "0x265": 145,
+        "0x266": 145,
+        "0x2a1": 724,
+        "0x2a2": 724,
+        "0x2a3": 724,
+        "0x2a4": 724,
+        "0x2a5": 724,
+        "0x2a6": 725,
+        "0x2a7": 725,
+        "0x2a8": 725
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          110858,
+          111453
+        ],
+        [
+          -63369,
+          -62745
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29041,
+          -29041
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        2,
+        4,
+        0,
+        0,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.003064253416413194,
+      "max_observed_rotation_rad": 0.002268928027704415,
+      "max_manufacturer_fk_translation_m": 0.0029664243542916633,
+      "max_manufacturer_fk_rotation_rad": 0.002268995154632164,
+      "unique_manufacturer_fk_states": 48,
+      "max_per_id_gap_s": 0.02552628517150879,
+      "max_host_frame_age_s": 0.0002493858337402344,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 158,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "55f196d97e215f4395f21410c9093cad279ffcc0b7e4d207e62d38a507aabf5c",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3155438775,
+          "last_byte_exclusive": 3157494461,
+          "sha256": "51177e1761a6cc952b9738b5fe76710c5785220aa606f1f837d7e8fe4be95b11",
+          "read_file_size": 3347067493
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "02cf4789e62582d11ce4976ccece0de19856ca1a3d356f448baa88046a2a4739"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "0de3b7d418fdd8b976d7deefe1d6a3374f94c63a2844720dadebc255497a98f3"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "da56d69b4febd6496c28e7413d2fb21376b0f2b508e0dda42ac3294c14979308"
+        }
+      },
+      "origin_raw": [
+        46450,
+        111453,
+        -63369,
+        0,
+        -29041,
+        0
+      ],
+      "target_raw": [
+        46418,
+        110860,
+        -62749,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        110867,
+        -62764,
+        0,
+        -29041,
+        0
+      ],
+      "origin_pose": [
+        0.29325,
+        0.308487,
+        0.194418,
+        3.1415926535897936,
+        1.325699739937333,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.291452,
+        0.306595,
+        0.195736,
+        3.1415926535897936,
+        1.325368127379454,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310062.9704144,
+        "monotonic_s": 115906.32864483,
+        "sequence": 158,
+        "kind": "initial",
+        "started_unix_s": 1791310062.9654114,
+        "finished_unix_s": 1791310062.9658096,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          110860,
+          -62749,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6598380,
+          "stamps": [
+            1791310062.9649568,
+            1791310062.9650447,
+            1791310062.960159,
+            1791310062.9602997,
+            1791310062.9604313,
+            1791310062.9605424,
+            1791310062.9606764,
+            1791310062.960798,
+            1791310062.9410193,
+            1791310062.9611588,
+            1791310062.9562938,
+            1791310062.9513693,
+            1791310062.9465222,
+            1791310062.9417417
+          ],
+          "raw_q": [
+            46450,
+            111453,
+            -63369,
+            0,
+            -29041,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.9452218112252402,
+            -1.1059976936962868,
+            0.0,
+            -0.5068610680716733,
+            0.0
+          ],
+          "pose": [
+            0.29325,
+            0.308487,
+            0.194418,
+            3.1415926535897936,
+            1.325699739937333,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 70,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6598380,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310062.9649568,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310062.9650447,
+              "data_hex": "000479820004b507"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310062.960159,
+              "data_hex": "0002f7720002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310062.9602997,
+              "data_hex": "000128b5fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310062.9604313,
+              "data_hex": "0000b5720001b35d"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310062.9605424,
+              "data_hex": "ffff087700000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310062.9606764,
+              "data_hex": "ffff8e8f00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310062.960798,
+              "data_hex": "000102f200464000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310062.9410193,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310062.9417417,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310062.9465222,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310062.9513693,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310062.9562938,
+              "data_hex": "00e600312b400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310062.9611588,
+              "data_hex": "00e600322d400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.0073581869946793,
+        "new_feedback_groups": 104
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          110860,
+          -62749,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.934872008760914,
+          -1.095176652333922,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.01610828093363383,
+        "rotation_bound_rad": 0.04201769682087179,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310145.6910894,
+      "last_kernel_unix_s": 1791310149.3172855,
+      "feedback_frame_count": 6679,
+      "feedback_counts": {
+        "0x261": 146,
+        "0x262": 145,
+        "0x263": 145,
+        "0x264": 145,
+        "0x265": 145,
+        "0x266": 145,
+        "0x2a1": 726,
+        "0x2a2": 726,
+        "0x2a3": 726,
+        "0x2a4": 726,
+        "0x2a5": 726,
+        "0x2a6": 726,
+        "0x2a7": 726,
+        "0x2a8": 726
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          110252,
+          110867
+        ],
+        [
+          -62764,
+          -62153
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29101,
+          -29036
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        8,
+        0,
+        0,
+        60,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0030653804005375874,
+      "max_observed_rotation_rad": 0.0014311699864682993,
+      "max_manufacturer_fk_translation_m": 0.003058826693808109,
+      "max_manufacturer_fk_rotation_rad": 0.0014312764048114253,
+      "unique_manufacturer_fk_states": 62,
+      "max_per_id_gap_s": 0.02516007423400879,
+      "max_host_frame_age_s": 0.00021004676818847656,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 159,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "c4213386765051c740ead960e97e0291110649ff307233a52d55fc66568b4da9",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3202504458,
+          "last_byte_exclusive": 3204564762,
+          "sha256": "321e8927cc238ea4fe01c0af9e71a595b7450554418d9516867b94e3b82e83e9",
+          "read_file_size": 3347107589
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "75882192e82da5864d39eb153aa28543f01329124d6fba6bfe9568da0a438c3e"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "73f19d8f3bc2e122f55a4197cd4a086ab487007d372f17b4334524172d380b47"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "241fefafd9cd9269d600bd299c34d77972634078c426706d9ba663d2500c276c"
+        }
+      },
+      "origin_raw": [
+        46450,
+        110867,
+        -62764,
+        0,
+        -29041,
+        0
+      ],
+      "target_raw": [
+        46418,
+        110260,
+        -62149,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        110259,
+        -62168,
+        0,
+        -29044,
+        0
+      ],
+      "origin_pose": [
+        0.291452,
+        0.306595,
+        0.195736,
+        3.1415926535897936,
+        1.325368127379454,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.289646,
+        0.304695,
+        0.197237,
+        3.1415926535897936,
+        1.325629926767253,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310145.8945253,
+        "monotonic_s": 115989.252755729,
+        "sequence": 159,
+        "kind": "initial",
+        "started_unix_s": 1791310145.8898935,
+        "finished_unix_s": 1791310145.8900962,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          110260,
+          -62149,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6750960,
+          "stamps": [
+            1791310145.8861418,
+            1791310145.886222,
+            1791310145.8864367,
+            1791310145.8864763,
+            1791310145.886627,
+            1791310145.8867424,
+            1791310145.886861,
+            1791310145.8869693,
+            1791310145.867234,
+            1791310145.8873112,
+            1791310145.8824372,
+            1791310145.877568,
+            1791310145.8726737,
+            1791310145.8679557
+          ],
+          "raw_q": [
+            46450,
+            110867,
+            -62764,
+            0,
+            -29041,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.9349941818085534,
+            -1.095438451721721,
+            0.0,
+            -0.5068610680716733,
+            0.0
+          ],
+          "pose": [
+            0.291452,
+            0.306595,
+            0.195736,
+            3.1415926535897936,
+            1.325368127379454,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 78,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6750960,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310145.8861418,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310145.886222,
+              "data_hex": "0004727c0004ada3"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310145.8864367,
+              "data_hex": "0002fc980002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310145.8864763,
+              "data_hex": "000128a2fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310145.886627,
+              "data_hex": "0000b5720001b113"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310145.8867424,
+              "data_hex": "ffff0ad400000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310145.886861,
+              "data_hex": "ffff8e8f00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310145.8869693,
+              "data_hex": "000102f2004e4000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310145.867234,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310145.8679557,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310145.8726737,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310145.877568,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310145.8824372,
+              "data_hex": "00e600312b400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310145.8873112,
+              "data_hex": "00e600322d400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.0194142749969615,
+        "new_feedback_groups": 106
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          110260,
+          -62149,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.924400033248948,
+          -1.084704676821956,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016230324233049116,
+        "rotation_bound_rad": 0.04217477645355134,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310153.291245,
+      "last_kernel_unix_s": 1791310157.6121294,
+      "feedback_frame_count": 7957,
+      "feedback_counts": {
+        "0x261": 173,
+        "0x262": 172,
+        "0x263": 173,
+        "0x264": 173,
+        "0x265": 173,
+        "0x266": 173,
+        "0x2a1": 865,
+        "0x2a2": 865,
+        "0x2a3": 865,
+        "0x2a4": 865,
+        "0x2a5": 865,
+        "0x2a6": 865,
+        "0x2a7": 865,
+        "0x2a8": 865
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          109620,
+          110259
+        ],
+        [
+          -62168,
+          -61555
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29044,
+          -29044
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        40,
+        0,
+        0,
+        0,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0033083400671636144,
+      "max_observed_rotation_rad": 0.0020420352246923747,
+      "max_manufacturer_fk_translation_m": 0.003181391921635524,
+      "max_manufacturer_fk_rotation_rad": 0.0020421098099058267,
+      "unique_manufacturer_fk_states": 61,
+      "max_per_id_gap_s": 0.02511739730834961,
+      "max_host_frame_age_s": 0.0003657341003417969,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 160,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "305f816104c42bcab5dd7df6b4fa7a10a4cf262cb01f7c03955cbd29b1d24c7b",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3206818215,
+          "last_byte_exclusive": 3209272853,
+          "sha256": "cf1cf5bd4b97228713eba313f2f27d07585fd680d52407370355c7395a57c782",
+          "read_file_size": 3347143683
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "01ff19129f813c3f1d0ef3dbd839e61d855fc71cb470bb32ceff9bd375ea4101"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "0aca2a8082dae66f83166c296251fae6d3be834920d4e9c8164b71c2ed2137c2"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "8f6c07d6ba534c56979c9e7a2530c318ff2dda1e29b67d0f3f6b9b6ed995e599"
+        }
+      },
+      "origin_raw": [
+        46450,
+        110259,
+        -62168,
+        0,
+        -29044,
+        0
+      ],
+      "target_raw": [
+        46418,
+        109660,
+        -61549,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        109671,
+        -61570,
+        0,
+        -29044,
+        0
+      ],
+      "origin_pose": [
+        0.289646,
+        0.304695,
+        0.197237,
+        3.1415926535897936,
+        1.325629926767253,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.287841,
+        0.302796,
+        0.198549,
+        3.1415926535897936,
+        1.3254553938420537,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310153.4943726,
+        "monotonic_s": 115996.852603188,
+        "sequence": 160,
+        "kind": "initial",
+        "started_unix_s": 1791310153.4897592,
+        "finished_unix_s": 1791310153.4900093,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          109660,
+          -61549,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6764944,
+          "stamps": [
+            1791310153.4862795,
+            1791310153.4864142,
+            1791310153.4865136,
+            1791310153.486659,
+            1791310153.4867392,
+            1791310153.4868839,
+            1791310153.4870164,
+            1791310153.4871123,
+            1791310153.4673285,
+            1791310153.487501,
+            1791310153.4826024,
+            1791310153.4777157,
+            1791310153.4727829,
+            1791310153.46805
+          ],
+          "raw_q": [
+            46450,
+            110259,
+            -62168,
+            0,
+            -29044,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.924382579956428,
+            -1.0850362893798349,
+            0.0,
+            -0.5069134279492331,
+            0.0
+          ],
+          "pose": [
+            0.289646,
+            0.304695,
+            0.197237,
+            3.1415926535897936,
+            1.325629926767253,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 64,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6764944,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310153.4862795,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310153.4864142,
+              "data_hex": "00046b6e0004a637"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310153.4865136,
+              "data_hex": "000302750002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310153.486659,
+              "data_hex": "000128b1fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310153.4867392,
+              "data_hex": "0000b5720001aeb3"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310153.4868839,
+              "data_hex": "ffff0d2800000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310153.4870164,
+              "data_hex": "ffff8e8c00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310153.4871123,
+              "data_hex": "000102f200404000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310153.4673285,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310153.46805,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310153.4727829,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310153.4777157,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310153.4826024,
+              "data_hex": "00e600312c400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310153.487501,
+              "data_hex": "00e600322e400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.022661593000521,
+        "new_feedback_groups": 107
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          109660,
+          -61549,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.913928057736982,
+          -1.07423270130999,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016172128756503427,
+        "rotation_bound_rad": 0.042157323161032115,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310161.6363761,
+      "last_kernel_unix_s": 1791310165.3327346,
+      "feedback_frame_count": 6808,
+      "feedback_counts": {
+        "0x261": 148,
+        "0x262": 148,
+        "0x263": 148,
+        "0x264": 148,
+        "0x265": 148,
+        "0x266": 148,
+        "0x2a1": 740,
+        "0x2a2": 740,
+        "0x2a3": 740,
+        "0x2a4": 740,
+        "0x2a5": 740,
+        "0x2a6": 740,
+        "0x2a7": 740,
+        "0x2a8": 740
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          108977,
+          109671
+        ],
+        [
+          -61570,
+          -60958
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29044,
+          -29044
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        83,
+        0,
+        0,
+        0,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0035542539301518447,
+      "max_observed_rotation_rad": 0.003141592653602735,
+      "max_manufacturer_fk_translation_m": 0.0034792428226009414,
+      "max_manufacturer_fk_rotation_rad": 0.003124188112799552,
+      "unique_manufacturer_fk_states": 61,
+      "max_per_id_gap_s": 0.025162696838378906,
+      "max_host_frame_age_s": 0.0021309852600097656,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 161,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "2a90ce2351b34c2cf2999ff12777ff454aa80654178cab26d7dfa0cf4fb76801",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3211554912,
+          "last_byte_exclusive": 3213654964,
+          "sha256": "64b6ab9a75bebb485cd237ccb617b7d7862de8cd61ae8d87d6b930d74287ec59",
+          "read_file_size": 3347183771
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "0d9b38977028e035388094d0066b807565d3dd8b3cd10c5a09286ce0c8606ccb"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "9feb5f5c56b5cd23c14cfb3a6138c316feb3106a79299bcce95486a7bf7df57d"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "9f048d123223fdc26726f445976ccf4a9722a3f4d86e42777088482b8c30ad03"
+        }
+      },
+      "origin_raw": [
+        46450,
+        109671,
+        -61570,
+        0,
+        -29044,
+        0
+      ],
+      "target_raw": [
+        46418,
+        109060,
+        -60949,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        109036,
+        -60974,
+        0,
+        -29044,
+        0
+      ],
+      "origin_pose": [
+        0.287841,
+        0.302796,
+        0.198549,
+        3.1415926535897936,
+        1.3254553938420537,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.285986,
+        0.300845,
+        0.200185,
+        3.1415926535897936,
+        1.3261360722503315,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310161.8387384,
+        "monotonic_s": 116005.196969029,
+        "sequence": 161,
+        "kind": "initial",
+        "started_unix_s": 1791310161.833717,
+        "finished_unix_s": 1791310161.8339543,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          109060,
+          -60949,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6780299,
+          "stamps": [
+            1791310161.8313391,
+            1791310161.831469,
+            1791310161.8315794,
+            1791310161.831697,
+            1791310161.831817,
+            1791310161.831931,
+            1791310161.8320742,
+            1791310161.832226,
+            1791310161.8175254,
+            1791310161.8125758,
+            1791310161.8326976,
+            1791310161.827789,
+            1791310161.822941,
+            1791310161.8182583
+          ],
+          "raw_q": [
+            46450,
+            109671,
+            -61570,
+            0,
+            -29044,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.9141200439547013,
+            -1.0745992204529087,
+            0.0,
+            -0.5069134279492331,
+            0.0
+          ],
+          "pose": [
+            0.287841,
+            0.302796,
+            0.198549,
+            3.1415926535897936,
+            1.3254553938420537,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 76,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6780299,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310161.8313391,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310161.831469,
+              "data_hex": "0004646100049ecc"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310161.8315794,
+              "data_hex": "000307950002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310161.831697,
+              "data_hex": "000128a7fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310161.831817,
+              "data_hex": "0000b5720001ac67"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310161.831931,
+              "data_hex": "ffff0f7e00000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310161.8320742,
+              "data_hex": "ffff8e8c00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310161.832226,
+              "data_hex": "000102f2004c4000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310161.8175254,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310161.8182583,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310161.822941,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310161.827789,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310161.8326976,
+              "data_hex": "00e600312b400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310161.8125758,
+              "data_hex": "00e600322e400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.0004553150065476,
+        "new_feedback_groups": 104
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          109060,
+          -60949,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.903456082225016,
+          -1.063760725798024,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016315297808410702,
+        "rotation_bound_rad": 0.04240166925631105,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310169.376478,
+      "last_kernel_unix_s": 1791310172.9980745,
+      "feedback_frame_count": 6670,
+      "feedback_counts": {
+        "0x261": 145,
+        "0x262": 145,
+        "0x263": 145,
+        "0x264": 145,
+        "0x265": 145,
+        "0x266": 145,
+        "0x2a1": 725,
+        "0x2a2": 725,
+        "0x2a3": 725,
+        "0x2a4": 725,
+        "0x2a5": 725,
+        "0x2a6": 725,
+        "0x2a7": 725,
+        "0x2a8": 725
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          108474,
+          109036
+        ],
+        [
+          -60974,
+          -60357
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29115,
+          -29037
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        71,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.002823851270871031,
+      "max_observed_rotation_rad": 0.003822271061980476,
+      "max_manufacturer_fk_translation_m": 0.0028267271245463583,
+      "max_manufacturer_fk_rotation_rad": 0.0038223109092964764,
+      "unique_manufacturer_fk_states": 56,
+      "max_per_id_gap_s": 0.025123119354248047,
+      "max_host_frame_age_s": 0.00040149688720703125,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 162,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "4ec843addf47bb04465f01f6b028bb70d47306237b4eff3fefdbe907b20f4807",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3215948109,
+          "last_byte_exclusive": 3218005583,
+          "sha256": "a155a92f19415228df19ff2e4b4fb74d3945f2e751a5dddde013776d5cbee3f9",
+          "read_file_size": 3347223880
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "b8a3eebbbc0bf8d2d1c7fdcf9f8bc4e728e165598f4a0d68c3bedd8057eaebdd"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "6aba1fb5a5ed4eeb236c2c73e3d8006245643488275f161b0db494ce71216a50"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "154b40f5aaeb8550e8cfff579d02d0f706c09644128b4f2eba8417178602a74b"
+        }
+      },
+      "origin_raw": [
+        46450,
+        109036,
+        -60974,
+        0,
+        -29044,
+        0
+      ],
+      "target_raw": [
+        46418,
+        108460,
+        -60349,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        108484,
+        -60373,
+        0,
+        -29037,
+        0
+      ],
+      "origin_pose": [
+        0.285986,
+        0.300845,
+        0.200185,
+        3.1415926535897936,
+        1.3261360722503315,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.284187,
+        0.298952,
+        0.201155,
+        3.1415926535897936,
+        1.3251586878692148,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310169.5791638,
+        "monotonic_s": 116012.937394564,
+        "sequence": 162,
+        "kind": "initial",
+        "started_unix_s": 1791310169.574285,
+        "finished_unix_s": 1791310169.5744975,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          108460,
+          -60349,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6794541,
+          "stamps": [
+            1791310169.571474,
+            1791310169.5715902,
+            1791310169.5716927,
+            1791310169.5718129,
+            1791310169.5719543,
+            1791310169.5720606,
+            1791310169.5721545,
+            1791310169.5722954,
+            1791310169.5675998,
+            1791310169.5626483,
+            1791310169.5578105,
+            1791310169.552932,
+            1791310169.573039,
+            1791310169.5682962
+          ],
+          "raw_q": [
+            46450,
+            109036,
+            -60974,
+            0,
+            -29044,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.9030372032045373,
+            -1.0641970581110225,
+            0.0,
+            -0.5069134279492331,
+            0.0
+          ],
+          "pose": [
+            0.285986,
+            0.300845,
+            0.200185,
+            3.1415926535897936,
+            1.3261360722503315,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 65,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6794541,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310169.571474,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310169.5715902,
+              "data_hex": "00045d220004972d"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310169.5716927,
+              "data_hex": "00030df90002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310169.5718129,
+              "data_hex": "000128cefffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310169.5719543,
+              "data_hex": "0000b5720001a9ec"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310169.5720606,
+              "data_hex": "ffff11d200000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310169.5721545,
+              "data_hex": "ffff8e8c00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310169.5722954,
+              "data_hex": "000102f200414000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310169.5675998,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310169.5682962,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310169.573039,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310169.552932,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310169.5578105,
+              "data_hex": "00e600312b400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310169.5626483,
+              "data_hex": "00e600322e400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.0068188560107956,
+        "new_feedback_groups": 107
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          108460,
+          -60349,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.89298410671305,
+          -1.053288750286058,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.01595526093132085,
+        "rotation_bound_rad": 0.04186061718819285,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310209.0938697,
+      "last_kernel_unix_s": 1791310213.0529327,
+      "feedback_frame_count": 7286,
+      "feedback_counts": {
+        "0x261": 158,
+        "0x262": 158,
+        "0x263": 158,
+        "0x264": 158,
+        "0x265": 159,
+        "0x266": 159,
+        "0x2a1": 792,
+        "0x2a2": 792,
+        "0x2a3": 792,
+        "0x2a4": 792,
+        "0x2a5": 792,
+        "0x2a6": 792,
+        "0x2a7": 792,
+        "0x2a8": 792
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          107800,
+          108484
+        ],
+        [
+          -60373,
+          -59742
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29163,
+          -29007
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        60,
+        7,
+        0,
+        124,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0035444181468895853,
+      "max_observed_rotation_rad": 0.003996803987061828,
+      "max_manufacturer_fk_translation_m": 0.003477701772249223,
+      "max_manufacturer_fk_rotation_rad": 0.0040142952212511235,
+      "unique_manufacturer_fk_states": 66,
+      "max_per_id_gap_s": 0.02516317367553711,
+      "max_host_frame_age_s": 0.0002453327178955078,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 163,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "7e1c8249efa93aee8e9a4abd523dccf63e365473522b1530dc32098e66355e18",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3238492244,
+          "last_byte_exclusive": 3240739839,
+          "sha256": "fabf976892d0a5cf278b48c5e844918071a0d89fa830ddc33dc7c16c8b425db4",
+          "read_file_size": 3347259976
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "1976b84fb77b6268aee33465fe1023e07f7e283c4008fcc9dcad1cb5037adee9"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "f4722b93cf65449944ab2e969d3e8730d1e43e0c35f4399de02617584a0b7b87"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "a4afa9fc987d372109a643e5a7a9bd20df374175cc045119ddd503bbb620cfe8"
+        }
+      },
+      "origin_raw": [
+        46450,
+        108484,
+        -60373,
+        0,
+        -29037,
+        0
+      ],
+      "target_raw": [
+        46418,
+        107860,
+        -59749,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        107853,
+        -59760,
+        0,
+        -29057,
+        0
+      ],
+      "origin_pose": [
+        0.284187,
+        0.298952,
+        0.201155,
+        3.1415926535897936,
+        1.3251586878692148,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.282285,
+        0.296952,
+        0.20265,
+        3.1415926535897936,
+        1.3258219129849727,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310209.302817,
+        "monotonic_s": 116052.661048254,
+        "sequence": 163,
+        "kind": "initial",
+        "started_unix_s": 1791310209.2932715,
+        "finished_unix_s": 1791310209.294177,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          107860,
+          -59749,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6867623,
+          "stamps": [
+            1791310209.292062,
+            1791310209.2921531,
+            1791310209.292283,
+            1791310209.292393,
+            1791310209.2925255,
+            1791310209.2926447,
+            1791310209.292736,
+            1791310209.2878654,
+            1791310209.2681408,
+            1791310209.2882533,
+            1791310209.2833679,
+            1791310209.2784846,
+            1791310209.2736104,
+            1791310209.2688515
+          ],
+          "raw_q": [
+            46450,
+            108484,
+            -60373,
+            0,
+            -29037,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8934029857335286,
+            -1.0537076293065366,
+            0.0,
+            -0.5067912549015935,
+            0.0
+          ],
+          "pose": [
+            0.284187,
+            0.298952,
+            0.201155,
+            3.1415926535897936,
+            1.3251586878692148,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 76,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6867623,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310209.292062,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310209.2921531,
+              "data_hex": "0004561b00048fc8"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310209.292283,
+              "data_hex": "000311c30002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310209.292393,
+              "data_hex": "00012896fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310209.2925255,
+              "data_hex": "0000b5720001a7c4"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310209.2926447,
+              "data_hex": "ffff142b00000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310209.292736,
+              "data_hex": "ffff8e9300000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310209.2878654,
+              "data_hex": "000102f2004c4000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310209.2681408,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310209.2688515,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310209.2736104,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310209.2784846,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310209.2833679,
+              "data_hex": "00e600312c400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310209.2882533,
+              "data_hex": "00e6003231400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.016823582991492,
+        "new_feedback_groups": 105
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          107860,
+          -59749,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.882512131201084,
+          -1.042816774774092,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.01647005387996751,
+        "rotation_bound_rad": 0.04262856205907002,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310217.1371722,
+      "last_kernel_unix_s": 1791310220.7480743,
+      "feedback_frame_count": 6651,
+      "feedback_counts": {
+        "0x261": 145,
+        "0x262": 145,
+        "0x263": 144,
+        "0x264": 144,
+        "0x265": 144,
+        "0x266": 145,
+        "0x2a1": 723,
+        "0x2a2": 723,
+        "0x2a3": 723,
+        "0x2a4": 723,
+        "0x2a5": 723,
+        "0x2a6": 723,
+        "0x2a7": 723,
+        "0x2a8": 723
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          107280,
+          107853
+        ],
+        [
+          -59760,
+          -59142
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29057,
+          -29003
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        0,
+        7,
+        0,
+        36,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.002952676921032866,
+      "max_observed_rotation_rad": 0.002600540585440532,
+      "max_manufacturer_fk_translation_m": 0.0028638469398846256,
+      "max_manufacturer_fk_rotation_rad": 0.0026005991527695057,
+      "unique_manufacturer_fk_states": 59,
+      "max_per_id_gap_s": 0.02551579475402832,
+      "max_host_frame_age_s": 0.00022792816162109375,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 164,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "81bd71e25e289a3f39c10e9ac02573e295fc2e8e796a53a399af726514343b88",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3243055833,
+          "last_byte_exclusive": 3245107541,
+          "sha256": "61b3a0077a949d1d2febe150c3dff04c39c2e788651ea2fb94fde4f69b07bb0d",
+          "read_file_size": 3347295447
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "e6a5419640f96dd97543bc625b10ba1ed4b51bed9a3d3a7c80ffe5202323eca6"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "5e54a347bf55a9dcf493da75ab6d0256b7a32345b36320de543c42de794c3ff4"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "34f0e556df0ff0ec0072c9087dc09345746dd43f9932f9efab869d520171b231"
+        }
+      },
+      "origin_raw": [
+        46450,
+        107853,
+        -59760,
+        0,
+        -29057,
+        0
+      ],
+      "target_raw": [
+        46418,
+        107260,
+        -59149,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        107287,
+        -59158,
+        0,
+        -29042,
+        0
+      ],
+      "origin_pose": [
+        0.282285,
+        0.296952,
+        0.20265,
+        3.1415926535897936,
+        1.3258219129849727,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.280452,
+        0.295024,
+        0.203653,
+        3.1415926535897936,
+        1.3249317950664554,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310217.3420916,
+        "monotonic_s": 116060.700321936,
+        "sequence": 164,
+        "kind": "initial",
+        "started_unix_s": 1791310217.3369703,
+        "finished_unix_s": 1791310217.3372583,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          107260,
+          -59149,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6882419,
+          "stamps": [
+            1791310217.3321702,
+            1791310217.3322644,
+            1791310217.3324,
+            1791310217.3324943,
+            1791310217.3326132,
+            1791310217.3327494,
+            1791310217.3328853,
+            1791310217.3329873,
+            1791310217.3182504,
+            1791310217.313346,
+            1791310217.3334763,
+            1791310217.3286219,
+            1791310217.3237062,
+            1791310217.3189874
+          ],
+          "raw_q": [
+            46450,
+            107853,
+            -59760,
+            0,
+            -29057,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8823899581534445,
+            -1.0430087609918115,
+            0.0,
+            -0.5071403207519923,
+            0.0
+          ],
+          "pose": [
+            0.282285,
+            0.296952,
+            0.20265,
+            3.1415926535897936,
+            1.3258219129849727,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 72,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6882419,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310217.3321702,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310217.3322644,
+              "data_hex": "00044ead000487f8"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310217.3324,
+              "data_hex": "0003179a0002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310217.3324943,
+              "data_hex": "000128bcfffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310217.3326132,
+              "data_hex": "0000b5720001a54d"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310217.3327494,
+              "data_hex": "ffff169000000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310217.3328853,
+              "data_hex": "ffff8e7f00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310217.3329873,
+              "data_hex": "000102f200484000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310217.3182504,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310217.3189874,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310217.3237062,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310217.3286219,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310217.3334763,
+              "data_hex": "00e600312c400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310217.313346,
+              "data_hex": "00e6003231400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.000775977008743,
+        "new_feedback_groups": 104
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          107260,
+          -59149,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.872040155689118,
+          -1.032344799262126,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016078436520825037,
+        "rotation_bound_rad": 0.04213986986851221,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310224.722285,
+      "last_kernel_unix_s": 1791310228.3331504,
+      "feedback_frame_count": 6650,
+      "feedback_counts": {
+        "0x261": 144,
+        "0x262": 144,
+        "0x263": 144,
+        "0x264": 145,
+        "0x265": 145,
+        "0x266": 144,
+        "0x2a1": 723,
+        "0x2a2": 723,
+        "0x2a3": 723,
+        "0x2a4": 723,
+        "0x2a5": 723,
+        "0x2a6": 723,
+        "0x2a7": 723,
+        "0x2a8": 723
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          106673,
+          107287
+        ],
+        [
+          -59158,
+          -58541
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29042,
+          -29042
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0032021511519601926,
+      "max_observed_rotation_rad": 0.0015184364490875046,
+      "max_manufacturer_fk_translation_m": 0.003057690246213272,
+      "max_manufacturer_fk_rotation_rad": 0.002007204521730673,
+      "unique_manufacturer_fk_states": 51,
+      "max_per_id_gap_s": 0.025342464447021484,
+      "max_host_frame_age_s": 0.0002849102020263672,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 165,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "a6f62f6537b5b05f4bbe82baa62f544188a1a62c5d5e63d300e5e2438f179748",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3247361256,
+          "last_byte_exclusive": 3249412537,
+          "sha256": "ed41c563410ecaba4578fd4a38b68080a7d2d9d7fe81dc85a2a639ab6471e161",
+          "read_file_size": 3347335553
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "f8f514ada10c0255ec8a4ea0c1913f3e64600cb9e16129a5b855e536414d824f"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "ec21a70458b971fe4bcdc05eee6ef7dffa06cfa9fcde5cf49dfdffd30315b6ee"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "f1659939ab3db0a54c3b43e87ff4444627a08d36b590b7c046390d3454a1e0fb"
+        }
+      },
+      "origin_raw": [
+        46450,
+        107287,
+        -59158,
+        0,
+        -29042,
+        0
+      ],
+      "target_raw": [
+        46418,
+        106660,
+        -58549,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        106673,
+        -58564,
+        0,
+        -29042,
+        0
+      ],
+      "origin_pose": [
+        0.280452,
+        0.295024,
+        0.203653,
+        3.1415926535897936,
+        1.3249317950664554,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.278584,
+        0.293058,
+        0.205033,
+        3.1415926535897936,
+        1.3252808609168543,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310224.9275115,
+        "monotonic_s": 116068.285742239,
+        "sequence": 165,
+        "kind": "initial",
+        "started_unix_s": 1791310224.9214785,
+        "finished_unix_s": 1791310224.9221718,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          106660,
+          -58549,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6896376,
+          "stamps": [
+            1791310224.9172752,
+            1791310224.9174106,
+            1791310224.917524,
+            1791310224.9176168,
+            1791310224.9177592,
+            1791310224.9178984,
+            1791310224.917979,
+            1791310224.9181159,
+            1791310224.918428,
+            1791310224.913505,
+            1791310224.9085932,
+            1791310224.9037302,
+            1791310224.8988373,
+            1791310224.919116
+          ],
+          "raw_q": [
+            46450,
+            107287,
+            -59158,
+            0,
+            -29042,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8725113945871565,
+            -1.0325018788948055,
+            0.0,
+            -0.5068785213641932,
+            0.0
+          ],
+          "pose": [
+            0.280452,
+            0.295024,
+            0.203653,
+            3.1415926535897936,
+            1.3249317950664554,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 56,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6896376,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310224.9172752,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310224.9174106,
+              "data_hex": "0004478400048070"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310224.917524,
+              "data_hex": "00031b850002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310224.9176168,
+              "data_hex": "00012889fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310224.9177592,
+              "data_hex": "0000b5720001a317"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310224.9178984,
+              "data_hex": "ffff18ea00000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310224.917979,
+              "data_hex": "ffff8e8e00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310224.9181159,
+              "data_hex": "000102f200384000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310224.918428,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310224.919116,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310224.8988373,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310224.9037302,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310224.9085932,
+              "data_hex": "00e600312c400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310224.913505,
+              "data_hex": "00e6003231400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.009666443002061,
+        "new_feedback_groups": 104
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          106660,
+          -58549,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.861568180177152,
+          -1.02187282375016,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016415488120579375,
+        "rotation_bound_rad": 0.0424365758413506,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310232.357355,
+      "last_kernel_unix_s": 1791310235.988064,
+      "feedback_frame_count": 6685,
+      "feedback_counts": {
+        "0x261": 145,
+        "0x262": 145,
+        "0x263": 146,
+        "0x264": 145,
+        "0x265": 145,
+        "0x266": 145,
+        "0x2a1": 727,
+        "0x2a2": 727,
+        "0x2a3": 727,
+        "0x2a4": 727,
+        "0x2a5": 727,
+        "0x2a6": 727,
+        "0x2a7": 726,
+        "0x2a8": 726
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          106077,
+          106673
+        ],
+        [
+          -58564,
+          -57955
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29042,
+          -29042
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0029701599283540586,
+      "max_observed_rotation_rad": 0.0017627825448293592,
+      "max_manufacturer_fk_translation_m": 0.0029738165350095035,
+      "max_manufacturer_fk_rotation_rad": 0.0017454165161147523,
+      "unique_manufacturer_fk_states": 56,
+      "max_per_id_gap_s": 0.025136470794677734,
+      "max_host_frame_age_s": 0.00031447410583496094,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 166,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "9c24a8f770f23df068c703d45c9b342068f70c1b68f3f215375f55500a331127",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3251694645,
+          "last_byte_exclusive": 3253756688,
+          "sha256": "5d7809338a797d1537902cc2d7b787426d3978a3583b2df02cf2dcffa349a883",
+          "read_file_size": 3347371640
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "4205392c1afb8420f22b7fc400f087ab5015b708a1b11677789bbc8f1213e82c"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "038d0b2b037084e8b5afe1875ac06dec7f81d9b21d8308a359bebaa0b65d593b"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "c11bad37c1c1db2aeff3f2d96dd882912b8ef50b4149149f03db1f6bb751eca0"
+        }
+      },
+      "origin_raw": [
+        46450,
+        106673,
+        -58564,
+        0,
+        -29042,
+        0
+      ],
+      "target_raw": [
+        46418,
+        106060,
+        -57949,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        106098,
+        -57958,
+        0,
+        -29042,
+        0
+      ],
+      "origin_pose": [
+        0.278584,
+        0.293058,
+        0.205033,
+        3.1415926535897936,
+        1.3252808609168543,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.276719,
+        0.291097,
+        0.206045,
+        3.1415926535897936,
+        1.3247223555562162,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310232.5594137,
+        "monotonic_s": 116075.917645469,
+        "sequence": 166,
+        "kind": "initial",
+        "started_unix_s": 1791310232.5542939,
+        "finished_unix_s": 1791310232.5546196,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          106060,
+          -57949,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6910424,
+          "stamps": [
+            1791310232.5524263,
+            1791310232.5525644,
+            1791310232.5526726,
+            1791310232.5527575,
+            1791310232.552894,
+            1791310232.5530157,
+            1791310232.5531616,
+            1791310232.5532715,
+            1791310232.543451,
+            1791310232.538684,
+            1791310232.5336907,
+            1791310232.55384,
+            1791310232.5489624,
+            1791310232.544169
+          ],
+          "raw_q": [
+            46450,
+            106673,
+            -58564,
+            0,
+            -29042,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8617950729799113,
+            -1.022134623137959,
+            0.0,
+            -0.5068785213641932,
+            0.0
+          ],
+          "pose": [
+            0.278584,
+            0.293058,
+            0.205033,
+            3.1415926535897936,
+            1.3252808609168543,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 73,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6910424,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310232.5524263,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310232.5525644,
+              "data_hex": "00044038000478c2"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310232.5526726,
+              "data_hex": "000320e90002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310232.5527575,
+              "data_hex": "0001289dfffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310232.552894,
+              "data_hex": "0000b5720001a0b1"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310232.5530157,
+              "data_hex": "ffff1b3c00000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310232.5531616,
+              "data_hex": "ffff8e8e00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310232.5532715,
+              "data_hex": "000102f200494000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310232.543451,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310232.544169,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310232.5489624,
+              "data_hex": "00e6003933400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310232.55384,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310232.5336907,
+              "data_hex": "00e600312c400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310232.538684,
+              "data_hex": "00e6003231400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.0155261059990153,
+        "new_feedback_groups": 106
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          106060,
+          -57949,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.851096204665186,
+          -1.011400848238194,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016297442864926782,
+        "rotation_bound_rad": 0.04229694950119161,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310272.3088078,
+      "last_kernel_unix_s": 1791310275.8936846,
+      "feedback_frame_count": 6595,
+      "feedback_counts": {
+        "0x261": 143,
+        "0x262": 144,
+        "0x263": 144,
+        "0x264": 143,
+        "0x265": 143,
+        "0x266": 143,
+        "0x2a1": 717,
+        "0x2a2": 717,
+        "0x2a3": 717,
+        "0x2a4": 717,
+        "0x2a5": 717,
+        "0x2a6": 717,
+        "0x2a7": 716,
+        "0x2a8": 717
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          105472,
+          106098
+        ],
+        [
+          -57958,
+          -57313
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29080,
+          -28990
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        0,
+        36,
+        0,
+        49,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.003246082100009181,
+      "max_observed_rotation_rad": 0.002216568150189219,
+      "max_manufacturer_fk_translation_m": 0.003137666553198227,
+      "max_manufacturer_fk_rotation_rad": 0.002199184115684145,
+      "unique_manufacturer_fk_states": 54,
+      "max_per_id_gap_s": 0.02545022964477539,
+      "max_host_frame_age_s": 0.0004379749298095703,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 167,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "3100863aae0ed7f8322695fcfc97e857f5a6b00c7d84a6d491b0271473130744",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3274371805,
+          "last_byte_exclusive": 3276406137,
+          "sha256": "67217dd6c3721584915349502618204011c302dbf0f81e3d8313ca46ed047279",
+          "read_file_size": 3347407717
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "290da5fffc98d554b0b73b3d94428524cdde329cb7b8133aa0e1a0408eba2695"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "3004fcc72bd3ac68be36a89fc8091115709e4f73e3750fc4b02d9a088084a894"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "5ad8864d0518eb2e31710cb908249adba439c26d4c1b1e196b60f58949a4e3d5"
+        }
+      },
+      "origin_raw": [
+        46450,
+        106098,
+        -57958,
+        0,
+        -29042,
+        0
+      ],
+      "target_raw": [
+        46418,
+        105460,
+        -57349,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        105472,
+        -57321,
+        0,
+        -29060,
+        0
+      ],
+      "origin_pose": [
+        0.276719,
+        0.291097,
+        0.206045,
+        3.1415926535897936,
+        1.3247223555562162,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.274735,
+        0.289009,
+        0.207266,
+        3.1415926535897936,
+        1.3248619818963756,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310272.5140238,
+        "monotonic_s": 116115.872254196,
+        "sequence": 167,
+        "kind": "initial",
+        "started_unix_s": 1791310272.5087326,
+        "finished_unix_s": 1791310272.5092201,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          105460,
+          -57349,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6983936,
+          "stamps": [
+            1791310272.5079858,
+            1791310272.5081227,
+            1791310272.508247,
+            1791310272.5083823,
+            1791310272.503441,
+            1791310272.5035331,
+            1791310272.5036924,
+            1791310272.5038292,
+            1791310272.4940214,
+            1791310272.489254,
+            1791310272.4843373,
+            1791310272.5044386,
+            1791310272.499547,
+            1791310272.4947982
+          ],
+          "raw_q": [
+            46450,
+            106098,
+            -57958,
+            0,
+            -29042,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8517594297809439,
+            -1.0115579278708735,
+            0.0,
+            -0.5068785213641932,
+            0.0
+          ],
+          "pose": [
+            0.276719,
+            0.291097,
+            0.206045,
+            3.1415926535897936,
+            1.3247223555562162,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 75,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6983936,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310272.5079858,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310272.5081227,
+              "data_hex": "000438ef00047119"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310272.508247,
+              "data_hex": "000324dd0002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310272.5083823,
+              "data_hex": "0001287dfffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310272.503441,
+              "data_hex": "0000b57200019e72"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310272.5035331,
+              "data_hex": "ffff1d9a00000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310272.5036924,
+              "data_hex": "ffff8e8e00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310272.5038292,
+              "data_hex": "000102f2004b4000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310272.4940214,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310272.4947982,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310272.499547,
+              "data_hex": "00e6003833400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310272.5044386,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310272.4843373,
+              "data_hex": "00e600312b400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310272.489254,
+              "data_hex": "00e6003232400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.0043486280046636,
+        "new_feedback_groups": 104
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          105460,
+          -57349,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.84062422915322,
+          -1.0009288727262282,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016536877030314683,
+        "rotation_bound_rad": 0.04263579144953957,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310279.9181058,
+      "last_kernel_unix_s": 1791310283.5389776,
+      "feedback_frame_count": 6669,
+      "feedback_counts": {
+        "0x261": 145,
+        "0x262": 144,
+        "0x263": 145,
+        "0x264": 145,
+        "0x265": 145,
+        "0x266": 145,
+        "0x2a1": 725,
+        "0x2a2": 725,
+        "0x2a3": 725,
+        "0x2a4": 725,
+        "0x2a5": 725,
+        "0x2a6": 725,
+        "0x2a7": 725,
+        "0x2a8": 725
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          104887,
+          105472
+        ],
+        [
+          -57321,
+          -56754
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29068,
+          -29002
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        37,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0029907219864106385,
+      "max_observed_rotation_rad": 0.002373647782736628,
+      "max_manufacturer_fk_translation_m": 0.002892851282768873,
+      "max_manufacturer_fk_rotation_rad": 0.0023737119482654737,
+      "unique_manufacturer_fk_states": 58,
+      "max_per_id_gap_s": 0.0251462459564209,
+      "max_host_frame_age_s": 0.0005140304565429688,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ],
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 168,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "692bda07c622b8efdc5337223474bff518835d853939d48a857eaf709e216883",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3278688797,
+          "last_byte_exclusive": 3280745997,
+          "sha256": "255f8134ec815c9a064b01ccaf86eb4cb1e52680fa2e0ed8f5656795225ca877",
+          "read_file_size": 3347439785
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "51d2540de690b13664a7ce195d72a7005ff842e47000e82f348707c318ab178a"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "ee5da5708c24def45a46cd7cfb1b922b7254e96af94351670c45733d273e9354"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "6ded61c0269613df14824a057f158270f4d47df400ff68511d1e53920a4e9c96"
+        }
+      },
+      "origin_raw": [
+        46450,
+        105472,
+        -57321,
+        0,
+        -29060,
+        0
+      ],
+      "target_raw": [
+        46418,
+        104860,
+        -56749,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        104887,
+        -56759,
+        0,
+        -29056,
+        0
+      ],
+      "origin_pose": [
+        0.274735,
+        0.289009,
+        0.207266,
+        3.1415926535897936,
+        1.3248619818963756,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.272937,
+        0.287117,
+        0.208513,
+        3.1415926535897936,
+        1.3252110477467745,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310280.1196442,
+        "monotonic_s": 116123.477875861,
+        "sequence": 168,
+        "kind": "initial",
+        "started_unix_s": 1791310280.114784,
+        "finished_unix_s": 1791310280.1151614,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          104860,
+          -56749,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 6997934,
+          "stamps": [
+            1791310280.1130717,
+            1791310280.1132128,
+            1791310280.1133053,
+            1791310280.113443,
+            1791310280.1135533,
+            1791310280.1136496,
+            1791310280.1137855,
+            1791310280.1139216,
+            1791310280.0941718,
+            1791310280.1142867,
+            1791310280.1094065,
+            1791310280.104561,
+            1791310280.0996962,
+            1791310280.0948985
+          ],
+          "raw_q": [
+            46450,
+            105472,
+            -57321,
+            0,
+            -29060,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8408336686634594,
+            -1.0004401805356697,
+            0.0,
+            -0.5071926806295521,
+            0.0
+          ],
+          "pose": [
+            0.274735,
+            0.289009,
+            0.207266,
+            3.1415926535897936,
+            1.3248619818963756,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 71,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 6997934,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310280.1130717,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310280.1132128,
+              "data_hex": "0004312f000468f1"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310280.1133053,
+              "data_hex": "000329a20002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310280.113443,
+              "data_hex": "00012885fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310280.1135533,
+              "data_hex": "0000b57200019c00"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310280.1136496,
+              "data_hex": "ffff201700000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310280.1137855,
+              "data_hex": "ffff8e7c00000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310280.1139216,
+              "data_hex": "000102f200474000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310280.0941718,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310280.0948985,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310280.0996962,
+              "data_hex": "00e6003833400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310280.104561,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310280.1094065,
+              "data_hex": "00e600312c400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310280.1142867,
+              "data_hex": "00e6003232400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.003500177001115,
+        "new_feedback_groups": 105
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          104860,
+          -56749,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.830152253641254,
+          -0.9904568972142621,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016058048364664224,
+        "rotation_bound_rad": 0.041843163895672594,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310287.5331728,
+      "last_kernel_unix_s": 1791310291.0890803,
+      "feedback_frame_count": 6549,
+      "feedback_counts": {
+        "0x261": 142,
+        "0x262": 142,
+        "0x263": 143,
+        "0x264": 142,
+        "0x265": 142,
+        "0x266": 142,
+        "0x2a1": 712,
+        "0x2a2": 712,
+        "0x2a3": 712,
+        "0x2a4": 712,
+        "0x2a5": 712,
+        "0x2a6": 712,
+        "0x2a7": 712,
+        "0x2a8": 712
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          104277,
+          104887
+        ],
+        [
+          -56759,
+          -56166
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29068,
+          -29005
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        0,
+        0,
+        0,
+        34,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.003123946382382363,
+      "max_observed_rotation_rad": 0.0019373154699670629,
+      "max_manufacturer_fk_translation_m": 0.003005557099609803,
+      "max_manufacturer_fk_rotation_rad": 0.0023911647724991843,
+      "unique_manufacturer_fk_states": 50,
+      "max_per_id_gap_s": 0.025493144989013672,
+      "max_host_frame_age_s": 0.0002446174621582031,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 169,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "c4d0df3a898333080edd166a2e80bdd2c3d503c8d0d77d050b426be6a13c3bb3",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3283011123,
+          "last_byte_exclusive": 3285031363,
+          "sha256": "96c044312f49f7772ead73980744e3e08d3ad76a4317156828767848f8d2f55b",
+          "read_file_size": 3347475881
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "79ba934725156d48527fb0df351c4f8e30dbb8e73cc7a15f2d59ee6dce30807b"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "65f73d082f5d611ffc1afe10f71851879281fec372c2616f40bc18cb932d2b04"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "dc4ebd3c4e9d1d795f73ad845ad289cec66dd244550d65cde3ab7b1b1a42e849"
+        }
+      },
+      "origin_raw": [
+        46450,
+        104887,
+        -56759,
+        0,
+        -29056,
+        0
+      ],
+      "target_raw": [
+        46418,
+        104260,
+        -56149,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        104285,
+        -56179,
+        0,
+        -29017,
+        0
+      ],
+      "origin_pose": [
+        0.272937,
+        0.287117,
+        0.208513,
+        3.1415926535897936,
+        1.3252110477467745,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.271065,
+        0.285148,
+        0.209695,
+        3.1415926535897936,
+        1.3248794351888957,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310287.737498,
+        "monotonic_s": 116131.095728565,
+        "sequence": 169,
+        "kind": "initial",
+        "started_unix_s": 1791310287.7328174,
+        "finished_unix_s": 1791310287.733054,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          104260,
+          -56149,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 7011946,
+          "stamps": [
+            1791310287.728191,
+            1791310287.7283037,
+            1791310287.7284393,
+            1791310287.7285304,
+            1791310287.7286701,
+            1791310287.7288039,
+            1791310287.7288957,
+            1791310287.7290316,
+            1791310287.7192593,
+            1791310287.714396,
+            1791310287.7095263,
+            1791310287.7296228,
+            1791310287.7247455,
+            1791310287.7199996
+          ],
+          "raw_q": [
+            46450,
+            104887,
+            -56759,
+            0,
+            -29056,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8306234925392926,
+            -0.9906314301394615,
+            0.0,
+            -0.5071228674594724,
+            0.0
+          ],
+          "pose": [
+            0.272937,
+            0.287117,
+            0.208513,
+            3.1415926535897936,
+            1.3252110477467745,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 77,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 7011946,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310287.728191,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310287.7283037,
+              "data_hex": "00042a290004618d"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310287.7284393,
+              "data_hex": "00032e810002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310287.7285304,
+              "data_hex": "00012899fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310287.7286701,
+              "data_hex": "0000b572000199b7"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310287.7288039,
+              "data_hex": "ffff224900000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310287.7288957,
+              "data_hex": "ffff8e8000000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310287.7290316,
+              "data_hex": "000102f2004d4000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310287.7192593,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310287.7199996,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310287.7247455,
+              "data_hex": "00e6003833400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310287.7296228,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310287.7095263,
+              "data_hex": "00e600312b400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310287.714396,
+              "data_hex": "00e6003232400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.001377583001158,
+        "new_feedback_groups": 106
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          104260,
+          -56149,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.819680278129288,
+          -0.9799849217022961,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016444278821095462,
+        "rotation_bound_rad": 0.042705604619619794,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    },
+    {
+      "nominal_violations": [],
+      "joint_tracking_violations": [],
+      "jaw_guard_violations": [],
+      "health_violations": [],
+      "health_violations_scope": "Hardware flags plus explicitly labelled original execution geometry guards",
+      "transport_violations": [],
+      "transport_clean": true,
+      "full_raw_reviewed": true,
+      "first_kernel_unix_s": 1791310295.1332724,
+      "last_kernel_unix_s": 1791310298.7451625,
+      "feedback_frame_count": 6652,
+      "feedback_counts": {
+        "0x261": 145,
+        "0x262": 145,
+        "0x263": 145,
+        "0x264": 144,
+        "0x265": 144,
+        "0x266": 145,
+        "0x2a1": 723,
+        "0x2a2": 723,
+        "0x2a3": 723,
+        "0x2a4": 723,
+        "0x2a5": 723,
+        "0x2a6": 723,
+        "0x2a7": 723,
+        "0x2a8": 723
+      },
+      "control_frames": [],
+      "post_command_joint_ranges_raw": [
+        [
+          46450,
+          46450
+        ],
+        [
+          103627,
+          104285
+        ],
+        [
+          -56179,
+          -55552
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -29078,
+          -29012
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "max_joint_box_excess_mdeg": [
+        0,
+        33,
+        0,
+        0,
+        39,
+        0
+      ],
+      "post_command_jaw_range_m": [
+        0.06629,
+        0.06629
+      ],
+      "max_observed_translation_m": 0.0032323004192061277,
+      "max_observed_rotation_rad": 0.00286233997338295,
+      "max_manufacturer_fk_translation_m": 0.003233870871993355,
+      "max_manufacturer_fk_rotation_rad": 0.0028623931840517903,
+      "unique_manufacturer_fk_states": 60,
+      "max_per_id_gap_s": 0.02532792091369629,
+      "max_host_frame_age_s": 0.0003437995910644531,
+      "status_payloads": [
+        "0100010000000000"
+      ],
+      "motor_codes": {
+        "0x263": [
+          64
+        ],
+        "0x262": [
+          64
+        ],
+        "0x261": [
+          64
+        ],
+        "0x266": [
+          64
+        ],
+        "0x265": [
+          64
+        ],
+        "0x264": [
+          64
+        ]
+      },
+      "all_14_result_feedback_frames_matched_exactly": true,
+      "jaw_boundary_semantics": "Exact raw <=500um; unchanged live floating guard can conservatively reject an exact boundary; failed result never passes",
+      "guard_checks_clean": true,
+      "sequence": 170,
+      "generation": 20,
+      "adoption_token": "ca09e18dbd3e496589665eab37d4a502",
+      "completed_result_sha256": "64deef0303c320e6ef46e5e6c5440ecd3c37068918fbfbad1a456566175da5e0",
+      "source_windows": [
+        {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_post_contact_20261006_233500/raw_continuation/frames.jsonl",
+          "first_byte": 3287324743,
+          "last_byte_exclusive": 3289376699,
+          "sha256": "ae29b0a9f1406271afece05bd0550ee568048d5d1b4c750da7bc2dbcbeaa9b56",
+          "read_file_size": 3347515984
+        }
+      ],
+      "driver_log_bindings": {
+        "intent": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "c8c7349badfffbb1a6495b42826ca378f4307d6b377a9a4354e366893df42609"
+        },
+        "send_receipt": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "8eeb59a99e972aeb5eba8e7f245f52402ba4ccc8fcd4400d8af6851d0536a16c"
+        },
+        "result": {
+          "path": "/home/agilex/piper_right_pick_demo/runs/cola_on_cup_zero_tx_continuation_20261007_010000/runtime/feedback.jsonl",
+          "line_sha256": "b9140e9fa57e35af0885d54317b16f492e0778572d573ba4f4fae1e05489db7d"
+        }
+      },
+      "origin_raw": [
+        46450,
+        104285,
+        -56179,
+        0,
+        -29017,
+        0
+      ],
+      "target_raw": [
+        46418,
+        103660,
+        -55549,
+        0,
+        -29039,
+        0
+      ],
+      "terminal_raw": [
+        46450,
+        103663,
+        -55560,
+        0,
+        -29028,
+        0
+      ],
+      "origin_pose": [
+        0.271065,
+        0.285148,
+        0.209695,
+        3.1415926535897936,
+        1.3248794351888957,
+        -2.330869762745907
+      ],
+      "terminal_pose": [
+        0.269094,
+        0.283075,
+        0.21088,
+        3.1415926535897936,
+        1.3251586878692148,
+        -2.330869762745907
+      ],
+      "receipt": {
+        "event": "send_receipt",
+        "unix_s": 1791310295.3374298,
+        "monotonic_s": 116138.695660499,
+        "sequence": 170,
+        "kind": "initial",
+        "started_unix_s": 1791310295.3326857,
+        "finished_unix_s": 1791310295.3329403,
+        "attempted_frames": 4,
+        "socket_send_returns": 4,
+        "target_raw": [
+          46418,
+          103660,
+          -55549,
+          0,
+          -29039,
+          0
+        ],
+        "dispatch_sample": {
+          "sequence": 7025930,
+          "stamps": [
+            1791310295.3282864,
+            1791310295.32846,
+            1791310295.3285615,
+            1791310295.3286483,
+            1791310295.3287964,
+            1791310295.328896,
+            1791310295.329042,
+            1791310295.3291605,
+            1791310295.3193774,
+            1791310295.3145776,
+            1791310295.3096275,
+            1791310295.3297584,
+            1791310295.3248878,
+            1791310295.3201053
+          ],
+          "raw_q": [
+            46450,
+            104285,
+            -56179,
+            0,
+            -29017,
+            0
+          ],
+          "q": [
+            0.8107054375513661,
+            1.8201166104422866,
+            -0.9805085204778945,
+            0.0,
+            -0.5064421890511946,
+            0.0
+          ],
+          "pose": [
+            0.271065,
+            0.285148,
+            0.209695,
+            3.1415926535897936,
+            1.3248794351888957,
+            -2.330869762745907
+          ],
+          "opening_m": 0.06629,
+          "gripper_torque_sdk_units": 68,
+          "ctrl_mode": 1,
+          "arm_status": 0,
+          "mode": 1,
+          "teach_status": 0,
+          "motion_status": 0,
+          "fault": 0,
+          "driver_codes": [
+            64,
+            64,
+            64,
+            64,
+            64,
+            64
+          ],
+          "jaw_code": 64,
+          "enabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "raw_feedback_fault": null,
+          "raw_feedback_frames_checked": 7025930,
+          "raw_feedback": {
+            "0x2a1": {
+              "kernel_unix_s": 1791310295.3282864,
+              "data_hex": "0100010000000000"
+            },
+            "0x2a2": {
+              "kernel_unix_s": 1791310295.32846,
+              "data_hex": "000422d9000459dc"
+            },
+            "0x2a3": {
+              "kernel_unix_s": 1791310295.3285615,
+              "data_hex": "0003331f0002bf20"
+            },
+            "0x2a4": {
+              "kernel_unix_s": 1791310295.3286483,
+              "data_hex": "00012886fffdf653"
+            },
+            "0x2a5": {
+              "kernel_unix_s": 1791310295.3287964,
+              "data_hex": "0000b5720001975d"
+            },
+            "0x2a6": {
+              "kernel_unix_s": 1791310295.328896,
+              "data_hex": "ffff248d00000000"
+            },
+            "0x2a7": {
+              "kernel_unix_s": 1791310295.329042,
+              "data_hex": "ffff8ea700000000"
+            },
+            "0x2a8": {
+              "kernel_unix_s": 1791310295.3291605,
+              "data_hex": "000102f200444000"
+            },
+            "0x261": {
+              "kernel_unix_s": 1791310295.3193774,
+              "data_hex": "00e6002f26400000"
+            },
+            "0x266": {
+              "kernel_unix_s": 1791310295.3201053,
+              "data_hex": "00e600352c400000"
+            },
+            "0x265": {
+              "kernel_unix_s": 1791310295.3248878,
+              "data_hex": "00e6003833400000"
+            },
+            "0x264": {
+              "kernel_unix_s": 1791310295.3297584,
+              "data_hex": "00e600342a400000"
+            },
+            "0x263": {
+              "kernel_unix_s": 1791310295.3096275,
+              "data_hex": "00e600312b400000"
+            },
+            "0x262": {
+              "kernel_unix_s": 1791310295.3145776,
+              "data_hex": "00e6003232400000"
+            }
+          }
+        }
+      },
+      "stable_window": {
+        "duration_s": 3.012097189988708,
+        "new_feedback_groups": 107
+      },
+      "complete_joint_box_proof": {
+        "target_raw": [
+          46418,
+          103660,
+          -55549,
+          0,
+          -29039,
+          0
+        ],
+        "target": [
+          0.810146932190728,
+          1.809208302617322,
+          -0.9695129461903301,
+          0.0,
+          -0.5068261614866334,
+          0.0
+        ],
+        "position_bound_m": 0.016550648174217912,
+        "rotation_bound_rad": 0.0431070303475784,
+        "collision_verified": false,
+        "bound_conditional_on_monitored_joint_box": true,
+        "joint_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.005235987755982988,
+          0.003
+        ],
+        "jaw_tracking_margin_rad": [
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003,
+          0.003
+        ]
+      },
+      "manufacturer_fk_sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+      "review_pass": true,
+      "new_qualification_claim": false,
+      "control_absence_is_not_zero_tx_proof": true
+    }
+  ],
+  "hardware_access": false,
+  "live_state_json_used": false,
+  "ongoing_recorder_only_completed_windows_reviewed": true
+}

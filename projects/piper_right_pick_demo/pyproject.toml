@@ -14,3 +14,6 @@ right-pick = "right_pick.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+right_pick = ["reviewed_experiences.json"]

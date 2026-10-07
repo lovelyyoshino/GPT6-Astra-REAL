@@ -50,11 +50,13 @@ class PreviewServiceTests(unittest.TestCase):
                  ("robot_gripper_once", "gripper_once", {"arm": "left", "width_m": 0.01, "nominal_force_N": 0.2})]
         for public, function, args in cases:
             with self.subTest(tool=public):
+                existing_requests = set((self.root / "runs").glob("supervised_*/request.json"))
                 def operation(profile, journal, **actual):
                     self.assertEqual(actual, args)
                     self.assertEqual(profile["arms"], self.profile["arms"])
-                    requests = sorted((self.root / "runs").glob("supervised_*/request.json"), key=lambda p: p.stat().st_mtime_ns)
-                    request = json.loads(requests[-1].read_text())
+                    requests = set((self.root / "runs").glob("supervised_*/request.json")) - existing_requests
+                    self.assertEqual(len(requests), 1)
+                    request = json.loads(requests.pop().read_text())
                     self.assertEqual(request["arguments"], args)
                     with self.assertRaises(RuntimeError):
                         with ExclusiveExecution(self.root / "runs"):
@@ -178,7 +180,10 @@ class PreviewServiceTests(unittest.TestCase):
         self.assertIn("not a geometric path", svg)
 
     def test_tools_have_explicit_strict_schemas(self):
-        self.assertEqual(len(TOOL_SCHEMAS), 23)
+        self.assertEqual(len(TOOL_SCHEMAS), 38)
+        names = {tool["name"] for tool in TOOL_SCHEMAS}
+        self.assertEqual(len(names), len(TOOL_SCHEMAS))
+        self.assertTrue({"robot_single_arm_move_once", "robot_single_arm_gripper_once"} <= names)
         for tool in TOOL_SCHEMAS:
             self.assertFalse(tool["inputSchema"]["additionalProperties"])
             self.assertIn("description", tool)
@@ -255,6 +260,7 @@ class PreviewServiceTests(unittest.TestCase):
                  ("robot_prepare_grippers", "robot_tools.gripper_prepare.prepare_grippers", {}),
                  ("robot_inspect_joint_limits", "robot_tools.joint_limits.inspect_joint_limits", {}),
                  ("robot_recover_joint_boundary", "robot_tools.joint_recovery.recover_joint_boundary", {"arm": "right", "target_joints_rad": [0.] * 6}),
+                 ("robot_recover_joint_boundary", "robot_tools.joint_recovery.recover_joint_boundary", {"arm": "left", "target_joints_rad": [0.] * 6, "recovery_profile": "startup_j2_j3", "attachment_radius_m": 0.3, "available_clearance_m": 0.4}),
                  ("robot_bounded_joint_step", "robot_tools.bounded_joint_step.bounded_joint_step", {"arm": "right", "target_joints_rad": [0.] * 6, "attachment_radius_m": 0.3, "available_clearance_m": 0.05}),
                  ("robot_qualify_linear_hold", "robot_tools.linear_hold.qualify_linear_hold", {"arm": "right"}))
         for tool, target, arguments in cases:

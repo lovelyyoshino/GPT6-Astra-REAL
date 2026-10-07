@@ -1,0 +1,115 @@
+{
+  "schema_version": "astra_recipe_v1",
+  "task_id": "sort_two_objects",
+  "initial_condition": "Two distinguishable lightweight rigid objects and their specified stable trays are visible and identified.",
+  "goal": "Place object A on tray A and object B on tray B, verifying both final placements.",
+  "constraints": [
+    "RGB-only object judgment; no calibration, simulator object state or historical motion targets.",
+    "One bounded action proposal per observation cycle; preserve execution limits and uncertainty latches.",
+    "Model visual claims and independently reviewed outcomes must be reported separately.",
+    "Freeze both object-to-tray assignments before moving either object.",
+    "The second placement must not disturb the first; final observation verifies both goals together."
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "operation": "inspect",
+      "goal": "Identify the specified objects, initial state and available RGB views; freeze the task variant."
+    },
+    {
+      "id": "a_approach",
+      "operation": "approach",
+      "goal": "Approach object A along a visually clear route."
+    },
+    {
+      "id": "a_align",
+      "operation": "align",
+      "goal": "Align the open fingers with a feasible grasp on object A."
+    },
+    {
+      "id": "a_grasp",
+      "operation": "grip_test",
+      "goal": "Grasp object A and verify retention after separation from its support."
+    },
+    {
+      "id": "a_transport",
+      "operation": "transport",
+      "goal": "Carry object A toward tray A while verifying retention."
+    },
+    {
+      "id": "a_align_target",
+      "operation": "align",
+      "goal": "Visually align object A over tray A."
+    },
+    {
+      "id": "a_support",
+      "operation": "place_on_support",
+      "goal": "Establish support of object A on tray A without pressing."
+    },
+    {
+      "id": "a_release",
+      "operation": "release_retreat",
+      "goal": "Release the supported object A and withdraw the empty gripper."
+    },
+    {
+      "id": "a_verify",
+      "operation": "stable_verify",
+      "goal": "Verify object A remains on tray A in separated views after gripper withdrawal.",
+      "evidence": [
+        "a_goal_visible"
+      ]
+    },
+    {
+      "id": "b_approach",
+      "operation": "approach",
+      "goal": "Approach object B along a visually clear route."
+    },
+    {
+      "id": "b_align",
+      "operation": "align",
+      "goal": "Align the open fingers with a feasible grasp on object B."
+    },
+    {
+      "id": "b_grasp",
+      "operation": "grip_test",
+      "goal": "Grasp object B and verify retention after separation from its support."
+    },
+    {
+      "id": "b_transport",
+      "operation": "transport",
+      "goal": "Carry object B toward tray B while verifying retention."
+    },
+    {
+      "id": "b_align_target",
+      "operation": "align",
+      "goal": "Visually align object B over tray B."
+    },
+    {
+      "id": "b_support",
+      "operation": "place_on_support",
+      "goal": "Establish support of object B on tray B without pressing."
+    },
+    {
+      "id": "b_release",
+      "operation": "release_retreat",
+      "goal": "Release the supported object B and withdraw the empty gripper."
+    },
+    {
+      "id": "b_verify",
+      "operation": "stable_verify",
+      "goal": "Verify object B remains on tray B in separated views after gripper withdrawal.",
+      "evidence": [
+        "b_goal_visible"
+      ]
+    },
+    {
+      "id": "verify_both",
+      "operation": "stable_verify",
+      "goal": "Verify both objects remain independently supported on their assigned trays.",
+      "evidence": [
+        "a_goal_visible",
+        "b_goal_visible"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-07T01:40:10.384137+00:00",
+  "scope": "Original-source web research and offline architecture review; no device, ROS, camera or robot access; only new repository notes written.",
+  "sources": [
+    {
+      "id": "roboicl",
+      "url": "https://github.com/Mosi-AI/RoboICL",
+      "title": "RoboICL: Embodied In-Context Learning with GPT-6 Astra",
+      "paper_url": "https://arxiv.org/abs/2609.34261",
+      "access": "repository, primary paper, API commit and pinned raw source accessible",
+      "commit": "a7d652a9f8d4363aa90c0bda00004686af0589d8",
+      "commit_date": "2026-10-06T16:51:32Z",
+      "commit_scope": "repository HEAD when inspected",
+      "method_summary": "Frozen VLM receives demonstrations and bounded live interaction memory. Observation, action and execution receipt have explicit temporal roles; selected completed anchors retain context. Public runner targets RoboDojo.",
+      "boundaries": [
+        "Research progress scores are not Piper qualification.",
+        "Provider retry logic is not actuator retry permission.",
+        "Demonstrations and current observations must remain distinguishable."
+      ],
+      "read_files": [
+        {
+          "path": "roboicl/policy/anchored_cache.py",
+          "sha256": "3ddf78d8af15603e93f1c0086228fad1225ca58b9b7e9f56a480fcc052ea1f40"
+        },
+        {
+          "path": "roboicl/policy/bounded_policy.py",
+          "sha256": "a192606c323f66b8a3544fcf1a0072a935a73b26a58bde985218aedd63892a89"
+        },
+        {
+          "path": "configs/upstream.lock.json",
+          "sha256": "b387a3be3984e6df34cd49dfd069f8efe66a9c4246c609db1052592a514b5a44"
+        }
+      ]
+    },
+    {
+      "id": "code_as_policies",
+      "url": "https://code-as-policies.github.io/",
+      "title": "Code as Policies: Language Model Programs for Embodied Control",
+      "paper_url": "https://arxiv.org/abs/2209.07753",
+      "repository_url": "https://github.com/google-research/google-research/tree/master/code_as_policies",
+      "access": "project and paper accessible; GitHub directory browser fetch limited, authoritative API and pinned raw README accessible",
+      "commit": "8c116f61a61b4339cbbae92be89ff83d9897d4b5",
+      "commit_date": "2024-02-16T21:34:13Z",
+      "commit_scope": "latest commit affecting code_as_policies directory, not whole repository HEAD",
+      "readme_sha256": "44c43d47213693848edd1969042e60d9061ac9955993771c41e54b9f7c426e2c",
+      "method_summary": "Few-shot language-to-policy programs compose perception and control APIs; hierarchical generation defines missing functions recursively.",
+      "boundaries": [
+        "The paper does not establish that arbitrary generated Python is a safe local execution format.",
+        "Standalone google-research/code-as-policies is not the linked code repository; its API returned 404."
+      ]
+    },
+    {
+      "id": "galbot_astra",
+      "url": "https://arxiv.org/html/2609.38537v1",
+      "title": "Systematically Exploring the Capabilities of GPT-6 Astra as Embodied Policies",
+      "authors": "Galbot Team",
+      "version": "arXiv:2609.38537v1, 2026-09-29",
+      "access": "full original HTML accessible; not an inaccessible or inferred paper",
+      "linked_repository": "https://github.com/anonymous-report-421/GPT-as-Policy",
+      "linked_repository_commit": "8f3d362b077d8efb77e2a7274d5b2c20e2243846",
+      "linked_repository_commit_date": "2026-09-16T01:42:39Z",
+      "linked_repository_commit_scope": "HEAD when inspected; initial public release",
+      "method_summary": "Evaluation separates direct and hybrid embodied control across domains. Discussion distinguishes noticing an error, proposing a correction and verifying its effect; harness, latency and repeated trials influence outcomes.",
+      "boundaries": [
+        "This is not RoboICL; RoboICL is arXiv:2609.34261.",
+        "Linked public code is a history-free subset, not all original operational logs or every domain asset.",
+        "Case-specific improvement is not repeatability or transfer proof."
+      ]
+    }
+  ],
+  "local_architecture": [
+    {
+      "path": "projects/piper_right_pick_demo/src/right_pick/fast_pipeline.py",
+      "anchors": [
+        "AtomicSkill:17",
+        "validate_pipeline:244",
+        "validate_task_evidence:663"
+      ],
+      "finding": "L1 capability contracts already separate named primitives from execution."
+    },
+    {
+      "path": "projects/piper_right_pick_demo/src/right_pick/fast_task_pipeline.py",
+      "anchors": [
+        "Composition:17",
+        "TaskRecipe:80",
+        "task_contract:215",
+        "BoundedTaskPipeline:248"
+      ],
+      "finding": "L2/L3 registry and bounded recipe state already exist; extended task contracts explicitly offline."
+    },
+    {
+      "path": "projects/piper_right_pick_demo/src/right_pick/fast_task_session.py",
+      "anchors": [
+        "TaskSessionStore:34",
+        "append:157"
+      ],
+      "finding": "SQLite event ledger freezes contracts and enforces run/revision/event identity; does not itself authenticate robot evidence."
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "declarative_recipes",
+      "proposal": "Load strict versioned JSON recipes using the existing L2 composition registry and arm roles. Reject unknown skills, keys, invalid roles and unbounded expansion. Freeze the canonical contract in the same task session.",
+      "status": "local engineering recommendation, not verbatim paper design"
+    },
+    {
+      "id": "capability_boundary",
+      "proposal": "Keep model output as a proposal. A composition may request allowlisted skills and evidence; it cannot grant hardware qualification, enlarge limits, fabricate receipt truth or bypass failure latches. Preserve one admitted dispatch per cycle.",
+      "status": "local engineering recommendation"
+    },
+    {
+      "id": "bounded_experience",
+      "proposal": "Retrieve a small reviewed set by task and operation context; include condition, advice, failure trigger, outcome and evidence provenance. Keep historical material untrusted and separate from live observations. Do not replay historical target coordinates or treat a successful example as authorization.",
+      "status": "local engineering recommendation"
+    },
+    {
+      "id": "evidence_algebra",
+      "proposal": "Separate observed facts, host receipts and independent post-action verification. Enforce task/stage/observation/time identity; stale examples, proposed actions, view improvement and stable grasp cannot alone prove task completion.",
+      "status": "local engineering recommendation"
+    },
+    {
+      "id": "durable_budget",
+      "proposal": "Reuse TaskSessionStore revision/event-ID transactions and persisted elapsed time. Worker no-progress must survive observer movements and restart. Report success, intervention, return, model calls, latency and cost independently, using unknown when unmeasured.",
+      "status": "local engineering recommendation"
+    },
+    {
+      "id": "no_new_robot_scripts",
+      "proposal": "Extend shared recipe, evidence and memory interfaces rather than creating task-specific robot executors. Keep current extended contracts offline until physical adapters and stop qualification are established independently.",
+      "status": "local engineering recommendation"
+    }
+  ],
+  "validation_priorities": [
+    "Unknown skill/role/key rejected; bounded composition only.",
+    "External recipe round-trip persists the same canonical contract across restart.",
+    "Stale or wrong-stage evidence cannot advance or complete a task.",
+    "Observer view progress cannot reset worker no-progress.",
+    "Historical advisory text cannot become an action, receipt or qualification.",
+    "All physical execution flags remain false for offline contracts."
+  ],
+  "unmeasured": [
+    "Physical transfer to a new task",
+    "Repeatability across fresh trials",
+    "Current hardware stop qualification",
+    "Per-task paid-token cost",
+    "Autonomous completion rate for new recipes"
+  ]
+}

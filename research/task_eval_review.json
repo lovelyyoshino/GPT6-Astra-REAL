@@ -1,0 +1,103 @@
+{
+  "reviewed_at_utc": "2026-10-07T01:30:43.372040+00:00",
+  "scope": "source_review_only_no_devices",
+  "sources": [
+    {
+      "project": "GPT6-ARX5",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "commit_time_utc": "2026-10-06T13:32:33Z",
+      "path": "NEW_TASK_START_GUIDE.md",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/NEW_TASK_START_GUIDE.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/NEW_TASK_START_GUIDE.md",
+      "sha256": "d15f57cb4e0cbbce2e316f5bbbff81ef224a6d04af8d3e0d2fc40cf091cbf3ef",
+      "bytes": 21149
+    },
+    {
+      "project": "GPT6-ARX5",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "commit_time_utc": "2026-10-06T13:32:33Z",
+      "path": "skills/arx-r5-tabletop-tasks/SKILL.md",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/SKILL.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/SKILL.md",
+      "sha256": "67e5ef31921508ed7413757dacb2ba2cf0e137c24016e70381ca900c341cc503",
+      "bytes": 7732
+    },
+    {
+      "project": "GPT6-ARX5",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "commit_time_utc": "2026-10-06T13:32:33Z",
+      "path": "skills/arx-r5-tabletop-tasks/references/pen.md",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/pen.md",
+      "sha256": "365c21532c7e63dff876102336a5ea0a0d1014c8a69805143a0323ef60602d11",
+      "bytes": 2796
+    },
+    {
+      "project": "GPT6-ARX5",
+      "commit": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "commit_time_utc": "2026-10-06T13:32:33Z",
+      "path": "skills/arx-r5-tabletop-tasks/references/common-execution.md",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5/blob/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/common-execution.md",
+      "raw_url": "https://raw.githubusercontent.com/zijianzhang30/GPT6-ARX5/2a722748fa2adedd096c8fd7f9461d2b2ba48af6/skills/arx-r5-tabletop-tasks/references/common-execution.md",
+      "sha256": "6563074a2972019bc460e724968c014494b2b9ec3f5111ec5631734d5e6a3e50",
+      "bytes": 9777
+    },
+    {
+      "project": "ManiSkill",
+      "commit": "62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3",
+      "commit_time_utc": "2026-08-02T03:59:43Z",
+      "path": "mani_skill/envs/tasks/tabletop/turn_faucet.py",
+      "url": "https://github.com/mani-skill/ManiSkill/blob/62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3/mani_skill/envs/tasks/tabletop/turn_faucet.py",
+      "raw_url": "https://raw.githubusercontent.com/mani-skill/ManiSkill/62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3/mani_skill/envs/tasks/tabletop/turn_faucet.py",
+      "sha256": "0ae70d3d4cad6a764bb7152b8800baa2eb0e953ed5e51b5b1374bf98a88eeb4d",
+      "bytes": 9263
+    }
+  ],
+  "local_modules": [
+    "fast_pipeline.py",
+    "fast_task_pipeline.py",
+    "fast_task_session.py",
+    "fast_live_loop.py",
+    "recording.py"
+  ],
+  "implementation_status": "implemented_offline_evaluator_and_observer_budget_fix",
+  "findings": {
+    "maniskill_env_id": "TurnFaucet-v1",
+    "maniskill_max_episode_steps": 200,
+    "maniskill_reward_modes": [
+      "sparse",
+      "none"
+    ],
+    "maniskill_privileged_always_extra": [
+      "target_joint_axis",
+      "target_link_pos",
+      "target_angle_diff"
+    ],
+    "maniskill_privileged_state_extra": [
+      "angle_dist"
+    ],
+    "maniskill_success": "simulator target_angle - current_angle < 0",
+    "existing_ledger_scope": "offline_host_receipt_ledger",
+    "physical_success_not_inferred_from_model_done": true,
+    "numeric_object_progress_is_not_rgb_only_metric_localization": true
+  },
+  "api": "right_pick.fast_task_evaluation.evaluate_task_evidence(document)",
+  "examples": [
+    "research/task_eval_placement_example.json",
+    "research/task_eval_articulated_example.json"
+  ],
+  "validation": {
+    "baseline_task_tests": 30,
+    "post_change_task_tests": 52,
+    "final_evaluation_tests": 23,
+    "model_calls": 0,
+    "device_calls": 0,
+    "simulation_runs": 0
+  },
+  "review_notes": [
+    "research_memory reviewed evaluation channel/time boundaries; ID uniqueness is not frame authenticity",
+    "research_task_eval reviewed memory integration; see research/review_memory_by_eval.txt",
+    "inspect_control found late physical changes could leave terminal true; fixed by requiring a fresh full terminal window after every completed robot receipt or human intervention"
+  ],
+  "evaluator_sha256": "aeed5a32d2dc7950eaaea29e1b3c0565cee9ce8118af2d739a5bd240432f0dd9"
+}

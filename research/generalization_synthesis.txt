@@ -1,0 +1,139 @@
+GPT6-Astra-REAL 通用化综合（2026-10-07）
+
+目标与实施范围
+开发主目录固定为 /home/agilex/GPT6-Astra-REAL。用户希望后续复杂任务
+复用同一软件流程，因此将两个旧工程的经验放入任务合同、有限操作、
+持久状态、短经验和评估接口，而不是继续按物体增加独立实体脚本。
+本轮是并行研究、代码整合与离线验证，没有设备/相机/模型调用。
+原项目、baseline、大视频、完整反馈与旧实验日志留原处，新增索引引用。
+
+八项参考：事实核查、采用原则及不采用部分
+
+1. GPT6-ARX5
+https://github.com/zijianzhang30/GPT6-ARX5
+固定提交 2a722748fa2adedd096c8fd7f9461d2b2ba48af6。
+采用：任务变体、初态和人工介入明确记录；阶段物体证据、释放后稳定、
+回位和录像分别核验。其成功记录属于对应机器人/场景的监督流程。
+不搬用历史坐标、抓爪参数、设备标识或执行资格。
+
+2. ManiSkill / TurnFaucet-v1
+https://github.com/mani-skill/ManiSkill
+https://github.com/mani-skill/ManiSkill/blob/main/mani_skill/envs/tasks/tabletop/turn_faucet.py
+固定提交 62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3。
+精确注册 ID 是 TurnFaucet-v1。采用有限任务与独立评估谓词。
+源码用仿真关节位置判成功，RGB 模式 extra 仍含目标轴/位置等状态；
+未来适配需白名单投影输入，将特权状态留在 grader。未安装或运行该仿真。
+
+3. Zetta-Embodiment
+https://github.com/air-embodied-brain/Zetta-Embodiment
+https://arxiv.org/abs/2608.16590v1
+固定提交 21d7a3afd6ca5a34de9d0350f0158252c5c55467。
+采用诊断、候选改动、离线检查和接受改动分开的原则。其默认 held-out
+test 结果只报告，不能自动晋升候选；预注册 validation 是另一种设置。
+当前只实现静态已审经验，不宣称复现在线自进化或模拟到 Piper 的迁移。
+
+4. Self-Harness: Harnesses That Improve Themselves
+https://arxiv.org/abs/2606.09498
+https://arxiv.org/abs/2606.09498v3
+已核查版本 v3，修订日期 2026-08-20。研究对象是软件 agent。
+采用从日志定位弱点、隔离小改动、保留基线和回归比较。软件评测收益
+不能代替本机物理安全或操作成功率；本轮没有运行时修改执行代码。
+
+5. Physical RSI 1.0
+https://mmlab.hk/research/PhysicalRSI
+可核查到官方项目页搜索内容；直接浏览失败，独立 HTTP 返回 403。
+作者、关联代码提交及论文版本未充分核实，保留不确定性。
+采用持久技能与每轮状态分离、有限阶段。页面示例中的像素到世界坐标
+和保存姿态复用超出 RGB-only / calibration-free 边界，不引入控制链。
+
+6. RoboICL: Embodied In-Context Learning with GPT-6 Astra
+https://github.com/Mosi-AI/RoboICL
+https://arxiv.org/abs/2609.34261
+固定提交 a7d652a9f8d4363aa90c0bda00004686af0589d8。
+采用有界经验上下文，分开示范、当前观察和执行回执。不复制历史动作，
+研究进展分数和 provider 重试都不能变成机械臂准入或重发权限。
+
+7. Code as Policies: Language Model Programs for Embodied Control
+https://code-as-policies.github.io/
+https://arxiv.org/abs/2209.07753
+https://github.com/google-research/google-research/tree/master/code_as_policies
+目录最近相关提交 8c116f61a61b4339cbbae92be89ff83d9897d4b5，非总仓库 HEAD。
+采用明确 API 组合任务；本地落地为受限 JSON recipe 和注册操作，不运行
+模型任意生成的 Python。声明式边界是本项目工程选择，不是论文的认证。
+
+8. Systematically Exploring the Capabilities of GPT-6 Astra as Embodied Policies
+https://arxiv.org/html/2609.38537v1
+Galbot Team，v1，2026-09-29。它不是 RoboICL。
+采用“发现错误、提出纠正、验证物理效果”分别评估，以及控制接口、耗时
+和重复试次的明确统计。公开代码是发布子集；案例改善不等于通用迁移。
+
+详细来源、访问限制和文件摘要分别存于 task_eval_review.json、
+memory_review.json、composition_review.json；上述建议经过工程适配，
+不表示直接复制研究代码、拥有完整原始运行数据或复现论文性能。
+
+本地共用结构
+./astra 是离线入口：catalog / plan / session / replay / evaluate / experiences。
+L3 recipe 固定目标、初态和有限阶段；角色与总预算由任务 session 冻结。
+阶段允许 goal、附加 evidence、max_cycles 和 arm；操作前提继承注册表，
+recipe 无全局 budget 字段，也不能重写前提。L2 描述当前操作；
+L1 负责动作边界和回执；L0 保留具体 Piper 适配及原有安全层。
+模型只接收当前必要 RGB 与短状态，不重复完整旧任务历史。
+
+初始配方：tasks/pen_in_holder.json、can_on_lid.json、
+charger_in_unpowered_socket.json、turn_faucet.json、sort_two_objects.json。
+最后一个通过有限次数的双对象抓放展示复杂组合。新增 place_on_support
+和 articulated_rotate 避免把原支撑/螺纹判据误套到杯盖/水龙头。
+通用配方全部 offline_contract_only / execution_available=false，
+不静默接到现有单右臂 pen runner，不因为 JSON 能表达就宣称实机可做。
+
+持久 session 保存冻结合同、revision、唯一事件和累计预算。恢复、重启
+与观察分支不能清总预算；观察视野改善不清工臂无进展。数据库保证
+记账一致性，不认证用户提交的回执真实性或取得设备互斥。
+
+经验检索是静态已审卡片，最多两张，与当前状态分栏；卡库和源证据都
+做哈希核查。新增内容来自笔、充电头、空罐和 timeout 记录。卡片不含
+历史动作坐标、当前授权或安全豁免，不产生额外模型请求。
+
+评估采用声明式 facts、前后依赖、观察数量和稳定时间窗口。模型视觉
+报告、独立 RGB 审核、模拟器 oracle 分开；运动到位不能代替物体证据。
+后续命令/人工改变后旧终态失效，需要新稳定窗口。结构审核不认证像素、
+真实不同帧或 reviewer；上层冻结 claims，采集/审核宿主负责事实来源。
+合成 JSON 回放只验证接口；缺证据维持 null，不能记为真实成功或失败率。
+
+两套旧工程的可复用教训
+笔入筒：监督成功保留；容器变体与侧面人工指导写进结果，不混作全自主。
+充电头：抓起与插入目标分开；实际物体轴不能由工具欧拉角替代。
+空罐：独立支撑通过松爪撤离后新图验证；人工确认杯盖属于人工元信息。
+反复细调：局部目标和有限预算约束无进展，不追逐历史角度或无限换视角。
+timeout：退出、断连、失能不是停止保证；保留原事故与未解决资格。
+未知发送：命令请求、驱动接受、完成反馈和任务成功是不同事件。
+零发送拒绝：与发生过运动的失败分开，但不删原记录、不自动洗掉锁存。
+录像：任务开始/结束、分段和缺口明确记录；裁剪原速片段不是整轮耗时。
+
+后续复杂任务的开发顺序
+一，固定可观察目标、初态/人工前置和角色，选择或新增有限 recipe。
+二，离线校验 schema、步骤、证据、持久化与预算；加入失败和重开回归。
+三，保留旧基线，用小范围候选修改和独立 agent 校对，不引入新定位先验。
+四，需要新实体技能时另做适配与实际停止/路径验证，保持原数值约束。
+五，在一致任务与现场条件下运行新试次，分别记录时间、调用、人工介入、
+     成功、回位与录像。不用合成回放时长估计真机提速或成功率。
+
+当前整合限制
+原工程与大视频保持原处；精选文件和 source_inventory.json 提供索引。
+历史全量回归尚未全部通过：部分依赖未迁入的旧 runs 证据，旧 piperx
+存在 Python 3.8 与 Path.is_relative_to 等较新 API 的兼容问题，并有工具
+schema 版本差异；readiness 单项失败已定位为缺少三个 REENTRY_* 历史 JSON，
+尚未进入执行、发送数为零，详见 legacy_test_portability.txt。新增离线层的验证
+与这些历史全量结果分别记录，不修改旧代码来绕过测试或放宽保护。
+没有本轮真机速度改善或成功率结论。最终测试状态见
+metadata/generalization_validation_20261007.json；旧 optimization_validation.json
+保留历史含义，不能视为新整合的全量通过声明。
+
+第二轮落实核查
+reference_adoption.json 将八项资料逐一映射到代码、测试和待完成项。
+arx5_experiment_patterns_round2.json 深核18任务/变体，区分文档要求与实测结论。
+fast_task_recovery 新增通用有界恢复诊断合同；fast_recording_contract 新增
+任务录像要求与声明覆盖审计。前者不应用阶段回退、不消费持久恢复预算；
+后者不启动独立相机服务、不认证视频画面。两者是后续通用宿主的接口，
+不是自动恢复/自动录像已具备真机执行能力的声明。第二轮结果另存
+metadata/reference_patterns_validation_20261007.json，保留前轮验证记录。

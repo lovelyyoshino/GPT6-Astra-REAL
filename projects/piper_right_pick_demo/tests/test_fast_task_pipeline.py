@@ -165,6 +165,31 @@ class HierarchicalTaskTests(unittest.TestCase):
                 observation_id="o-1", at=20.0))
         self.assertFalse(ledger.observing)
 
+    def test_view_improvement_does_not_erase_worker_no_progress(self):
+        ledger = BoundedTaskPipeline("pen", mode="worker_with_observer")
+        ledger.record_cycle(receipt(ledger, 1))
+        ledger.record_cycle(receipt(ledger, 2, "unknown"))
+        worker_stage = ledger.current()["stage"]
+        ledger.request_observer_view(dict(arm="right", stationary=True, hold_verified=True,
+            observation_id="o-2", at=20.0))
+        ledger.record_cycle(receipt(ledger, 3))
+        self.assertEqual(ledger.current()["stage"], worker_stage)
+        self.assertEqual(ledger.no_progress, 1)
+        report = ledger.record_cycle(receipt(ledger, 4, "unknown"))
+        self.assertEqual(report["termination_reason"], "no_progress_budget_exhausted")
+        self.assertEqual(report["model_calls"], 4)
+
+    def test_observer_failure_has_its_own_bounded_no_progress(self):
+        ledger = BoundedTaskPipeline("pen", mode="worker_with_observer")
+        ledger.record_cycle(receipt(ledger, 1))
+        ledger.request_observer_view(dict(arm="right", stationary=True, hold_verified=True,
+            observation_id="o-1", at=10.0))
+        ledger.record_cycle(receipt(ledger, 2, "unknown"))
+        self.assertEqual(ledger.no_progress, 0)
+        report = ledger.record_cycle(receipt(ledger, 3, "unknown"))
+        self.assertEqual(report["termination_reason"], "observer_no_progress_budget_exhausted")
+        self.assertEqual(report["cycles"], 3)
+
     def test_missing_contact_prerequisite_does_not_consume_a_cycle(self):
         ledger = BoundedTaskPipeline("charger-insert-only")
         for number in range(1, 5):

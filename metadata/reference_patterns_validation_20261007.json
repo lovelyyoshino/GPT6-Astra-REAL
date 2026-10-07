@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "validation_date": "2026-10-07",
+  "round": "reference_patterns_round2",
+  "scope": "Reference-to-code traceability, ARX5 experiment coverage, bounded recovery proposals, recording metadata contracts and wiping acceptance-criterion correction",
+  "hardware_accessed": false,
+  "real_model_called": false,
+  "old_projects_modified": false,
+  "git_push_performed": false,
+  "source_manifest_unchanged": true,
+  "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+  "reference_coverage": {
+    "sources": 8,
+    "arx5_tasks_or_variants": 18,
+    "arx5_pinned_source_documents": 43,
+    "arx5_head": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+    "changed_since_previous_review": false,
+    "upstream_video_independently_authenticated": false,
+    "upstream_success_rate_reproduced": false
+  },
+  "checks": {
+    "fast_regressions": {
+      "command": "PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast*.py'",
+      "cwd": "projects/piper_right_pick_demo",
+      "tests": 379,
+      "passed": 379,
+      "exit_code": 0,
+      "elapsed_s": 3.607,
+      "log": "research/validation/round2-fast-tests.log"
+    },
+    "integrity_unit_tests": {
+      "command": "python3 -m unittest discover -s tools/tests -p 'test_*.py'",
+      "tests": 15,
+      "passed": 15,
+      "exit_code": 0,
+      "elapsed_s": 0.359,
+      "log": "research/validation/round2-integrity-tests.log"
+    },
+    "syntax": {
+      "command": "python3 -m compileall -q projects/piper_right_pick_demo/src tools",
+      "exit_code": 0
+    },
+    "diff_whitespace": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "primary_document_links": {
+      "documents": [
+        "README.md",
+        "OPTIMIZATION_GUIDE.md",
+        "AGENTS.md"
+      ],
+      "missing_local_links": 0
+    },
+    "bundle_integrity": {
+      "status": "passed",
+      "source_snapshot_status": "verified_with_optimization_overrides_with_runtime_omissions",
+      "optimization_status": "verified_with_runtime_omissions",
+      "bundle_checksum_status": "verified_with_runtime_omissions",
+      "runtime_omission_status": "verified",
+      "remote_source_files": 743,
+      "source_unmodified_files": 726,
+      "source_files_explained_by_optimization": 13,
+      "source_files_omitted": 4,
+      "optimization_entries": 150,
+      "optimized_verified_files": 148,
+      "optimized_omitted_files": 2,
+      "bundle_checksum_entries": 883,
+      "bundle_checksum_omitted_files": 4,
+      "runtime_omission_entries": 4,
+      "omitted_runtime_files": [
+        "projects/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+        "projects/piper_right_pick_demo/configs/astra_fast_live.local.json",
+        "projects/piper_right_pick_demo/configs/gpt_tools.local.json",
+        "projects/piper_right_pick_demo/configs/site.local.json"
+      ],
+      "hardware_accessed": false,
+      "errors": []
+    }
+  },
+  "fixed_issues": [
+    "Default blackboard-wiping goal no longer confuses sliding motion with erasure completion; erasure variants require additional evidence.",
+    "Recovery diagnosis distinguishes confirmed zero transmission from unknown, partial, timeout, hold and latched fault outcomes.",
+    "Recording metadata audit distinguishes normal retreat/stability from interrupted settled/unresolved endpoints and rejects ambiguous same-time event reuse."
+  ],
+  "new_commands": [
+    "references [--source ID] [--task TASK]",
+    "recovery-plan DOCUMENT",
+    "recording-plan --run-id RUN --task TASK [--include-left]",
+    "recording-audit DOCUMENT"
+  ],
+  "review_reports": [
+    "research/recovery_patterns_round2.txt",
+    "research/review_recording_round2.txt",
+    "research/recording_contract_round2.txt",
+    "research/arx5_experiment_patterns_round2.txt"
+  ],
+  "limitations": [
+    "Generic recovery is a diagnostic proposal: no phase rollback, hardware action, failure-latch clearing or persistent budget consumption is implemented by that pure function.",
+    "Recording contract and metadata coverage audit do not start an independent recorder, decode AVI files or authenticate physical events.",
+    "Original continuous recorder still requires three cameras and can exit with its controller; generic independent lifecycle remains unimplemented.",
+    "No new physical trial, speedup, model-call reduction or task success rate was measured.",
+    "Legacy full-suite portability failures remain documented separately; this is not a claim all historical tests pass."
+  ],
+  "prior_validation": "metadata/generalization_validation_20261007.json",
+  "legacy_limitations": "research/legacy_test_portability.txt"
+}

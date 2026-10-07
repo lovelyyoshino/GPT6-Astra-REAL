@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "purpose": "Explain local atomic-pipeline optimization without replacing the remote source snapshot hashes.",
+  "entries": [
+    {
+      "local_path": ".agents/skills/piper-arm-coordination/SKILL.md",
+      "change_reason": "Provide a scoped project-local Codex entrypoint with progressive layer loading.",
+      "base_source_sha256": null,
+      "optimized_sha256": "21a5da713f0a73474d53be13ab95ceb703ee04d45b4d82fb4c24b141ab3c914f",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-admit-action/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "dd9be4af42888923c0af6a6db11e47806aafbb48f7d04a2299c6682255b47034",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-check-fresh-observation/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "a2cb23f6817bba87df8185d097fcf4c94bc05b3fd40c9791851aeb034096baad",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-coordinate-observer/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "e16134c21fdc3dcc3a700e434ca7cb8f192814435ccac7a38821ec8e2c66e64e",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-coordinate-pair/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "b3d690fe91ead40122039cb4fc006d3a1a0ff93628c9df3a0b9303a64c8cbf34",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-decide-one/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "ee58685a427b83db9eb08a925bc126f817d4d644329dc252e39eb7715503405b",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-decide-pair/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "b0b937d77f8a519784db190da9bedeffc00330c0f0c6862362f04c3ee374c60e",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-dispatch-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "f3853a25d32f9a9e0bd5fb2e1bc24eaf183348c5f7103808d681c66c657a6c85",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-dispatch-pair-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1965b2f0db49481221e4150752b38534e3d5c578a3363cb2066dae2e55a1c834",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-freeze-observer/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "92966ae535c328f8c79606fd7718d3272af5ac389a155df0a535660d3ffc6990",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-handoff-hold/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "13285cac844380db48547216938227d4c1cb4eeb366ac72fa500992b677b6555",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-latch-pair-fault/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "4a792ce5b50915dfda1a9275b83fdd6ed1734d2b25690f2d76b6506669352cd8",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-move-eef-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1fc53d99be7aa7f9acda8cb85eeea2eae9bf93abdc00b2c0fd203b2151cf3802",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-observe-scene/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "ee7828f296486e6d4bf9823e7083a2cc2cec4cadc102d1ec0d0f0b721c2deb60",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-plan-swept-corridor/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "d12f8bef6bddcb318fbdd71e14cff5472b6b8bad330b678a9b1060bce48224dc",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-preflight-pair/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "93feab41db1baf905010c1093874bae1777ea8ec6197eae34abe61d25bfee455",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-preflight-single/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "9a4a4d3d02a19498eba69ee56fe81b0c77383da8f29544d7d858257caa1ce051",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-prepare-held-side/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "43053396c819106197bc19479c2d1e4e6bd2aeab828e4db5092d47a78f5c1fb4",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-read-receipt/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "0e676857afba7daebc706b0a92242d45d165390543db594ae4ce0f363158c989",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-renew-session/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "9c988d15ff12cd3a14432452005c6ba700f7ccfbb8066bdea9b439835c07abcf",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-sample-stability/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "7420901462cbff596cc8856a1bc60c398857ec64ce4a150308fa69aa04ea8708",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-set-gripper-once/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "acd12a3284de5d6070feb83a1b9498a25aea814eaf7928ca89c10032d857f329",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-synchronize-duration/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "59c693d4a79f80559e21cd5e6822b75cfe8692337f4278ffe302db0de2bb9e88",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-verify-return/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "2dc08930c5a5d2139b7a68bf1b3ffc01138ce162cbaf7637416e982b95ec3137",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-verify-task-evidence/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c07df64f6692ea135da3f414adb265032f6b87809e636d9195739e91f4899ee9",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atom-verify-visual/SKILL.md",
+      "change_reason": "Expose one ARX5-mapped Piper L1 atomic contract as a scoped project-local Codex skill.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1f64ba41de43e50cb9ae6b09247436567d0bcd6665a57029bdd13be368f47c45",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-atomic-runtime/SKILL.md",
+      "change_reason": "Provide a scoped project-local Codex entrypoint with progressive layer loading.",
+      "base_source_sha256": null,
+      "optimized_sha256": "1fc7b2d2adf556837e65befa1c9cc78175bd93ab6ae2e6bccb5dcecc02b32f3e",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-manipulation/SKILL.md",
+      "change_reason": "Provide a scoped project-local Codex entrypoint with progressive layer loading.",
+      "base_source_sha256": null,
+      "optimized_sha256": "329544a96017f32098760ccd9ca9c38a490009a67f24ca40e86d73b692fd1ee8",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": ".agents/skills/piper-task-pipeline/SKILL.md",
+      "change_reason": "Route Codex from the current task stage to its bound L2 operation and require measured progress without loading the full catalog.",
+      "base_source_sha256": null,
+      "optimized_sha256": "213c8076f506c583728b605304af1288a3d5a74b51fec32c0ef64c3eded37387",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "AGENTS.md",
+      "change_reason": "Persist Codex CLI preference, layer routing, bounded progress, skill discovery path and implementation boundaries.",
+      "base_source_sha256": null,
+      "optimized_sha256": "bd45e0f6022dac76ac12bec2777c32835778c6dd4d56edfe6fb7f8b6082cf743",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "ATOMIC_SKILLS.md",
+      "change_reason": "Make hidden project-local atomic skills visible and document launch-directory discovery and layered on-demand invocation.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c5680ec71e188975636d011036d110c3251fdf811132b389b162260c77921ecf",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "metadata/optimization_validation.json",
+      "change_reason": "Record current local verification, project skill discovery by launch directory and unverified physical scope.",
+      "base_source_sha256": null,
+      "optimized_sha256": "4ed3418b3f78e017061cab9da79d363e077c9ebef009c8fadb7be4e6c8a4a1f8",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "OPTIMIZATION_GUIDE.md",
+      "change_reason": "Record implemented budget/recovery changes and remaining physical adapter gaps.",
+      "base_source_sha256": null,
+      "optimized_sha256": "743b2772e1fbcc593f9e320d6645e20d179071790cf8d01e2ca2cbe605ab81a4",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_dual_barrier.example.json",
+      "base_source_sha256": null,
+      "optimized_sha256": "81548dbe01fa8e62cf28a161f3f3f67897ff6364b8286a70d673be52e43b48eb",
+      "pipeline_id": "dual_arm_barrier_v1",
+      "change_reason": "Declare offline dual task roles with peer_arm, shared admission and independent receipts."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_closed_loop.example.json",
+      "base_source_sha256": "20d13acbbf2fa3f7c5dc1137cc3e3bd2afd9fd7a79b34501bbfe0fa1e964472b",
+      "optimized_sha256": "5184f012c7c1b12b05c6ef29859c747afe9a71d43f3d804a5840d36ab2bc1aa6",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Default to existing Codex login and finite controller/model budgets."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+      "base_source_sha256": "358fb0126bc863143b461ca71014998f2c5db6f097d2793994c71cdc1ab1828e",
+      "optimized_sha256": "abbac336681287c6d69ec18ed833e2066918e8c326febe8c6d49d2fe3998f046",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Declare execution mode and role wiring."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_fast_live.local.json",
+      "base_source_sha256": "38ab1c05ba6fe8759f6cadc62c0ea80eedd302e44db5562f56c00de71b08635a",
+      "optimized_sha256": "d4bca87c452510d241788aa16a236a120c2a476ad3466affaf57a659349ec137",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Declare execution mode and role wiring."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/configs/astra_worker_observer.example.json",
+      "base_source_sha256": null,
+      "optimized_sha256": "bfc3a388906abb2c344c32b2b6e8ff947425091a11fe490334e36720007c201d",
+      "pipeline_id": "single_worker_with_observer_v1",
+      "change_reason": "Declare offline view-only observer roles and hold/scene refresh requirements."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/docs/ATOMIC_SKILLS_AND_DUAL_COORDINATION.md",
+      "base_source_sha256": null,
+      "optimized_sha256": "1ff988d7a6c049d5f1d949a28c304a41fcdfa7eb02285d296368b746be4982de",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Explain four layers, active operation lookup, measured progress receipts, full ARX5 task mapping and physical implementation gaps."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/cli.py",
+      "change_reason": "Require explicit fast execution mode so a task cannot silently fall into prepare.",
+      "base_source_sha256": "46a35169218f7a3f5bed8ca66828569750fe0e842ca046d0ba979f1979b364f7",
+      "optimized_sha256": "6ee1ffdb8d29449ff9d4aefdce98a8f62f97be551f20fa7d26e958128feb761e",
+      "pipeline_id": "single_arm_closed_loop_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_cli.py",
+      "base_source_sha256": "7995752cef6bc99133688698e51357ea97ec24f8ce992c4f4f305c5339b69ed1",
+      "optimized_sha256": "4f77e989fcfeeef7642a2820cdb24a2da01b14b1dc7055de4875c5afd9b1c7e4",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Validate pipeline role wiring before runtime resources open."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_codex.py",
+      "base_source_sha256": "90f0d1baed10b77ec8f336a274cb34cdba3f34dd1d1f7aced5df1be116928e55",
+      "optimized_sha256": "8347682b362e5aa4dea0c3384558da161d1f0adf7a6e367372caac904f089127",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Send only current pipeline stage and next stage to Codex."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_live_loop.py",
+      "base_source_sha256": "7f565969fc6cc6ccc9e039366fd0a5b3ac12a6619ba2808cf40dac4a131cdf41",
+      "optimized_sha256": "97382a4492b9560b809a57365c8aa3748a153f85db140b59e8dbc16b21f2bf39",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Bound current single-arm execution, allow one pre-dispatch recovery, validate new RGB and record truthful visual provenance."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_loop.py",
+      "base_source_sha256": "a8705c3fe2c8135ece3a9ea34333a7e6ab65f58d0e476a9ca3a4387b37903e42",
+      "optimized_sha256": "17676e3734d90591ac033a7879bf1a93a7285b2ce652215ff0bdcabf71dd991b",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Bound replay, allow one correction and keep historical visual claims separate."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_model.py",
+      "base_source_sha256": "c48e8a8b8d9970f76670ddd1c2c1c2509f1cc151158978d1bc787dcac529ae52",
+      "optimized_sha256": "9e219965867dc0a659829632564eb03d2e1f6d6b3c515e8e2fd959417cbce6f9",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Send only current pipeline stage and next stage to Responses."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_pipeline.py",
+      "base_source_sha256": null,
+      "optimized_sha256": "57b02c7f08e76a0d8bfe4ad2befb53b8164a5b6dc126ab0cad41290d8bd2e3e3",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Define 25 atomic contracts, three mode lifecycles, independent held receipts and one-arm dispatch admission."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_policy.py",
+      "base_source_sha256": "104f809f2dc9cb1f1f29e74873070103896b436d5dd2c11ef05713561585f4eb",
+      "optimized_sha256": "6d861081e662917f34df801e5fe0e94e790ae453193446c9ca41aeb2202969c7",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain the existing compact decision policy changes in the local optimization layer."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_task_pipeline.py",
+      "change_reason": "Map 18 ARX5 tasks to 20 bounded compositions; bind the current L2 contract and count only continuous measured changes as progress.",
+      "base_source_sha256": null,
+      "optimized_sha256": "e4a85504f11149ba88191135e5a42a3b73abd171580c30dd2bf9c5743475e6c6",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_task_session.py",
+      "change_reason": "Persist frozen offline task contracts and event history across Codex commands, with active-operation lookup, revision checks and total deadlines.",
+      "pipeline_id": "hierarchical_piper_v1",
+      "base_source_sha256": null,
+      "optimized_sha256": "f678ff591c8049bfe8b81ebf0fb50dd1bc57208fedadafd78c3d30db691ff143"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_cli.py",
+      "change_reason": "Reject unavailable modes and mismatched model protocols before resources open.",
+      "base_source_sha256": "be9d8d2cfba56c21babc9ac1f8bbf08bb4de6d06597e20d4020cfd74fc0e2db0",
+      "optimized_sha256": "f65016bd1767c7ffc4790715194fde03620078fb560482f5bfeea32cc8633961",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_codex.py",
+      "base_source_sha256": "5fbbede468b3d6e68f0af44ce64af91a450d7a2f79aa8795dc5a7d1485205c4a",
+      "optimized_sha256": "f4c5f81cbf579f3b09296796fbbec9a6c94240e344c5d37910a67f1bb51c5c2a",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain local regression coverage for compact Codex packets."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_live_loop.py",
+      "base_source_sha256": "d02a8b08764d1c783b86f1e891349ed51002094072e065695439d21dcf4035b5",
+      "optimized_sha256": "c97c3044bbd7c6b6e6cee54533f3676d5fe951acbb0ced336a879ad280d338a1",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain local regression coverage for bounded live-loop behavior."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_loop.py",
+      "base_source_sha256": "0fa84c1318f780ecd43da10ef9552ec8132c8e3eb4c4b6c6549dacf4839ec245",
+      "optimized_sha256": "002f761b9f1ef504e0a51e66d10e719c3ba1d6a4660b60ec6a8b48fb9edab88e",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Retain local regression coverage for bounded replay behavior."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_pipeline.py",
+      "base_source_sha256": null,
+      "optimized_sha256": "0e55e3b69accdace9f8f02b60c69af3f9e30308b5a3a144937ba20ae872ffb7d",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Add contract, role gate, and token compaction regression tests."
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+      "change_reason": "Verify task variants, layered operation lookup, continuous measured progress, observer branch and budgets.",
+      "base_source_sha256": null,
+      "optimized_sha256": "c1d2a9810e13c3bf9d54d146dd7567867f59664b0332f704552a8f770efcb2e3",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "projects/piper_right_pick_demo/tests/test_fast_task_session.py",
+      "change_reason": "Verify real CLI restarts, active operation lookup, measured-progress replay, concurrent writes and immutable budgets.",
+      "pipeline_id": "hierarchical_piper_v1",
+      "base_source_sha256": null,
+      "optimized_sha256": "a3e514f1856f3de8e23b879f3b1e709b3d04ad588378b35bc27d6e7612a2602e"
+    },
+    {
+      "local_path": "README.md",
+      "change_reason": "Document local optimization, current verified usage and the Codex skill launch path.",
+      "base_source_sha256": null,
+      "optimized_sha256": "0929a7811e70ffb1d3c3d55eb24c59f52a833d1b9e9414b69f71aef0291e4f1c",
+      "pipeline_id": "hierarchical_piper_v1"
+    },
+    {
+      "local_path": "tools/verify_bundle.py",
+      "base_source_sha256": null,
+      "optimized_sha256": "49286af674edce6d13b9e229a8f3255074113cb8a711b8a3aed02b57aae05b43",
+      "pipeline_id": "single_arm_closed_loop_v1",
+      "change_reason": "Verify source snapshot and local optimization layer separately."
+    }
+  ]
+}

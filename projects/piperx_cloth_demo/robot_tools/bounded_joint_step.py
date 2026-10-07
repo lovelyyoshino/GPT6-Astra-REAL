@@ -10,6 +10,7 @@ import time
 
 from . import arms
 from .joint_recovery import RECOVERY, _JointRecovery
+from .joint_envelope import tracking_sweep
 from .takeover import SIDES
 
 STEP = {"joint_change_rad": 0.025, "joint_margin_rad": 0.010,
@@ -92,7 +93,6 @@ class _BoundedJointStep(_JointRecovery):
         return current
 
     def validate_target(self, states):
-        from pyAgxArm.utiles.mdh_kinematics import get_mdh
         state, origin = states[self.arm], self.anchor[self.arm]
         q = state["joints_rad"]
         raw = [round(math.degrees(value)*1000) for value in self.target]
@@ -123,21 +123,12 @@ class _BoundedJointStep(_JointRecovery):
             raise RuntimeError("Manufacturer FK does not agree with current flange feedback")
         if target_distance > RECOVERY["target_displacement_m"]:
             raise RuntimeError("Manufacturer FK bounded target exceeds 15 mm displacement")
-        mdh = get_mdh(self.profile["arms"][self.arm]["model"])
-        if len(mdh) != 6 or any(not math.isfinite(v) for row in mdh for v in row):
-            raise RuntimeError("A finite six-axis manufacturer MDH chain is required")
-        # Modified DH places a_i before joint i's rotation: exclude it from
-        # radius_i, retain d_i and every subsequent translation conservatively.
-        radii = [abs(row[0]) + sum(abs(link[0])+abs(link[1]) for link in mdh[i+1:])
-                 + self.attachment_radius + STEP["link_body_allowance_m"] for i, row in enumerate(mdh)]
-        excursions = [abs(target-start)+self.tolerance(self.arm, i)
-                      for i, (start, target) in enumerate(zip(origin["joints_rad"], encoded))]
-        sweep = sum(radius*delta for radius, delta in zip(radii, excursions))
-        self.report.update(sweep_bound_m=sweep, sweep_axis_radii_m=radii,
-                           sweep_axis_excursions_rad=excursions,
-                           sweep_reference_joints_rad=origin["joints_rad"][:],
-                           mdh_source="Manufacturer get_mdh(model), modified DH; sum of absolute remaining translations",
-                           sweep_clearance_budget_m=self.clearance-STEP["clearance_reserve_m"])
+        envelope = tracking_sweep(self.profile["arms"][self.arm]["model"], origin["joints_rad"],
+                                  encoded, self.attachment_radius,
+                                  [self.tolerance(self.arm, i) for i in range(6)],
+                                  STEP["link_body_allowance_m"])
+        sweep = envelope["sweep_bound_m"]
+        self.report.update(envelope, sweep_clearance_budget_m=self.clearance-STEP["clearance_reserve_m"])
         if sweep > self.clearance-STEP["clearance_reserve_m"]:
             raise RuntimeError("Whole-chain tracking-box sweep bound exceeds clearance minus 5 mm reserve")
         self.target_pose = target_fk

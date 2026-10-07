@@ -48,6 +48,12 @@ class _JointRecovery(_LinearHold):
     def stable_position_span(self):
         return 0.002
 
+    def health(self, side, state):
+        return arms.control_health(state, allowed_control_modes=(1,), require_enabled=True)
+
+    def arrival_matches(self, state):
+        return True
+
     def outside(self, side, joints):
         return [{"joint_index": i + 1, "observed_rad": value, "minimum_rad": low, "maximum_rad": high}
                 for i, value in enumerate(joints)
@@ -65,7 +71,7 @@ class _JointRecovery(_LinearHold):
         stamps = []
         for side in SIDES:
             state = states[side]
-            health = arms.control_health(state, allowed_control_modes=(1,), require_enabled=True)
+            health = self.health(side, state)
             if not health["healthy"]:
                 raise RuntimeError("Unhealthy %s feedback: %r" % (side, health["reasons"]))
             active = self.phase == "active" and side == self.arm
@@ -188,7 +194,8 @@ class _JointRecovery(_LinearHold):
             qualifies = (self.all_after(states, self.sent_at) and self.mode_confirmed
                          and state["arm_status"]["motion_status"] == 0
                          and all(abs(a-b) <= self.tolerance(self.arm, i) for i,(a,b) in enumerate(zip(q,self.target)))
-                         and math.dist(p, self.target_pose[:3]) <= 0.002)
+                         and math.dist(p, self.target_pose[:3]) <= 0.002
+                         and self.arrival_matches(state))
             if not qualifies:
                 stable_start = None
             elif stable_start is None:
@@ -222,7 +229,9 @@ class _JointRecovery(_LinearHold):
         return report
 
 
-def recover_joint_boundary(profile, journal_callback, arm, target_joints_rad):
+def recover_joint_boundary(profile, journal_callback, arm, target_joints_rad,
+                           recovery_profile="standard", attachment_radius_m=None,
+                           available_clearance_m=None):
     """Caller supplies the exact boundary target and owns device lock/clearance.
 
     Requires empty enabled jaws and enabled healthy CAN-controlled joints.
@@ -234,4 +243,15 @@ def recover_joint_boundary(profile, journal_callback, arm, target_joints_rad):
     if not callable(journal_callback):
         raise TypeError("A synchronous journal_callback(event, data) is required")
     target = arms._six_finite(target_joints_rad)
+    if recovery_profile == "startup_j2_j3":
+        from .bounded_joint_step import _positive
+        from .startup_recovery import _StartupBoundaryRecovery
+        attachment = _positive(attachment_radius_m, "attachment_radius_m")
+        clearance = _positive(available_clearance_m, "available_clearance_m")
+        return _StartupBoundaryRecovery(profile, journal_callback, arm, target,
+                                        attachment, clearance).run()
+    if recovery_profile != "standard":
+        raise ValueError("Unknown recovery_profile")
+    if attachment_radius_m is not None or available_clearance_m is not None:
+        raise ValueError("Clearance arguments require explicit startup_j2_j3 recovery_profile")
     return _JointRecovery(profile, journal_callback, arm, target).run()

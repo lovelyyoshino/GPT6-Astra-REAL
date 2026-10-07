@@ -1,0 +1,53 @@
+{
+  "schema_version": "astra_recipe_v1",
+  "task_id": "turn_faucet",
+  "initial_condition": "An unpressurized demonstration faucet is fixed, and its initial and goal handle orientations are visually specified.",
+  "goal": "Rotate the fixture-mounted faucet handle from its initial visible orientation to the specified visible goal orientation.",
+  "constraints": [
+    "RGB-only object judgment; no calibration, simulator object state or historical motion targets.",
+    "One bounded action proposal per observation cycle; preserve execution limits and uncertainty latches.",
+    "Model visual claims and independently reviewed outcomes must be reported separately.",
+    "Use visually observed handle rotation; do not supply simulator qpos, target angle, axis or object position to the controller.",
+    "No liquid-flow claim follows from handle motion; no thread-turn criterion applies to this task."
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "operation": "inspect",
+      "goal": "Identify the specified objects, initial state and available RGB views; freeze the task variant."
+    },
+    {
+      "id": "approach",
+      "operation": "approach",
+      "goal": "Approach the visible faucet handle."
+    },
+    {
+      "id": "align",
+      "operation": "align",
+      "goal": "Align a supported grasp with the handle and visible rotation clearance."
+    },
+    {
+      "id": "grasp",
+      "operation": "grip_supported",
+      "goal": "Close on the handle while the fixture remains stable."
+    },
+    {
+      "id": "turn",
+      "operation": "articulated_rotate",
+      "goal": "Turn in bounded segments until the visually specified relative orientation is reached; verify fixture stability."
+    },
+    {
+      "id": "release",
+      "operation": "release_retreat",
+      "goal": "Release the supported handle and withdraw."
+    },
+    {
+      "id": "verify",
+      "operation": "stable_verify",
+      "goal": "Verify the target handle orientation persists after gripper withdrawal.",
+      "evidence": [
+        "faucet_visual_goal_retained"
+      ]
+    }
+  ]
+}

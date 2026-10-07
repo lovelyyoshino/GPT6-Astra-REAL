@@ -30,10 +30,13 @@ COMPOSITIONS = (
     Composition("validate_preheld", ("preheld_object_retained",), 2),
     Composition("transport", ("object_retained", "destination_visible"), 6),
     Composition("lower_to_support", ("object_on_original_support", "support_established")),
+    Composition("place_on_support", ("object_on_target_support", "support_established")),
     Composition("hang_supported", ("hat_on_specified_hook", "rack_stable", "support_established"), 8),
     Composition("insert_segment", ("axial_progress", "support_established"), 8,
                 ("contact_step_supported",)),
     Composition("rotate_segment", ("object_relative_rotation", "thread_progress"), 16,
+                ("axis_and_support_visible", "contact_step_supported")),
+    Composition("articulated_rotate", ("object_relative_rotation", "visual_goal_reached", "fixture_stable"), 12,
                 ("axis_and_support_visible", "contact_step_supported")),
     Composition("extract_segment", ("object_relative_progress", "peer_stable"), 8,
                 ("axis_and_support_visible",)),
@@ -58,6 +61,7 @@ _COMPOSITION_PRIMITIVES = {
     "align": ("move_eef_once",), "grip_test": ("set_gripper_once", "move_eef_once"),
     "grip_supported": ("set_gripper_once",), "validate_preheld": ("observe_scene",),
     "transport": ("move_eef_once",), "lower_to_support": ("move_eef_once",),
+    "place_on_support": ("move_eef_once",), "articulated_rotate": ("move_eef_once",),
     "hang_supported": ("move_eef_once",), "insert_segment": ("move_eef_once",),
     "rotate_segment": ("move_eef_once",), "extract_segment": ("move_eef_once",),
     "pour_segment": ("move_eef_once",), "wipe_segment": ("move_eef_once",),
@@ -180,7 +184,8 @@ TASK_RECIPES = (
         _step("transport"), _step("align"), _step("wipe_segment"),
         _step("release_retreat"), _step("stable_verify"), _step("return_reference")),
         "preheld wiping tool and identified board; autonomous pickup requires a separate variant",
-        "frozen wiping-motion or erasure criterion", ("motion_not_erasure", "observer_must_not_hold_board")),
+        "contact sliding motion on the specified board; erasure completion is a separate task variant",
+        ("motion_not_erasure", "observer_must_not_hold_board")),
     TaskRecipe("blue-blocks-sweeping", (_step("inspect"), _step("validate_preheld"),
         _step("transport"), _step("align"), _step("sweep_segment"), _step("stable_verify"),
         _step("transport"), _step("release_retreat"), _step("stable_verify"), _step("return_reference")),
@@ -247,8 +252,15 @@ def task_contract(task_id, *, mode="single_arm", worker_arm="right"):
 
 class BoundedTaskPipeline:
     """Offline event ledger. Host receipts enter here; no command can leave it."""
-    def __init__(self, task_id, *, mode="single_arm", worker_arm="right", budget=None, clock=time.monotonic):
-        self.contract = task_contract(task_id, mode=mode, worker_arm=worker_arm)
+    def __init__(self, task_id, *, mode="single_arm", worker_arm="right", budget=None,
+                 clock=time.monotonic, task_definition=None):
+        if task_definition is None:
+            self.contract = task_contract(task_id, mode=mode, worker_arm=worker_arm)
+        else:
+            from .fast_task_spec import recipe_contract
+            self.contract = recipe_contract(task_definition, mode=mode, worker_arm=worker_arm)
+            if self.contract["task_id"] != task_id:
+                raise PipelineContractError("Recipe task_id does not match the requested task")
         self.budget = dict(self.contract["budget"])
         self.budget.update(budget or {})
         if set(self.budget) != set(self.contract["budget"]) or any(
@@ -257,6 +269,7 @@ class BoundedTaskPipeline:
         self.clock, self.started_at = clock, clock()
         self.index = self.cycles = self.model_calls = self.stage_cycles = 0
         self.no_progress = self.rejections = 0
+        self.observer_no_progress = 0
         self.last_at = self.last_observation_id = None
         self.observations, self.evidence = set(), []
         self.termination_reason = None
@@ -280,11 +293,14 @@ class BoundedTaskPipeline:
                     "evidence": list(_COMPOSITIONS["observer_reposition"].evidence), "max_cycles": 2,
                     "requirements": list(_COMPOSITIONS["observer_reposition"].requirements)}
             used_cycles = self.observer_cycles
-        return {"task": self.contract["id"], "stage": step["id"], "skill": step["skill"],
+        result = {"task": self.contract["id"], "stage": step["id"], "skill": step["skill"],
                 "arm": step["arm"], "expect": list(step["evidence"]),
                 "needs": list(step["requirements"]),
                 "cycles_left": min(step["max_cycles"] - used_cycles, self.budget["max_cycles"] - self.cycles),
                 "model_calls_left": self.budget["max_model_calls"] - self.model_calls}
+        if "goal" in step:
+            result["goal"] = step["goal"]
+        return result
 
     def current_operation(self):
         """Expand only the active L2 operation and its L1 names on demand."""
@@ -332,6 +348,7 @@ class BoundedTaskPipeline:
             return self.report()
         self.observer_moves += 1
         self.observer_cycles = 0
+        self.observer_no_progress = 0
         self.observer_measurements = {}
         self.observing = True
         return self.report()
@@ -400,7 +417,13 @@ class BoundedTaskPipeline:
         else:
             self.stage_cycles += 1
         self.model_calls += int(receipt["model_called"])
-        self.no_progress = 0 if status == "complete" or measured_progress else self.no_progress + 1
+        # A better camera view is not progress of the task object. Keep the
+        # worker's debt across an observation branch, including persisted replay.
+        if self.observing:
+            self.observer_no_progress = (0 if status == "complete" or measured_progress
+                                         else self.observer_no_progress + 1)
+        else:
+            self.no_progress = 0 if status == "complete" or measured_progress else self.no_progress + 1
         self.rejections += int(status == "rejected")
         if self.termination_reason is None and status == "complete":
             self.evidence.append({"stage": current["stage"], "observation_id": observation,
@@ -416,6 +439,7 @@ class BoundedTaskPipeline:
                     self.termination_reason = "offline_contract_completed"
         if self.termination_reason is None:
             limits = ((self.no_progress >= self.budget["max_no_progress"], "no_progress_budget_exhausted"),
+                      (self.observing and self.observer_no_progress >= self.budget["max_no_progress"], "observer_no_progress_budget_exhausted"),
                       (self.rejections >= self.budget["max_rejections"], "rejection_budget_exhausted"),
                       (self.cycles >= self.budget["max_cycles"], "cycle_budget_exhausted"),
                       (self.model_calls >= self.budget["max_model_calls"], "model_call_budget_exhausted"),

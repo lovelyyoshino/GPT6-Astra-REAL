@@ -1,0 +1,61 @@
+{
+  "schema_version": "astra_recipe_v1",
+  "task_id": "pen_in_holder",
+  "initial_condition": "Thin pen lies on the visible table; the specified holder and gripper are visible.",
+  "goal": "Place the thin pen inside the specified holder and verify independent support.",
+  "constraints": [
+    "RGB-only object judgment; no calibration, simulator object state or historical motion targets.",
+    "One bounded action proposal per observation cycle; preserve execution limits and uncertainty latches.",
+    "Model visual claims and independently reviewed outcomes must be reported separately."
+  ],
+  "steps": [
+    {
+      "id": "inspect",
+      "operation": "inspect",
+      "goal": "Identify the specified objects, initial state and available RGB views; freeze the task variant."
+    },
+    {
+      "id": "pen_approach",
+      "operation": "approach",
+      "goal": "Approach the thin pen along a visually clear route."
+    },
+    {
+      "id": "pen_align",
+      "operation": "align",
+      "goal": "Align the open fingers with a feasible grasp on the thin pen."
+    },
+    {
+      "id": "pen_grasp",
+      "operation": "grip_test",
+      "goal": "Grasp the thin pen and verify retention after separation from its support."
+    },
+    {
+      "id": "transport",
+      "operation": "transport",
+      "goal": "Carry the retained pen toward the specified holder."
+    },
+    {
+      "id": "align_opening",
+      "operation": "align",
+      "goal": "Align the actual pen axis and tip with the holder opening using current RGB."
+    },
+    {
+      "id": "insert",
+      "operation": "insert_segment",
+      "goal": "Lower the pen into the opening in bounded segments; check for rim contact and real entry."
+    },
+    {
+      "id": "release",
+      "operation": "release_retreat",
+      "goal": "Release only after support is established, then withdraw the empty gripper."
+    },
+    {
+      "id": "verify",
+      "operation": "stable_verify",
+      "goal": "Verify the pen remains inside the holder after withdrawal.",
+      "evidence": [
+        "pen_inside_specified_holder"
+      ]
+    }
+  ]
+}

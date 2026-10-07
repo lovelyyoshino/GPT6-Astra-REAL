@@ -1,0 +1,20 @@
+{
+  "run_id": "joint_limits_422bc63c62cc4ac4a04443ddebe6c029",
+  "started_unix_s": 1791342087.0650983,
+  "arms": {
+    "left": {
+      "model": "piper",
+      "firmware": "default",
+      "channel": "can0",
+      "usb_interface": "1-6.2:1.0"
+    },
+    "right": {
+      "model": "piper",
+      "firmware": "default",
+      "channel": "can1",
+      "usb_interface": "1-6.3:1.0"
+    }
+  },
+  "scope": "Manufacturer stored-limit queries only; no parameter changes or actuator commands",
+  "arguments": {}
+}

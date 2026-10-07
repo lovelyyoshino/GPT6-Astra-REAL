@@ -1,0 +1,282 @@
+{
+  "schema_version": "reference_adoption_v1",
+  "review_date": "2026-10-07",
+  "project": "GPT6-Astra-REAL",
+  "interpretation": "Patterns are locally adapted engineering choices, not reproductions of published performance.",
+  "hardware_accessed": false,
+  "sources": [
+    {
+      "id": "arx5",
+      "title": "GPT6-ARX5 task workflows and experiment records",
+      "url": "https://github.com/zijianzhang30/GPT6-ARX5",
+      "version": "2a722748fa2adedd096c8fd7f9461d2b2ba48af6",
+      "evidence": "research/arx5_experiment_patterns_round2.json",
+      "patterns": [
+        {
+          "idea": "Explicit task variants, roles, bounded stages and operation-specific evidence",
+          "status": "implemented_offline",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_pipeline.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_spec.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_session.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_task_pipeline.py",
+            "projects/piper_right_pick_demo/tests/test_fast_task_spec.py",
+            "projects/piper_right_pick_demo/tests/test_fast_task_session.py"
+          ]
+        },
+        {
+          "idea": "Task success, human assistance, return and recording coverage are separate outcomes",
+          "status": "implemented_offline",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_evaluation.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_recording_contract.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "projects/piper_right_pick_demo/tests/test_fast_recording_contract.py"
+          ]
+        }
+      ],
+      "not_transferred": [
+        "Historical joint/Cartesian targets, robot parameters, session ownership and physical qualification."
+      ],
+      "remaining": [
+        "Generic physical execution of the 18 task contracts, independently matched Piper trials."
+      ]
+    },
+    {
+      "id": "maniskill",
+      "title": "ManiSkill TurnFaucet-v1",
+      "url": "https://github.com/mani-skill/ManiSkill/blob/62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3/mani_skill/envs/tasks/tabletop/turn_faucet.py",
+      "version": "62ff3a5896b4d5b4cf0ac4c8d79afe600c9404a3",
+      "evidence": "research/task_eval_review.json",
+      "patterns": [
+        {
+          "idea": "Bounded episodes, articulated rather than threaded rotation, separate evaluator predicates",
+          "status": "implemented_offline",
+          "code": [
+            "tasks/turn_faucet.json",
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_evaluation.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_pipeline.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "projects/piper_right_pick_demo/tests/test_fast_project_entry.py"
+          ]
+        }
+      ],
+      "not_transferred": [
+        "Simulator object pose, axis, qpos and reward into RGB controller input."
+      ],
+      "remaining": [
+        "ManiSkill adapter with an audited RGB input whitelist; simulation and real faucet trials."
+      ]
+    },
+    {
+      "id": "zetta",
+      "title": "Zetta-Embodiment",
+      "url": "https://github.com/air-embodied-brain/Zetta-Embodiment",
+      "version": "21d7a3afd6ca5a34de9d0350f0158252c5c55467",
+      "evidence": "research/memory_review.json",
+      "patterns": [
+        {
+          "idea": "Separate diagnosis, bounded recovery proposals and execution authority",
+          "status": "implemented_offline",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_recovery.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_task_recovery.py"
+          ]
+        },
+        {
+          "idea": "Frozen baseline, isolated candidates, independent replay and paired validation before promotion",
+          "status": "documented_workflow",
+          "code": [
+            "OPTIMIZATION_GUIDE.md"
+          ],
+          "tests": []
+        }
+      ],
+      "not_transferred": [
+        "Automatically generated executable recovery programs or runtime control-code promotion."
+      ],
+      "remaining": [
+        "Persistent generic recovery transitions, independent hardware qualification, automated matched-trial candidate selection."
+      ]
+    },
+    {
+      "id": "self_harness",
+      "title": "Self-Harness: Harnesses That Improve Themselves",
+      "url": "https://arxiv.org/abs/2606.09498v3",
+      "version": "v3 (2026-08-20)",
+      "evidence": "research/memory_review.json",
+      "patterns": [
+        {
+          "idea": "Trace-linked small harness changes, preserved baseline and regression review",
+          "status": "implemented_offline",
+          "code": [
+            "metadata/history/pre_generalization_20261007/optimization_manifest.json",
+            "tools/verify_bundle.py"
+          ],
+          "tests": [
+            "tools/tests/test_verify_bundle.py"
+          ]
+        },
+        {
+          "idea": "Accept optimization only after measured improvement without regression",
+          "status": "documented_workflow",
+          "code": [
+            "OPTIMIZATION_GUIDE.md"
+          ],
+          "tests": []
+        }
+      ],
+      "not_transferred": [
+        "Software-agent benchmark improvements as physical manipulation evidence."
+      ],
+      "remaining": [
+        "Automated development/validation/test partition and promotion tooling; repeated physical performance measurement."
+      ]
+    },
+    {
+      "id": "physical_rsi",
+      "title": "Physical RSI 1.0",
+      "url": "https://mmlab.hk/research/PhysicalRSI",
+      "version": null,
+      "evidence": "research/memory_review.json",
+      "access_limit": "Official project text accessible through search; direct open failed, code/paper version not independently verified.",
+      "patterns": [
+        {
+          "idea": "Reusable skill composition and episode-specific state; approach, alignment and insertion separated",
+          "status": "implemented_offline",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_spec.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_session.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_task_spec.py",
+            "projects/piper_right_pick_demo/tests/test_fast_task_session.py"
+          ]
+        },
+        {
+          "idea": "Time-bounded video evidence linked to task and lifecycle events",
+          "status": "implemented_offline",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_recording_contract.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_recording_contract.py"
+          ]
+        }
+      ],
+      "not_transferred": [
+        "Pixel-to-world grounding, stored object poses or automatic historical pose replay."
+      ],
+      "remaining": [
+        "Automatic skill learning and recorder service independent of controller exit."
+      ]
+    },
+    {
+      "id": "roboicl",
+      "title": "RoboICL: Embodied In-Context Learning with GPT-6 Astra",
+      "url": "https://github.com/Mosi-AI/RoboICL",
+      "version": "a7d652a9f8d4363aa90c0bda00004686af0589d8",
+      "evidence": "research/composition_review.json",
+      "patterns": [
+        {
+          "idea": "Bounded, sourced historical context kept distinct from current observations",
+          "status": "implemented_pen_model_input",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_experience.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_codex.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_model.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_experience.py",
+            "projects/piper_right_pick_demo/tests/test_fast_codex.py",
+            "projects/piper_right_pick_demo/tests/test_fast_model.py"
+          ]
+        }
+      ],
+      "not_transferred": [
+        "Demonstration action replay, historical coordinates or old success as current evidence."
+      ],
+      "remaining": [
+        "An actual online in-context learning algorithm and transfer benchmarks; generic task model adapter."
+      ]
+    },
+    {
+      "id": "code_as_policies",
+      "title": "Code as Policies: Language Model Programs for Embodied Control",
+      "url": "https://code-as-policies.github.io/",
+      "version": "google-research/code_as_policies subtree 8c116f61a61b4339cbbae92be89ff83d9897d4b5",
+      "evidence": "research/composition_review.json",
+      "patterns": [
+        {
+          "idea": "Compose tasks from explicit APIs; local implementation uses strict declarative JSON and registered operations",
+          "status": "implemented_offline",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_spec.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_pipeline.py",
+            "tools/astra.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_task_spec.py",
+            "projects/piper_right_pick_demo/tests/test_fast_project_entry.py"
+          ]
+        }
+      ],
+      "not_transferred": [
+        "Unrestricted execution of model-generated Python."
+      ],
+      "remaining": [
+        "Verified execution adapters for newly composed physical skills."
+      ]
+    },
+    {
+      "id": "astra_embodied_eval",
+      "title": "Systematically Exploring the Capabilities of GPT-6 Astra as Embodied Policies",
+      "url": "https://arxiv.org/html/2609.38537v1",
+      "version": "v1 (2026-09-29)",
+      "evidence": "research/composition_review.json",
+      "patterns": [
+        {
+          "idea": "Separate diagnosis, proposed correction and measured effect; distinguish model report from independent outcome",
+          "status": "implemented_offline",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_evaluation.py",
+            "projects/piper_right_pick_demo/src/right_pick/fast_task_recovery.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_task_evaluation.py",
+            "projects/piper_right_pick_demo/tests/test_fast_task_recovery.py"
+          ]
+        },
+        {
+          "idea": "Report elapsed time, model-interface latency, commands and recovery rather than only final success",
+          "status": "existing_pen_runner",
+          "code": [
+            "projects/piper_right_pick_demo/src/right_pick/fast_recording.py"
+          ],
+          "tests": [
+            "projects/piper_right_pick_demo/tests/test_fast_loop.py"
+          ]
+        }
+      ],
+      "not_transferred": [
+        "Cross-platform successes or isolated case improvements as Piper success rate."
+      ],
+      "remaining": [
+        "Repeated matched experiments and a generic runner sharing recording and metrics."
+      ]
+    }
+  ],
+  "common_limits": [
+    "All new generic recovery/recording tools are offline contracts or metadata review, not physical dispatch.",
+    "Current RGB remains the model's visual evidence; no calibration or privileged simulator state added.",
+    "Declared labels and file hashes do not authenticate image truth, hardware stops or physical success."
+  ]
+}
