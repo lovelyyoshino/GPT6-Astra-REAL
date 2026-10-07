@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "validation_date": "2026-10-07",
-  "scope": "Local Piper optimization, 25 project-local atomic Codex skills, layered ARX5 contracts, measured progress accounting, Codex CLI wiring and offline collaboration review",
+  "scope": "Local Piper optimization, 25 project-local atomic Codex skills, layered ARX5 contracts, measured progress accounting, Codex CLI wiring, bounded unknown-observation prompt and offline collaboration review",
   "hardware_accessed": false,
   "real_model_called": false,
   "remote_or_reference_projects_modified": false,
@@ -11,11 +11,12 @@
       "command": "PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast*.py'",
       "exit_code": 0,
       "tests_passed": 269,
-      "elapsed_s": 6.888,
+      "elapsed_s": 3.720,
       "coverage": [
         "Single-right-arm replay/live-loop contracts with fake cameras, model and ROS",
         "One schema correction can recover; second recovery episode stops",
         "Unknown/retry/call/time budgets and uncertain-send latch; default second unknown observation exits",
+        "Codex decision packet allows evidence-based phase completion, one risk-assessable bounded visibility action or a specific pause after an unknown observation",
         "Execution mode is explicit and capture-expired deadline prevents a model call",
         "Fresh observation identity, sequence, timing and evidence provenance",
         "All 18 ARX5 recipes and bounded stage evidence",

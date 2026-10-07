@@ -223,7 +223,7 @@
       "local_path": "metadata/optimization_validation.json",
       "change_reason": "Record current local verification, project skill discovery by launch directory and unverified physical scope.",
       "base_source_sha256": null,
-      "optimized_sha256": "54dd4fc7502575bd0e75250bb7ecce1ca6ba7f87e2f583e706721e5e7fa0410b",
+      "optimized_sha256": "4ed3418b3f78e017061cab9da79d363e077c9ebef009c8fadb7be4e6c8a4a1f8",
       "pipeline_id": "hierarchical_piper_v1"
     },
     {
@@ -292,7 +292,7 @@
     {
       "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_codex.py",
       "base_source_sha256": "90f0d1baed10b77ec8f336a274cb34cdba3f34dd1d1f7aced5df1be116928e55",
-      "optimized_sha256": "89b4449d80da4c806f455b5774fc0d3544fe72940ba2f5a38cc30af7159d64f0",
+      "optimized_sha256": "8347682b362e5aa4dea0c3384558da161d1f0adf7a6e367372caac904f089127",
       "pipeline_id": "single_arm_closed_loop_v1",
       "change_reason": "Send only current pipeline stage and next stage to Codex."
     },
@@ -313,7 +313,7 @@
     {
       "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_model.py",
       "base_source_sha256": "c48e8a8b8d9970f76670ddd1c2c1c2509f1cc151158978d1bc787dcac529ae52",
-      "optimized_sha256": "a44eb8d5ddfb4be2890584aa5aa73a2a945687c64f9fa13e9a23f7c741691d85",
+      "optimized_sha256": "9e219965867dc0a659829632564eb03d2e1f6d6b3c515e8e2fd959417cbce6f9",
       "pipeline_id": "single_arm_closed_loop_v1",
       "change_reason": "Send only current pipeline stage and next stage to Responses."
     },
@@ -327,7 +327,7 @@
     {
       "local_path": "projects/piper_right_pick_demo/src/right_pick/fast_policy.py",
       "base_source_sha256": "104f809f2dc9cb1f1f29e74873070103896b436d5dd2c11ef05713561585f4eb",
-      "optimized_sha256": "dd395a845194a52c8bce5b125eb4c7c688c441e611b5fc1bc20d42bcbb95cd82",
+      "optimized_sha256": "6d861081e662917f34df801e5fe0e94e790ae453193446c9ca41aeb2202969c7",
       "pipeline_id": "single_arm_closed_loop_v1",
       "change_reason": "Retain the existing compact decision policy changes in the local optimization layer."
     },
@@ -355,7 +355,7 @@
     {
       "local_path": "projects/piper_right_pick_demo/tests/test_fast_codex.py",
       "base_source_sha256": "5fbbede468b3d6e68f0af44ce64af91a450d7a2f79aa8795dc5a7d1485205c4a",
-      "optimized_sha256": "c107520441ff3eff6f65ef2ee41932d04645f64e6dc7334bfd4eb1b225a4f259",
+      "optimized_sha256": "f4c5f81cbf579f3b09296796fbbec9a6c94240e344c5d37910a67f1bb51c5c2a",
       "pipeline_id": "single_arm_closed_loop_v1",
       "change_reason": "Retain local regression coverage for compact Codex packets."
     },

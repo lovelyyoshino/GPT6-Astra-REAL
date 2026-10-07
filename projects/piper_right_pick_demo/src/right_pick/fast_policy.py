@@ -24,8 +24,9 @@ MAX_CHUNK_WAYPOINTS = 3  # Schema capacity only; does not authorize physical mov
 ATOMIC_DECISION_RULE = (
     "Atomic loop: observe once, decide one current-phase action, let the host admit it, "
     "dispatch at most once, read its receipt, then use fresh RGB. Observation is not progress: "
-    "after one observe(unknown), propose one bounded, phase-allowed visibility-improving "
-    "action only if current RGB and robot state support assessing its risk; otherwise pause "
+    "after one observe(unknown), advance only with phase_complete evidence; otherwise propose "
+    "one bounded, phase-allowed visibility-improving action only if current RGB and robot "
+    "state support assessing its risk; otherwise pause "
     "with the specific missing fact. A fixed-camera observation cannot resolve unchanged "
     "occlusion; do not repeat it without a reason to expect new evidence."
 )
