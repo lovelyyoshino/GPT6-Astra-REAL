@@ -1,0 +1,24 @@
+{
+  "validation": "full_existing_and_new_unittest_suite",
+  "command": "PYTHONPATH=src python3 -m unittest discover -s tests -v",
+  "interpreter": "/home/agilex/miniconda3/envs/aloha/bin/python3",
+  "python_version": "3.8.19",
+  "scipy_version": "1.10.1",
+  "tests_run": 424,
+  "elapsed_s": 27.042,
+  "exit_code": 0,
+  "passed": true,
+  "scope": "software_tests_only_no_real_robot_camera_or_model_calls",
+  "physical_task_success": null,
+  "log": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/full_tests.log",
+  "saved_at_unix_s": 1791197431.774988,
+  "live_entrypoint": "--config and --runs precede astra_fast_closed_loop; --execution live --model codex follow it",
+  "recommended_command_after_site_qualification": "PYTHONPATH=\"/home/agilex/piper_right_pick_demo/src:$PYTHONPATH\" /usr/bin/python3 -m right_pick.cli --config /home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/commission_interior_site.json --runs /home/agilex/piper_right_pick_demo/runs/astra_fast_physical astra_fast_closed_loop --execution live --model codex --fast-config /home/agilex/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+  "command_environment": [
+    "source /opt/ros/noetic/setup.bash",
+    "source /home/agilex/piper_gpt/devel/setup.bash"
+  ],
+  "required_before_live": "Current site physical_limits, raw qualification_evidence, matching driver session and free camera devices must pass the independent preflight; command has not been executed by this validation task",
+  "no_mock_success_fallback": true,
+  "success_semantics": "live returns 0 only when physical report task_success is true and ordered lift/transport/release/stable evidence passes; replay_completed is used only by --execution replay"
+}

@@ -1,0 +1,16 @@
+{
+  "checked_at_utc": "2026-10-06T13:21:59.859627+00:00",
+  "checks": {
+    "python": 566,
+    "json": 49,
+    "xml_or_launch": 6,
+    "shell": 30
+  },
+  "errors": [],
+  "remote_source_sha256_verified_files": 743,
+  "video_files": 0,
+  "hardware_accessed": false,
+  "models_called": false,
+  "robot_unit_tests_run": false,
+  "credential_review": "No authentication directories or credential files copied. The token-pattern match in tests/test_recording.py is a redaction test fixture; task authorization fields are historical prose."
+}

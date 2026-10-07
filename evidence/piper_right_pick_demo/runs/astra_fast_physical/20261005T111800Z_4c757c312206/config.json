@@ -1,0 +1,134 @@
+{
+  "site": {
+    "schema_version": 1,
+    "backend": "realsense",
+    "camera_python": "/home/agilex/miniconda3/envs/pi0_infer/bin/python3.10",
+    "cameras": {
+      "front": {
+        "serial": "243322070709",
+        "width": 640,
+        "height": 480,
+        "fps": 15
+      },
+      "left_hand": {
+        "serial": "336222071115",
+        "width": 640,
+        "height": 480,
+        "fps": 15
+      },
+      "right_hand": {
+        "serial": "244222070415",
+        "width": 640,
+        "height": 480,
+        "fps": 15
+      }
+    },
+    "robot": {
+      "arm": "right",
+      "backend": "ros1",
+      "can_interface": "can1"
+    },
+    "ros": {
+      "telemetry_topic": "/piper/right/eval_telemetry",
+      "pose_topic": "/piper/right/pos_cmd",
+      "gripper_service": "/piper/right/gripper_srv",
+      "speed_param": "/piper/right/driver/speed_percent",
+      "driver_node": "/piper/right/driver",
+      "adapter_path": "/home/agilex/piperx_cloth_demo/robot_tools/ros_resume_entry.py",
+      "adapter_sha256": "3cd2fcc87b5444a4e21419f33a4f38169b7ef2b7645fe329abba1aed70a992c8",
+      "vendor_path": "/home/agilex/piper_gpt/src/piper_ros-noetic/src/piper/scripts/piper_ctrl_single_node.py",
+      "vendor_sha256": "ecff6823dc6bbf55fe51708024ef88d993fead97572ad7c06e951020e83bc200",
+      "can_interface": "can1",
+      "usb_interface": "1-6.3:1.0",
+      "command_log": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/resume_interior_tests.log"
+    },
+    "observation": {
+      "max_age_s": 0.8,
+      "max_skew_s": 0.15
+    },
+    "physical_limits": {
+      "workspace_min_m": [
+        -0.6,
+        -0.6,
+        0.05
+      ],
+      "workspace_max_m": [
+        0.6,
+        0.6,
+        0.65
+      ],
+      "joint_limits_rad": [
+        [
+          -2.6179938779914944,
+          2.6179938779914944
+        ],
+        [
+          0.0,
+          3.1415926535897936
+        ],
+        [
+          -2.9670597283903604,
+          0.0
+        ],
+        [
+          -1.7453292519943298,
+          1.7453292519943298
+        ],
+        [
+          -1.2217304763960308,
+          1.2217304763960308
+        ],
+        [
+          -2.0943951023931957,
+          2.0943951023931957
+        ]
+      ],
+      "max_speed_percent": 1,
+      "max_translation_step_m": 0.03,
+      "max_rotation_step_rad": 0.05,
+      "max_state_age_s": 0.1,
+      "gripper_min_m": 0.0,
+      "gripper_max_m": 0.055,
+      "max_effort_parameter_nm": 0.2,
+      "max_waypoints": 1
+    },
+    "physical_qualification": {
+      "evidence_file": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/qualification_evidence.json",
+      "note": "Requires independently evaluated raw static/J/P client-exit trials; no general cancellation or power-loss guarantee."
+    },
+    "binding_evidence": "/home/agilex/piper_right_pick_demo/runs/fast_live_readonly_20261005_170944/readiness_assessment.json",
+    "physical_scope": {
+      "workspace": "Conservative command envelope within manufacturer encoding; not calibrated or certified collision-free. Astra must visually assess tool/path clearance each current RGB step.",
+      "speed": "1 percent only; no evidence for 50 percent in this repaired driver session.",
+      "timeout": "Driver retained and next command prohibited on failure; accepted finite target may finish. No quickstop, disable, or immediate cancellation guarantee.",
+      "supervision": "User explicitly onsite supervising. Scene and cameras must remain unchanged during each model decision.",
+      "preparation": "Small empty-arm departure from exact joint-zero boundary; factory FK used only for qualification target, never given to model as object geometry."
+    }
+  },
+  "fast": {
+    "mode": "astra_fast_closed_loop",
+    "model": {
+      "protocol": "codex_cli",
+      "model_id": "gpt-6-astra",
+      "codex_binary": "/home/agilex/.nvm/versions/node/v22.23.3/bin/codex",
+      "max_calls": 120,
+      "timeout_s": 120,
+      "max_observation_age_s": 0.8,
+      "max_sensor_skew_s": 0.15,
+      "allow_historical": false
+    },
+    "controller": {
+      "max_steps": 120,
+      "max_retries": 3,
+      "max_phase_steps": 36,
+      "max_recoveries": 2,
+      "max_elapsed_s": 1800
+    },
+    "notes": [
+      "Uses the existing official Codex login; no credential file is read or copied by this project.",
+      "A new ephemeral tool-disabled Codex session is created per decision; phase controls reasoning effort.",
+      "Codex fixed system prompt and process startup overhead remain and are included in measured decision time. CLI does not expose the Responses max_output_tokens bound; strict short schema, timeout and response-byte limits apply.",
+      "Live-check acquires real RGB and ROS feedback and obtains a real model proposal; it never dispatches an action."
+    ]
+  }
+}

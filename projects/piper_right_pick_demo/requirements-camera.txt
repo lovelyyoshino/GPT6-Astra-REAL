@@ -1,0 +1,5 @@
+# Observed camera environment: Python 3.10.18, Linux x86_64.
+# The camera-only child does not need piper_sdk or ROS.
+numpy==1.26.4
+opencv-python==4.11.0.86
+pyrealsense2==2.56.5.9235

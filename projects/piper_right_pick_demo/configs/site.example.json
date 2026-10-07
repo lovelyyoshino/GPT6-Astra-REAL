@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "backend": "ros1",
+  "task": {
+    "name": "right_red_cube_pick_place",
+    "object_size_m": 0.03,
+    "color": "red",
+    "object_size_source": "user approximate 2026-10-03",
+    "placement_region_right_base_m": null,
+    "min_lift_m": null,
+    "placement_stable_s": null,
+    "max_physical_attempts": 1,
+    "max_decisions": 8,
+    "episode_seconds": 180,
+    "action_seconds": 8,
+    "reset_policy": "manual_if_required"
+  },
+  "robot": {
+    "backend": "ros1",
+    "arm": "right",
+    "can_interface": "can2",
+    "namespace_verified": false,
+    "firmware_version": null,
+    "topics": {
+      "joint_states": "/piper/right/joint_states_single",
+      "end_pose": "/piper/right/end_pose",
+      "status": "/piper/right/arm_status"
+    },
+    "max_age_s": 0.8,
+    "max_skew_s": 0.15,
+    "tcp_verified": false,
+    "T_j6_tcp": null,
+    "gripper_verified": false,
+    "gripper_mapping": null,
+    "gripper_min_width_m": null,
+    "gripper_max_width_m": null,
+    "workspace_verified": false,
+    "workspace_min_m": null,
+    "workspace_max_m": null,
+    "stop_policy_verified": false,
+    "urdf": null,
+    "urdf_firmware_match_verified": false
+  },
+  "cameras": {
+    "front": {
+      "serial": "REQUIRED_front",
+      "width": 640,
+      "height": 480,
+      "fps": 15,
+      "rgb_topic": "/cameras/front/color/image_raw",
+      "info_topic": "/cameras/front/color/camera_info",
+      "aligned_depth_topic": "/cameras/front/aligned_depth_to_color/image_raw",
+      "depth_enabled": true,
+      "binding_verified_live": false
+    },
+    "left_hand": {
+      "serial": "REQUIRED_left_hand",
+      "width": 640,
+      "height": 480,
+      "fps": 15,
+      "rgb_topic": "/cameras/left_hand/color/image_raw",
+      "info_topic": "/cameras/left_hand/color/camera_info",
+      "aligned_depth_topic": "/cameras/left_hand/aligned_depth_to_color/image_raw",
+      "depth_enabled": true,
+      "binding_verified_live": false
+    },
+    "right_hand": {
+      "serial": "REQUIRED_right_hand",
+      "width": 640,
+      "height": 480,
+      "fps": 15,
+      "rgb_topic": "/cameras/right_hand/color/image_raw",
+      "info_topic": "/cameras/right_hand/color/camera_info",
+      "aligned_depth_topic": "/cameras/right_hand/aligned_depth_to_color/image_raw",
+      "depth_enabled": true,
+      "binding_verified_live": false
+    }
+  },
+  "calibration": {
+    "camera_geometry_changed": true,
+    "invalidated_reason": "User changed front camera pitch to view tabletop; prior candidate matrix must not be used.",
+    "verified": false,
+    "version": null,
+    "T_right_base_front": null,
+    "old_candidate_imported": false,
+    "tcp_transform_verified": false
+  },
+  "observation": {
+    "max_age_s": 0.8,
+    "max_skew_s": 0.15,
+    "depth_optional": true
+  },
+  "safety": {
+    "allow_motion": false,
+    "allowed_arms": [
+      "right"
+    ],
+    "max_translation_step_m": null,
+    "max_orientation_step_rad": null,
+    "max_speed_m_s": null,
+    "physical_dispatch_commissioned": false
+  },
+  "model": {
+    "protocol": null,
+    "model_id": null,
+    "endpoint": null,
+    "api_key_env": "OPENAI_API_KEY",
+    "max_calls": 8,
+    "timeout_s": 30,
+    "max_output_tokens": 600,
+    "text_history_turns": 4,
+    "image_history_turns": 0
+  },
+  "provenance": {
+    "implementation": "Independent implementation following supplied bootstrap; installed vendor SDK/ROS interfaces inspected; no old internal source copied.",
+    "site_bindings": "Historical confirmed mapping; current ROS graph and camera device identity not yet observed."
+  }
+}

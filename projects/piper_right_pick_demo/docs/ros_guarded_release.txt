@@ -1,0 +1,39 @@
+Seq82 contact release only
+
+Purpose: release the unsuccessful table-supported grasp, preserving the seq82
+jaw feedback fault and the later seven J5 tracking violations. The old failed
+action remains failed. This does not requalify joint motion or diagnose slip.
+
+New entry: scripts/ros_guarded_release_entry.py
+New client: scripts/ros_guarded_release_client.py
+Startup args are --entry-config, --entry-output-dir, and
+--table-supported-contact-confirmed, followed by the pinned vendor script
+and normal ROS remaps. The flag refers to root's saved RGB review; it is not
+an assertion of an empty gripper or a new onsite user statement. The launch
+must retain speed_percent=1 and the unchanged config SHA.
+
+reviewed_release.json explicitly binds seq82, complete initial4/4 receipt,
+original jaw fault, later J5 fault, independent raw/FK review and saved RGB
+hashes. reviewed_handoff.json must contain identical bytes, as a compatibility
+alias for the reused startup code. All seven old parent session files remain
+locked and byte-identical. One fixed child name prevents restart/output bypass.
+
+Startup performs no actuator TX, then verifies current fresh healthy feedback
+and the unchanged 3s stability and .003rad original-goal arrival limits.
+Only one gripper request is allowed:55mm, effort.2, code1, setzero0. The
+original jaw worker retains all health, .003rad arm drift, workspace,
+100ms freshness and 3s stability checks. A target error greater than the
+original1.5mm report tolerance fails rather than claiming the jaw opened.
+Partial send, uncertainty or failure has no retry, stop, reset or disable.
+
+Client operations: status; or gripper --width-mm55 --execute. Standard
+--config, --runtime, --output arguments remain. There is no joint publish,
+home, hold, resume, or motion-promotion route. A successful release returns
+phase=completed with release_verified=false; root must inspect fresh RGB.
+Afterward the process remains running for read-only state. Software adoption
+is revoked and a software stop latch blocks further commands. No instruction
+changes controller torque, power or the last accepted arm target. Joint motion
+remains forbidden even if the gripper target and stability checks pass.
+
+All code and tests were developed offline. No source, lock or result from the
+previous frozen chain was modified; no node or device was accessed by this work.

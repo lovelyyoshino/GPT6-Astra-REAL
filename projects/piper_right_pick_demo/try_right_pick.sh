@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# One finite supervised red-cube attempt, direct SDK, front/right cameras only.
+set -euo pipefail
+demo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+if [[ $# -ne 0 ]]; then
+  echo 'Usage: bash ~/piper_right_pick_demo/try_right_pick.sh' >&2
+  exit 2
+fi
+robot_python=$(python3 - "$demo_root/configs/site.local.json" <<'PY'
+import json,sys
+value=json.load(open(sys.argv[1]))['host_capture']['robot_python']
+if not isinstance(value,str) or not value or '\n' in value:
+    raise ValueError('Invalid robot Python configuration')
+print(value)
+PY
+)
+mkdir -p "$demo_root/runs"
+exec 9>"$demo_root/runs/direct_sdk_step.lock"
+if ! flock -n 9; then
+  echo '已有右臂 SDK 程序在运行，本次退出。' >&2
+  exit 2
+fi
+attempt_dir="$demo_root/runs/pick_attempt_$(date -u +%Y%m%dT%H%M%S)_$$"
+mkdir "$attempt_dir"
+exec > >(tee -a "$attempt_dir/terminal.log") 2>&1
+echo "本次抓放尝试记录：$attempt_dir"
+echo '沿用当前已打通的 can2；不重配通信、不重上电、不操作左臂。'
+exec "$robot_python" "$demo_root/scripts/run_right_pick.py" \
+  --config "$demo_root/configs/site.local.json" --output-dir "$attempt_dir"

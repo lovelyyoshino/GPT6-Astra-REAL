@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "validation_date": "2026-10-07",
+  "scope": "Local Piper optimization, 25 project-local atomic Codex skills, layered ARX5 contracts, measured progress accounting, Codex CLI wiring and offline collaboration review",
+  "hardware_accessed": false,
+  "real_model_called": false,
+  "remote_or_reference_projects_modified": false,
+  "checks": {
+    "fast_regressions": {
+      "cwd": "projects/piper_right_pick_demo",
+      "command": "PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast*.py'",
+      "exit_code": 0,
+      "tests_passed": 269,
+      "elapsed_s": 6.888,
+      "coverage": [
+        "Single-right-arm replay/live-loop contracts with fake cameras, model and ROS",
+        "One schema correction can recover; second recovery episode stops",
+        "Unknown/retry/call/time budgets and uncertain-send latch; default second unknown observation exits",
+        "Execution mode is explicit and capture-expired deadline prevents a model call",
+        "Fresh observation identity, sequence, timing and evidence provenance",
+        "All 18 ARX5 recipes and bounded stage evidence",
+        "Current L3 stage expands only its bound L2 operation and L1 primitive names on demand",
+        "Empty or repeated progress does not reset the no-progress budget; continuous host measurements replay across commands",
+        "Independent held-side receipt, one moving arm, task peer versus observer",
+        "Observer branch returns to the same worker stage without resetting budgets",
+        "Unsupported modes/tasks and backend protocol mismatch reject before resources open",
+        "Persistent pipeline state across real CLI processes, 18 recipe journals, event deduplication and concurrent revision conflicts",
+        "Frozen task roles/budgets, wall-clock expiry after restart and clock-regression latch"
+      ]
+    },
+    "syntax": {
+      "command": "python3 -m compileall -q src",
+      "cwd": "projects/piper_right_pick_demo",
+      "exit_code": 0
+    },
+    "cli_contract_smoke": {
+      "arx5_reference_tasks_matched": 18,
+      "task_role_mode_combinations": 92,
+      "atomic_queries": 25,
+      "composition_queries": 20,
+      "codex_example_configs_valid": 3,
+      "exit_code": 0
+    },
+    "skills": {
+      "root": ".agents/skills",
+      "frontmatter_valid": 29,
+      "loadable": 29,
+      "blockers": 0,
+      "risks": 0,
+      "advisories": 20,
+      "advisory_detail": "Twenty tiny_skill size notices for intentionally short single-contract entrypoints",
+      "duplicate_names": 0,
+      "atomic_skill_contract_mapping": "25/25",
+      "atomic_index_links_checked": 26,
+      "missing_links": 0,
+      "codex_project_discovery": {
+        "command": "codex debug prompt-input",
+        "bundle_root_piper_skills_visible": 29,
+        "parent_directory_piper_skills_visible": 0,
+        "meaning": "Launch a new Codex session with -C set to the bundle root; discovery does not descend into child directories."
+      },
+      "tools": ["skill-creator/scripts/quick_validate.py", "skill-health-scan.py", "atomic name mapping", "atomic index link check"]
+    },
+    "persistent_pipeline": {
+      "module": "right_pick.fast_task_session",
+      "focused_tests_passed": 14,
+      "scope": "Offline task ledger only; no robot send, physical receipt certification or live runner resume",
+      "commands": ["init", "current", "current --operation", "contract", "record", "observer", "end"],
+      "packet_size_sample": {
+        "task": "pen",
+        "current_packet_utf8_bytes": 588,
+        "full_contract_packet_utf8_bytes": 2795,
+        "provider_tokens_measured": false
+      }
+    },
+    "codex_cli": {
+      "command": "codex --version",
+      "version": "codex-cli 0.160.0",
+      "exit_code": 0,
+      "login_or_network_model_call_tested": false
+    }
+  },
+  "bundle_verification_command": "python3 tools/verify_bundle.py",
+  "implementation_limits": [
+    "Only the existing single-right-arm pen runner has physical execution source; site qualification remains withdrawn.",
+    "Generic L2/L3, dual-arm and worker-observer pipelines are offline contracts, not commissioned physical executors.",
+    "Pure receipt validators cannot certify physical facts supplied by their caller.",
+    "The pen runner does not implement automatic return or the generic two-sample stability operation.",
+    "Model visual completion is recorded separately from independently verified task success.",
+    "No measured real-world token reduction, latency reduction or task-success improvement is claimed."
+  ]
+}

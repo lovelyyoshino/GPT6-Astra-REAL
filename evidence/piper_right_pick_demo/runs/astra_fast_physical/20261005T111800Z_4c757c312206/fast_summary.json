@@ -1,0 +1,78 @@
+{
+  "mode": "astra_fast_closed_loop",
+  "nonphysical": false,
+  "termination_reason": "execution_failed_latched",
+  "final_phase": "APPROACH_PEN",
+  "total_elapsed_s": 15.944701530000202,
+  "model_total_s": 13.138486150000062,
+  "model_time_definition": "Decision backend wall time including transport/CLI startup, not isolated provider compute",
+  "decision_backends": [
+    "codex_cli"
+  ],
+  "robot_execute_total_s": 1.7558452249995753,
+  "robot_dispatch_total_s": 1.7558452249995753,
+  "robot_wait_total_s": 0.0,
+  "camera_total_s": 0.11087641799986159,
+  "other_total_s": 0.9394937370007028,
+  "model_call_count": 1,
+  "scripted_decision_count": 0,
+  "mean_model_latency_s": 13.138486150000062,
+  "median_model_latency_s": 13.138486150000062,
+  "max_model_latency_s": 13.138486150000062,
+  "action_count": 0,
+  "action_count_definition": "Motion/chunk/gripper dispatches only; excludes observe/advance/pause. Nonphysical actions are not robot commands.",
+  "step_count": 1,
+  "phase_durations": {
+    "APPROACH_PEN": 15.034549459999653
+  },
+  "recovery_count": 0,
+  "task_success": null,
+  "model_reported_task_success": false,
+  "replay_completed": false,
+  "live_check": false,
+  "live_check_passed": false,
+  "evaluation_scope": "physical_closed_loop",
+  "control_commands_sent": null,
+  "control_commands_sent_definition": "Confirmed ROS transactions, not CAN frames; null when a dispatch outcome is uncertain",
+  "dispatch_attempt_count": 1,
+  "confirmed_command_receipt_count": 0,
+  "target_uncertain": true,
+  "usage": {
+    "calls": 1,
+    "token_subset_semantics": "cached_input_tokens and reasoning_output_tokens are subsets, not additive totals",
+    "input_tokens": {
+      "total": 9136,
+      "known_subtotal": 9136,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "output_tokens": {
+      "total": 204,
+      "known_subtotal": 204,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "cached_input_tokens": {
+      "total": 0,
+      "known_subtotal": 0,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "reasoning_output_tokens": {
+      "total": 94,
+      "known_subtotal": 94,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "interface_wait_time_s": 13.138486150000062
+  },
+  "limitations": [
+    "Success requires ordered recorded visual/physical evidence; arrival is not grasp verification.",
+    "Unknown provider token counts and absent physical timings are not imputed."
+  ],
+  "task_evidence_order_valid": false
+}

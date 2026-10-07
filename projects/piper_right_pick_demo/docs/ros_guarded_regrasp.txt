@@ -1,0 +1,79 @@
+Reviewed contact-separation scope (offline implementation; deployment is separate)
+
+Entry: scripts/ros_guarded_regrasp_entry.py
+Client: scripts/ros_guarded_regrasp_client.py
+Use the same ROS namespace /piper/right and node interruptible_driver, the
+unchanged entry_config.json, --entry-output-dir RUNTIME and
+--table-supported-contact-confirmed. auto_enable remains false; startup adopts
+fresh, already enabled hardware after the original three-second zero-TX gate.
+The admission review files reviewed_regrasp.json and reviewed_handoff.json must
+be byte-identical. They bind the real failed release, its one complete jaw
+transaction, saved raw evidence, table-supported RGB and all eight old parents.
+No parent failure/session is altered. The fixed child is guarded_regrasp_BOOT.json;
+an existing child prevents restart or alternate-output retry.
+
+Initial contact is possible. This is not an empty-gripper/no-contact claim.
+No action is automatic. Read session.scope_anchor_raw, then request exactly
+anchor+[0,-350,+350,0,0,0] using operation joint and --target-raw (millidegrees).
+Each completed retreat revokes adoption until an explicit result-bound review.
+Both J2 and J3 must actually progress toward their targets by at least .15 degree.
+Each reviewed continuation gets a new fresh three-second anchor. Up to eight
+successful retreat segments are allowed, with a separate raw/RGB review after
+every segment. A failed/partial segment is never eligible for continuation.
+
+In RUNTIME/reviews/action_NNNNNN_review.json write this explicit review schema:
+{
+  "reviewed": true, "stage": "retreat_review", "sequence": N,
+  "generation": CURRENT_GENERATION, "adoption_token": "CURRENT_TOKEN",
+  "completed_result_sha256": "SHA_OF_ACTION_RESULT",
+  "prior_failures_preserved": true,
+  "additional_j5_violation_not_reclassified": true,
+  "review_authorization": "Concrete human/model evidence review",
+  "next_stage": "retreat_ready",
+  "object_contact_absent": false,
+  "table_supported": true, "no_visible_hook_or_tension": true,
+  "raw_review": {"path": "/absolute/review.json", "sha256": "..."},
+  "images": [{"path": "/absolute/new_front.png", "sha256": "..."}]
+}
+For retreat -> wrist_ready, set next_stage accordingly and require
+object_contact_absent=true based on new images. For wrist_review -> task,
+next_stage must be task and object_contact_absent=true. Root chooses explicitly;
+the program does not infer separation from a normal controller receipt.
+
+The independent raw review JSON must contain sequence, adoption_token,
+completed_result_sha256, full_raw_reviewed=true, transport_clean=true,
+nominal_violations=[], joint_tracking_violations=[], jaw_guard_violations=[],
+health_violations=[], first_kernel_unix_s <= first receipt.started_unix_s,
+last_kernel_unix_s >= min(result.after.stamps), and a nonempty source_windows:
+[{"path":"/absolute/raw.jsonl", "first_byte":A, "last_byte_exclusive":B,
+  "sha256":"SHA_OF_ALL_EXACT_BYTES_[A,B)"}]. Each window is limited to 50 MB.
+These are hashes of all bytes in each window, not filtered-frame-only hashes.
+The independent reviewer must inspect every relevant raw frame and gaps through
+the action and final stable window; these fields are an explicit review record.
+
+Then call client --operation review --config CONFIG --runtime RUNTIME
+--output UNIQUE_OUTPUT --reviewed-result-sha256 SHA --execute. It calls one
+token/sequence/generation/digest-bound Trigger service, waits at most 15 seconds,
+and never retries. The driver validates complete receipt and source hashes,
+performs another fresh three-second unchanged-state check, and grants only the
+explicit next stage. Review sends zero actuator frames. Old endpoints cannot
+release a newer generation. New drift/fault during review locks the session.
+
+The wrist stage permits exactly anchor+[0,0,0,0,-150,0]. It must actually move
+J5 at least .10 degree in the commanded direction. The 150 mdeg request leaves
+room below the unchanged 200 mdeg maximum measured command increment; excess
+baseline noise still conservatively refuses, without automatically rebinding
+or retrying. The wrist probe gets only one opportunity and its own full review.
+After that review, ordinary single J/jaw operations are available. Each J5
+command increment remains <=200 mdeg. P/L, automatic home and batched motion
+remain absent. Explicit jaw success means stable feedback, not verified grasp.
+
+All inherited limits remain: 1 percent, manufacturer nominal joint limits,
+100 ms complete raw feedback, 30 mm/.05 rad full independent-joint-box/FK and
+workspace bounds, joint-motion J5 tracking +/-0.30 degree and other axes .003
+rad. During jaw motion every arm axis remains .003 rad. Baseline/arrival/pre-send
+slip and the .5 mm jaw-change guard are unchanged. RX latches still block each
+remaining TX frame. An accepted firmware goal may continue after software
+failure; no quickstop/reset/disable/retry is introduced. Prior excursions and
+their unknown physical cause remain recorded. This is no general stop,
+collision-clearance, grasp or task-success qualification.

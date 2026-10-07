@@ -1,0 +1,26 @@
+{
+  "mode": "astra_fast_closed_loop",
+  "model": {
+    "protocol": "codex_cli",
+    "model_id": "gpt-6-astra",
+    "codex_binary": "/home/agilex/.nvm/versions/node/v22.23.3/bin/codex",
+    "max_calls": 120,
+    "timeout_s": 120,
+    "max_observation_age_s": 0.8,
+    "max_sensor_skew_s": 0.15,
+    "allow_historical": false
+  },
+  "controller": {
+    "max_steps": 120,
+    "max_retries": 3,
+    "max_phase_steps": 36,
+    "max_recoveries": 2,
+    "max_elapsed_s": 1800
+  },
+  "notes": [
+    "Uses the existing official Codex login; no credential file is read or copied by this project.",
+    "A new ephemeral tool-disabled Codex session is created per decision; phase controls reasoning effort.",
+    "Codex fixed system prompt and process startup overhead remain and are included in measured decision time. CLI does not expose the Responses max_output_tokens bound; strict short schema, timeout and response-byte limits apply.",
+    "Live-check acquires real RGB and ROS feedback and obtains a real model proposal; it never dispatches an action."
+  ]
+}

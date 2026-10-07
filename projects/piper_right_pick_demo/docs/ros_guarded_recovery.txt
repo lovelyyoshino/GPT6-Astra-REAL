@@ -1,0 +1,76 @@
+Reviewed seq52 recovery, limited to the 2026-10-06 failed home segment
+
+New files: scripts/ros_guarded_recovery_entry.py and ros_guarded_recovery_client.py.
+Frozen ros_guarded_task_entry.py (3ba50485...), its dependencies, original failure
+session/result/logs, and all original limits remain unchanged. No driver is
+started or stopped by the client. No import-time hardware connection is made.
+
+This is an explicitly reviewed completion handoff, not a cleared failure or a
+retry of home051. Parent sequence52 sent its four original J frames, then failed
+the unchanged joint tracking box because J5 feedback was6.955deg against a
+7.144deg target (lower bound6.972113deg). The independent15s trace establishes
+later healthy stationary arrival at the original finite goal, not compliance of
+the failed transient. The failed action stays failed. The new entry locks the
+three old session files, checks their hashes and never saves them.
+
+Configuration must keep the same bytes/SHA4771a64546cd6ba513b125b8717fae10169b06870a22b4662a14207bbb219863.
+reviewed_recovery.json beside it must contain:
+  parent_session_sha256: 8e08acf11ab585bd4b5cd2cda5599df8376e2e36155dd109e30acc7d57cf0c2f
+  parent_action_result_sha256: 00c9a2fb943fb5da9d223d142a7cb29881650d35cec0363876ae9efd3df39efb
+  independent_can_sha256: b762d4393642d02df94de3db89f89c9c81b3215b92afafe5197f1e21ae672d76
+  parent_sequence: 52
+  parent_adoption_token: 62e5812f4ca24dcc8098c14d13be1cc8
+  user_authorization: 请将机械臂归零后开始执行任务可以么，直到任务完成前都不要结束对话
+
+CLI remains --entry-config ABS/site.json --entry-output-dir NEW/runtime
+--empty-gripper-confirmed PINNED_VENDOR_DRIVER.py [same ROS remaps]. Keep node
+/piper/right/interruptible_driver, speed_percent1, auto_enable=false and all
+other frozen private settings. Existing driver must first exit normally under
+the supervising operator's control. The new entry adopts with zero actuator
+frames/SDK init queries and the frozen fresh three-second stable gate. Current
+pose and jaw must still match independent endpoint evidence and the original
+goal within unchanged tolerances. Old software failure is not reset in place.
+
+The fixed durable child is runs/ros_interruptible_joint_sessions/
+guarded_recovery_8e08acf11ab585bd4b5cd2cda5599df8376e2e36155dd109e30acc7d57cf0c2f.json.
+Existing child rejects restart or changing output directories. The only first
+opportunity is a J2/J3 common-ratio step toward existing zero: each planned
+change0.2..0.8deg; J1/J4/J5/J6 targets exactly67/0/7144/-3539 millidegrees from
+seq52, not noisy re-measured replacement targets. All original1percent,
+30mm/0.05rad, complete independent joint box, +/-0.003rad,100ms, nominal bounds,
+workspace, jaw and FK guards are still enforced, including revalidation against
+the fresh baseline before initial send. An invalid/failed/partial first attempt
+consumes the opportunity and cannot be retried or resumed.
+
+First completed target also needs actual J2 and J3 progress at least0.2deg each.
+Then software adoption is revoked and state.recovery_stage=awaiting_review.
+The supervisor reads action_N_result.json and checks actual path/arrival evidence.
+Only an explicit Trigger to state.recovery_review_service (bound to seq, generation,
+adoption token and full result SHA) can review it. The service reacquires the
+action lock, verifies complete initial4/4 receipt, unchanged result, no failure,
+pending or stop latch, and another fresh stable three-second window matching
+the result. It records the reviewed generation and restores task admission with
+ZERO physical frames. Ordinary hold resume cannot substitute for this first
+review; a held/cancelled pilot is not a completed recovery pilot.
+
+After approval, the same frozen GuardedTask supplies normal J, sequence-bound
+late-fresh full-joint hold, explicit post-hold resume, and independent idle jaw.
+P/L, quickstop/reset/disable, automatic retry/replay and physical recovery remain
+forbidden. Another failure locks the new session; this wrapper provides no
+second failure recovery. The task supervisor continues choosing each segment.
+
+Client uses the previous frozen CLI and run_goal/cancel loop. Options stay
+--config --runtime --output --operation home|joint|gripper|resume|status.
+home defaults to max_joint_step_deg0.8 and ONLY moves J2/J3 proportionally while
+keeping the other four seq52 targets fixed. It is not an automatic all-six-zero
+trajectory; after shoulders, select reviewed explicit joint wrist steps. Each
+invocation is one publication (or proposal without --execute). First pilot
+approval uses --operation resume --reviewed-result-sha256 SHA --execute; later
+hold resume retains its original semantics. Gripper requests reuse the35s
+single service wait and preserve unknown-outcome/no-retry behavior.
+
+Separating shoulder/elbow setpoint changes from wrist setpoint changes is a
+bounded strategy change, not proof that coupling/overshoot is eliminated. No
+threshold was widened. A passed pilot is local evidence, not collision-free,
+loaded, high-speed or fail-safe stopping certification. Offline tests establish
+software behavior, not physical dynamics.

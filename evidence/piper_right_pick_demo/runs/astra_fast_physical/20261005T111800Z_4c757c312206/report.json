@@ -1,0 +1,63 @@
+{
+  "mode": "physical",
+  "nonphysical": false,
+  "outcome": "not_evaluated",
+  "success": null,
+  "physical_attempts": 1,
+  "termination_reason": "execution_failed_latched",
+  "failure": null,
+  "started_at": 1791199080.9091132,
+  "finished_at": 1791199101.359082,
+  "real_elapsed_s": 20.44996929168701,
+  "stage_progress": {
+    "lift": false,
+    "transport": false,
+    "release": false,
+    "stable": false
+  },
+  "evidence_order_valid": false,
+  "evidence": [],
+  "usage": {
+    "calls": 1,
+    "token_subset_semantics": "cached_input_tokens and reasoning_output_tokens are subsets, not additive totals",
+    "input_tokens": {
+      "total": 9136,
+      "known_subtotal": 9136,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "output_tokens": {
+      "total": 204,
+      "known_subtotal": 204,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "cached_input_tokens": {
+      "total": 0,
+      "known_subtotal": 0,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "reasoning_output_tokens": {
+      "total": 94,
+      "known_subtotal": 94,
+      "known_calls": 1,
+      "total_calls": 1,
+      "coverage": 1.0
+    },
+    "interface_wait_time_s": 13.138486150000062
+  },
+  "metrics": {
+    "control_commands_sent": null,
+    "physical_motion_time_s": 1.7558452249995753
+  },
+  "physical_motion_time_s": 1.7558452249995753,
+  "limitations": [
+    "Replay never establishes physical task success.",
+    "Stop and TCP arrival alone are not task-success evidence."
+  ],
+  "events_count": 15
+}

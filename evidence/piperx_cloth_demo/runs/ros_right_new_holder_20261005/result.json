@@ -1,0 +1,99 @@
+{
+  "task": "Single right arm return to six-zero, pick desk pen, place into replacement undivided holder; ROS; first and third views recorded",
+  "task_success": true,
+  "grasp_verified": true,
+  "placement_verified_after_release_and_retreat": true,
+  "result_basis": [
+    "53_gripper_002_release: pen retained leaning inside right rim of cup and wrist empty",
+    "54_pick_034_retreat_complete: empty jaw raised30mm, pen remains in cup",
+    "55_final_retained_pen: repeated retained-pen and empty-jaw observation",
+    "Independent passive final_state.json: healthy and arrived"
+  ],
+  "nominal_transit_speed_percent": 50,
+  "near_contact_speed_percent": 3,
+  "speed_note": "Actual command percentage; approach/home transition stages also used5/10/20/1 as recorded. Videos are nominal15fps; highlights remove waits and keep action frames at1x.",
+  "transport": "ROS /piper/right",
+  "selected_arm": "right",
+  "left_arm_control_commands_sent": 0,
+  "left_joints_equal_initial": true,
+  "physical_home_confirmed": true,
+  "home_monitoring_passed": false,
+  "home_evidence": "/home/agilex/piperx_cloth_demo/runs/ros_right_new_holder_20261005/home_zero_review.json",
+  "home_note": "home013 nominal joint monitoring failed after final zero dispatch; original failure preserved. 237 independent samples over4.719959s confirmed physical zero and healthy/arrived. Same frozen driver manually readopted with zero actuator TX; no zero retry or limit change.",
+  "side_guidance": [
+    "At pick025 user: 还偏向机械臂一侧",
+    "After(+7,+7,0)mm user: 现在对准筒内，可以下降"
+  ],
+  "release_target_pose_m_rad": [
+    0.257,
+    0.259,
+    0.157,
+    0,
+    1.570796327,
+    0.789382206
+  ],
+  "release": "gripper002 independent35mm target, measured34.37mm; pen released into cup",
+  "retreat": "pick034 fixedXY/orientation, flangeZ157to187mm, empty jaw target35mm",
+  "final_right_pose_m_rad": [
+    0.256951,
+    0.258965,
+    0.18725799999999998,
+    -0.7892902476293956,
+    1.5707963267948966,
+    0.0
+  ],
+  "final_right_joints_rad": [
+    0.7892902476293956,
+    1.8543250637813755,
+    -0.7862184681458857,
+    0.0,
+    -0.9814684515664913,
+    0.0
+  ],
+  "final_right_status": {
+    "ctrl_mode": 1,
+    "arm_status": 0,
+    "mode_feedback": 0,
+    "teach_status": 0,
+    "motion_status": 0,
+    "trajectory_num": 0,
+    "err_code": 0,
+    "err_status": {
+      "joint_1_angle_limit": false,
+      "joint_2_angle_limit": false,
+      "joint_3_angle_limit": false,
+      "joint_4_angle_limit": false,
+      "joint_5_angle_limit": false,
+      "joint_6_angle_limit": false,
+      "communication_status_joint_1": false,
+      "communication_status_joint_2": false,
+      "communication_status_joint_3": false,
+      "communication_status_joint_4": false,
+      "communication_status_joint_5": false,
+      "communication_status_joint_6": false
+    }
+  },
+  "final_jaw_width_m": 0.03437,
+  "right_remains_enabled": true,
+  "controller_session_id": 94316,
+  "recording_session_id": 98256,
+  "recording_stopped_exit_code": 0,
+  "recording_report": "/home/agilex/piper_pen_repeat_video_20261005/recording_new_holder/report.json",
+  "final_state_path": "/home/agilex/piperx_cloth_demo/runs/ros_right_new_holder_20261005/final_state.json",
+  "final_images": [
+    "/home/agilex/piper_pen_repeat_video_20261005/new_holder_pen_in_cup.png",
+    "/home/agilex/piper_pen_repeat_video_20261005/new_holder_empty_gripper.png"
+  ],
+  "video_export_status": "exported_and_verified",
+  "limitations": "Uncalibrated attended stepwise attempt, with onsite side alignment guidance; not an automatically replayable calibrated trajectory. Prior failed placement cause remains unverified.",
+  "video_export_report": "/home/agilex/piper_pen_repeat_video_20261005/export_new_holder_report.json",
+  "videos": {
+    "first_person_highlights": "/home/agilex/piper_pen_repeat_video_20261005/first_person_new_holder_highlights.mp4",
+    "third_person_highlights": "/home/agilex/piper_pen_repeat_video_20261005/third_person_new_holder_highlights.mp4",
+    "first_person_full": "/home/agilex/piper_pen_repeat_video_20261005/first_person_new_holder_full.mp4",
+    "third_person_full": "/home/agilex/piper_pen_repeat_video_20261005/third_person_new_holder_full.mp4",
+    "highlights_duration_s": 209.53333333333333,
+    "full_duration_s": 3528.5333333333333,
+    "playback_note": "Highlight edits remove waits; action remains at recorded nominal15fps,1x; no speed increase."
+  }
+}

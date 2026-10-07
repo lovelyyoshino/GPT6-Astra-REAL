@@ -1,0 +1,65 @@
+70 mm configured-range scope; first65 mm opening only
+
+Sources: scripts/gripper70_profile.py, ros_guarded_wide_entry.py and
+ros_guarded_wide_client.py. Old sources, processes, failures and eight parent
+session files are unchanged. This is an independent reviewed handoff, not a
+retry or clearing of the prior release failure. Deployment is separate.
+
+Evidence: the saved right-can1 0x477 read-only query received 0x47e payload
+6446050000000000, reporting configured maximum70 mm. It does not measure physical
+finger clearance or prove that a70 mm object fits. The former55 mm value was a
+software experimental working limit, not a measured mechanical maximum.
+
+Only physical_limits.gripper_max_m changes from .055 to .070. All other config
+fields and frozen limits are retained. RX width uses this same70 mm cap; base
+healthy() already admits0..70 mm. The per-process GripperCtrl method reuses its
+original body/super closure with a private integer validator changing only
+(0,55000,'jaw width') to70000. Force is still encoded200, code1/setzero0, every
+CAN frame still requires its exact worker ticket and RX latch. No firmware
+range write, zeroing, enable/disable, stop/reset or automatic retry is added.
+The ROS service override calls the guarded jaw worker, not the vendor handler
+that clamps service requests to70 mm. 70001 is rejected, never clamped to55.
+
+CLI and namespace stay the same as docs/ros_guarded_regrasp.txt, using the new
+entry/client source paths. Entry requires --table-supported-contact-confirmed,
+unchanged node /piper/right/interruptible_driver, correct __ns:=/piper/right,
+and the wide70 entry_config.json. reviewed_wide.json and reviewed_handoff.json
+must be identical. The legacy retreat-only field is retained solely as evidence
+of the parent separation scope; current identity records initial65 mm opening.
+Fixed child: guarded_wide70_BOOT.json; alternate output directories cannot retry.
+Zero-TX adoption still requires three seconds of fresh healthy stationary state
+matching the independently reviewed failed-release endpoint. First software
+stage is opening65_ready; all J/hold/resume and other jaw targets are refused.
+
+Client --operation gripper --width-mm65 --execute calls one ROS gripper service
+(.065,.2,1,0). Stable feedback alone is insufficient: actual opening must be
+within1.5 mm of65 mm. Completion revokes adoption and offers one result/token/
+sequence/generation-bound review_opening Trigger. No next action is automatic.
+
+Save RUNTIME/reviews/action_NNNNNN_review.json with:
+reviewed:true, stage:opening65_review, sequence, generation, adoption_token,
+completed_result_sha256, prior_failures_preserved:true,
+additional_j5_violation_not_reclassified:true, actual_opening_reviewed:true,
+table_supported:true, no_visible_hook_or_tension:true, review_authorization,
+next_stage:opening70_ready OR retreat_ready, raw_review:{path,sha256}, images:
+[{path,sha256}]. All paths must be absolute. Images must be newly reviewed after
+the opening; no claim of grasp or complete contact clearance is inferred.
+Use the same independent raw-review/source-window schema as the regrasp doc,
+but last_kernel_unix_s must cover max(result.after.stamps). Raw evidence must
+show no nominal/tracking/jaw/health violations through the actual stable window.
+
+Client --operation review --reviewed-result-sha256 SHA --execute invokes that
+single service, which checks hashes/one complete jaw receipt and then a fresh
+three-second unchanged-state window. It sends no actuator frames. After65 mm
+review one optional70 mm command is possible, followed by opening70_review
+requiring the same evidence and allowing only retreat_ready. Otherwise proceed
+directly to reviewed separation. No task promotion directly from an opening.
+
+Retreat/wrist/task stages reuse the frozen gen9 review mechanism, including
+at most eight separately reviewed0.35-degree J2/J3 retreats, clear-contact RGB
+before the single J5-.15-degree probe, and another raw/RGB/fresh review before
+ordinary task actions. Normal task jaw range is0..70 mm; J5 command steps remain
+<=.20 degree. Joint-motion J5 tracking stays.30 degree, all jaw-action arm axes
+stay.003 rad. The prior jaw/rotation faults are not reclassified as acceptable.
+All other motion/arrival/presend/timeout protections remain unchanged. A failed
+software monitor still does not cancel an already accepted firmware target.

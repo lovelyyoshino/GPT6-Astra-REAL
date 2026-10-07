@@ -1,0 +1,35 @@
+{
+  "sample_count": 237,
+  "span_s": 4.719958782196045,
+  "q_min": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "q_max": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "all_q_exact_zero": true,
+  "all_healthy_arrived": true,
+  "max_feedback_age_s": 0.0222165584564209,
+  "independent_q": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "independent_hardware_commands_sent": 0,
+  "original_command_monitoring_result": "failed after4 frames: measured joints outside manufacturer nominal limits; failing sample/axis/magnitude unknown",
+  "physical_zero_confirmed": true,
+  "recovery_decision": "Root independently reviewed237 feedback snapshots over4.720s, all exactzero/healthy/arrived, independent passive state exactzero, fresh images empty and no contact, no active callback. Permit graceful software owner exit and same frozen read-only adopter requiring its own fresh3second gate. No J0 replay or physical recovery command; preserve monitoring failure."
+}

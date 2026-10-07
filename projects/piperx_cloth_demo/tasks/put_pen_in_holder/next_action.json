@@ -1,0 +1,15 @@
+{
+  "stage": "initial_coarse_approach",
+  "arm": "right",
+  "frame": "right_base",
+  "reference": "sdk_flange",
+  "observation_id": "obs_4f1fefbac9f4475a8a0ec5a32c0163d4",
+  "target_pose_m_rad": [0.061127, 0.0, 0.213266, 0.0, 1.48351241090266, 0.0],
+  "motion": "move_l",
+  "speed_percent": 1,
+  "intent": "5 mm forward at unchanged flange height and orientation, while far above the tabletop, followed by feedback and camera review before any further segment.",
+  "review": "Current third view and wrist image show empty right fingers, no nearby hands, pen/holder on the table below the tool and other arm separated. Review includes visible arm, wrist camera/bracket and cable loop. This is visual clearance assessment, not a verified collision model or calibrated error bound.",
+  "uncertainty": "Right-wrist mounting candidate is approximate; final pen/holder targets not established. No descent or final contact commanded in this step.",
+  "continuation": "Only after fresh controller arrival and small target error; stable feedback alone does not permit continuation.",
+  "left_arm_commands_permitted": false
+}

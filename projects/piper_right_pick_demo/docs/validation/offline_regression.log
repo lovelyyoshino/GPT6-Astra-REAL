@@ -1,0 +1,238 @@
+test_image_must_be_bracketed_not_just_near_one_pose (test_alignment_capture.AlignmentCaptureTests) ... ok
+test_missing_and_nonfinite_data_rejected (test_alignment_capture.AlignmentCaptureTests) ... ok
+test_moving_arm_rejected (test_alignment_capture.AlignmentCaptureTests) ... ok
+test_rotation_change_and_trace_gaps_rejected (test_alignment_capture.AlignmentCaptureTests) ... ok
+test_stale_split_feedback_rejected_even_with_recent_sample (test_alignment_capture.AlignmentCaptureTests) ... ok
+test_stationary_evidence_is_never_motion_authority (test_alignment_capture.AlignmentCaptureTests) ... ok
+test_wrap_at_180_does_not_falsely_imply_full_rotation (test_alignment_capture.AlignmentCaptureTests) ... ok
+test_evidence_copied_exactly_and_existing_archive_cannot_be_overwritten (test_archive_baseline.ArchiveBaselineTests) ... ok
+test_close_releases_all_resources_even_after_one_failure (test_camera.CameraTests) ... ok
+test_constructor_lazy_and_binding_validation (test_camera.CameraTests) ... ok
+test_file_detection_is_offline (test_camera.CameraTests) ... ok
+test_invalid_pixel_not_replaced_by_neighbour (test_camera.CameraTests) ... ok
+test_nonzero_distortion_not_silently_ignored (test_camera.CameraTests) ... ok
+test_red_hue_wrap_and_other_colors (test_camera.CameraTests) ... ok
+test_sampled_recording_enable_does_not_open_hardware (test_camera.CameraTests) ... ok
+test_sensor_scale_and_invalid_depth (test_camera.CameraTests) ... ok
+test_surface_query_is_not_grasp_target (test_camera.CameraTests) ... ok
+test_boundary_violation_retained_while_passive_tail_observes_final_arrival (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_enable_failure_bounded_no_ik_or_joint_target (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_ik_failure_reports_enable_verified_and_never_sends_mode (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_live_range_bounded_without_historical_angles (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_movement_timeout_is_not_success_and_target_not_repeated (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_partial_joint_send_still_observed_without_claiming_target_arrival (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_passive_tail_receive_errors_are_recorded_and_finite (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_stale_or_outside_modeled_gripper_rejected (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_two_different_live_postures_enable_then_solve_actual_held_pose (test_direct_sdk_live_step.LiveSDKTests) ... ok
+test_actual_sdk_gripper_encoding_enable_effort_and_never_zero_calibration (test_direct_sdk_pick.PickTests) ... ok
+test_empty_closure_finishes_explicit_protocol_without_claiming_success (test_direct_sdk_pick.PickTests) ... ok
+test_enable_failure_never_sends_gripper_or_motion (test_direct_sdk_pick.PickTests) ... ok
+test_measured_stage60_deadband_arrives_with_point_three_degree_limit (test_direct_sdk_pick.PickTests) ... ok
+test_motion_timeout_single_goal_finite_passive_tail_not_success (test_direct_sdk_pick.PickTests) ... ok
+test_observation_opening_outside_two_mm_never_passes_or_retries (test_direct_sdk_pick.PickTests) ... ok
+test_observation_opening_verified_once_without_becoming_a_grasp (test_direct_sdk_pick.PickTests) ... ok
+test_observation_width_is_not_accepted_for_other_purposes_or_late_in_run (test_direct_sdk_pick.PickTests) ... ok
+test_orientation_wrap_is_stable_but_real_rotation_is_not (test_direct_sdk_pick.PickTests) ... ok
+test_partial_joint_send_seals_and_observes_without_retries_or_arrival (test_direct_sdk_pick.PickTests) ... ok
+test_single_contact_candidate_protocol_exact_frames_and_no_grasp_proof (test_direct_sdk_pick.PickTests) ... ok
+test_small_real_tracking_residual_arrives_and_next_segment_remains_valid (test_direct_sdk_pick.PickTests) ... ok
+test_whole_plan_invalid_late_segment_rejected_before_any_arm_target (test_direct_sdk_pick.PickTests) ... ok
+test_zero_effort_blocked_closure_stops_before_carry_or_release (test_direct_sdk_pick.PickTests) ... ok
+test_actual_vendor_decode_and_separate_frame_freshness (test_direct_sdk_step.SDKStepTests) ... ok
+test_arrival_requires_new_feedback_actual_pose_and_mode (test_direct_sdk_step.SDKStepTests) ... ok
+test_cancelled_reviewed_readiness_opens_no_can_and_sends_nothing (test_direct_sdk_step.SDKStepTests) ... ok
+test_entire_step_passes_only_after_measured_arrival_settles (test_direct_sdk_step.SDKStepTests) ... ok
+test_entire_step_timeout_stays_failed_and_sends_no_stop_or_retry (test_direct_sdk_step.SDKStepTests) ... ok
+test_exact_plan_sends_four_frames_and_cannot_repeat (test_direct_sdk_step.SDKStepTests) ... ok
+test_exact_sdk_encoded_target_units_and_order (test_direct_sdk_step.SDKStepTests) ... ok
+test_expected_own_echo_consumed_only_once (test_direct_sdk_step.SDKStepTests) ... ok
+test_foreign_control_and_any_local_frame_latch (test_direct_sdk_step.SDKStepTests) ... ok
+test_joint_progress_corridor_allows_audited_dip_but_not_escape (test_direct_sdk_step.SDKStepTests) ... ok
+test_missing_one_motor_cannot_look_enabled (test_direct_sdk_step.SDKStepTests) ... ok
+test_modified_payload_or_extra_command_never_sent (test_direct_sdk_step.SDKStepTests) ... ok
+test_motion_deadline_never_counts_as_arrival (test_direct_sdk_step.SDKStepTests) ... ok
+test_motor_fault_latches_at_frame_not_at_snapshot (test_direct_sdk_step.SDKStepTests) ... ok
+test_nominal_gate_unchanged_review_exception_only_small_interval (test_direct_sdk_step.SDKStepTests) ... ok
+test_old_kernel_timestamp_report_exposes_ages_and_no_tx (test_direct_sdk_step.SDKStepTests) ... ok
+test_outside_range_report_preserves_values_and_exact_rejection_without_tx (test_direct_sdk_step.SDKStepTests) ... ok
+test_path_deviation_and_stationary_gate (test_direct_sdk_step.SDKStepTests) ... ok
+test_reentry_cannot_start_after_completion_or_from_wrong_fk (test_direct_sdk_step.SDKStepTests) ... ok
+test_reviewed_arrival_requires_actual_nominal_joints_and_freshness (test_direct_sdk_step.SDKStepTests) ... ok
+test_reviewed_complete_enable_joint_target_and_arrival (test_direct_sdk_step.SDKStepTests) ... ok
+test_reviewed_fk_mismatch_rejected_before_any_send (test_direct_sdk_step.SDKStepTests) ... ok
+test_reviewed_readiness_precedes_socket_and_live_pose_without_second_pause (test_direct_sdk_step.SDKStepTests) ... ok
+test_reviewed_target_actual_sdk_joint_payloads_and_units (test_direct_sdk_step.SDKStepTests) ... ok
+test_reviewed_timeout_cannot_pass_and_does_not_retry (test_direct_sdk_step.SDKStepTests) ... ok
+test_rotated_preview_cannot_be_silently_retargeted (test_direct_sdk_step.SDKStepTests) ... ok
+test_stale_feedback_rejection_precedes_actual_send (test_direct_sdk_step.SDKStepTests) ... ok
+test_teach_and_mit_and_transient_fault_do_not_clear (test_direct_sdk_step.SDKStepTests) ... ok
+test_camera_retilt_is_explicit_and_no_old_transform_is_imported (test_integration.IntegrationTests) ... ok
+test_endpoint_model_not_guessed (test_integration.IntegrationTests) ... ok
+test_failed_environment_probe_never_reaches_observer (test_integration.IntegrationTests) ... ok
+test_fresh_json_timestamp_does_not_refresh_old_images (test_integration.IntegrationTests) ... ok
+test_history_zero_excludes_all_old_text (test_integration.IntegrationTests) ... ok
+test_invalid_model_json_still_records_usage_and_spent_call (test_integration.IntegrationTests) ... ok
+test_historical_zero_pose_rejected_for_excess_horizontal_progress_box (test_live_lift_plan.LiveLiftPlanTests) ... ok
+test_only_specific_small_current_overrun_is_accepted (test_live_lift_plan.LiveLiftPlanTests) ... ok
+test_raw_inputs_are_exact_six_signed_integers (test_live_lift_plan.LiveLiftPlanTests) ... ok
+test_solver_output_must_meet_endpoint_and_nominal_limits (test_live_lift_plan.LiveLiftPlanTests) ... ok
+test_three_distinct_recorded_poses_plan_only_fixed_lift_without_sockets (test_live_lift_plan.LiveLiftPlanTests) ... ok
+test_wrong_pose_units_or_fk_mismatch_cannot_plan (test_live_lift_plan.LiveLiftPlanTests) ... ok
+test_degrees_from_actual_fields_never_grant_follow (test_master_pair.MasterPairTests) ... ok
+test_local_loopback_is_not_right_hardware_feedback (test_master_pair.MasterPairTests) ... ok
+test_missing_or_local_master_does_not_become_zero_target (test_master_pair.MasterPairTests) ... ok
+test_stale_or_unsynchronized_frames_rejected (test_master_pair.MasterPairTests) ... ok
+test_physical_calibration_cannot_leak_into_replay (test_offline.ReplayTests) ... ok
+test_readonly_state_is_explicitly_nonphysical (test_offline.ReplayTests) ... ok
+test_replay_actions_update_virtual_state_and_never_claim_success (test_offline.ReplayTests) ... ok
+test_actual_feedback_records_origin_and_monotonic_age (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_cli_enables_trace_without_starting_hardware_in_test (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_collect_duration_is_bounded_before_hardware_or_imports (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_command_age_uses_monotonic_clock_despite_wall_clock_change (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_command_ranges_accumulate_per_origin_without_local_contamination (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_commands_preserve_nonlocal_latest_when_local_loopback_arrives (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_default_call_stays_snapshot_only (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_dense_frames_cannot_exceed_100hz_and_clock_jump_does_not_hide_skew (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_joint_control_valid_pairs_and_gripper_units_are_separate_from_feedback (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_malformed_remote_error_and_extended_frames_do_not_fill_fields (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_missing_pair_never_uses_vendor_default_zeros (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_packets_at_or_after_deadline_are_not_sampled (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_receive_only_complete_fields_and_real_pair_timestamps (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_throttled_sample_copies_latest_real_data_and_exposes_stale_fields (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_truncated_recvmsg_does_not_decode_even_if_buffer_has_frame_size (test_passive_can_snapshot.PassiveCanSnapshotTests) ... ok
+test_two_serials_record_and_capture_without_left_or_robot (test_pick_camera_worker.CameraWorkerTests) ... ok
+test_real_stopped_plan_resumes_remaining_43_moves_through_release (test_pick_integration.CompletePickIntegration) ... ok
+test_saved_scene_finishes_contact_and_empty_sequences_with_real_clearance (test_pick_integration.CompletePickIntegration) ... ok
+test_actual_failed_run_keeps_exact_43_moves_when_regression_artifact_available (test_pick_resume_plan.ResumePlanTests) ... ok
+test_collision_reserve_and_assets_cannot_be_relaxed (test_pick_resume_plan.ResumePlanTests) ... ok
+test_live_wrong_pose_moving_disabled_or_stale_rejected (test_pick_resume_plan.ResumePlanTests) ... ok
+test_sibling_close_consumes_source_even_if_command_unverified (test_pick_resume_plan.ResumePlanTests) ... ok
+test_suffix_targets_unchanged_and_all_joint_boxes_rechecked_without_ik_or_hardware (test_pick_resume_plan.ResumePlanTests) ... ok
+test_wrong_failure_grasp_history_partial_send_or_unverified_prefix_rejected (test_pick_resume_plan.ResumePlanTests) ... ok
+test_changed_camera_rejects (test_pick_resume_scene.ResumeSceneTests) ... ok
+test_same_held_scene_and_red_cube_pass (test_pick_resume_scene.ResumeSceneTests) ... ok
+test_shifted_cube_rejects_even_when_robot_state_is_unchanged (test_pick_resume_scene.ResumeSceneTests) ... ok
+test_missing_depth_and_background_depth_cannot_be_finger_points (test_pick_scene_geometry.PickSceneGeometryTests) ... ok
+test_real_55mm_open_right_tip_background_is_rejected (test_pick_scene_geometry.PickSceneGeometryTests) ... ok
+test_real_scene_auto_fingers_cube_and_rotation_without_sockets (test_pick_scene_geometry.PickSceneGeometryTests) ... ok
+test_shifted_finger_components_detect_without_fixed_pixels (test_pick_scene_geometry.PickSceneGeometryTests) ... ok
+test_wrong_robot_pose_and_unaligned_depth_reject (test_pick_scene_geometry.PickSceneGeometryTests) ... ok
+test_clearance_includes_uncertainty_and_observed_tracking_not_just_endpoints (test_pick_trajectory.WholePickTests) ... ok
+test_complete_capture_grip_place_order_and_finite_budget (test_pick_trajectory.WholePickTests) ... ok
+test_every_target_nominal_and_each_segment_has_arrival_error_margin (test_pick_trajectory.WholePickTests) ... ok
+test_missing_placement_and_invalid_inputs_cannot_form_partial_action_plan (test_pick_trajectory.WholePickTests) ... ok
+test_table_contact_and_uncertainty_fail_clearance_check (test_pick_trajectory.WholePickTests) ... ok
+test_wrong_pose_or_scene_reference_rejects_before_a_plan_is_returned (test_pick_trajectory.WholePickTests) ... ok
+test_camera_tilt_change_invalidates_even_allowed_motion (test_protocol.ProtocolTests) ... ok
+test_default_closed_and_only_right (test_protocol.ProtocolTests) ... ok
+test_direct_dataclass_cannot_bypass_parser (test_protocol.ProtocolTests) ... ok
+test_expiry_version_freshness_and_sensor_skew (test_protocol.ProtocolTests) ... ok
+test_no_arbitrary_units_or_hidden_pose_fields (test_protocol.ProtocolTests) ... ok
+test_observe_and_stop_work_with_default_closed_policy (test_protocol.ProtocolTests) ... ok
+test_ros_retimestamp_alone_does_not_prove_device_freshness (test_protocol.ProtocolTests) ... ok
+test_safe_small_move_is_accepted (test_protocol.ProtocolTests) ... ok
+test_tcp_workspace_gripper_confirmation_cannot_be_truthy_strings (test_protocol.ProtocolTests) ... ok
+test_translation_orientation_speed_and_gripper_limits (test_protocol.ProtocolTests) ... ok
+test_unknown_and_nonfinite_fields_are_rejected (test_protocol.ProtocolTests) ... ok
+test_all_four_ordered_physical_evidence_stages_are_required (test_recording.RecordingTests) ... ok
+test_independent_run_directories_and_no_post_finish_mutation (test_recording.RecordingTests) ... ok
+test_infrastructure_block_is_not_a_grasp_failure (test_recording.RecordingTests) ... ok
+test_missing_usage_stays_unknown_and_subsets_are_not_added (test_recording.RecordingTests) ... ok
+test_out_of_order_and_pre_run_evidence_does_not_succeed (test_recording.RecordingTests) ... ok
+test_provider_usage_aliases_and_invalid_counts (test_recording.RecordingTests) ... ok
+test_replay_or_model_claim_cannot_be_physical_success (test_recording.RecordingTests) ... ok
+test_secret_filter_and_no_detailed_thought (test_recording.RecordingTests) ... ok
+test_stop_and_arrival_never_imply_success (test_recording.RecordingTests) ... ok
+test_ctrl_mode_does_not_imply_enabled (test_robot.RobotBoundaryTests) ... ok
+test_excessive_feedback_skew_rejected (test_robot.RobotBoundaryTests) ... ok
+test_joint_missing_or_nonfinite_rejected (test_robot.RobotBoundaryTests) ... ok
+test_missing_status_does_not_mean_healthy (test_robot.RobotBoundaryTests) ... ok
+test_no_driver_import_or_motion_on_construction (test_robot.RobotBoundaryTests) ... ok
+test_quaternion_conversion_and_tcp_not_assumed (test_robot.RobotBoundaryTests) ... ok
+test_stale_pose_rejected_despite_fresh_receipt (test_robot.RobotBoundaryTests) ... ok
+test_wrong_arm_rejected (test_robot.RobotBoundaryTests) ... ok
+test_bad_intrinsics_and_frame_pairs_rejected (test_ros_camera.RosCameraTests) ... ok
+test_capture_preserves_timestamps_and_excludes_disabled_depth (test_ros_camera.RosCameraTests) ... ok
+test_depth_flag_controls_subscriptions (test_ros_camera.RosCameraTests) ... ok
+test_freshness_requires_exposure_and_real_receipt (test_ros_camera.RosCameraTests) ... ok
+test_normalized_intrinsics_keep_ros_distortion_namespace (test_ros_camera.RosCameraTests) ... ok
+test_realsense_timestamp_is_earliest_receipt_not_save_time (test_ros_camera.RosCameraTests) ... ok
+test_cli_returns_zero_or_two_and_json_diagnostics (test_verify_baseline.BaselineTests) ... ok
+test_duplicate_invalid_manifest_and_external_manifest_link_rejected (test_verify_baseline.BaselineTests) ... ok
+test_external_file_and_directory_links_never_read (test_verify_baseline.BaselineTests) ... ok
+test_internal_link_allowed_but_directory_and_fifo_rejected (test_verify_baseline.BaselineTests) ... ok
+test_missing_same_size_change_and_size_change_are_all_reported (test_verify_baseline.BaselineTests) ... ok
+test_traversal_absolute_and_malformed_entries_rejected (test_verify_baseline.BaselineTests) ... ok
+test_valid_archive_and_unlisted_file_succeed_without_sdk_import (test_verify_baseline.BaselineTests) ... ok
+
+----------------------------------------------------------------------
+Ran 166 tests in 28.579s
+
+OK
+{
+  "run_dir": "runs/20261003T200737Z_4bea3a7b8af3",
+  "report": {
+    "mode": "nonphysical_replay",
+    "nonphysical": true,
+    "outcome": "not_evaluated",
+    "success": null,
+    "physical_attempts": 0,
+    "termination_reason": "nonphysical_interface_smoke_completed",
+    "failure": null,
+    "started_at": 1791058057.8388875,
+    "finished_at": 1791058057.8436563,
+    "real_elapsed_s": 0.004768848419189453,
+    "stage_progress": {
+      "lift": false,
+      "transport": false,
+      "release": false,
+      "stable": false
+    },
+    "evidence_order_valid": false,
+    "evidence": [],
+    "usage": {
+      "calls": 0,
+      "token_subset_semantics": "cached_input_tokens and reasoning_output_tokens are subsets, not additive totals",
+      "input_tokens": {
+        "total": null,
+        "known_subtotal": null,
+        "known_calls": 0,
+        "total_calls": 0,
+        "coverage": null
+      },
+      "output_tokens": {
+        "total": null,
+        "known_subtotal": null,
+        "known_calls": 0,
+        "total_calls": 0,
+        "coverage": null
+      },
+      "cached_input_tokens": {
+        "total": null,
+        "known_subtotal": null,
+        "known_calls": 0,
+        "total_calls": 0,
+        "coverage": null
+      },
+      "reasoning_output_tokens": {
+        "total": null,
+        "known_subtotal": null,
+        "known_calls": 0,
+        "total_calls": 0,
+        "coverage": null
+      },
+      "interface_wait_time_s": null
+    },
+    "metrics": {
+      "physical_attempts": 0,
+      "physical_motion_time_s": 0,
+      "control_commands_sent": 0
+    },
+    "physical_motion_time_s": 0,
+    "limitations": [
+      "Replay never establishes physical task success.",
+      "Stop and TCP arrival alone are not task-success evidence."
+    ],
+    "events_count": 8
+  }
+}

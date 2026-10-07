@@ -1,0 +1,28 @@
+本次单独授权的一次ROS子试验
+
+入口scripts/ros_interruptible_joint_trial_entry.py，复用固定v2core/v1base。
+不修改原v1、v2、SDK、旧失败记录或旧锁。仍仅空载、1%、J2朝零≤1°；
+P/L/其它轴/夹爪/急停/复位/失能禁止，测试不录视频。
+
+沿用CLI --entry-config、--entry-output-dir、--empty-gripper-confirmed。
+节点仍/piper/right/interruptible_driver，零发送接管，但有新adoption token。
+config同目录reviewed_parent.json须给出固定parent_failure_sha256、
+parent_run、parent_adoption_token、parent_sequence=1及本次user_authorization原文。
+状态和外部hold接口沿用hold_status + hold_current/seq_N_token。
+
+启动前必须旧节点已正常退出且新反馈静止。入口锁住原boot session，仅读
+原文并核固定SHA、Pre-send slip、initial4/4、hold0TX、历史独立到位审查；
+原failure不会清除。启动再经原3秒完整新反馈健康gate，fresh关节/爪宽
+须与已审终点相符。历史审查不能替代这次新鲜观测。
+
+独立child文件仍在原SESSION_ROOT：
+trial_after_presend_slip_cfa3c2b827cabd2e0ed0afb47f13263bda294ef4b741e79adcb950a0cd025140.json
+其记录在设备启动前durable保留。已有child就拒绝，不允许新输出目录、
+重启或重复命令自动重试。一次命令机会包括零发送参数拒绝，均不可再发。
+成功/失败后仅撤销软件接单资格，硬件不失能。父子锁在进程全程持有。
+
+identity记录entry/v2/v1/base/config/review/parent evidence哈希与新token。
+最终结果physical_trial_wrapper=true、candidate_offline_only=false；
+core_origin_offline_candidate=true仅说明复用来源。原core结果日志若保留
+offline-origin字段，会同时带物理wrapper及字段范围解释；最终result明确实际范围。
+成功仍不是任意姿态、50%、多轴、负载或进程崩溃停止资格。

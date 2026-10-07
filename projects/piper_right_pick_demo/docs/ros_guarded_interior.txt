@@ -1,0 +1,67 @@
+Reviewed seq45 interior preparation (2026-10-06)
+
+Scope
+  ros_guarded_interior_entry.py adds one explicitly reviewed child session to
+  the unchanged GuardedTask runtime. No source, failed session, pending record,
+  or lock in the predecessor chain is cleared. All four old session files are
+  locked read-only and checked byte-for-byte on exit. The fixed child filename
+  prevents retries through a new output directory or process restart.
+
+  The parent sent all four frames for [67,0,0,0,7144,-3539] millidegrees and
+  failed strict nominal feedback monitoring. The offending raw sample was not
+  saved; its axis, magnitude, and cause remain unknown. The independent 15 s
+  trace proves a later healthy stationary endpoint, not the missing transient.
+
+Initial admission and review
+  First target only: [67,100,-100,0,7144,-3539] millidegrees, speed 1%.
+  The other four targets retain the prior commanded values. J2/J3 move into
+  their nominal intervals; this does not change or bypass any nominal limit.
+  Ordinary 0.003 rad arrival tolerance includes zero for this small target,
+  so completion additionally requires every sample in a continuous 3 s window
+  (at least 20 complete advancing groups) to have measured J2 > 0 and J3 < 0.
+  Idle, freshness, original joint box, workspace, FK and jaw checks remain.
+  At first completion software adoption is revoked. The caller must review the
+  saved action result, then invoke its exact SHA/token/generation-bound service.
+  Review observes another 3 s interior window and changes only software state.
+  Only then are the existing 1% guarded J and idle jaw operations available.
+  Failed, partial, pending, cancelled or held preparation cannot be promoted.
+
+Deployment materials (root operator only; this document runs nothing)
+  Copy entry_config.json byte-for-byte from the parent run; required SHA256:
+  4771a64546cd6ba513b125b8717fae10169b06870a22b4662a14207bbb219863
+  Place reviewed_interior.json beside it, containing the exact fields listed
+  by check_evidence(): parent_session_sha256, parent_action_result_sha256,
+  independent_can_sha256, parent_sequence=45, parent_adoption_token,
+  user_authorization="接受近零初始姿态，继续抓取",
+  first_target_raw=[67,100,-100,0,7144,-3539],
+  offending_raw_sample_missing=true.
+  Use the existing right-only launch/node wiring with the new executable:
+    scripts/ros_guarded_interior_entry.py
+    --entry-config ABS_CONFIG --entry-output-dir NEW_RUNTIME
+    --empty-gripper-confirmed PINNED_VENDOR_DRIVER [existing ROS remaps]
+  Keep /piper/right/interruptible_driver, private speed_percent=1, can1,
+  auto_enable=false, existing adopted gripper, and all existing startup guards.
+  Startup remains a fresh 3 s read-only adoption with no actuator transmission.
+  Root must keep independent raw CAN recording from before the first command
+  through motion; preserve raw joint frames even when health checking rejects.
+
+Single-command client
+  scripts/ros_guarded_interior_client.py --config ABS_CONFIG
+    --runtime NEW_RUNTIME --output NEW_COMMAND_DIR --operation joint
+    --target-raw 67 100 -100 0 7144 -3539 [--execute]
+  Without --execute this produces a proposal only. After reviewing the result:
+    same client/config/runtime, new output, --operation resume --execute
+    --reviewed-result-sha256 SHA_OF_ACTION_RESULT
+  Later explicit joint, gripper, status and successful-hold review operations
+  reuse the frozen client. Automatic home planning is intentionally absent;
+  accepted near-zero J2/J3 are not silently replaced by an exact-zero goal.
+
+Failure and limits
+  One worker owns all actuator sends. Stop remains the existing bound service
+  and full-q late-fresh replacement mechanism. No stop/reset/disable, retries,
+  SDK initializer writes or automatic task loop are added. Failure retains the
+  accepted-target-may-continue record and blocks further commands. Original
+  30 mm / 0.05 rad complete-box bounds, 0.003 rad tracking, strict nominal
+  feedback, 100 ms freshness, workspace, jaw limits and 1% speed remain.
+  This preparation does not resolve the old missing-sample failure or confer
+  general stopping, collision, higher-speed, Cartesian P/L or grasp success.

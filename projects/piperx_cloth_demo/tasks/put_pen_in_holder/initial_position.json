@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "name": "right_arm_zero_grasp_initial_position",
+  "arm": "right",
+  "status": "observed_and_confirmed",
+  "target_joints_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "target_joints_deg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "measured_joints_rad": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "measured_joints_deg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "measured_flange_pose_m_rad": [
+    0.056126999999999996,
+    0.0,
+    0.21326599999999998,
+    0.0,
+    1.48351241090266,
+    0.0
+  ],
+  "frame": "right_base",
+  "reference": "sdk_flange",
+  "gripper_width_m": 0.00259,
+  "gripper_enabled": true,
+  "ctrl_mode": 1,
+  "motion_status": 0,
+  "stable_duration_s": 3.010055247999844,
+  "stable_feedback_advances": 100,
+  "strict_manufacturer_joint_limits_satisfied": true,
+  "encoder_zero_redefined": false,
+  "home_result": "runs/home_arm_538edd4ae94943e6be15a6dc8d8e71c2/result.json",
+  "observation_id": "obs_ddd8a791acc84b429f58f45b5c7a12bd",
+  "observation": "runs/obs_ddd8a791acc84b429f58f45b5c7a12bd/observation.json",
+  "observed_unix_s": 1791128474.265208,
+  "reference_images": "/home/agilex/piper_home_zero_20261004_234114",
+  "use_as_grasp_initial_position": true,
+  "grasp_task_completed": false,
+  "notes": "用户指定的右臂六轴零位，已低速实机到位并稳定后独立复查；保存起始位，不代表相机标定、抓取路径或保持停止资格已验证。"
+}

@@ -1,0 +1,42 @@
+{
+  "task_id": "fold_tshirt_once",
+  "garment": "短袖 T 恤",
+  "objective": "使用左右双臂与三路相机，先完成一次对折",
+  "requested_by_user": "2026-10-04",
+  "status": "right_motion_and_overwrite_observed_hold_unqualified_left_boundary_recovery_pending",
+  "garment_size_m": null,
+  "laid_flat": true,
+  "fold_axis": "候选：下摆向肩部方向横向对折；衣形判断未转成执行坐标，左臂J2/J3尚未恢复，右臂局部目标覆盖未通过保持停止资格",
+  "observation_id": "obs_51d6d9e1549e4fa8833416fcce182872",
+  "agent_assessment": "runs/obs_4a4d7d907ada43d2bb001b6e30d89a48/agent_assessment.json",
+  "last_mode_request": "runs/takeover_9c1a4898206143b9a719405f378c2d11/result.json",
+  "last_startup": "runs/startup_3d72f0070d4549f586e6379e0e8c8faa/result.json",
+  "firmware_query": "runs/firmware_08eb9eb4a47246afaa532c716713169a/result.json",
+  "controller_limits_query": "runs/joint_limits_dae169c6de344b33b3ab4256bb1a1ec1/result.json",
+  "empty_gripper_preparation": "runs/gripper_prepare_c6b29caa65ec4327a6f9615587a4ad83/result.json",
+  "right_joint_recovery_attempt": "runs/joint_recovery_c79ce10e798a4222bff92300118215e8/result.json",
+  "right_after_recovery_observation": "runs/obs_ee97796b80504fd2ae785461c5ee8b80/observation.json",
+  "right_mode_only_failure": "runs/linear_hold_545a00aa69e44a2d8601da045c0075a5/result.json",
+  "right_complete_target_replacement_trial": "runs/linear_hold_2657b6880edc4414b4c2bc9dc347ae1d/result.json",
+  "latest_observed_state": "双臂六关节及空夹爪均使能；左右固件S-V1.6-5，存储限位已读回。右边界恢复原记录aborted，后续反馈确认关节合法稳定；再以完整MOVE_L目标实际上移1.246mm后发送覆盖，共七帧。十秒未确认到位，qualified=false；后续右臂维持起点上方约0.364mm，距覆盖目标约0.885mm，状态0但motion_status=1，不能宣称待执行目标已取消。左臂未恢复，衣服未抓未折。",
+  "validation_record": "runs/maintenance_commissioning_20261004/unittest_final.log",
+  "validation_scope": "283项离线测试通过，不能替代实机停止资格或任务成功；原衣形assessment来自较早观测，机械臂起点以最新观测为准",
+  "confirmed_arm_models": {"left": "piper", "right": "piper", "source": "user confirmed both PiPER on 2026-10-04"},
+  "successful_vendor_ik_reference": "/home/agilex/piper_right_pick_demo/runs/pose_batch_20261003T213623_137631/report.json",
+  "method_reference": {
+    "project": "/home/agilex/GPT6-ARX5",
+    "source": "/home/agilex/GPT6-ARX5/PROJECT_HANDOVER.md",
+    "scope": "参考三图与双臂状态交给模型、模型给完整末端计划、固定工具求解执行与阶段反馈的方法；不复制 ARX 硬件代码",
+    "local_cloth_folding_success_evidence_found": false
+  },
+  "numeric_motion_plan": null,
+  "draft_intent": [
+    "查看前视全景与左右腕画面，确认衣服、双臂、桌面及空闲区域；选择一条对折轴",
+    "根据可见性和两臂实际可达范围选择同一待翻折边上的两个抓点",
+    "先在布料上方接近两个抓点，再分别抓住；观察布料是否随夹爪轻微提起",
+    "双臂以协调阶段抬起同一衣边，跨过折线，对齐另一边；避免两臂交叉及过度拉扯",
+    "放下、释放、撤离，从前视和双腕图像评估是否形成一次对折"
+  ],
+  "decision_policy": "以上是模型基于三图给出的整段意图，不含可执行目标。正常流程一次规划；轻提后核验两个布角确实随动、释放后核验对折结果。观测失效、抓取失败或动作条件改变时不盲目继续余下计划。",
+  "experiment_rules": ["只调用固定机器人工具", "不编写或修改任务执行代码", "不采用自写视觉检测或自写逆解", "不以旧方块画面替代当前衣服观测", "不以未验证停止方式恢复实机执行"]
+}

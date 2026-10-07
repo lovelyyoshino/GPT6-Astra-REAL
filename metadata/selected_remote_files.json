@@ -1,0 +1,251 @@
+{
+  "files": [
+    {
+      "remote_relative_path": "piper_pen_repeat_video_20261005/new_holder_empty_gripper.png",
+      "size_bytes": 349515,
+      "sha256": "016408311845e8b4f4080a5a21e0ccc0582f07dcf1bb79bcef549b58281fcd65"
+    },
+    {
+      "remote_relative_path": "piper_pen_repeat_video_20261005/new_holder_pen_in_cup.png",
+      "size_bytes": 357629,
+      "sha256": "1a04d6959bff4a095878da84fa07d1317a09a1c11fa233aab15996644a74c296"
+    },
+    {
+      "remote_relative_path": "piper_pen_repeat_video_20261005/new_holder_result.json",
+      "size_bytes": 4464,
+      "sha256": "43024facf5dbe1c8403dd1d8c7b6fead20aa23ca531b6cd4723b4d98862179fc"
+    },
+    {
+      "remote_relative_path": "piper_pen_task_report_20261005/metrics_review.json",
+      "size_bytes": 50112,
+      "sha256": "ba03305e70206c7134294c56575ce9d45fad610423dfef4acbe8c1fd950f3643"
+    },
+    {
+      "remote_relative_path": "piper_pen_task_report_20261005/report_extracted.txt",
+      "size_bytes": 22235,
+      "sha256": "1875c5b03e882ae0f6bb68e9a2ca807ae6e766540f073d6931c237fda1f51f31"
+    },
+    {
+      "remote_relative_path": "piper_pen_task_report_20261005/report_validation.json",
+      "size_bytes": 674,
+      "sha256": "5dc78bfac3296576cdca371576675f443362fcce5cd3ac721fa1f00015794f07"
+    },
+    {
+      "remote_relative_path": "piper_pen_task_report_20261005/夹取笔放入笔筒_实机实验报告_20261005.pdf",
+      "size_bytes": 3200340,
+      "sha256": "48970d0217146b45024b4bb6f04e1383cdac220d49a89417d0e8c5137d7ad50f"
+    },
+    {
+      "remote_relative_path": "piper_pen_to_holder_20261005/result.json",
+      "size_bytes": 2583,
+      "sha256": "c132ce679e1e178408ef6ada39b4c011e8e60b56a679fe745a5d9932c02426eb"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/baselines/README.md",
+      "size_bytes": 1618,
+      "sha256": "9473182d4ac9c2482644ce89d432ca2f85667e44f92b9cc8ea6eef62feaf16dc"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/baselines/model_direct_vendor_ik/INCIDENT.md",
+      "size_bytes": 5736,
+      "sha256": "184dcc67888a0d4b2db9d8b2a30080c9db6cc7e3852a0f39c874009b4189c828"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/baselines/model_direct_vendor_ik/README.md",
+      "size_bytes": 6524,
+      "sha256": "60ee28d81b0027933c913f68fb7c8ec050d132dd1aae6ae7df11c16d528ad5ff"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/baselines/right_pick/README.md",
+      "size_bytes": 3315,
+      "sha256": "fd8b5438373ce348395268f258a6d7d331e0334ef0ce2b70905a9ae3856b8c3f"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/config.json",
+      "size_bytes": 4826,
+      "sha256": "5afae20bc17bb9619eeef79f2e99a0687158cda70f3240757766606d7711a87a"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/events.jsonl",
+      "size_bytes": 25102,
+      "sha256": "2b9536d29b493a444e746aba3bb89590a595bbd51cd182ee3365530f3e81007a"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/fast_codex_input_0001.json",
+      "size_bytes": 10462,
+      "sha256": "173de61e23b8ed7e0e29ddf2ad0d2eb1e0b0d0cdb6c701347e51e2b63407e416"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/fast_codex_output_0001.json",
+      "size_bytes": 465,
+      "sha256": "e7fbf25acf090b1cbd86120c56baec290b139e05fa4c6274e56daab3066cc129"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/fast_summary.json",
+      "size_bytes": 2569,
+      "sha256": "a4f1560e1c9200a2c0ebb5ced0f1d069052796a6a4ac84a6f02d5923a53c18b6"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/instruction.txt",
+      "size_bytes": 121,
+      "sha256": "3c726ee40f6638032b389f6bef229994da85e3316a7436dee25ffb8e3b0ca77d"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/report.json",
+      "size_bytes": 1589,
+      "sha256": "5c58f6c226f4d8548fcb1d636adda39db9bc57ccf519fc1e1455c413d503dd8d"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206/steps.jsonl",
+      "size_bytes": 1834,
+      "sha256": "da574e18781136b04a3d220b6dd7aca32aba3f6a2c156af148f740ebfce90445"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/build_qualification.py",
+      "size_bytes": 3736,
+      "sha256": "1402328e52c3dd65ea1508b0fb7b18abe60013351803a236473735c2ed7d8df1"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/build_qualification_dispatch.py",
+      "size_bytes": 4044,
+      "sha256": "a5cdac5539b70ed1cb61c5e995b0d267b39a7014c94213f665db7e66db9f6981"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/build_qualification_final.py",
+      "size_bytes": 3731,
+      "sha256": "b8afe1553cef999e405ae2d8f468c68bfd44a8df3e2cce411c27a5383858db49"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_offline_geometry_review.json",
+      "size_bytes": 10689,
+      "sha256": "492df09eb08b2580ba94e9607bbb63897243c7d0b59c8c9b3736c6b6edd6c7b9"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_posthoc_audit.json",
+      "size_bytes": 5970,
+      "sha256": "4449bd35e356b16c6307feea613154346bcbbe2315c7de11e1546aff74d71b92"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/continuous_admission_withdrawn.json",
+      "size_bytes": 784,
+      "sha256": "6dd13b129dfbbc6431057706bfaf1768aca59f1ebe5e75b4c1f978022b433595"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/experiment_comparison_after_visibility_review.json",
+      "size_bytes": 7997,
+      "sha256": "fd83e6fbd949648f6aeb4f08f94a120e41db755692ac4ed2c64e0b939cc6d0a0"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/fast_codex_120.json",
+      "size_bytes": 1053,
+      "sha256": "48e8ca8e35ba763260c22a5a9e72a6903a0d400d7401d3c13a7ef71277a43cd7"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/fast_live_commissioned.json",
+      "size_bytes": 4146,
+      "sha256": "adcea4e4f3533335fff39489cab9b6a80917ad53f11f49cee7f5c2bb50d17988"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/full_tests_after_stall_patch_summary.json",
+      "size_bytes": 552,
+      "sha256": "fc06c13597912e50779b3e56b870ec8f0b2880637c3e47ff57dfdb86b6290a71"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/full_tests_summary.json",
+      "size_bytes": 1745,
+      "sha256": "840828b58287cb787443b622fbb15475e2460c50a878d31b22c3ff5fd4f67822"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/live_source_hashes.json",
+      "size_bytes": 1871,
+      "sha256": "e88f558415329ebe2229def0ac42744015f9089353f35388f4f9f0bdf7bd5f78"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/reason_current_recovery.py",
+      "size_bytes": 4267,
+      "sha256": "f0894503d237d1abf2311fb596878c563dfabad2e64ffe8b7e62115eac1f0433"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/resume_after_model_pause.py",
+      "size_bytes": 2023,
+      "sha256": "dea13881a3681b7edeea0e35216fa3d01b7e9051c948ebd3e790808894270e78"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/resume_after_rounding_rejection.py",
+      "size_bytes": 2668,
+      "sha256": "b1d50eb964c730e3b3c533057ae6a398025de1aed9a527752f40efd5b35ba85a"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/resume_after_visibility_correction.py",
+      "size_bytes": 2463,
+      "sha256": "cfc94189de7fc4ed217256d0c9343378007d3ee719411361c7df86cc1eaf8f20"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/resume_after_visibility_wording.py",
+      "size_bytes": 2568,
+      "sha256": "9acfbcf1a6b0ccd2925ef3e08e650e4efc91840991c26a76cb28beff0355a0d5"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/right_resume.launch",
+      "size_bytes": 694,
+      "sha256": "a7bb72b93bdfa2da8f8ab05c4c81650ccb17ac7779cb830d7a6147d6c0ba9fca"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/fast_repair_20261005_182331/waiting_camera_state.json",
+      "size_bytes": 3557,
+      "sha256": "9314452c0649226bbdc035abfc93a0d1716ffb86541fd43ed586149fb7407cac"
+    },
+    {
+      "remote_relative_path": "piper_right_pick_demo/runs/vendor_execution_hold.json",
+      "size_bytes": 563,
+      "sha256": "b26868946f644f879f190de9eaed69a101c5da8bba581c077cfe073449878750"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/final_state.json",
+      "size_bytes": 9725,
+      "sha256": "370e5e2868c884dd4def0b7404a3c2461c90dd28f0c61da3df8a75ddb60b9960"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/gripper_001.json",
+      "size_bytes": 420,
+      "sha256": "1dc8ac52e42540535b08f10f856264d91897dab06c395d3e08c592e5ffb194ea"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/gripper_002.json",
+      "size_bytes": 557,
+      "sha256": "ef3d85f37dc2f6bbf2c17e77429818697cd18c3cbc302faf20bfd0eb13762d26"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/home_zero_review.json",
+      "size_bytes": 1005,
+      "sha256": "a272d71306144637e03f146b7d3a681198025d42b53fed5e04df4ee6ba098ed8"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/pick_033.json",
+      "size_bytes": 621,
+      "sha256": "aef528fc1d2b7fc684f70dbc191c74adaf54ec3521222950913cc5e1aef95a59"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/pick_034.json",
+      "size_bytes": 490,
+      "sha256": "08f1ee8f54b06cc6b6a366027975875a528e96872bce1337bf09458d2792cfe6"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/result.json",
+      "size_bytes": 4464,
+      "sha256": "43024facf5dbe1c8403dd1d8c7b6fead20aa23ca531b6cd4723b4d98862179fc"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/right_resume.launch",
+      "size_bytes": 716,
+      "sha256": "fa869ae87e7157e976740989413d27b90283e6eb146184b1fb3bcdd573919a40"
+    },
+    {
+      "remote_relative_path": "piperx_cloth_demo/runs/ros_right_new_holder_20261005/session_plan.json",
+      "size_bytes": 2783,
+      "sha256": "7ab1a388efe95f83a134fe2ef9fef4e28edc35a1c0e83ebbdd722f50b5f715a1"
+    }
+  ],
+  "missing": [],
+  "total_bytes": 4137615
+}

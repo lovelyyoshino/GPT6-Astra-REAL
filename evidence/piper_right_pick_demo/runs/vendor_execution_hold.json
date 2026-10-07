@@ -1,0 +1,6 @@
+{
+  "status": "execution_suspended_after_unsafe_stop",
+  "incident_run": "/home/agilex/piper_right_pick_demo/runs/vendor_sequence_20261004T071525_165554",
+  "reason": "接近动作40秒超时触发MotionCtrl_1(1,0,0)，随后SDK末端Z由251.811mm降至92.761mm；停止策略未验证为安全保持。暂停当前自动实机入口，保留相机与SDK源码供只读调查。",
+  "required_before_resume": "确认现场安全并验证能保持机械臂的中断/停止方式；重新审查速度/超时语义、工具与桌面间隙。不得原样重跑。"
+}

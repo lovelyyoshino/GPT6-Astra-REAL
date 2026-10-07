@@ -1,0 +1,255 @@
+{
+  "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206",
+  "scope": "posthoc independent driver receipt reconciliation; original client failure retained",
+  "confirmed_ros_task_command_count": 1,
+  "confirmed_arrival": true,
+  "driver_intent_to_stable_s": 24.782420873641968,
+  "client_did_not_confirm_arrival": true,
+  "driver_failure": null,
+  "original_client_failure": "Phase scaled step exceeds explicit site bounds while waiting after send",
+  "joint_start_deg": [
+    2.9210000000000003,
+    5.769,
+    -5.843,
+    2.8729999999999998,
+    -1.91,
+    -2.8770000000000002
+  ],
+  "joint_final_deg": [
+    49.992,
+    19.714000000000002,
+    -5.038,
+    72.244,
+    -49.908,
+    -70.96700000000001
+  ],
+  "joint_delta_deg": [
+    47.071,
+    13.945000000000002,
+    0.8049999999999999,
+    69.371,
+    -47.998,
+    -68.09000000000002
+  ],
+  "pose_start_m_rad": [
+    0.06098,
+    0.002959,
+    0.24491,
+    0.0008377580409572782,
+    1.4489374384206526,
+    0.050160762702317035
+  ],
+  "pose_final_m_rad": [
+    0.088957,
+    0.002859,
+    0.245187,
+    0.01291543646475804,
+    1.4487454522029333,
+    0.0613134166225608
+  ],
+  "receipts": [
+    {
+      "source": "ros_resume_entry",
+      "event": "command_intent",
+      "unix_s": 1791199099.1886387,
+      "sequence": 8,
+      "kind": "pose",
+      "speed_percent": 1,
+      "frames": [
+        {
+          "id": 336,
+          "data_hex": "0000000000000000"
+        },
+        {
+          "id": 337,
+          "data_hex": "0100010000000000"
+        },
+        {
+          "id": 338,
+          "data_hex": "00015ba800000bb8"
+        },
+        {
+          "id": 339,
+          "data_hex": "0003bd080000003e"
+        },
+        {
+          "id": 340,
+          "data_hex": "0001444a00000b47"
+        },
+        {
+          "id": 345,
+          "data_hex": "00007a8000c80100"
+        },
+        {
+          "id": 337,
+          "data_hex": "0100010000000000"
+        }
+      ],
+      "before": {
+        "sequence": 3771651,
+        "stamps": [
+          1791199099.185911,
+          1791199099.186046,
+          1791199099.1861339,
+          1791199099.1862648,
+          1791199099.1863992,
+          1791199099.1865091,
+          1791199099.186598,
+          1791199099.1867435,
+          1791199099.1819816,
+          1791199099.1772435,
+          1791199099.1721978,
+          1791199099.1673303,
+          1791199099.1875064,
+          1791199099.1826947
+        ],
+        "raw_q": [
+          2921,
+          5769,
+          -5843,
+          2873,
+          -1910,
+          -2877
+        ],
+        "q": [
+          0.05098106745075437,
+          0.10068804454755288,
+          -0.10197958819402868,
+          0.05014330940979709,
+          -0.033335788713091695,
+          -0.05021312257987686
+        ],
+        "pose": [
+          0.06098,
+          0.002959,
+          0.24491,
+          0.0008377580409572782,
+          1.4489374384206526,
+          0.050160762702317035
+        ],
+        "opening_m": 0.03136,
+        "gripper_torque_sdk_units": -76,
+        "ctrl_mode": 1,
+        "arm_status": 0,
+        "mode": 0,
+        "teach_status": 0,
+        "motion_status": 0,
+        "fault": 0,
+        "driver_codes": [
+          64,
+          64,
+          64,
+          64,
+          64,
+          64
+        ],
+        "jaw_code": 64,
+        "enabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "source": "ros_resume_entry",
+      "event": "command_sent_unconfirmed",
+      "unix_s": 1791199099.1985948,
+      "sequence": 8,
+      "attempted_frames": 7,
+      "socket_send_returns": 7
+    },
+    {
+      "source": "ros_resume_entry",
+      "event": "command_observed_stable",
+      "unix_s": 1791199123.9710596,
+      "sequence": 8,
+      "kind": "pose",
+      "after": {
+        "sequence": 3817246,
+        "stamps": [
+          1791199123.9661736,
+          1791199123.9663079,
+          1791199123.9664383,
+          1791199123.9665267,
+          1791199123.9666607,
+          1791199123.9667926,
+          1791199123.966902,
+          1791199123.9670358,
+          1791199123.9572487,
+          1791199123.9523735,
+          1791199123.9475622,
+          1791199123.9676301,
+          1791199123.962718,
+          1791199123.9579933
+        ],
+        "raw_q": [
+          49992,
+          19714,
+          -5038,
+          72244,
+          -49908,
+          -70967
+        ],
+        "q": [
+          0.8725249996570053,
+          0.34407420873816214,
+          -0.08792968771547433,
+          1.2608956648107834,
+          -0.8710589230853301,
+          -1.238607810262816
+        ],
+        "pose": [
+          0.088957,
+          0.002859,
+          0.245187,
+          0.01291543646475804,
+          1.4487454522029333,
+          0.0613134166225608
+        ],
+        "opening_m": 0.03136,
+        "gripper_torque_sdk_units": -85,
+        "ctrl_mode": 1,
+        "arm_status": 0,
+        "mode": 0,
+        "teach_status": 0,
+        "motion_status": 0,
+        "fault": 0,
+        "driver_codes": [
+          64,
+          64,
+          64,
+          64,
+          64,
+          64
+        ],
+        "jaw_code": 64,
+        "enabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "arm_target_reached": true,
+      "jaw_target_m": 0.03136,
+      "jaw_width_error_m": 0.0,
+      "jaw_target_reached": true,
+      "jaw_target_report_tolerance_m": 0.0015,
+      "gripper_service_status_scope": "request_sent_and_feedback_stable_not_grasp_or_release",
+      "grasp_verified": false,
+      "general_stop_validated": false
+    }
+  ],
+  "task_success": false,
+  "pen_grasp_attempted": false,
+  "continuous_loop_may_resume_without_review": false,
+  "limits_unchanged": true,
+  "full_actual_trajectory_record_available": false,
+  "camera_closed_before_goal_arrival": true
+}

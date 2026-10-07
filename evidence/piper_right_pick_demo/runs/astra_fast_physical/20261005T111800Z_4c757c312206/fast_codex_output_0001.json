@@ -1,0 +1,21 @@
+{
+  "decision": {
+    "phase": "APPROACH_PEN",
+    "action": "move_eef",
+    "arguments": {
+      "pose_m_rad": [
+        0.08898,
+        0.002959,
+        0.24491,
+        0.0010821041362364843,
+        1.4489374384206526,
+        0.0503876555050763
+      ],
+      "speed_percent": 1,
+      "next_phase": null
+    },
+    "confidence": 0.72,
+    "explanation": "Retry with a 28 mm translation to leave margin for endpoint rounding."
+  },
+  "source": "codex_cli"
+}

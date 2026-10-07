@@ -1,0 +1,62 @@
+Per-frame RX guard and reviewed stationary handoff
+
+Files: guarded_rx_latch.py, ros_guarded_rx_entry.py, ros_guarded_rx_client.py.
+All old sources, results, sessions and failure locks remain unchanged. This
+entry accepts the specifically reviewed completed seq38 endpoint, with the
+retrospective raw-monitoring failures recorded in reviewed_handoff.json.
+The five parent session files are locked read-only and byte-checked on exit;
+one guarded_rx_<boot>.json child prevents restart or output-directory retries.
+
+What changed
+  Each received joint-pair frame is checked before a later frame replaces it.
+  Strict manufacturer nominal bounds and the original +/-0.003rad action box
+  are unchanged. A hold adds its local box without replacing the original.
+  Raw arm status, motor flags, jaw health/range and joint-command jaw drift are
+  also checked per frame. The first fault retains raw bytes, kernel timestamp,
+  axis/bounds and token/sequence/generation. A later good frame cannot erase it.
+  RX does no filesystem I/O, FK calculation, ROS call or control transmission.
+  Deep socket sends use the same short lock as RX and recheck on every frame.
+  No send is allowed without the worker's bound immutable action context.
+  Worker/timer code persists the fault, including a final partial receipt if
+  RX failed between command frames. Normal J, hold, jaw and later sends block.
+  Existing FK, workspace, complete-box 30mm/0.05rad, freshness, stable-arrival,
+  ownership, speed1%, enable and all other guards are retained unchanged.
+
+Scope and limitations
+  The guarantee covers frames already delivered to the SDK receive callback;
+  a kernel-queued or lost frame cannot be checked before it is received.
+  This is not a physical stop: an accepted finite target can still continue.
+  No automatic hold, stop, reset, disable, retry or recovery is introduced.
+  Per-frame joint/status/jaw checks are added; existing pose/FK checks retain
+  their existing full-snapshot semantics. Independent raw recording continues.
+  J3+21mdeg and J6's transient zero are recorded feedback violations, not proof
+  of a physical overshoot, and their physical cause remains unresolved.
+
+Root-only reviewed deployment (these lines do not run anything)
+  Keep the unchanged entry_config.json and copy the reviewed handoff evidence
+  to reviewed_handoff.json beside it. Required explicit fields include reviewed
+  and current_completed_state_reviewed=true, first_segment_max_joint_deg=1,
+  unchanged parent/result/audit/context hashes, retrospective_monitor_failure,
+  allow_limit_relaxation=false and home_replay_allowed=false. The exact parent
+  result and feedback endpoint are checked; a failed/pending parent cannot pass.
+  Replace only the launch-prefix entry script with ros_guarded_rx_entry.py:
+    --entry-config ABS_CONFIG --entry-output-dir NEW_RUNTIME
+    --empty-gripper-confirmed PINNED_VENDOR_DRIVER [existing ROS remaps]
+  Keep node /piper/right/interruptible_driver, can1/USB1-6.3:1.0, speed1,
+  auto_enable=false, existing enabled gripper and no competing publishers.
+  New adoption is receive-only, includes fresh 3s stable validation and comparison
+  with the reviewed endpoint. No old goal is replayed and no homing is performed.
+
+  The client reuses the frozen single-publication/bound-hold/result loop:
+    ros_guarded_rx_client.py --config ABS_CONFIG --runtime NEW_RUNTIME
+      --output UNIQUE_OUTPUT --operation joint --target-raw SIX_MILLIDEGREES
+      [--execute]
+  Root selects the first small goal; each axis is capped at1deg in addition to
+  the unchanged stronger Cartesian/full-box bounds. First verified J completion
+  then permits normal original guarded J and idle jaw operations in this session.
+  Client operations: joint, gripper, status, successful-hold result resume.
+  Automatic home, P/L, speed changes, retries and failed-session resume are absent.
+  A new RX violation locks the session; do not restart it to discard the fault.
+
+Testing is raw-frame replay and fake-transport verification only. It does not
+establish physical stopping distance, collision clearance or loaded-task safety.

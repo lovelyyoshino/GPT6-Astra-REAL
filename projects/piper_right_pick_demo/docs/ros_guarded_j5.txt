@@ -1,0 +1,52 @@
+J5-only tracking profile for the reviewed seq62 continuation
+
+New files: j5_tracking_profile.py, ros_guarded_j5_entry.py,
+ros_guarded_j5_client.py. All frozen predecessors remain unchanged.
+
+Only the original and hold joint-motion tracking boxes change: J5 permits
+pi/600 rad = 0.30 degrees (300 feedback millidegrees), the other five axes
+remain 0.003 rad. The pure full independent-joint-box proof adds exactly
+that J5 margin to its rotation and radius-weighted translation budgets.
+It must still fit 30 mm / 0.05 rad and the original workspace. Runtime
+polling and every processed RX joint frame use this identical profile.
+Jaw actions, nominal joint limits, 3 s stability, arrival, pre-send slip,
+1% speed, complete 100 ms feedback, jaw stability and fault checks retain
+their original limits. P/L and automatic home/replay are not exposed.
+
+Entry CLI remains:
+  ros_guarded_j5_entry.py --entry-config <newrun>/entry_config.json \
+    --entry-output-dir <newrun>/runtime --empty-gripper-confirmed \
+    <pinned vendor driver.py> <ROS remaps>
+The controlling parent prepares the launch; this implementation has not
+started a node or connected to a device. Private speed_percent must be 1.
+
+The config contains the exact explicit physical_limits field:
+  joint_tracking_margin_rad = [.003,.003,.003,.003,pi/600,.003]
+The supplied new config SHA is pinned. reviewed_handoff.json binds the
+specific seq62 failure, its original complete 4-frame receipt, immutable
+parent sessions, and independently reviewed raw byte window + FK record.
+The old failure and every old lock remain untouched. The fixed new child
+name prevents restarting or changing output directories to obtain a retry.
+Startup adopts with 0 actuator TX, after fresh healthy stationary feedback
+for 3 seconds and original target error <= .003 rad. First new segment is
+at most 0.5 degree per axis. It is a new explicit task command, not replay.
+
+Client arguments are unchanged, with operation joint, gripper, status or
+reviewed resume. Joint proposals and the runtime use the same path checker.
+Do not use home. --execute is required for a publication; ordinary commands
+are still one publication, no retry. Jaw width 0..55 mm, effort .2 is kept;
+its completed result confirms stable feedback, not a successful grasp.
+
+RX fault latching remains permanent. It blocks subsequent individual TX
+frames, including hold, jaw, and remaining frames of a partial transaction.
+It does not cancel a controller goal already accepted. No automatic stop,
+reset, disable, unqualified recovery or failure-latch clearing is added.
+A received-frame guard cannot preempt a frame still queued in the kernel.
+The seq62 raw deviation is a confirmed feedback observation; its physical
+cause is not established. This profile is an explicit bounded host policy,
+not proof of arbitrary dynamic accuracy or general stopping qualification.
+
+Implementation isolation: reviewed function bytecode is reused with a
+private globals dictionary for the path-check facade. Frozen functions and
+modules are not monkeypatched; the new RX latch is installed per instance,
+before reception, and retains the original shared RX/deep-TX short lock.

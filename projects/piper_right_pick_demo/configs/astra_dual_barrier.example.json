@@ -1,0 +1,35 @@
+{
+  "mode": "astra_fast_closed_loop",
+  "implementation": "offline_contract_only",
+  "execution_available": false,
+  "task_id": "cups",
+  "execution_mode": "dual_arm",
+  "pipeline_id": "dual_arm_barrier_v1",
+  "worker_arm": "left",
+  "peer_arm": "right",
+  "model": {
+    "protocol": "codex_cli",
+    "model_id": "gpt-6-astra",
+    "codex_binary": "codex",
+    "max_calls": 24,
+    "timeout_s": 45,
+    "pipeline_id": "dual_arm_barrier_v1",
+    "allow_historical": false
+  },
+  "controller": {
+    "max_steps": 32,
+    "max_model_calls": 24,
+    "max_retries": 2,
+    "max_recoveries": 1,
+    "max_observe_unknown": 4,
+    "max_elapsed_s": 900
+  },
+  "pair_contract": {
+    "dispatch_barrier": "shared",
+    "common_duration_required": true,
+    "held_or_null_required": true,
+    "partial_send_policy": "latch_both_arms"
+  },
+  "physical_execution": "BLOCKED_PENDING_DUAL_ARM_BARRIER_QUALIFICATION",
+  "notes": ["Contract example only. The current fast CLI rejects coordinated modes before opening runtime resources."]
+}

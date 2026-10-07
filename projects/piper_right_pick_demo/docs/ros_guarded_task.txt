@@ -1,0 +1,108 @@
+Guarded ROS J runtime (2026-10-06)
+
+Entry: scripts/ros_guarded_task_entry.py. This version supports J, bound external
+hold, explicitly reviewed software resume, and idle explicit jaw. P/L, enable, disable,
+quickstop, reset, teaching, and go-zero services remain denied. No automatic
+home/grasp program, retries, parameter changes, or controller reboots are added.
+
+Launch CLI matches the previous entry:
+  --entry-config /absolute/config.json
+  --entry-output-dir /new/absolute/runtime
+  --empty-gripper-confirmed
+  PINNED_VENDOR_DRIVER.py [ROS remaps]
+Keep current namespace/node /piper/right/interruptible_driver; speed_percent=1,
+auto_enable=false, exit_teaching_mode=false. Source and configuration identity is
+recorded. ROS imports and hardware initialization occur only under main().
+
+Startup locks and reads the original failure session and successful child trial;
+neither is modified. reviewed_parent.json beside entry-config must contain:
+  parent_success_session_sha256: c68cda74e15f5535db9e05c452474f82aea44575318afea3f3b70a4d31325140
+  parent_success_result_sha256: c3763f57ca2780f2285910e8c740c067930c246734a67f36c08ace8f19d8731b
+  user_authorization: 请将机械臂归零后开始执行任务可以么，直到任务完成前都不要结束对话
+The fixed new session is runs/ros_interruptible_joint_sessions/guarded_task_BOOT.json.
+An existing file prevents restart/new-output bypass. The old owner must exit
+normally before startup. Frozen base startup adopts fresh healthy enabled J
+feedback after three seconds, with zero actuator frames and no SDK init queries.
+The current pose/jaw must still match the reviewed parent endpoint. Software exit
+does not cancel an accepted goal or switch off motors.
+
+Each JointState has exactly six positions in radians, velocity [0,0,0,0,0,0,1],
+and empty effort. All targets are manufacturer-nominal, using exact millidegree
+encoding. The initial stage is commissioning: one admitted common-ratio segment
+toward existing six joint zeros, every axis at most one degree, at least two axes
+with >=0.2 degree planned change. It is also subject to the complete independently
+progressing joint-box FK bound, original 30mm/0.05rad/workspace, +/-0.003rad tracking,
+100ms complete raw feedback, healthy enabled state, and unchanged jaw. These
+limits also apply throughout task stage. They are not a collision certificate.
+
+Normal action sends one four-frame J transaction, then observes actual arrival
+and three seconds of new stable feedback. Ordinary completed actions may be
+followed by the next explicitly selected action in task stage.
+
+~hold_status returns sequence, adoption_token, generation, stage, active, phase,
+hold_service, result, result_sha256, resume_service and failure. Send at most one
+Trigger to the exact current hold_service (.../hold_current/seq_N_TOKEN). Accepted
+means the worker received a request, not that physical stopping is confirmed.
+Only the existing worker sends the hold, after finishing the initial transaction.
+Ownership checks and durable intent precede the final sample. All six hold targets
+come from one newest complete snapshot; another immediate witness must still
+meet the unchanged 0.003rad/0.5mm/0.003rad slip checks. No blocking logging or graph
+query intervenes. Both original motion box and local hold box remain enforced.
+The worker sends at most four replacement frames and observes three seconds of
+new stable arrival. Recorded maxima are discrete samples, not continuous braking
+distance guarantees. A crash between durable reservation and exact receipt is
+unresolved, never evidence of zero transmission or permission to retry.
+
+Commissioning is promoted only after at least two axes show actual recent motion,
+>=0.2 degree progress and remaining distance at the hold sample, and >=0.2 degree
+final separation from the original goal. A natural arrival, early cancellation,
+or single moving axis does not promote. The service never delays stopping to
+achieve this experiment window. A suitable external request must be chosen by
+the supervisor (for the current proportional J2/J3 segment, J2 about0.35degree
+progress gives more margin than0.25degree for J3's progress criterion).
+
+After a successful hold, adoption is revoked in software and subsequent goals
+are blocked. The supervisor reads action_N_result.json and verifies the result
+before calling the unique resume_service. Its path binds sequence, generation,
+adoption token, and full result SHA. Resume acquires the action lock, verifies
+unchanged result and complete initial/hold receipts, rechecks ownership and fresh
+three-second stationary state, then archives the old stopped generation and
+creates a new task generation. It sends ZERO actuator frames. Old resume and
+hold endpoints cannot control the new generation. Failures, partial transmissions,
+pending outcomes and unqualified commissioning cannot resume through this route.
+
+Client timeout/exit itself does not stop the robot. A client may request the bound
+hold while fresh healthy feedback is available and wait for its confirmed result.
+The driver's own 120-second arrival timeout latches failure; it does not blindly
+send a stop. Hold observation has its own20-second deadline. Fault/stale/partial
+conditions lock further commands without quickstop/reset/disable/retry.
+
+Independent jaw service uses the existing /piper/right/gripper_srv of type
+piper_msgs/Gripper (not PosCmd): gripper_angle metres within configured0..55mm,
+gripper_effort exactly0.2, gripper_code1, set_zero0. Arm and jaw must already be
+enabled, healthy, idle, and in J mode; commissioning, active arm actions, holds,
+pending transactions and failures reject it. The same action lock protects one
+0x159 frame: big-endian width_um, raw effort200, code1, zero0. No arm mode or goal
+frame is sent, and no startup/enable operation automatically opens or closes jaw.
+Before the frame, three-second fresh stability and unchanged pre-send feedback
+are required. Afterwards, arm joints must stay within0.003rad, end-reference
+within2mm and SO(3)0.003rad; all fourteen feedback fragments including jaw must
+advance after the send, followed by three-second stability. Jaw movement/contact
+is permitted within its range. Contact can leave actual width greater than a
+closing target: that may complete as stable, with jaw_target_reached=false.
+The result phase remains completed and kind=gripper; jaw_width_error_m,
+jaw_target_reached (1.5mm report tolerance), grasp_verified=false and
+release_verified=false are explicit. Service code15900/status=true means only
+request_sent_and_feedback_stable_not_grasp_or_release. New images/observation
+must establish actual grip/release. Partial sends or feedback failures latch,
+with no retry, force increase or automatic opening. The handler may use up to10s
+baseline plus20s post-send confirmation; client should wait35s once. A client
+timeout leaves the jaw outcome uncertain and must not trigger a blind retry or
+use an arm hold request as a jaw stop. The physical effort feedback is not being
+interpreted as proof of contact force or grasp.
+
+This is a bounded1percent ROS J commissioning/task mechanism, not qualification
+of50percent, arbitrary collision-free motion, P/L inverse-kinematics branches,
+loaded holding, controller failure or power loss. Initial commissioning remains
+a real experiment until the supervisor has reviewed its actual evidence. The
+offline test suite validates software sequencing and rejection, not dynamics.

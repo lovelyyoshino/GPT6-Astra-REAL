@@ -1,0 +1,51 @@
+ROS 单次 J 停止验证入口（仅验证，不接受任务目标）
+
+入口：scripts/ros_joint_stop_probe_entry.py。复用原 ros_resume_entry.py 的
+固定 SHA、SDK0.6.2、厂家节点哈希、can1/USB1-6.3:1.0 绑定、0TX 接管和
+逐帧发送许可。原驱动、SDK、任务入口和失败记录均不修改。
+
+由现场唯一操作者完成切换：先确认旧节点没有活动命令、完整新鲜反馈
+连续静止且已使能；正常退出旧软件并确认唯一 owner 消失，再启动新入口。
+退出软件不是物理停止，不应在运动中用退出替代停止试验。
+
+launch-prefix 结构：
+  /usr/bin/python3 /home/agilex/piper_right_pick_demo/scripts/ros_joint_stop_probe_entry.py
+  --probe-config <独立 probe_site.json> --probe-output-dir <尚不存在的目录>
+  --empty-gripper-confirmed
+其后由 roslaunch 传入固定厂家 piper_ctrl_single_node.py 与 ROS remap。
+私参 speed_percent=1、auto_enable=false、exit_teaching_mode=false、
+gripper_exist=true、gripper_val_mutiple=1、can_port=can1。
+配置 physical_limits.max_speed_percent 必须为1，其余限值不得宽于原
+30mm/.05rad、workspace[-.6,-.6,.05]..[.6,.6,.65]、名义关节、100ms、55mm爪宽。
+空爪确认来自操作者图像/现场判断，不由爪宽推断。
+
+唯一两个可发送服务（std_srvs/Trigger，无可选目标）：
+1. <节点名>/static_hold_probe：要求现有 J 模式和3秒完整新反馈静止，
+   一次1%四帧发送当前六关节实测位置，验证近目标且继续静止3秒。
+2. <节点名>/dynamic_stop_probe：必须同一进程 static 成功且位置保持；
+   一次1% J2朝既有零点最多1°，至少需要0.60°起点余量。观察实际进展
+   ≥0.25°、距原目标仍≥0.35°，且近50–150ms原始J2反馈朝目标变化
+   ≥0.0005rad，才覆盖一次。覆盖仅把J2目标改为新实测位置，其余五轴
+   保持初始目标；发送前再验证新鲜反馈、漂移、运动趋势和剩余距离。
+   最终须近覆盖目标、距原J2目标≥0.20°、完整新反馈静止3秒。
+
+每次发送均为0x151(J/1%)+0x155/156/157，共四帧；没有夹爪帧、使能、
+急停、复位、失能、自动补发或重试。普通P/J/gripper等接口均拒绝。
+完整关节区间解析界和21点厂家FK均需保留原运动包络；该界不证明
+臂体/工具/线缆碰撞净空，也不保证实际运动不会越过监测包络。
+
+每种试验至多一次。固定 runs/ros_joint_stop_probe_sessions/<boot_id>.json
+在进程全程持锁，失败/未完成/已有启动记录阻止更换输出目录或重启再试。
+遇到错误仅封锁后续发送，控制器已接受的有限目标可能继续，不自动处置。
+不要删除记录、放宽阈值或清锁来重复试验；需人工审查另行决定。
+
+输出：feedback.jsonl（含完整14类raw十六进制帧、kernel时间戳、intent、
+send_receipt），static_result.json / dynamic_result.json 及最新 result.json。
+success仅表示该次空载1% J试验及记录的3秒保持成立；不授权任意50%、
+P/L模式、负载、断电或进程崩溃保持。净位移与观察最大位移分别记录；
+最大值来自约50ms离散快照，非连续物理停止距离上界，可能漏掉最初瞬态。
+需要更密记录时，由独立原始反馈采集证据另算；不能把3秒确认耗时称停止延迟。
+
+离线专项（不接触硬件；假数据不模拟真实停止动力学）：
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:tests python3 -B -m unittest discover
+  -s tests -p test_ros_joint_stop_probe_entry.py -v

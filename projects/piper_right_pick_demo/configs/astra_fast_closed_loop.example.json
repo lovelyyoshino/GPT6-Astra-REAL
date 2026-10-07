@@ -1,0 +1,36 @@
+{
+  "mode": "astra_fast_closed_loop",
+  "execution_mode": "single_arm",
+  "pipeline_id": "single_arm_closed_loop_v1",
+  "task_id": "pen",
+  "worker_arm": "right",
+  "observer_arm": null,
+  "model": {
+    "protocol": "codex_cli",
+    "model_id": "gpt-6-astra",
+    "codex_binary": "codex",
+    "max_calls": 24,
+    "timeout_s": 45,
+    "max_observation_age_s": 0.8,
+    "max_sensor_skew_s": 0.15,
+    "allow_historical": false
+  },
+  "observation_contract": {"max_age_s": 0.8, "max_skew_s": 0.15},
+  "controller": {
+    "max_steps": 32,
+    "max_model_calls": 24,
+    "max_retries": 2,
+    "max_phase_steps": 4,
+    "max_recoveries": 1,
+    "max_observe_unknown": 2,
+    "max_elapsed_s": 900
+  },
+  "physical_execution": "BLOCKED_PENDING_HOLD_QUALIFICATION_AND_LIVE_ADAPTER",
+  "notes": [
+    "No live motion limits, device bindings, calibration or target coordinates are supplied by this example.",
+    "Use --model codex with the existing Codex login; no API key setup is needed for this backend.",
+    "900 s is a termination budget, not evidence of successful task completion in 15 min.",
+    "All three RGB cameras are retained locally; phase-selected views are sent without resize.",
+    "CLI usage tokens are recorded when reported; a short schema, timeout and response-byte limit bound decisions."
+  ]
+}

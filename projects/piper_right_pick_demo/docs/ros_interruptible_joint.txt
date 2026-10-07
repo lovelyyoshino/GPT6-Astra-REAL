@@ -1,0 +1,76 @@
+ROS 有外部保持请求的受限关节入口
+
+scripts/ros_interruptible_joint_entry.py 不修改原驱动/SDK/探针/锁。
+仅复用此次已验证局部条件：空载、已使能、J模式、1%速度、J2朝零≤1°。
+其它轴、50%、P/L、夹爪、enable、reset、急停、自动恢复均不提供。
+重复完成普通J2动作并不自动证明新姿态的停止资格；原30mm/.05rad、
+名义关节/工作区、完整14帧≤100ms、厂家FK和独立关节区间界始终保留。
+继承的SDK位于ROS驱动内部，没有旁路控制连接或客户端SDK发送。
+
+现场唯一操作者确认旧节点已静止后正常退出旧软件，确认owner消失再启动。
+启动仍0TX接管，不使能、不改模式、不查SDK初始化参数。旧软件退出本身
+不是停止。测试按用户要求不录视频；此入口没有相机代码。
+
+launch-prefix：/usr/bin/python3 .../scripts/ros_interruptible_joint_entry.py
+ --entry-config <独立限值JSON> --entry-output-dir <新目录>
+ --empty-gripper-confirmed
+其后保留固定厂家driver脚本与ROS remap。私参speed_percent=1，
+auto_enable=false、exit_teaching_mode=false、gripper_exist=true、multiplier1。
+JSON physical_limits.max_speed_percent=1，原其它限值保持；程序不写ROS参数。
+
+joint_cmd 输入 sensor_msgs/JointState：6个position（rad），velocity必须
+[0,0,0,0,0,0,1]，effort为空。J2目标在新鲜实测值向0的(0,1°]内。
+其余五轴输入须与新反馈和已保持目标都在.003rad内，仅作为“保持该轴”
+的兼容输入；有效目标冻结为接管时/上一普通动作的held targets，绝不
+把这些小差值解释为五轴任务运动。requested_raw与实际target_raw分开记录。
+每个普通动作只发送一次J1%四帧，完整到位且3秒新鲜静止后才completed。
+
+标准std_srvs/Trigger接口：
+  <node>/hold_status：只读，success=true，message是JSON。
+  <node>/hold_current/seq_<N>_<adoption_token>：请求对应动作停止。
+精确路径从hold_status获取。服务名含seq和进程随机token，旧/迟到/重复
+请求无法停止下一动作或新进程。请求线程只锁存标志，原动作线程完成
+当前四帧后串行执行至多一次新目标覆盖，绝不并发争用CAN ticket。
+
+请求响应success=true表示accepted，不表示已保持。客户端必须轮询同一
+token/seq的hold_status及最终收据：
+- cancelled_before_dispatch：请求在初始发送前到达，0TX并验证静止；
+- hold_confirmed：J2替换为新鲜实测值，其他5轴原目标保持，3秒反馈确认；
+- already_completed：目标已到，未补发覆盖，不冒称中途停止；
+- failed：锁存错误，已接受的目标仍可能继续；不自动补发任何控制。
+interruption_demonstrated还要求已观察近期运动、覆盖前进展≥.25°/
+剩余≥.35°、最终离原goal≥.20°。不满足这些实验指标时不延迟hold请求，
+但不能把局部静止声称为动态中断已证。有限外部链实测应选既有验证窗口。
+
+状态JSON主要字段：schema_version, adoption_token, sequence, active, phase,
+hold_service, hold_requested, hold_confirmed, stop_latched, failure,
+command_sent_unix_s, before, requested_raw, target_raw, latest_state, receipts,
+result, last_refusal。latest_state为最新完整快照；state.json在阶段变化时
+原子保存。feedback.jsonl留完整raw14/时间/intent/receipt；每次终态另存
+action_000001_result.json等。accepted和confirmed、普通完成和中断分开。
+
+外部客户端异常/timeout可向它原先绑定的精确服务请求hold，再等待结果。
+若反馈过期、故障、部分发送，服务/worker不能盲发保持。驱动自身120秒
+运动观察超时仍锁失败，不是自动物理停止；hold发完有独立20秒确认期限。
+客户端退出、服务响应、driver退出、断线均不能代替真实保持证据。
+任意stop请求后禁止继续动作；成功保持只撤销软件adoption，硬件继续使能，
+通用telemetry accepts=false，failure仍可为null。首版没有resume/reset。
+持久会话按boot固定路径加进程锁，失败/未完成不能换输出目录或重启绕过。
+
+离线回归只验证逻辑/序号/帧/锁存，不验证物理制动或进程崩溃保持：
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:tests python3 -B -m unittest discover
+ -s tests -p test_ros_interruptible_joint_entry.py -v
+
+正常客户端：scripts/ros_interruptible_joint_client.py
+--config <配置> --runtime <入口日志目录> --output <新客户端日志目录>
+--j2-toward-zero-deg <0至1之间> --motion-timeout-s 20
+客户端只发布一次。超时或SIGINT/SIGTERM使用本次seq/token服务请求保持，
+继续等待确认；服务答复丢失不重复请求。发送前已取消则零发布。
+--cancel-after-progress-deg 0.25仅用于本地停止链验证。
+
+2026-10-06首次外部链真机结果：未通过。
+记录：runs/stop_integration_20261006_152651/verification_summary.json
+初始1°J2目标四帧完整发送，外部请求accepted；保持目标预发送检查中，
+两份健康反馈间39.956ms正常运动0.553878mm，超过原静止0.5mm差分门槛。
+保持目标0TX，原目标继续完成，随后5秒观察稳定。不可把此结果称为停止。
+保留failure latch和live源；后续取样顺序修复独立离线评估，不自动重试。

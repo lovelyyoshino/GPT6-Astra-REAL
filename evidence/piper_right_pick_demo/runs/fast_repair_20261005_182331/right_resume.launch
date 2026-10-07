@@ -1,0 +1,15 @@
+<launch>
+  <group ns="/piper/right">
+    <node pkg="piper" type="piper_ctrl_single_node.py" name="driver" output="screen"
+          launch-prefix="/usr/bin/python3 /home/agilex/piperx_cloth_demo/robot_tools/ros_resume_entry.py">
+      <param name="can_port" value="can1"/>
+      <param name="auto_enable" value="false"/>
+      <param name="exit_teaching_mode" value="false"/>
+      <param name="gripper_exist" value="true"/>
+      <param name="gripper_val_mutiple" value="1"/>
+      <param name="speed_percent" value="1"/>
+      <remap from="joint_ctrl_single" to="/piper/right/joint_cmd"/>
+      <remap from="eval_telemetry" to="/piper/right/eval_telemetry"/>
+    </node>
+  </group>
+</launch>

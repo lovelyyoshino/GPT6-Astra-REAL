@@ -1,0 +1,1 @@
+Resume the single right-arm pen-to-holder RGB-only task after a model-requested pause; no object geometry or calibration.

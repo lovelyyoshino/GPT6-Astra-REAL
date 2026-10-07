@@ -1,0 +1,47 @@
+{
+  "src/right_pick/fast_ros.py": {
+    "sha256": "90eb852aa9c4e8aa83a5cefa9253fded3a3acbbb2808a0c54dc100b330f042da"
+  },
+  "src/right_pick/fast_policy.py": {
+    "sha256": "2142047fbd89f3583f049a990b268304c414ac5ab38571d8a667f4b80667cb86"
+  },
+  "src/right_pick/fast_live_policy.py": {
+    "sha256": "4bdedf305d9e73b72caa1ef1572652b9bfa7e68e57b9d568f12943a750acf29b"
+  },
+  "src/right_pick/fast_qualification.py": {
+    "sha256": "599ea26a51920035e4b4531729d3a0437ddebdeeab8f666629b88596ff5b0c78"
+  },
+  "src/right_pick/fast_replay.py": {
+    "sha256": "e88baf7a5f4c5fab9e5dfaf38df962af2fe259d80a4a5742df3af4e61a1d82fc"
+  },
+  "src/right_pick/fast_cli.py": {
+    "sha256": "7995752cef6bc99133688698e51357ea97ec24f8ce992c4f4f305c5339b69ed1"
+  },
+  "src/right_pick/fast_safety.py": {
+    "sha256": "8f2d15b84b274f3e6846d911c78d325df7c6af8939b604653e43898ac5e9b85a"
+  },
+  "src/right_pick/fast_live_check.py": {
+    "sha256": "59fd70f516552749817cf72003a5ca3b8bc7bc4072f87f43fa26d7bcb488a939"
+  },
+  "src/right_pick/fast_recording.py": {
+    "sha256": "f7ac50e6a9423df3bdd8a54d28fc9861fccee4fe12ae047c264797e40d771d9a"
+  },
+  "src/right_pick/fast_model.py": {
+    "sha256": "c48e8a8b8d9970f76670ddd1c2c1c2509f1cc151158978d1bc787dcac529ae52"
+  },
+  "src/right_pick/fast_loop.py": {
+    "sha256": "a8705c3fe2c8135ece3a9ea34333a7e6ab65f58d0e476a9ca3a4387b37903e42"
+  },
+  "src/right_pick/fast_observation.py": {
+    "sha256": "a51265ec1b6916879cab798a19c0d3685da51b6db846cc3ba337ef3b66ca44e9"
+  },
+  "src/right_pick/fast_live_loop.py": {
+    "sha256": "7f565969fc6cc6ccc9e039366fd0a5b3ac12a6619ba2808cf40dac4a131cdf41"
+  },
+  "src/right_pick/fast_camera_worker.py": {
+    "sha256": "ddfc14a3c08061f0dc84617586d1bfacf98721b895428ca59049430365aa6106"
+  },
+  "src/right_pick/fast_codex.py": {
+    "sha256": "90f0d1baed10b77ec8f336a274cb34cdba3f34dd1d1f7aced5df1be116928e55"
+  }
+}

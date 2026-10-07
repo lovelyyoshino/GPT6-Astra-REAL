@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "task_file": "tasks/put_pen_in_holder/task.json",
+  "sdk_path": "/home/agilex/pyAgxArm",
+  "sdk_commit_audited": "841a625f5f4920e776f20b934eb13048b747e6d0",
+  "arms": {
+    "left": {"model": "piper", "firmware": "default", "channel": "can0", "usb_interface": "1-6.2:1.0"},
+    "right": {"model": "piper", "firmware": "default", "channel": "can1", "usb_interface": "1-6.3:1.0"}
+  },
+  "cameras": {"front": "243322070709", "left_wrist": "336222071115", "right_wrist": "244222070415"},
+  "binding_source": "2026-10-04 22:40 +08:00: sysfs confirms left can0=1-6.2:1.0 and right can1=1-6.3:1.0, matching the previously user-confirmed left/right USB ports; old right can2 is absent after re-enumeration. User-authorized host CAN setup restored both links at 1 Mbps, followed by complete passive arm feedback. Current third-person D435 is 243322070709, confirmed by SDK serial and direct image inspection; old front 243622070374 is absent. Wrist serials unchanged. Fresh evidence: runs/third_view_inspection_20261004T222156/runs/obs_0a9a753a7a474e8fa712bd64af7adfc7/observation.json. Camera geometry has changed and remains unverified. Prior profile preserved in runs/device_bindings_20261004T224029/before/configs/robot.json.",
+  "physical_model_confirmation": {"left": "piper", "right": "piper", "source": "2026-10-04 user confirmed both arms are PiPER, consistent with controller/FK comparisons. Fresh manufacturer query firmware_08eb9eb4a47246afaa532c716713169a confirmed both S-V1.6-5 and default SDK profile; this does not validate tool geometry or holding stop."},
+  "verification": {
+    "physical_models_and_firmware": true,
+    "base_frames_and_table": false,
+    "tool_and_camera_geometry": false,
+    "hold_stop_and_recovery": false,
+    "gripper_units_and_limits": false
+  },
+  "firmware_confirmation": {"left": "S-V1.6-5", "right": "S-V1.6-5", "sdk_profile": "default", "record": "runs/firmware_08eb9eb4a47246afaa532c716713169a/result.json", "scope": "Fresh manufacturer query and model confirmation only; no motion or holding qualification"},
+  "gripper_prepare_stationary_joint_tolerance_rad": {"right": [0.003, 0.003, 0.003, 0.008, 0.003, 0.003]},
+  "gripper_prepare_feedback_basis": "Only right J4: raw high-level angle alternates 0/339 millidegrees while motor position remains 4..6 milliradians across recorded observations; all other joints stable for the subsequent 8 s window. User confirms empty jaws/no contact/no visible vibration. See runs/maintenance_commissioning_20261004/passive_can_analysis.json. Applies to empty-jaw preparation only; no arm-motion or hold qualification.",
+  "geometry": {"left_base_to_right_base": null, "table_in_base_frames": null, "flange_to_tcp": null, "collision_models": null},
+  "preview_max_observation_age_s": 30.0,
+  "preview_max_speed_percent": 5,
+  "execution_implemented": true,
+  "legacy_hold_record": "/home/agilex/piper_right_pick_demo/runs/vendor_execution_hold.json"
+}

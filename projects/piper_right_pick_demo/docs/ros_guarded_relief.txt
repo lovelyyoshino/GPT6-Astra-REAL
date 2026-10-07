@@ -1,0 +1,34 @@
+One reviewed67mm lower target after the specific unmet70mm opening
+
+Entry/client: scripts/ros_guarded_relief_entry.py and
+scripts/ros_guarded_relief_client.py. Same wide70 config and normal ROS namespace
+/piper/right, node interruptible_driver, --table-supported-contact-confirmed.
+No old source/process/session is changed. Startup locks all nine parent files
+read-only and binds the exact seq2 failed result, complete single0x159 receipt,
+independent raw window/hash and current table-supported RGB. The failure must
+be only "Requested opening not reached; no automatic retry" with no RX safety
+fault. The raw report must retain review_pass=false and demonstrate stationary
+six joints/pose and stable67.06mm jaw. Old safety failures remain unchanged.
+
+This is not retry70 or a claim that mechanical end travel is known. The original
+70mm request was fully sent; a new67mm target lowers the remaining position
+demand by3mm with force parameter still.2. Physical cause remains unknown.
+Startup is zero TX and retains the fresh3s state check against the recorded
+endpoint. Child guarded_relief67_BOOT.json cannot be reopened by another output.
+
+Initial stage opening67_ready accepts only one --operation gripper --width-mm67
+--execute. All J,65/70 and repeated jaw requests are refused. Original single
+ticket, RX guard,70mm envelope, jaw-arm.003/SO3.003/XYZ2mm and timeout remain.
+This scoped opening must reach67mm within the unchanged1.5mm report tolerance
+and remain stable3s. Any fault or incomplete transaction locks the new session.
+No automatic stop/reset/disable/enable or retry is added.
+
+On completion adoption is revoked. Use docs/ros_guarded_wide.txt review schema
+with stage=opening67_review, actual_opening_reviewed=true and next_stage only
+retreat_ready. Root must review the new complete raw action, fresh images and
+current state, then call --operation review --reviewed-result-sha256 SHA
+--execute once. The original reviewed service checks hashes and another fresh
+three-second window before granting the existing separation/probe stages.
+Those stages and all normal joint/jaw semantics are unchanged; an ordinary
+stable contact jaw result is not automatically labeled an execution fault.
+No direct task admission or new generic failure reset exists.

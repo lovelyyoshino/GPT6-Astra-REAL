@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "pdf_page_count": 8,
+  "pdf_all_pages_have_body": true,
+  "docx_reopened": true,
+  "docx_zip_bad_member": null,
+  "inline_image_count": 8,
+  "facts_review": "independent_control_review_completed; offline-vs-ROS scope corrected",
+  "metrics_review": "metrics_review.json",
+  "geometry_review": "geometry_review.json",
+  "control_review": "control_review.json",
+  "pdf_visual_review": "All8 content pages visually checked; final revised page2 checked after offline-test scope correction; no blank pages, clipped tables or missing Chinese glyphs observed.",
+  "scope": "Report generation and local file reads only; no robot/camera/ROS interaction."
+}

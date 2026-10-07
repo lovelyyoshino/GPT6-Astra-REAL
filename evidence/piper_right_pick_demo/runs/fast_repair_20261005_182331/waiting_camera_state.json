@@ -1,0 +1,149 @@
+{
+  "nonphysical": false,
+  "robot_state": {
+    "pose_m_rad": [
+      0.06098,
+      0.002959,
+      0.24491,
+      0.002408554367752175,
+      1.4489374384206526,
+      0.05173155902911193
+    ],
+    "joints_rad": [
+      0.05098106745075437,
+      0.10068804454755288,
+      -0.10197958819402868,
+      0.050335295627516465,
+      -0.033335788713091695,
+      -0.05021312257987686
+    ],
+    "sampled_at": 1791198362.9328835,
+    "enabled": true,
+    "moving": false,
+    "binding_verified": true,
+    "arm_status": 0,
+    "err_code": 0
+  },
+  "gripper_state": {
+    "opening_m": 0.03136
+  },
+  "raw_telemetry": {
+    "sequence": 2416989,
+    "stamps": [
+      1791198362.9563155,
+      1791198362.9514456,
+      1791198362.9515767,
+      1791198362.9516463,
+      1791198362.9517775,
+      1791198362.951909,
+      1791198362.9520214,
+      1791198362.952174,
+      1791198362.9524007,
+      1791198362.9474962,
+      1791198362.9426458,
+      1791198362.937753,
+      1791198362.9328835,
+      1791198362.9531772
+    ],
+    "raw_q": [
+      2921,
+      5769,
+      -5843,
+      2884,
+      -1910,
+      -2877
+    ],
+    "q": [
+      0.05098106745075437,
+      0.10068804454755288,
+      -0.10197958819402868,
+      0.050335295627516465,
+      -0.033335788713091695,
+      -0.05021312257987686
+    ],
+    "pose": [
+      0.06098,
+      0.002959,
+      0.24491,
+      0.002408554367752175,
+      1.4489374384206526,
+      0.05173155902911193
+    ],
+    "opening_m": 0.03136,
+    "gripper_torque_sdk_units": -66,
+    "ctrl_mode": 1,
+    "arm_status": 0,
+    "mode": 0,
+    "teach_status": 0,
+    "motion_status": 0,
+    "fault": 0,
+    "driver_codes": [
+      64,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "jaw_code": 64,
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "can_interface": "can1",
+    "stamp": 1791198362.9566085,
+    "source": "sdk_receive_raw_frames",
+    "source_sequence": 2416989,
+    "feedback_max_age_s": 0.023725509643554688,
+    "driver_accepts_commands": true,
+    "active_command": false,
+    "failure": null,
+    "mode_feedback": 0,
+    "driver_sha256": "ecff6823dc6bbf55fe51708024ef88d993fead97572ad7c06e951020e83bc200",
+    "sdk_version": "0.6.2"
+  },
+  "provenance": {
+    "binding_verified": true,
+    "source_verified": true,
+    "driver_pid": 39677,
+    "can_interface": "can1",
+    "usb_interface": "1-6.3:1.0",
+    "adapter_sha256": "3cd2fcc87b5444a4e21419f33a4f38169b7ef2b7645fe329abba1aed70a992c8",
+    "vendor_sha256": "ecff6823dc6bbf55fe51708024ef88d993fead97572ad7c06e951020e83bc200",
+    "driver_node": "/piper/right/driver",
+    "speed_percent": 1,
+    "command_publishers": {},
+    "source_scope": "current source hashes plus live ROS owner PID; not memory attestation",
+    "sampled_at": 1791198362.9328835,
+    "max_feedback_age_s": 0.03973650932312012,
+    "feedback_skew_s": 0.023432016372680664,
+    "command_sequence": 7,
+    "jaw_command_target_m": 0.03136,
+    "command_log": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/resume_interior_tests.log",
+    "current_driver_adoption_unix_s": 1791197052.3939474,
+    "command_sequence_source": "local_driver_log_not_CAN_receive_counter",
+    "feedback_ids": [
+      673,
+      674,
+      675,
+      676,
+      677,
+      678,
+      679,
+      680,
+      609,
+      610,
+      611,
+      612,
+      613,
+      614
+    ],
+    "effort_units": "SDK raw telemetry units, not measured newton metres",
+    "physical_motion_authorized": false,
+    "hold_verified": false
+  }
+}

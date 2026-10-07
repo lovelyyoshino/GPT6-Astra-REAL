@@ -1,0 +1,2807 @@
+{
+  "source_trace": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/J_client_exit_trace.json",
+  "source_trace_sha256": "ee6590713b8132fb4145c0a9859bd935b1d68db97cdc433019050e4ff0a84015",
+  "source_event": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/J_client_exit_event.json",
+  "source_event_sha256": "f6d0760fb9debdf7cefa2e88c726bd180cb9a5ce2828c02aa70495681efcf2cc",
+  "before": {
+    "sequence": 416359,
+    "stamps": [
+      1791196370.4103055,
+      1791196370.410483,
+      1791196370.4105716,
+      1791196370.4107022,
+      1791196370.4107907,
+      1791196370.4109268,
+      1791196370.4110532,
+      1791196370.41119,
+      1791196370.4064002,
+      1791196370.4016073,
+      1791196370.3966498,
+      1791196370.3917863,
+      1791196370.411923,
+      1791196370.4071507
+    ],
+    "raw_q": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "q": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "pose": [
+      0.056127,
+      0.0,
+      0.213266,
+      0.0,
+      1.4835124109026603,
+      0.0
+    ],
+    "opening_m": 0.03136,
+    "gripper_torque_sdk_units": -85,
+    "ctrl_mode": 1,
+    "arm_status": 0,
+    "mode": 1,
+    "teach_status": 0,
+    "motion_status": 0,
+    "fault": 0,
+    "driver_codes": [
+      64,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "jaw_code": 64,
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "can_interface": "can1",
+    "stamp": 1791196370.413105,
+    "source": "sdk_receive_raw_frames",
+    "source_sequence": 416359,
+    "feedback_max_age_s": 0.021319150924682617,
+    "driver_accepts_commands": true,
+    "active_command": false,
+    "failure": null,
+    "mode_feedback": 1,
+    "driver_sha256": "ecff6823dc6bbf55fe51708024ef88d993fead97572ad7c06e951020e83bc200",
+    "sdk_version": "0.6.2"
+  },
+  "plan": {
+    "kind": "J",
+    "target": [
+      0.017453292519943295,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "encoded_target": [
+      0.017453292519943295,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "requested_target": [
+      0.017453292519943295,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "axis": 0,
+    "units": "radians",
+    "expected_frames": [
+      {
+        "id": 337,
+        "data_hex": "0101010000000000"
+      },
+      {
+        "id": 341,
+        "data_hex": "000003e800000000"
+      },
+      {
+        "id": 342,
+        "data_hex": "0000000000000000"
+      },
+      {
+        "id": 343,
+        "data_hex": "0000000000000000"
+      }
+    ],
+    "message": {
+      "position": [
+        0.017453292519943295,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  },
+  "samples": [
+    {
+      "sampled_at": 1791196370.8332663,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.8314204,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8314319,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.8264964,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8265069,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.8216214,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8216333,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.816758,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8167691,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.8118916,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.811903,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.8321688,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8321807,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.8303137,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8303304,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.8304794,
+          "data_hex": "0000db3f0000001d",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8304915,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.8305793,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8305905,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.8306677,
+          "data_hex": "00014c070000001e",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.830679,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.8307986,
+          "data_hex": "0000001e00000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8308096,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.8309364,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8309472,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.8310244,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.831036,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.8311553,
+          "data_hex": "00007a80ffb24000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8311672,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.8531384,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.8314204,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8314319,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.8514879,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.851504,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.8466222,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8467023,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.841791,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8418016,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.8368938,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.836905,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.8321688,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8321807,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.8503213,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8503933,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.8504083,
+          "data_hex": "0000db3f00000042",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8504627,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.850541,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8506098,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.850672,
+          "data_hex": "00014c0700000043",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8506935,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.850798,
+          "data_hex": "0000004300000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8508158,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.850894,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8509111,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.851025,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8510413,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.8511505,
+          "data_hex": "00007a80ffb94000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.851167,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.8731055,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.856378,
+          "data_hex": "00e6002e24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8563936,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.8514879,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.851504,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.8716228,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.871631,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.8667493,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8667572,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.8618946,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8619058,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.8571072,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8571234,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.8703156,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8703344,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.8704035,
+          "data_hex": "0000db3f0000005c",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.870411,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.8705397,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8705466,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.8706708,
+          "data_hex": "00014c070000005e",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8706784,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.8707583,
+          "data_hex": "0000005e00000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8707662,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.8708985,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8709059,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.8710248,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.871032,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.8711557,
+          "data_hex": "00007a80ffa24000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8711638,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.8940804,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.881422,
+          "data_hex": "00e6002e24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8814335,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.8764985,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.87651,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.8716228,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.871631,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.8917704,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8917818,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.8868308,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8868418,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.882108,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8821197,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.8903148,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8903327,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.8904014,
+          "data_hex": "0000db3f0000008e",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.890413,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.8905323,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8905442,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.8906662,
+          "data_hex": "00014c0700000091",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8906775,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.8907971,
+          "data_hex": "0000009100000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8908088,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.8908854,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.890897,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.8910203,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.891032,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.8911512,
+          "data_hex": "00007a80ffb24000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.891163,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.913113,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.9063866,
+          "data_hex": "00e6002e24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9063983,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.9014895,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9015234,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.8966238,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8966413,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.8917704,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.8917818,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.911887,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9118989,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.9070938,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9071054,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.9103236,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.910344,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.91041,
+          "data_hex": "0000db3f000000d1",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9104216,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.910543,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.910555,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.9106684,
+          "data_hex": "00014c07000000d6",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.91068,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.910805,
+          "data_hex": "000000d600000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.910816,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.910896,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9109077,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.911027,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.911038,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.911158,
+          "data_hex": "00007a80ffb14000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9111707,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.9332042,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.9314237,
+          "data_hex": "00e6002e24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.931435,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.9264944,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9265053,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.9216673,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9216783,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.916804,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9168148,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.911887,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9118989,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.9321096,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9321215,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.9303157,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.930338,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.930488,
+          "data_hex": "0000db3e0000011d",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9305,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.9305828,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9305944,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.930671,
+          "data_hex": "00014c0700000123",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9306831,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.9308016,
+          "data_hex": "0000012300000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.930813,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.9308968,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9309084,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.9310277,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9310393,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.9311588,
+          "data_hex": "00007a80ffa94000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9311702,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.953129,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.9314237,
+          "data_hex": "00e6002e24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.931435,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.9515495,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9515615,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.9466257,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9466374,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.9417775,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9417999,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.9368327,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9368443,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.9321096,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9321215,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.950335,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9503577,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.9504855,
+          "data_hex": "0000db3e00000115",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9504979,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.9505742,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9505858,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.9507163,
+          "data_hex": "00014c070000011b",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.950728,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.9508,
+          "data_hex": "0000011b00000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9508111,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.950932,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.950943,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.9510653,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9510763,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.9511962,
+          "data_hex": "00007a80ffaa4000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9512074,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.9731112,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.9563825,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.956394,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.9515495,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9515615,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.9716263,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.971638,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.966758,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9667692,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.9618912,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9619043,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.9571323,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.957143,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.9702826,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9703033,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.9704063,
+          "data_hex": "0000db3e00000150",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9704192,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.970545,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9705572,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.970676,
+          "data_hex": "00014c0700000157",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9706872,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.970805,
+          "data_hex": "0000015700000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9708166,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.9708989,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9709105,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.97103,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9710417,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.971161,
+          "data_hex": "00007a80ffa04000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9711723,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196370.993118,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196370.9813824,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9813933,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196370.9764864,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9764984,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.9716263,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.971638,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.9917521,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.991763,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196370.9868999,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9869108,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196370.9821541,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.982165,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196370.9903183,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9903345,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196370.9904048,
+          "data_hex": "0000db3e00000181",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9904158,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196370.9905357,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.990547,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196370.9906697,
+          "data_hex": "00014c0700000189",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9906807,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196370.990801,
+          "data_hex": "0000018900000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9908185,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196370.9909317,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.990943,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196370.9910238,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9910345,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196370.9911554,
+          "data_hex": "00007a80ffb94000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9911668,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.013202,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.0063777,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.006389,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.0015452,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0015564,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196370.9966278,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.9966395,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196370.9917521,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196370.991763,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.0118906,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0119019,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.007085,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0070958,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.01028,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0102968,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.0104094,
+          "data_hex": "0000db3e00000181",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0104208,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.0105472,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.010559,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.0106344,
+          "data_hex": "00014c0700000189",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0106454,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.0107653,
+          "data_hex": "0000018900000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0107765,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.0108993,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0109105,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.0110304,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0110419,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.0111616,
+          "data_hex": "00007a80ffa04000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.011173,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.0332103,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.031385,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0313966,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.026494,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.026506,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.0216188,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0216303,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.0167656,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0167773,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.0118906,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0119019,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.0321128,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0321245,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.0302846,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0303023,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.0304139,
+          "data_hex": "0000db3e00000181",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.030426,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.030546,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0305579,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.030677,
+          "data_hex": "00014c0700000189",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.030689,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.030808,
+          "data_hex": "0000018900000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0308201,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.0309,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0309112,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.031031,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.031042,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.031162,
+          "data_hex": "00007a80ffa34000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.031175,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.0531135,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.031385,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0313966,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.0514941,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0515049,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.046629,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0466404,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.0417829,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0417948,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.0369,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0369122,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.0321128,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0321245,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.050285,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0503097,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.0504146,
+          "data_hex": "0000db3d000001c1",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.050427,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.0505466,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.050558,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.0506778,
+          "data_hex": "00014c07000001ca",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.050689,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.0507655,
+          "data_hex": "000001ca00000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0507772,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.0509005,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.050912,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.0510328,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0510435,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.0511634,
+          "data_hex": "00007a80ffab4000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0511749,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.0731223,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.0563858,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.056398,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.0514941,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0515049,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.0716298,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0716417,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.0667548,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.066766,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.0619009,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0619128,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.057114,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.057125,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.0702777,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0703037,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.0704134,
+          "data_hex": "0000db3d000001fb",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.070441,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.0705476,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0705616,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.0706782,
+          "data_hex": "00014c0700000206",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0706904,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.0708094,
+          "data_hex": "0000020600000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.070821,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.0709016,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0709133,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.071028,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0710392,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.0711644,
+          "data_hex": "00007a80ff9e4000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0711753,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.0931172,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.0814035,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.081415,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.0764956,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.076507,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.0716298,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0716417,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.091804,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0918164,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.0868874,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0868983,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.0821207,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0821316,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.0903246,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0903366,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.0904977,
+          "data_hex": "0000db3d000001fd",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.090509,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.0905876,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0905988,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.0906763,
+          "data_hex": "00014c0700000207",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0906878,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.0908072,
+          "data_hex": "0000020700000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0908191,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.090945,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0909567,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.091076,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.091089,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.091164,
+          "data_hex": "00007a80ffa64000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.091175,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.1140544,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.1063938,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1064057,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.1014957,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1015072,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.0966306,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0966427,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.091804,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.0918164,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.1118934,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.111905,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.1071005,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1071117,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.1103265,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1103494,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.1104126,
+          "data_hex": "0000db3c00000229",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.110424,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.1105487,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1105607,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.1106367,
+          "data_hex": "00014c0700000235",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1106484,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.1107678,
+          "data_hex": "0000023500000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1107793,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.1109025,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1109138,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.1110337,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1110451,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.1111646,
+          "data_hex": "00007a80ffbc4000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1111765,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.1333008,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.131389,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1314003,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.126498,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1265094,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.1216314,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1216633,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.1167629,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1167743,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.1118934,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.111905,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.1321163,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1321876,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.1302876,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1303225,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.1304173,
+          "data_hex": "0000db3c00000229",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1304312,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.1305504,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1305637,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.1306386,
+          "data_hex": "00014c0700000235",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1306496,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.1307693,
+          "data_hex": "0000023500000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1307802,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.1309042,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1309154,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.1310344,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1310456,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.1311653,
+          "data_hex": "00007a80ffa14000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1311774,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.1531167,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.131389,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1314003,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.1514974,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.151505,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.1466317,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.146642,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.1417556,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1417603,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.136839,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1368506,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.1321163,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1321876,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.150286,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1503043,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.1504169,
+          "data_hex": "0000db3c0000023b",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1504242,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.15055,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1505573,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.150638,
+          "data_hex": "00014c0700000247",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1506455,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.150769,
+          "data_hex": "0000024700000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1507764,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.1509032,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1509104,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.151034,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1510415,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.151165,
+          "data_hex": "00007a80ffc54000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1511726,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.1731474,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.1563883,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1563957,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.1514974,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.151505,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.1716766,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1716807,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.166763,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1667683,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.1618881,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.161894,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.1571016,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1571093,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.1703749,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.170399,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.1705067,
+          "data_hex": "0000db3c00000273",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.170512,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.1705947,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.170599,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.170727,
+          "data_hex": "00014c0700000280",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1707315,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.1708148,
+          "data_hex": "0000028000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.170819,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.170942,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.170948,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.1710792,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1710837,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.1712136,
+          "data_hex": "00007a80ffb44000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1712182,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.194069,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.1813815,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1813853,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.1765435,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1765473,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.1716766,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1716807,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.1917698,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.191775,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.1868513,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1868558,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.1820889,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1820924,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.190293,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1903043,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.190425,
+          "data_hex": "0000db3c00000273",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1904306,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.1905558,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1905608,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.1906457,
+          "data_hex": "00014c0700000280",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1906526,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.1907792,
+          "data_hex": "0000028000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1907842,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.1909099,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1909149,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.1910408,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1910455,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.1911323,
+          "data_hex": "00007a80ffa84000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1911373,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.2131393,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.2064395,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.206452,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.2014987,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2015104,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.1966248,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.1966321,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.1917698,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.191775,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.2118976,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2119095,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.2071254,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.207138,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.210287,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2103045,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.2104166,
+          "data_hex": "0000db3b000002b5",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2104292,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.2105527,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2105656,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.2106738,
+          "data_hex": "00014c07000002c3",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.210687,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.2107785,
+          "data_hex": "000002c300000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2107906,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.2109063,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.210919,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.2110374,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.211051,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.2111685,
+          "data_hex": "00007a80ff9f4000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2111807,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.2332473,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.2313921,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.231403,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.2265012,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.226513,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.2216356,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.221648,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.2167668,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.217064,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.2118976,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2119095,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.2321424,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2321546,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.2302911,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.230314,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.2304206,
+          "data_hex": "0000db3b000002b2",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2304327,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.2305102,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2305217,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.2306848,
+          "data_hex": "00014c07000002c0",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.230711,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.2307677,
+          "data_hex": "000002c000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2307808,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.2309072,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2309186,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.2310386,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2310498,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.231169,
+          "data_hex": "00007a80ffbd4000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2311802,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    },
+    {
+      "sampled_at": 1791196371.2531114,
+      "frames": [
+        {
+          "id": 609,
+          "timestamp": 1791196371.2313921,
+          "data_hex": "00e6002d24400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.231403,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 610,
+          "timestamp": 1791196371.2515137,
+          "data_hex": "00e6002d26400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2515264,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 611,
+          "timestamp": 1791196371.2466362,
+          "data_hex": "00e6002f2a400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2466486,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 612,
+          "timestamp": 1791196371.2417607,
+          "data_hex": "00e6003127400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2417817,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 613,
+          "timestamp": 1791196371.2368429,
+          "data_hex": "00e6003530400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2368543,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 614,
+          "timestamp": 1791196371.2321424,
+          "data_hex": "00e6003228400000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2321546,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 673,
+          "timestamp": 1791196371.250296,
+          "data_hex": "0100010000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2503164,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 674,
+          "timestamp": 1791196371.2504287,
+          "data_hex": "0000db3a000002ec",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2504416,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 675,
+          "timestamp": 1791196371.2505598,
+          "data_hex": "0003411200000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2505717,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 676,
+          "timestamp": 1791196371.2506478,
+          "data_hex": "00014c07000002fb",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.25066,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 677,
+          "timestamp": 1791196371.2507827,
+          "data_hex": "000002fb00000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2507954,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 678,
+          "timestamp": 1791196371.250914,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2509255,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 679,
+          "timestamp": 1791196371.2510448,
+          "data_hex": "0000000000000000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2510567,
+          "origin": "bus_or_nonlocal"
+        },
+        {
+          "id": 680,
+          "timestamp": 1791196371.2511363,
+          "data_hex": "00007a80ffb54000",
+          "timestamp_basis": "kernel_socket_SO_TIMESTAMPNS_unix",
+          "host_received_at": 1791196371.2511485,
+          "origin": "bus_or_nonlocal"
+        }
+      ]
+    }
+  ],
+  "old_failed_exit_final": {
+    "sequence": 434759,
+    "stamps": [
+      1791196380.4102032,
+      1791196380.4102726,
+      1791196380.410446,
+      1791196380.4105825,
+      1791196380.4107165,
+      1791196380.4107988,
+      1791196380.4109354,
+      1791196380.4110699,
+      1791196380.4062834,
+      1791196380.401414,
+      1791196380.396555,
+      1791196380.3916578,
+      1791196380.41182,
+      1791196380.4069903
+    ],
+    "raw_q": [
+      995,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "q": [
+      0.01736602605734358,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "pose": [
+      0.056119,
+      0.000975,
+      0.213266,
+      0.0,
+      1.4835124109026603,
+      0.01736602605734358
+    ],
+    "opening_m": 0.03136,
+    "gripper_torque_sdk_units": -106,
+    "ctrl_mode": 1,
+    "arm_status": 0,
+    "mode": 1,
+    "teach_status": 0,
+    "motion_status": 0,
+    "fault": 0,
+    "driver_codes": [
+      64,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "jaw_code": 64,
+    "enabled": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "can_interface": "can1",
+    "stamp": 1791196380.4130664,
+    "source": "sdk_receive_raw_frames",
+    "source_sequence": 434759,
+    "feedback_max_age_s": 0.021409034729003906,
+    "driver_accepts_commands": true,
+    "active_command": false,
+    "failure": null,
+    "mode_feedback": 1,
+    "driver_sha256": "ecff6823dc6bbf55fe51708024ef88d993fead97572ad7c06e951020e83bc200",
+    "sdk_version": "0.6.2"
+  },
+  "old_failed_client_exit_unix_s": 1791196380.4263742
+}

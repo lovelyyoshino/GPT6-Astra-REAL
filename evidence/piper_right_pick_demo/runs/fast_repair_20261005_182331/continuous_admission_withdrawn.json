@@ -1,0 +1,13 @@
+{
+  "at": 1791199341.664934,
+  "reason": {
+    "evidence_file": null,
+    "status": "requires_review_after_observed_command8_path_bound_violation",
+    "reason": "Small requested EEF change produced large joint reconfiguration and intermediate phase-scaled bound failure. Original client exit/retention evidence is preserved, but unattended continuous admission is withdrawn pending path review.",
+    "original_site_config": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/fast_live_commissioned_before_command8_review.json",
+    "audit": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_posthoc_audit.json"
+  },
+  "robot_commands_sent_by_this_change": 0,
+  "driver_remains_enabled": true,
+  "no_reset_stop_disable_or_replay": true
+}

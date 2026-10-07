@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "piperx_cloth": {
+      "command": "/home/agilex/miniconda3/envs/pi0_infer/bin/python3.10",
+      "args": ["-B", "-m", "robot_tools.server", "--root", "/home/agilex/piperx_cloth_demo"],
+      "env": {"PYTHONPATH": "/home/agilex/piperx_cloth_demo"}
+    }
+  }
+}

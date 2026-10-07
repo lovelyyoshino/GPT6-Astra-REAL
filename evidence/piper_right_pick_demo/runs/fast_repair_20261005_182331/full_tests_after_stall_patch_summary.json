@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "exit_code": 0,
+  "tests_run": 426,
+  "elapsed_s": 26.935,
+  "saved_at_unix_s": 1791198114.0803735,
+  "scope": "software_only_no_device_or_model_calls",
+  "physical_task_success": null,
+  "log": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/full_tests_after_stall_patch.log",
+  "change_scope": "live prompt distinguishes command hypothesis from measured coordinates; consecutive observe unknown actions escalate after 3 and terminate after 6",
+  "safety_limits_changed": false,
+  "robot_commands_sent": 0
+}

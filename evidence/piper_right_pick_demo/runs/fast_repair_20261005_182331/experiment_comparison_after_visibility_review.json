@@ -1,0 +1,161 @@
+{
+  "recorded_at": 1791199400.7539682,
+  "status": "stopped_after_actual_P_path_monitor_failure",
+  "task_completed": false,
+  "physical_task_actions": 1,
+  "qualified_ros_commissioning_separate_from_task": true,
+  "baseline": {
+    "baseline_source": "/home/agilex/piper_pen_task_report_20261005/metrics_review.json",
+    "baseline_source_sha256": "ba03305e70206c7134294c56575ce9d45fad610423dfef4acbe8c1fd950f3643",
+    "original_unified_task_clock_s": null,
+    "model_call_count": null,
+    "model_total_s": null,
+    "pure_robot_motion_s": null,
+    "recording_window_s": 3534.9803013801575,
+    "recording_window_definition": "Recorder process start to stop; includes reset/setup/teardown/waits; not the precise manipulation task clock.",
+    "reconstructed_visual_window": {
+      "definition": "After-zero-confirmed snapshot earliest host receipt through final retained-pen snapshot latest host receipt; explicitly reconstructed visual window, not an originally logged task timer.",
+      "start_observation": "/home/agilex/piper_pen_repeat_video_20261005/recording_new_holder/15_home_verified/observation.json",
+      "end_observation": "/home/agilex/piper_pen_repeat_video_20261005/recording_new_holder/55_final_retained_pen/observation.json",
+      "start_unix_s": 1791183864.1475003,
+      "finish_unix_s": 1791186267.846538,
+      "elapsed_s": 2403.6990377902985,
+      "human_side_guidance_included": true,
+      "comparison_rule": "Can compare with first task RGB receipt to final success RGB receipt in optimized trial, keeping endpoint definitions and supervision difference explicit."
+    },
+    "post_home_command_window": {
+      "definition": "First post-home ROS intent to final retreat stable receipt; excludes pre-first-command reasoning and post-last-command visual verification.",
+      "count": 36,
+      "start_unix_s": 1791183952.7194033,
+      "finish_unix_s": 1791186232.1732302,
+      "elapsed_s": 2279.453826904297,
+      "intent_to_stable_sum_s": 35.156795024871826,
+      "timing_coverage": "36/36",
+      "comparison_rule": "Derive same window and sum from only ROS command sequences used by optimized task steps; exclude commissioning and reset commands."
+    },
+    "including_home_command_latency": {
+      "count": 49,
+      "timing_coverage": "48/49",
+      "intent_to_stable_sum_s": 47.16007661819458,
+      "pure_motion": false
+    },
+    "baseline_task_success": true,
+    "baseline_success_scope": "One supervised success with onsite side-alignment guidance; autonomous success probability unknown.",
+    "optimized_metrics_sources": [
+      "<run>/fast_summary.json",
+      "<run>/steps.jsonl",
+      "<run>/report.json",
+      "current frozen-driver command log for exact intent/stable pairing",
+      "<run>/observations/continuous_recording/report.json and frames.jsonl for videos only"
+    ],
+    "comparison_limits": [
+      "Cannot compute model call reduction percentage without baseline model call count.",
+      "Cannot compute mean model-latency reduction without baseline request times.",
+      "One optimized trial estimates neither a robust success probability nor a change in success rate.",
+      "Optimized model_total_s is backend wall latency, not isolated provider reasoning time."
+    ]
+  },
+  "optimized_attempts": [
+    {
+      "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_physical/20261005T105716Z_748e7228cbf1",
+      "total_elapsed_s": 101.1408838100001,
+      "model_total_s": 97.93724029899977,
+      "model_call_count": 11,
+      "mean_model_latency_s": 8.903385481727252,
+      "robot_execute_total_s": 0.0,
+      "action_count": 0,
+      "termination_reason": "operator_interrupted",
+      "task_success": null
+    },
+    {
+      "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_physical/20261005T110150Z_6917f36af4b9",
+      "total_elapsed_s": 35.095767630999944,
+      "model_total_s": 32.76804353499983,
+      "model_call_count": 3,
+      "mean_model_latency_s": 10.922681178333278,
+      "robot_execute_total_s": 0.0,
+      "action_count": 0,
+      "termination_reason": "model_requested_pause",
+      "task_success": null
+    },
+    {
+      "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_physical/20261005T110421Z_fb743c76a566",
+      "total_elapsed_s": 12.105762504999802,
+      "model_total_s": 9.814054092999868,
+      "model_call_count": 1,
+      "mean_model_latency_s": 9.814054092999868,
+      "robot_execute_total_s": 0.0,
+      "action_count": 0,
+      "termination_reason": "model_requested_pause",
+      "task_success": null
+    },
+    {
+      "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_physical/20261005T111335Z_4585f9772502",
+      "total_elapsed_s": 12.01135540300038,
+      "model_total_s": 10.574063031999685,
+      "model_call_count": 1,
+      "mean_model_latency_s": 10.574063031999685,
+      "robot_execute_total_s": 0.0,
+      "action_count": 0,
+      "termination_reason": "model_requested_pause",
+      "task_success": null
+    },
+    {
+      "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_physical/20261005T111651Z_3dde582d04fc",
+      "total_elapsed_s": 26.883552152999982,
+      "model_total_s": 26.229143952999948,
+      "model_call_count": 1,
+      "mean_model_latency_s": 26.229143952999948,
+      "robot_execute_total_s": 0.0,
+      "action_count": 0,
+      "termination_reason": "safety_validation_failed_latched",
+      "task_success": null
+    },
+    {
+      "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_physical/20261005T111800Z_4c757c312206",
+      "total_elapsed_s": 15.944701530000202,
+      "model_total_s": 13.138486150000062,
+      "model_call_count": 1,
+      "mean_model_latency_s": 13.138486150000062,
+      "robot_execute_total_s": 1.7558452249995753,
+      "action_count": 0,
+      "termination_reason": "execution_failed_latched",
+      "task_success": null
+    }
+  ],
+  "model_pause_explanation": "The complete right tool and its attachments are outside the visible frame, leaving approach clearance unresolved.",
+  "right_arm_healthy": true,
+  "right_driver_command_sequence": 7,
+  "tests_passed": 426,
+  "kpi_conclusion": "No completed optimized task, so <30min completion and speedup/success-rate targets have not been demonstrated. Baseline model timing/count missing.",
+  "notes": [
+    "Latest model requested pause for visual occlusion; controller did not reject a proposed motion in these task runs.",
+    "User asked to reframe camera; no model action or visual safety claim supplied by host.",
+    "Task runs exclude earlier repair and commissioning wall time; all failed and interrupted records retained.",
+    "Original failed client report retained; posthoc frozen-driver receipts establish one real ROS command and arrival.",
+    "Do not compare client waiting time to baseline full command-to-arrival time.",
+    "P endpoint limit did not prevent large joint reconfiguration; exact internal IK cause remains unproven.",
+    "Camera worker stopped with the client; last ~23.4 seconds of actual motion were not recorded.",
+    "The revised experiment includes user visibility correction and cannot be labelled wholly autonomous."
+  ],
+  "visibility_correction": {
+    "user_right": true,
+    "robot_right_in_front": "image-left",
+    "camera_reposition_request_withdrawn": true,
+    "evidence": "/home/agilex/piper_right_pick_demo/runs/visibility_review_20261005_191141/settled_observations/capture_10a7ccf169564149bb284f706ecba3fd/front.png"
+  },
+  "latest_receipt_audit": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/command8_posthoc_audit.json",
+  "robot_command8_intent_to_stable_s": 24.782420873641968,
+  "robot_command8_send_to_stable_s": 24.772464752197266,
+  "latest_recording_covers_full_motion": false,
+  "current_driver_sequence": 8,
+  "current_pose_m_rad": [
+    0.088947,
+    0.002928,
+    0.24525,
+    0.008412486994612669,
+    1.4480473205021356,
+    0.05754350543825305
+  ],
+  "continuous_admission_withdrawn": true
+}

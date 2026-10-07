@@ -1,0 +1,21 @@
+{
+  "status": "unverified_visual_estimate_not_calibration",
+  "camera_serial": "244222070415",
+  "parent_frame": "right_sdk_flange",
+  "child_frame": "right_wrist_color_optical_frame",
+  "translation_m": [-0.156611383, 0.028470026, 0.044197311],
+  "rotation_matrix": [[-0.00387768, 0.70642076, 0.70778152], [-0.99728682, -0.05476288, 0.04919383], [0.07351169, -0.70567042, 0.70471646]],
+  "tcp_offset_flange_candidate_m": [0.0, 0.0, 0.1358],
+  "derivation": "R_FC = transpose(R_BF_old) * R_BC_old. p_FC = candidate_p_FT - R_FC * old_visible_finger_surface_midpoint. Visible surface midpoint is not a measured TCP.",
+  "source": "/home/agilex/piper_right_pick_demo/runs/pick_attempt_20261003T194811_102398/report.json",
+  "source_pose_field": "initial_scene.robot_before_capture",
+  "source_pose_mm_deg": [43.204, 30.730, 181.703, -144.879, 70.104, -107.332],
+  "source_finger_surface_midpoint_camera_mm": [34.519362, 47.551325, 174.000015],
+  "mount_unchanged_assumed": true,
+  "mount_assumption_evidence": "Same serial and identical intrinsics; old and new images put finger tops near v400 and center near u435..440. Aperture change is consistent with symmetric opening. This does not independently verify the extrinsic transform.",
+  "source_rotation_uncertainty_deg": 6.0,
+  "source_finger_feature_uncertainty_m": 0.012,
+  "absolute_error_bound_verified": false,
+  "permitted_use": "Coarse direction and attended incremental visual approach; each segment reviewed with current views and feedback. Not sufficient on its own for final pen contact or collision certification.",
+  "uncalibrated_attempt_authorized_by_user": true
+}

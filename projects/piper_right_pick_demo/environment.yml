@@ -1,0 +1,9 @@
+name: piper-right-pick
+channels: [conda-forge]
+dependencies:
+  - python=3.8
+  - numpy
+  - pip
+  # ROS Noetic/cv_bridge/Piper messages come from the host ROS installation.
+  # Direct RealSense is optional: install matching pyrealsense2 for this ABI.
+  # No Isaac Sim or robot SDK is imported by the core/offline modules.

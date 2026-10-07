@@ -1,0 +1,392 @@
+{
+  "review_kind": "offline_manufacturer_fk_endpoint_geometry_not_observed_full_trajectory",
+  "created_at_unix_s": 1791199619.0346122,
+  "hardware_accessed": false,
+  "source_code_or_config_modified": false,
+  "source_log": "/home/agilex/piper_right_pick_demo/runs/fast_repair_20261005_182331/resume_interior_tests.log",
+  "source_log_sha256_at_read": "e683b91065d5740582a57a0d9138f7b572d3ac6f666396b9f1bf0d5324e333b7",
+  "command_sequence": 8,
+  "before_source": {
+    "event": "command_intent",
+    "line": 86,
+    "unix_s": 1791199099.1886387,
+    "line_sha256": "975e60543af5903118145965fe894b1dbc2c5a0e3c892edb0d1e3cb0d0745125"
+  },
+  "after_source": {
+    "event": "command_observed_stable",
+    "line": 98,
+    "unix_s": 1791199123.9710596,
+    "line_sha256": "1b0ab73de65955db7d710a5ae2c0d73ab694e3db62ffe555d8ea35ec73984890"
+  },
+  "manufacturer_fk": {
+    "path": "/home/agilex/.local/lib/python3.8/site-packages/piper_sdk/kinematics/piper_fk.py",
+    "sha256": "354d9b1f41271645de127c4c59ae30c86b0debddeba7a5c0ca0b1b2d44f9b93d",
+    "class": "C_PiperForwardKinematics",
+    "dh_is_offset": 1,
+    "a_mm": [
+      0,
+      0,
+      285.03,
+      -21.98,
+      0,
+      0
+    ],
+    "alpha_rad": [
+      0,
+      -1.5707963267948966,
+      0,
+      1.5707963267948966,
+      -1.5707963267948966,
+      1.5707963267948966
+    ],
+    "theta_offset_rad": [
+      0,
+      -3.0058060377846347,
+      -1.7938494051997718,
+      0,
+      0,
+      0
+    ],
+    "d_mm": [
+      123,
+      0,
+      0,
+      250.75,
+      0,
+      91
+    ],
+    "usage": "Imported only the pure math FK file via importlib; did not import/instantiate an actuator/interface or access ROS/CAN"
+  },
+  "method": {
+    "endpoint_fk": "CalFK(q) with recorded q radians; direct manufacturer link transforms multiplied with numpy for frame origins and rotation matrices",
+    "euler_check": "Compare XYZ with recorded EEF and compare full rotation matrices; large joint changes are recorded q, not Euler representation changes",
+    "jacobian": "Central finite difference of manufacturer FK with epsilon=1e-6 rad per joint. Translation converted mm to m. Angular Jacobian from skew(dR/dq * R^T), not Euler derivatives.",
+    "condition_number": "Singular values of 6x6 geometric Jacobian after multiplying angular rows by arbitrary characteristic length 0.25 m. Numerical descriptive result, not a manufacturer threshold or qualification.",
+    "wrist_center": "Manufacturer DH frame4/frame5 origins coincide; xy radius is endpoint distance to base z rotation axis, not measured trajectory minimum.",
+    "kinematics_scope": "Nominal manufacturer geometry without calibrated extrinsics, object localization, IK, robot control, collision inference, or reconstructed physical motion path"
+  },
+  "before": {
+    "raw_feedback_q_mdeg": [
+      2921,
+      5769,
+      -5843,
+      2873,
+      -1910,
+      -2877
+    ],
+    "q_rad": [
+      0.05098106745075437,
+      0.10068804454755288,
+      -0.10197958819402868,
+      0.05014330940979709,
+      -0.033335788713091695,
+      -0.05021312257987686
+    ],
+    "q_deg": [
+      2.921,
+      5.769,
+      -5.843,
+      2.873,
+      -1.91,
+      -2.877
+    ],
+    "feedback_pose_m_rad": [
+      0.06098,
+      0.002959,
+      0.24491,
+      0.0008377580409572782,
+      1.4489374384206526,
+      0.050160762702317035
+    ],
+    "manufacturer_fk_pose_mm_deg": [
+      60.97938903239246,
+      2.9592720219485447,
+      244.90779681848866,
+      0.05003904488184258,
+      83.01840604245962,
+      2.874981926412243
+    ],
+    "fk_minus_feedback_xyz_mm": [
+      -0.0006109676075354287,
+      0.0002720219485450315,
+      -0.002203181511333696
+    ],
+    "link_frame_origins_mm": [
+      [
+        0.0,
+        0.0,
+        123.0
+      ],
+      [
+        0.0,
+        0.0,
+        123.0
+      ],
+      [
+        -276.73757228806596,
+        -14.120612442354235,
+        189.77593345180782
+      ],
+      [
+        -29.236132955733297,
+        -1.4917819050292014,
+        233.84670684737213
+      ],
+      [
+        -29.236132955733297,
+        -1.4917819050292014,
+        233.84670684737213
+      ],
+      [
+        60.97938903239246,
+        2.9592720219485447,
+        244.90779681848866
+      ]
+    ],
+    "wrist_center_frame4_mm": [
+      -29.236132955733297,
+      -1.4917819050292014,
+      233.84670684737213
+    ],
+    "wrist_center_xy_radius_mm": 29.274167510921416,
+    "joint4_joint6_axis_angle_deg": 1.9099999906687135,
+    "geometric_jacobian_m_rad_per_rad": [
+      [
+        -0.0029592720451887544,
+        0.12174940772524678,
+        0.05506023310886121,
+        0.00016779166855940275,
+        0.010808112577365137,
+        0.0
+      ],
+      [
+        0.06097938903115718,
+        0.006212297762875352,
+        0.0028094638762077295,
+        -0.003024561920916824,
+        0.0051160125735805195,
+        0.0
+      ],
+      [
+        0.0,
+        -0.06105096284159117,
+        -0.33814855508751407,
+        -0.00015142495612963103,
+        -0.09021092571970257,
+        0.0
+      ],
+      [
+        4.306353884597769e-12,
+        -0.05095898643027148,
+        -0.05095898643006666,
+        0.9947871400113373,
+        -0.05532210729392783,
+        0.9913793625120169
+      ],
+      [
+        -2.772580342397246e-12,
+        0.9987007467259075,
+        0.9987007468120482,
+        0.05075929354053283,
+        0.9972195698419877,
+        0.04891268051133632
+      ],
+      [
+        1.0000000000058005,
+        1.624039444592107e-13,
+        8.546956545285589e-13,
+        0.08844229863562408,
+        0.04992588490579773,
+        0.12155043924419716
+      ]
+    ],
+    "scaled_jacobian_singular_values": [
+      0.5416675466438146,
+      0.3554775447853468,
+      0.2550165249922662,
+      0.18124494281200593,
+      0.07306512830458711,
+      0.0006742836618425955
+    ],
+    "scaled_jacobian_condition_number": 803.3229593070894
+  },
+  "after": {
+    "raw_feedback_q_mdeg": [
+      49992,
+      19714,
+      -5038,
+      72244,
+      -49908,
+      -70967
+    ],
+    "q_rad": [
+      0.8725249996570053,
+      0.34407420873816214,
+      -0.08792968771547433,
+      1.2608956648107834,
+      -0.8710589230853301,
+      -1.238607810262816
+    ],
+    "q_deg": [
+      49.992,
+      19.714,
+      -5.038,
+      72.244,
+      -49.908,
+      -70.967
+    ],
+    "feedback_pose_m_rad": [
+      0.088957,
+      0.002859,
+      0.245187,
+      0.01291543646475804,
+      1.4487454522029333,
+      0.0613134166225608
+    ],
+    "manufacturer_fk_pose_mm_deg": [
+      88.95694244741351,
+      2.85769131536566,
+      245.18601668824954,
+      0.7459518757170154,
+      83.00699119036315,
+      3.518340078002894
+    ],
+    "fk_minus_feedback_xyz_mm": [
+      -5.75525864832116e-05,
+      -0.0013086846343401959,
+      -0.0009833117504456368
+    ],
+    "link_frame_origins_mm": [
+      [
+        0.0,
+        0.0,
+        123.0
+      ],
+      [
+        0.0,
+        0.0,
+        123.0
+      ],
+      [
+        -162.5484834347129,
+        -193.66281752374496,
+        254.58573076834557
+      ],
+      [
+        -1.26093327929388,
+        -1.50229572382068,
+        234.10786646456555
+      ],
+      [
+        -1.26093327929388,
+        -1.50229572382068,
+        234.10786646456555
+      ],
+      [
+        88.95694244741351,
+        2.85769131536566,
+        245.18601668824954
+      ]
+    ],
+    "wrist_center_frame4_mm": [
+      -1.26093327929388,
+      -1.50229572382068,
+      234.10786646456555
+    ],
+    "wrist_center_xy_radius_mm": 1.9613375988444006,
+    "joint4_joint6_axis_angle_deg": 49.908000008190214,
+    "geometric_jacobian_m_rad_per_rad": [
+      [
+        -0.002857691335123036,
+        0.07855272585999273,
+        -0.006043025067015151,
+        0.00909745922683669,
+        -0.0005629929944461765,
+        0.0
+      ],
+      [
+        0.08895694245802943,
+        0.09358895199307327,
+        -0.00719975505614201,
+        -0.022184265983327123,
+        0.08614563872644254,
+        0.0
+      ],
+      [
+        0.0,
+        -0.0593787967204662,
+        -0.31221727552122047,
+        -0.0653566091131097,
+        -0.029319139940753303,
+        0.0
+      ],
+      [
+        -3.7845421241300414e-13,
+        -0.7659546855207575,
+        -0.7659546856009927,
+        0.633748719095746,
+        -0.13068052131922248,
+        0.9914052276995569
+      ],
+      [
+        1.3432839909843786e-11,
+        0.6428945633598393,
+        0.6428945633956118,
+        0.7550581829665721,
+        0.3186660551401018,
+        0.04791194548542556
+      ],
+      [
+        1.0000000000240603,
+        4.274708473479827e-11,
+        -2.7389800930782693e-11,
+        -0.1680764742840112,
+        0.938815501897623,
+        0.12173791453744598
+      ]
+    ],
+    "scaled_jacobian_singular_values": [
+      0.49232251281316486,
+      0.36590453968305486,
+      0.321838226322628,
+      0.17208363229575133,
+      0.05109103202726908,
+      0.0012802080737148885
+    ],
+    "scaled_jacobian_condition_number": 384.5644492653064
+  },
+  "endpoint_comparison": {
+    "joint_change_deg": [
+      47.071,
+      13.945,
+      0.805,
+      69.371,
+      -47.998,
+      -68.09
+    ],
+    "link_frame_origin_endpoint_displacements_mm": [
+      0.0,
+      0.0,
+      222.42945229186228,
+      27.97642063993702,
+      27.97642063993702,
+      27.979121144636327
+    ],
+    "eef_translation_mm": 27.979121144636327,
+    "eef_rotation_so3_deg": 0.09768592985672116,
+    "sent_to_observed_stable_s": 24.772464752197266
+  },
+  "inferences": [
+    "The requested endpoint approached the shoulder-axis singular region: wrist-center radius decreased from about29.274mm to1.961mm. Large base-joint turning and wrist compensation are geometrically consistent with this change.",
+    "The starting wrist was also near its aligned-axis configuration: J5=-1.910deg and J4/J6 axis separation about1.910deg.",
+    "These facts support near-singular amplification as an explanation; they do not prove a discrete firmware IK branch switch or reveal the exact interpolator.",
+    "The elbow/frame3 endpoint displacement about222.429mm shows that a28mm EEF endpoint cap does not bound full-arm link displacement to28mm."
+  ],
+  "limits": [
+    "Only before/after endpoints are analyzed; full actual trajectory and peak excursion remain unknown.",
+    "Nominal FK matches recorded EEF very closely, but this is not independent external tracking of real link positions.",
+    "No object coordinates, clearance proof, contact estimate, or motion authorization are generated.",
+    "The reported numerical condition number depends on units/characteristic length and cannot serve as an invented safety threshold.",
+    "No continuous-loop safety qualification follows from these calculations."
+  ]
+}

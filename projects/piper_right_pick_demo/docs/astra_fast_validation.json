@@ -1,0 +1,21 @@
+{
+  "run_dir": "/home/agilex/piper_right_pick_demo/runs/astra_fast_closed_loop/20261005T090129Z_b6018b229c70",
+  "existing_evidence_files_verified_unchanged": 414,
+  "old_runs_or_baselines_changed": [],
+  "baseline_tests": {
+    "count": 198,
+    "result": "passed"
+  },
+  "final_tests": {
+    "count": 265,
+    "result": "passed"
+  },
+  "hardware_commands_sent": 0,
+  "real_model_calls": 0,
+  "historical_replay_completed": true,
+  "scripted_decisions": 14,
+  "image_attachments_in_replay": 26,
+  "all_three_every_step_reference_attachments": 42,
+  "attachment_reduction_percent": 38.095238095238095,
+  "interpretation": "Counts are payload construction checks, not Astra inference or physical performance."
+}

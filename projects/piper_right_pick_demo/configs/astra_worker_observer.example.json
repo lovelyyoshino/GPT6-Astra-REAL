@@ -1,0 +1,36 @@
+{
+  "mode": "astra_fast_closed_loop",
+  "implementation": "offline_contract_only",
+  "execution_available": false,
+  "task_id": "pen",
+  "execution_mode": "worker_with_observer",
+  "pipeline_id": "single_worker_with_observer_v1",
+  "worker_arm": "left",
+  "observer_arm": "right",
+  "model": {
+    "protocol": "codex_cli",
+    "model_id": "gpt-6-astra",
+    "codex_binary": "codex",
+    "max_calls": 24,
+    "timeout_s": 45,
+    "pipeline_id": "single_worker_with_observer_v1",
+    "allow_historical": false
+  },
+  "controller": {
+    "max_steps": 32,
+    "max_model_calls": 24,
+    "max_retries": 2,
+    "max_recoveries": 1,
+    "max_observe_unknown": 4,
+    "max_elapsed_s": 900
+  },
+  "observer_contract": {
+    "observer_can_execute_task_action": false,
+    "observer_requires_worker_hold": true,
+    "observer_allowed_intent": "view_only",
+    "fresh_dual_arm_observation_after_observer_move": true,
+    "same_cycle_multi_dispatch": false
+  },
+  "physical_execution": "BLOCKED_PENDING_OBSERVER_POSE_AND_HOLD_QUALIFICATION",
+  "notes": ["Contract example only. The current fast CLI rejects coordinated modes before opening runtime resources."]
+}
