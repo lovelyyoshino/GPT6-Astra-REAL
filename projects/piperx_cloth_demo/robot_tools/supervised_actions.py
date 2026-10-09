@@ -205,7 +205,20 @@ class _SupervisedAction(_LinearHold):
         self.report["target_calls_sent"] = 1
         self.emit("supervised_action_sent_unconfirmed", {"finished_unix_s": self.sent_at, "kind": self.kind})
 
-    def record_outcome(self, state, stable):
+    def record_outcome(self, state, stable, *, target_kind=None):
+        # A joint executor reuses the four-frame arm transport but its six
+        # target values are radians, not an XYZ/RPY pose. Keep this diagnostic
+        # choice separate from self.kind, which controls dispatch and guards.
+        if target_kind == "joint":
+            errors = [abs(actual-requested) for actual, requested in
+                      zip(state[self.arm]["joints_rad"], self.target)]
+            self.report.update(controller_at_target=state[self.arm]["arm_status"]["motion_status"] == 0,
+                               raw_motion_status={s: state[s]["arm_status"]["motion_status"] for s in SIDES},
+                               pose_error=None,
+                               joint_error={"absolute_rad": errors, "max_abs_rad": max(errors),
+                                            "reference": "requested_target"},
+                               observed_stable=stable)
+            return
         pose = state[self.arm]["pose_m_rad"]
         goal = self.target if self.kind == "move" else self.anchor[self.arm]["pose_m_rad"]
         self.report.update(controller_at_target=state[self.arm]["arm_status"]["motion_status"] == 0,

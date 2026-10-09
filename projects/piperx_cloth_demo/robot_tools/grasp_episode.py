@@ -17,6 +17,7 @@ concurrency control and does not own or reset the task/dispatch budget.
 
 Supported event kinds and evidence keys:
 * record_candidate: probe, measurement
+* record_observed_candidate: candidate, measurement, scene, visual
 * retain_static / renew_static: scene, visual, measurement, retention_contract
 * begin_release: action_event_id, target_width_m, scene, measurement, support_visual
 * finish_release: action_event_id, measurement, actual_opening_increase_m,
@@ -40,9 +41,12 @@ Version 1 records remain historical; their mechanical ``released`` state is not
 a version 2 separation confirmation and is never silently upgraded.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import validate_policy, joint_tolerances
 import hashlib
 import json
 import math
+from pathlib import PurePosixPath
 
 
 SCHEMA_VERSION = 2
@@ -172,7 +176,24 @@ def _rotation(a, b):
 def _measurement(state, data, now, *, release=False, historical=False):
     _keys(data, ("identity", "trace_id", "trace_sha256", "probe_event_id", "started_at", "ended_at",
                  "sample_count", "feedback_advances", "health", "mode", "anchor", "observed",
-                 "spans", "anchor_deviation"), "measurement")
+                 "spans", "anchor_deviation"), "measurement",
+          ("feedback_observation", "joint_spans_rad", "joint_anchor_deviation_rad"))
+    policy = validate_policy(state.get("feedback_observation"))
+    if validate_policy(data.get("feedback_observation")) != policy:
+        _fail("observation_policy_mismatch")
+    limits = joint_tolerances(policy, state["identity"]["arm"])
+    if policy is not None:
+        for key,scalar in (("joint_spans_rad","spans"),("joint_anchor_deviation_rad","anchor_deviation")):
+            values = data.get(key)
+            if type(values) is not list or len(values) != 6:
+                _fail("missing_per_joint_observation")
+            if any(_number(v,key) > limit for v,limit in zip(values,limits)):
+                _fail("measured_drift",key)
+            if abs(max(values)-data[scalar]["joint_rad"]) > 1e-12:
+                _fail("inconsistent_trace",key)
+        if any(abs(a-b) > v+1e-12 for a,b,v in zip(data["anchor"]["joints_rad"],
+                data["observed"]["joints_rad"], data["joint_anchor_deviation_rad"])):
+            _fail("inconsistent_trace","per-joint anchor deviation")
     _identity(data["identity"], state["identity"])
     _id(data["trace_id"], "trace_id")
     _hash(data["trace_sha256"], "trace_sha256")
@@ -199,7 +220,7 @@ def _measurement(state, data, now, *, release=False, historical=False):
         _keys(data[key], _SPANS, key)
         for name, value in data[key].items():
             value = _number(value, key + "." + name)
-            if value > OBSERVATION_POLICY[name] and not (release and key == "anchor_deviation" and name == "jaw_m"):
+            if value > (max(limits) if name == "joint_rad" else rotation_tolerance(policy,state["identity"]["arm"]) if name == "rotation_rad" else OBSERVATION_POLICY[name]) and not (release and key == "anchor_deviation" and name == "jaw_m"):
                 _fail("measured_drift", key + "." + name)
     anchor, observed = data["anchor"], data["observed"]
     actual = {"joint_rad": max(abs(a-b) for a, b in zip(anchor["joints_rad"], observed["joints_rad"])),
@@ -214,12 +235,12 @@ def _measurement(state, data, now, *, release=False, historical=False):
     return copy.deepcopy(data)
 
 
-def _scene(state, scene, now, *, after=None):
+def _scene(state, scene, now, *, after=None, candidate_observation=False):
     _keys(scene, ("identity", "observation_id", "captured_at", "frames"), "scene")
     _identity(scene["identity"], state["identity"])
     _id(scene["observation_id"], "observation_id")
     at = _number(scene["captured_at"], "captured_at")
-    floor = state["probe_ref"]["completed_at"]
+    floor = 0.0 if candidate_observation else state["probe_ref"]["completed_at"]
     if after is not None:
         floor = max(floor, after)
     if state["scene"] is not None:
@@ -260,8 +281,11 @@ def _scene(state, scene, now, *, after=None):
 
 
 def _visual(state, visual, scene, *, purpose="retention"):
-    _keys(visual, ("identity", "evidence_id", "observation_id", "source", "producer_ref",
-                   "artifact_sha256", "object_relation", "support_relation"), "visual")
+    required = ("identity", "evidence_id", "observation_id", "source", "producer_ref",
+                "artifact_sha256", "object_relation", "support_relation")
+    if purpose == "current_contact":
+        required += ("bilateral_contact_source",)
+    _keys(visual, required, "visual")
     _identity(visual["identity"], state["identity"])
     for key in ("evidence_id", "producer_ref"):
         _id(visual[key], key)
@@ -269,9 +293,20 @@ def _visual(state, visual, scene, *, purpose="retention"):
     if visual["observation_id"] != scene["observation_id"]:
         _fail("visual_scene_mismatch")
     relations = {"retention": ("between_fingers", "original_support_present"),
+                 "current_contact": ("bilateral_finger_contact", "independent_support_present"),
                  "release_support": ("separation_not_assessed", "independent_support_present"),
                  "release_confirmation": ("object_clear_of_fingers", "independent_support_present")}
-    if (visual["source"] != "rgb_semantic_observation"
+    expected_source = "rgb_semantic_observation"
+    if purpose == "current_contact":
+        expected_source = "rgb_and_user_contact_observation"
+        provenance = visual["bilateral_contact_source"]
+        _keys(provenance, ("path", "sha256"), "bilateral contact source")
+        path = provenance["path"]
+        if (type(path) is not str or not 1 <= len(path) <= 4096 or "\x00" in path
+                or not PurePosixPath(path).is_absolute()):
+            _fail("invalid_contact_source")
+        _hash(provenance["sha256"], "bilateral contact source SHA256")
+    if (visual["source"] != expected_source
             or (visual["object_relation"], visual["support_relation"]) != relations[purpose]):
         code = "missing_static_visual_evidence" if purpose == "retention" else "missing_release_visual_evidence"
         _fail(code, "Need the separately sourced RGB relations for " + purpose)
@@ -364,7 +399,8 @@ def _state(state):
                   "probe_ref", "measurement", "scene", "visual_evidence", "original_anchor", "retention_contract",
                   "retention_expires_at", "retained_scope", "pending", "target_may_remain_active", "residual_target",
                   "release_opening", "release_confirmation", "fault", "events", "physical_stop_verified",
-                  "object_progress_measurement", "dispatch_authorized"), "state", ("loaded",))
+                  "object_progress_measurement", "dispatch_authorized"), "state", ("loaded", "feedback_observation", "candidate_basis"))
+    validate_policy(state.get("feedback_observation"))
     if (type(state["schema_version"]) is not int or state["schema_version"] != SCHEMA_VERSION
             or type(state["status"]) is not str or state["status"] not in STATUSES):
         _fail("invalid_state")
@@ -396,6 +432,9 @@ def _state(state):
         _pose(state["original_anchor"], "original_anchor")
     elif state["status"] not in ("empty", "invalid"):
         _fail("invalid_state", "Missing probe reference")
+    if "candidate_basis" in state and (state["candidate_basis"] != "existing_target_observation"
+            or state["probe_ref"] is None or state["probe_ref"].get("basis") != state["candidate_basis"]):
+        _fail("invalid_state", "Observed candidate basis must remain attached to its typed source")
     if state["retention_expires_at"] is not None:
         expiry = _number(state["retention_expires_at"], "retention_expires_at")
         if not state["created_at"] < expiry <= state["deadline_at"]:
@@ -447,14 +486,14 @@ def _state(state):
     return copy.deepcopy(state)
 
 
-def new_episode(*, episode_id, arm, run_id, owner, epoch, object_id, created_at, deadline_at):
+def new_episode(*, episode_id, arm, run_id, owner, epoch, object_id, created_at, deadline_at, feedback_policy=None):
     """Make an immutable-budget, per-arm episode; no physical evidence yet."""
     identity = dict(episode_id=episode_id, arm=arm, run_id=run_id, owner=owner, epoch=epoch, object_id=object_id)
     _identity(identity)
     created_at, deadline_at = _number(created_at, "created_at"), _number(deadline_at, "deadline_at")
     if deadline_at <= created_at:
         _fail("invalid_deadline")
-    return {"schema_version": SCHEMA_VERSION, "identity": identity, "revision": 0, "status": "empty",
+    result = {"schema_version": SCHEMA_VERSION, "identity": identity, "revision": 0, "status": "empty",
             "created_at": created_at, "deadline_at": deadline_at, "last_event_at": created_at,
             "probe_ref": None, "measurement": None, "scene": None, "visual_evidence": None,
             "original_anchor": None, "retention_contract": None, "retention_expires_at": None,
@@ -462,6 +501,9 @@ def new_episode(*, episode_id, arm, run_id, owner, epoch, object_id, created_at,
             "residual_target": None, "release_opening": None, "release_confirmation": None,
             "fault": None, "events": {}, "physical_stop_verified": None,
             "object_progress_measurement": None, "dispatch_authorized": False}
+    if feedback_policy is not None:
+        result["feedback_observation"] = validate_policy(feedback_policy)
+    return result
 
 
 def is_resolved_release(state):
@@ -586,6 +628,49 @@ def apply_event(state, event, *, now):
             result.update(status="contact_candidate", measurement=measurement, original_anchor=copy.deepcopy(measurement["anchor"]),
                           target_may_remain_active=True,
                           residual_target={"event_id": probe["event_id"], "requested_width_m": target})
+        elif kind == "record_observed_candidate":
+            if result["status"] != "empty":
+                _fail("illegal_transition", "Current contact observation requires a new empty episode")
+            _keys(evidence, ("candidate", "measurement", "scene", "visual"), "observed candidate evidence")
+            candidate = evidence["candidate"]
+            _keys(candidate, ("schema", "basis", "existing_target_ref", "trace_sha256", "started_at", "completed_at",
+                              "observed_width_m", "minimum_target_gap_m", "completion", "target_may_remain_active",
+                              "identity", "event_id", "observation_id", "requested_width_m"), "observed candidate")
+            _identity(candidate["identity"], result["identity"])
+            for key in ("event_id", "observation_id"):
+                _id(candidate[key], key)
+            _hash(candidate["trace_sha256"], "observed trace SHA256")
+            target_ref = candidate["existing_target_ref"]
+            _keys(target_ref, ("event_id", "receipt_sha256", "sent_at", "finished_at", "requested_width_m"), "existing target")
+            _id(target_ref["event_id"], "existing target event")
+            _hash(target_ref["receipt_sha256"], "existing target receipt")
+            sent, finished = (_number(target_ref[k], k) for k in ("sent_at", "finished_at"))
+            start, end = (_number(candidate[k], k) for k in ("started_at", "completed_at"))
+            target = _number(target_ref["requested_width_m"], "existing target width")
+            width = _number(candidate["observed_width_m"], "observed width")
+            gap = _number(candidate["minimum_target_gap_m"], "minimum target gap")
+            if (candidate["schema"] != "piper_existing_supported_contact_candidate_v1"
+                    or candidate["basis"] != "existing_target_observation"
+                    or candidate["completion"] != "observation_only" or candidate["target_may_remain_active"] is not True
+                    or candidate["event_id"] == target_ref["event_id"]
+                    or not 0 <= sent < finished < start < end <= now or start < result["created_at"]
+                    or not 0 <= target <= .055 or not 0 <= width <= .070
+                    or not .002 < gap <= width-target+1e-12 or candidate["requested_width_m"] != target):
+                _fail("not_current_contact_candidate")
+            result["probe_ref"] = copy.deepcopy(candidate)
+            measurement = _measurement(result, evidence["measurement"], now, historical=True)
+            if (measurement["started_at"] != start or measurement["ended_at"] != end
+                    or measurement["trace_sha256"] != candidate["trace_sha256"]
+                    or measurement["observed"]["width_m"] != width):
+                _fail("observed_candidate_trace_mismatch")
+            scene = _scene(result, evidence["scene"], now, after=finished, candidate_observation=True)
+            if scene["observation_id"] != candidate["observation_id"] or scene["captured_at"] > start:
+                _fail("observed_candidate_scene_mismatch")
+            visual = _visual(result, evidence["visual"], scene, purpose="current_contact")
+            result.update(status="contact_candidate", candidate_basis="existing_target_observation",
+                          measurement=measurement, original_anchor=copy.deepcopy(measurement["anchor"]),
+                          scene=scene, visual_evidence=visual, target_may_remain_active=True,
+                          residual_target={"event_id": target_ref["event_id"], "requested_width_m": target})
         elif kind in ("retain_static", "renew_static"):
             expected = "contact_candidate" if kind == "retain_static" else "retained_static"
             if result["status"] != expected:

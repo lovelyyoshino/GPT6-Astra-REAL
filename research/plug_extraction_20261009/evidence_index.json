@@ -1,0 +1,1049 @@
+{
+  "schema": "external_plug_evidence_index_v1",
+  "date": "2026-10-09",
+  "note": "Local originals are not imported or activated. Hashes bind recorded bytes; no new device access. Historical metadata entries are retained here rather than required by portable bundle verification.",
+  "historical_external_optimization_entries": [
+    {
+      "local_path": "artifacts/can_enable_20261008T084209/baseline.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add root manual CAN discovery and enable helper with sudo prompt, current identity checks, idempotent UP handling and offline failure-path verification; no robot commands or live interface enable during implementation.",
+      "optimized_sha256": "509b236779eb5304b1902d7289418d0e4ca26186080bdf3af4f861bd2d07450d"
+    },
+    {
+      "local_path": "artifacts/can_enable_20261008T084209/bundle_verification.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Record actual bundle verification and preserve unrelated concurrent source/hash differences.",
+      "optimized_sha256": "128c71c8ad1888dc2433e84ceabf2f24573fbd2a77daa57ee0aac96d8308374f"
+    },
+    {
+      "local_path": "artifacts/can_enable_20261008T084209/can_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add root manual CAN discovery and enable helper with sudo prompt, current identity checks, idempotent UP handling and offline failure-path verification; no robot commands or live interface enable during implementation.",
+      "optimized_sha256": "7e89b847437dd1455cb746faf381cc318edfb90d2cb097df5ca4a89273d4c469"
+    },
+    {
+      "local_path": "artifacts/can_enable_20261008T084209/compile.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add root manual CAN discovery and enable helper with sudo prompt, current identity checks, idempotent UP handling and offline failure-path verification; no robot commands or live interface enable during implementation.",
+      "optimized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "local_path": "artifacts/can_enable_20261008T084209/fast_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add root manual CAN discovery and enable helper with sudo prompt, current identity checks, idempotent UP handling and offline failure-path verification; no robot commands or live interface enable during implementation.",
+      "optimized_sha256": "3a72a7638e43cfe3c835ef3f212892765c088634c27cdd32c48dbba9a749e0a8"
+    },
+    {
+      "local_path": "artifacts/can_enable_20261008T084209/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add root manual CAN discovery and enable helper with sudo prompt, current identity checks, idempotent UP handling and offline failure-path verification; no robot commands or live interface enable during implementation.",
+      "optimized_sha256": "0433d2cd397016019def62d70f67c4307a43e461ebc6766f49e922dabdc76682"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/bundle_verification.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Record actual enabled-noop fix verification, retaining unrelated bundle discrepancies.",
+      "optimized_sha256": "a977c99f67b0c2e91a9fea2eafe8509c584639e109224bf9b3dd3fa7ab87968b"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/fast_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Fix failed-startup record blocking an already-enabled no-op: validate bindings first, read current TX-blocked feedback, skip enabled arms, retain owner/fault admission for any actual motor send or network bringup. Verify complete root/helper path with fresh real feedback under a read-only validation guard and unchanged ledger hashes.",
+      "optimized_sha256": "078aca8dcf12fcb19ce972a50fe57a7fbc2c419241096b603f1dfd274946a80b"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/live_noop.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Fix failed-startup record blocking an already-enabled no-op: validate bindings first, read current TX-blocked feedback, skip enabled arms, retain owner/fault admission for any actual motor send or network bringup. Verify complete root/helper path with fresh real feedback under a read-only validation guard and unchanged ledger hashes.",
+      "optimized_sha256": "d1b2954a8dab5a26b34c77c2d3a5329aa5ef2350ebfea92200685002e04ffe8f"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/live_validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Fix failed-startup record blocking an already-enabled no-op: validate bindings first, read current TX-blocked feedback, skip enabled arms, retain owner/fault admission for any actual motor send or network bringup. Verify complete root/helper path with fresh real feedback under a read-only validation guard and unchanged ledger hashes.",
+      "optimized_sha256": "8bc2e68a7aa2c85dd51b2055b283e10dc7c01cc45d8d7e31e2bb8836e910c319"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/read_state.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Fix failed-startup record blocking an already-enabled no-op: validate bindings first, read current TX-blocked feedback, skip enabled arms, retain owner/fault admission for any actual motor send or network bringup. Verify complete root/helper path with fresh real feedback under a read-only validation guard and unchanged ledger hashes.",
+      "optimized_sha256": "5e612779e85db5962be81b5ef79e34cddeda0d7cf4a84205de638ece94f17246"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/reboot_guard_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Fix failed-startup record blocking an already-enabled no-op: validate bindings first, read current TX-blocked feedback, skip enabled arms, retain owner/fault admission for any actual motor send or network bringup. Verify complete root/helper path with fresh real feedback under a read-only validation guard and unchanged ledger hashes.",
+      "optimized_sha256": "603cdcfc5135e246901d7012715f30393af2032b5284ad35cb1234ec29bf1814"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/root_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Fix failed-startup record blocking an already-enabled no-op: validate bindings first, read current TX-blocked feedback, skip enabled arms, retain owner/fault admission for any actual motor send or network bringup. Verify complete root/helper path with fresh real feedback under a read-only validation guard and unchanged ledger hashes.",
+      "optimized_sha256": "6a817ca0d3bd86e3c1e5c87aaed53118f4684d4a9a59f326d9185b844242f65d"
+    },
+    {
+      "local_path": "artifacts/can_enabled_noop_fix_20261008T093836/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Fix failed-startup record blocking an already-enabled no-op: validate bindings first, read current TX-blocked feedback, skip enabled arms, retain owner/fault admission for any actual motor send or network bringup. Verify complete root/helper path with fresh real feedback under a read-only validation guard and unchanged ledger hashes.",
+      "optimized_sha256": "8531acc53a0d32b22657ad75278f5df83a3859e68421c487074da78620671b7b"
+    },
+    {
+      "local_path": "artifacts/can_motor_enable_20261008T090200/bundle_verification.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Preserve actual CAN/motor helper verification and unrelated whole-bundle hash discrepancies.",
+      "optimized_sha256": "947180393ca47ac88148e3f55a017e39c923f326d664105c6d5bb820f686f5d4"
+    },
+    {
+      "local_path": "artifacts/can_motor_enable_20261008T090200/fast_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Extend root CAN helper to existing guarded motor startup, observed six-joint enable checks, USB identity and current owner/fault checks; preserve CAN-only mode and all host limits. Offline verification only; current ledger blocks real startup.",
+      "optimized_sha256": "cda1d0c3c8fa623158fa347edcb95f61c18645c912425ed4d8b24c236a37d8a5"
+    },
+    {
+      "local_path": "artifacts/can_motor_enable_20261008T090200/startup_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Extend root CAN helper to existing guarded motor startup, observed six-joint enable checks, USB identity and current owner/fault checks; preserve CAN-only mode and all host limits. Offline verification only; current ledger blocks real startup.",
+      "optimized_sha256": "a5a8cc27833b4272f9067fa499b78d3112270378067b0beb5f918271c1d7405c"
+    },
+    {
+      "local_path": "artifacts/can_motor_enable_20261008T090200/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Extend root CAN helper to existing guarded motor startup, observed six-joint enable checks, USB identity and current owner/fault checks; preserve CAN-only mode and all host limits. Offline verification only; current ledger blocks real startup.",
+      "optimized_sha256": "8a437ddc4180641ca57acc8be7554f34959f3c0731a8f636f1ac5d0e167a8e64"
+    },
+    {
+      "local_path": "artifacts/can_reboot_fix_20261008T091238/bundle_verification.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Record actual reboot-startup checks and preserve unrelated bundle hash discrepancies.",
+      "optimized_sha256": "885979e0414c40d415c316b44313cce864ebb0ff4159e021214100d5c56fa949"
+    },
+    {
+      "local_path": "artifacts/can_reboot_fix_20261008T091238/can0_passive.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add attended host-reboot motor-startup enrollment, reuse original startup executor with durable one-time boot/arm claims, retain all historical task faults/owners/budgets, and distinguish operator robot power-cycle confirmation from Linux boot evidence. Fix root-script historical owner refusal without unlocking ordinary task motion. Offline/FakeCAN and receive-only validation.",
+      "optimized_sha256": "64f04ac8ea29feb82a1a241d652efc32032ce23abb352a223485b74307e4a83f"
+    },
+    {
+      "local_path": "artifacts/can_reboot_fix_20261008T091238/can1_passive.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add attended host-reboot motor-startup enrollment, reuse original startup executor with durable one-time boot/arm claims, retain all historical task faults/owners/budgets, and distinguish operator robot power-cycle confirmation from Linux boot evidence. Fix root-script historical owner refusal without unlocking ordinary task motion. Offline/FakeCAN and receive-only validation.",
+      "optimized_sha256": "d4cc1b77db318cbb33beec03c7f9f1489b4f5e95d79a801e9e52f2351bdb226d"
+    },
+    {
+      "local_path": "artifacts/can_reboot_fix_20261008T091238/fast_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add attended host-reboot motor-startup enrollment, reuse original startup executor with durable one-time boot/arm claims, retain all historical task faults/owners/budgets, and distinguish operator robot power-cycle confirmation from Linux boot evidence. Fix root-script historical owner refusal without unlocking ordinary task motion. Offline/FakeCAN and receive-only validation.",
+      "optimized_sha256": "7a9e82afaf3610d511a0331bd11dcc36ef595c794205cd2b1cedc7a8fe9fcd43"
+    },
+    {
+      "local_path": "artifacts/can_reboot_fix_20261008T091238/root_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add attended host-reboot motor-startup enrollment, reuse original startup executor with durable one-time boot/arm claims, retain all historical task faults/owners/budgets, and distinguish operator robot power-cycle confirmation from Linux boot evidence. Fix root-script historical owner refusal without unlocking ordinary task motion. Offline/FakeCAN and receive-only validation.",
+      "optimized_sha256": "f3588c26ec395b4565f53ae1c77538e8328cd08f189e07296dda04dd71d0e08e"
+    },
+    {
+      "local_path": "artifacts/can_reboot_fix_20261008T091238/startup_service_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add attended host-reboot motor-startup enrollment, reuse original startup executor with durable one-time boot/arm claims, retain all historical task faults/owners/budgets, and distinguish operator robot power-cycle confirmation from Linux boot evidence. Fix root-script historical owner refusal without unlocking ordinary task motion. Offline/FakeCAN and receive-only validation.",
+      "optimized_sha256": "7e39ba548b59832a7f22d1b54f846ac2cab4db781029cc02da13debb533add8c"
+    },
+    {
+      "local_path": "artifacts/can_reboot_fix_20261008T091238/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Add attended host-reboot motor-startup enrollment, reuse original startup executor with durable one-time boot/arm claims, retain all historical task faults/owners/budgets, and distinguish operator robot power-cycle confirmation from Linux boot evidence. Fix root-script historical owner refusal without unlocking ordinary task motion. Offline/FakeCAN and receive-only validation.",
+      "optimized_sha256": "cf407832caf27de0fbed79dd54d7e09d43e289fbd27524d823de9ac47c305af1"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/bundle_verification.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Record actual startup-diagnosis verification and preserve unrelated bundle discrepancies.",
+      "optimized_sha256": "e7c81b7a6d3bc32dc08adbf71c7d4cf0b1c7e4bed7b1dced23ecf78dedab4554"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/can0_passive.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Explain current-pose startup without homing, show actual observed enable bits separately from failed startup guard, preserve complete raw failure and all executor limits; diagnose right J4 single-sample deviation using recorded feedback and zero-TX passive observation.",
+      "optimized_sha256": "c01c831c8f2ec0461016682efd556ce50e5793264dbfb72d4742108a74fe75cc"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/can1_passive.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Explain current-pose startup without homing, show actual observed enable bits separately from failed startup guard, preserve complete raw failure and all executor limits; diagnose right J4 single-sample deviation using recorded feedback and zero-TX passive observation.",
+      "optimized_sha256": "cead373f917b06b11b7f921ed97761a9bef1266ed69ff6c14198e0656547679d"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/diagnosis.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Explain current-pose startup without homing, show actual observed enable bits separately from failed startup guard, preserve complete raw failure and all executor limits; diagnose right J4 single-sample deviation using recorded feedback and zero-TX passive observation.",
+      "optimized_sha256": "30ab9ed17e2567897f97d4d869f2521cb3700dcc806834bd2890873f8c3083b2"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/fast_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Explain current-pose startup without homing, show actual observed enable bits separately from failed startup guard, preserve complete raw failure and all executor limits; diagnose right J4 single-sample deviation using recorded feedback and zero-TX passive observation.",
+      "optimized_sha256": "9c292137add1790009b8bac22636630b72b064f897d2d0750b515375055502b5"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/receipt_summary.txt",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Explain current-pose startup without homing, show actual observed enable bits separately from failed startup guard, preserve complete raw failure and all executor limits; diagnose right J4 single-sample deviation using recorded feedback and zero-TX passive observation.",
+      "optimized_sha256": "96b33d9d666b6ecb2b3faf05629906828dec8265321fa03cd57658393aeb11f6"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/root_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Explain current-pose startup without homing, show actual observed enable bits separately from failed startup guard, preserve complete raw failure and all executor limits; diagnose right J4 single-sample deviation using recorded feedback and zero-TX passive observation.",
+      "optimized_sha256": "1efdebc726863023e3951b17cec44a32b12b979f6d037e667c1d864b0693d550"
+    },
+    {
+      "local_path": "artifacts/can_startup_diagnosis_20261008T093033/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "can_interface_setup",
+      "change_reason": "Explain current-pose startup without homing, show actual observed enable bits separately from failed startup guard, preserve complete raw failure and all executor limits; diagnose right J4 single-sample deviation using recorded feedback and zero-TX passive observation.",
+      "optimized_sha256": "f9ae4c5d1b996be0b04ba0724483eee86b24c6e745baedf9fa70bd706d4eff22"
+    },
+    {
+      "local_path": "artifacts/near_target_fine_steps_20261007/before_hashes.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_near_target_fine_steps",
+      "change_reason": "Clarify near-target centimetre-to-millimetre step selection without changing actuator bounds or asserting physical positioning accuracy.",
+      "optimized_sha256": "32d94609faae6823d783808dd65a77609f4748e75803dd26dfe9173ce20066dd"
+    },
+    {
+      "local_path": "artifacts/near_target_fine_steps_20261007/finalize.py",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_near_target_fine_steps",
+      "change_reason": "Clarify near-target centimetre-to-millimetre step selection without changing actuator bounds or asserting physical positioning accuracy.",
+      "optimized_sha256": "0c8c817038af8c956695caad8f62af78457d0aa76f69bdf8c008dea928418947"
+    },
+    {
+      "local_path": "artifacts/near_target_fine_steps_20261007/model_checks.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_near_target_fine_steps",
+      "change_reason": "Clarify near-target centimetre-to-millimetre step selection without changing actuator bounds or asserting physical positioning accuracy.",
+      "optimized_sha256": "338e906b2f12611b485b659cf0e76840ef59ff2926191f2bded06b3eb0f79eed"
+    },
+    {
+      "local_path": "artifacts/near_target_fine_steps_20261007/single_joint_model_checks.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_near_target_fine_steps",
+      "change_reason": "Clarify near-target centimetre-to-millimetre step selection without changing actuator bounds or asserting physical positioning accuracy.",
+      "optimized_sha256": "5fad01c2065224ef826444528dabba01b9426124de11cecd53b1270190a065d1"
+    },
+    {
+      "local_path": "artifacts/near_target_fine_steps_20261007/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_near_target_fine_steps",
+      "change_reason": "Clarify near-target centimetre-to-millimetre step selection without changing actuator bounds or asserting physical positioning accuracy.",
+      "optimized_sha256": "4bc1a38868df3949d433a6aa4e11e623db1aa202a920011e58654440261fe052"
+    },
+    {
+      "local_path": "artifacts/plug_rgb_window_repair_20261007/service_tests.log",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "eca2490adf46baaa6b71e94851def14c0a424619599980468bb0f5280750bcd0"
+    },
+    {
+      "local_path": "artifacts/plug_rgb_window_repair_20261007/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "c53a42a4f934dc09ba181133eb7d025334b77a4c9bbc495c876ced0e27642d8a"
+    },
+    {
+      "local_path": "artifacts/plug_timing_fixed_1791375427/independent_review.json",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "8396e6f24d7886ae86f45b3624b3dfda55849c19c61db9f97870a43addab1fa2"
+    },
+    {
+      "local_path": "artifacts/plug_timing_fixed_1791375427/online_closeout.json",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "cfa424b4564bb45edfafabfe80842d2ddc42e6f6eb1eb845b4eb9580d21e412d"
+    },
+    {
+      "local_path": "artifacts/plug_timing_fixed_1791375427/recording_validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "03188d32523a88177cdee90266b82ccd471172cdbc8c3a210e797fe111f423de"
+    },
+    {
+      "local_path": "artifacts/rgb_round_management_20261007/so3_validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "8265b96e322b3c44853c031827ead65443bf9e71041ed4ad4cdac4b5644cd908"
+    },
+    {
+      "local_path": "artifacts/rgb_round_management_20261007/timing_independent_review.json",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "6f9e8093c91c94ced9e124c903b70b4288f73eec1159e7ab7fbee2cc90d4657d"
+    },
+    {
+      "local_path": "artifacts/rgb_round_management_20261007/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "rgb_window_postsend_round",
+      "change_reason": "Explicit RGB fault round and minimum completion reserve; preserve original live guards and historical failures.",
+      "optimized_sha256": "507e022de9f90d9c1490581e68ed480cf745a72942c01a4fe1254947869ef0c8"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/before_hashes.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "165e5e7b08119c4448222ef125a43387e7a85deffc8e413269a527f46e771e93"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/fast.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "b2e38be1d7b755970d8adc03f62fb8b0b280f6d178b982da8929340d38a3986b"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/fast.log",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "3b445dd54dbe773d7e6a9ae979213ab3d93b3a97aa4991e1aee7d6132ba7802c"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/finalize_validation.py",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "c6e448527343fa52f8390ba8433f7af5c327c18456708f2383b6583c00e79fbc"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/pair.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "8595073aa2142db2920c3bf599536fc668a9cf5fded8608c968c1b3fe08d127c"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/pair.log",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "cd284bed3fe58e2a104809345982e5883c8717eed641c44e7d67528d2cbc9034"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/pair_15deg_initial.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "8595073aa2142db2920c3bf599536fc668a9cf5fded8608c968c1b3fe08d127c"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/pair_15deg_initial.log",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "cd284bed3fe58e2a104809345982e5883c8717eed641c44e7d67528d2cbc9034"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/pair_final.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "0d511b9516efa93d0d2b1212e09bcb1b242aa0e1d356004845c59e60c8a2e26c"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/pair_final.log",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "cd8e2170d4732a62a02683883a6a4b523c63453920f954179fcd2558e2c96b88"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/run_validation.py",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "a480d2ed46e601cda89731c9f6724aa2a26d41a29342e23d6a3f457fe11c6b99"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/syntax.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "73dbf5a28ba0b8c2c3e6432b7370499807071402bd4671964fc713d1c7ae5073"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/syntax.log",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "local_path": "artifacts/task_budget_3h_1000_20261007/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "piper_budget_3h_coarse_v2",
+      "change_reason": "Explicit 3-hour/1000-event budgets and RGB coarse-v2 30..100 mm targets; preserve prior frozen sessions, ordinary/contact limits and once-only feedback supervision. Offline validation only.",
+      "optimized_sha256": "84573a06b22d46841502ced4a2afd7e6a4b92f9443d9cdfeb38682948dfc4cdf"
+    },
+    {
+      "local_path": "artifacts/startup_reset_20261009/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "hierarchical_piper_v1",
+      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards.",
+      "optimized_sha256": "10ba926de113ee5f50cd9500930ab453602078862f7cdfef261c2b939bb22052"
+    },
+    {
+      "local_path": "artifacts/reset_task_budget_20261009/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "hierarchical_piper_v1",
+      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success.",
+      "optimized_sha256": "0aaaad352b64466737c7b1bbefe850ca7d2b7b35ac49a53f3e813dc91dcb61ec"
+    },
+    {
+      "local_path": "artifacts/gripper_zero_20261009/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "hierarchical_piper_v1",
+      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success.",
+      "optimized_sha256": "c16380d56ea1bd6c66a76f87d17f9c4bce892f6c099c7fedbeea2b3fb5d64ab1"
+    },
+    {
+      "local_path": "artifacts/gripper_ack_repair_20261009/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "hierarchical_piper_v1",
+      "change_reason": " Offline raw ACK diagnostics repair with bounded receive trace, explicit SDK/raw result comparison, accurate timing and future configuration provenance; preserve original fault, no new physical action or recovery claim.",
+      "optimized_sha256": "2922a5843f2794185fd459da6ad5f527f8ba69f4c258f0c597e0bbec8922bcc0"
+    },
+    {
+      "local_path": "artifacts/single_arm_no_zero_20261009/validation.json",
+      "base_source_sha256": null,
+      "pipeline_id": "hierarchical_piper_v1",
+      "change_reason": " User-requested single-arm operation without a zero-calibration prerequisite: one-command jaw enable/close, signed disabled-peer feedback, bounded isolation of terminal full-send coordinate maintenance, preserved faults and durable new action claims. Consistent admitted J4 window policy. Offline tests only; no hardware activation.",
+      "optimized_sha256": "3618961735cfaf884d3ab4bed37da59a79ed4e95d25f6e2b985d5dc03c20fc3f"
+    }
+  ],
+  "files": [
+    {
+      "path": "artifacts/can_enable_20261008T084209/baseline.json",
+      "bytes": 163,
+      "sha256": "509b236779eb5304b1902d7289418d0e4ca26186080bdf3af4f861bd2d07450d"
+    },
+    {
+      "path": "artifacts/can_enable_20261008T084209/bundle_verification.json",
+      "bytes": 1096,
+      "sha256": "128c71c8ad1888dc2433e84ceabf2f24573fbd2a77daa57ee0aac96d8308374f"
+    },
+    {
+      "path": "artifacts/can_enable_20261008T084209/can_tests.log",
+      "bytes": 992,
+      "sha256": "7e89b847437dd1455cb746faf381cc318edfb90d2cb097df5ca4a89273d4c469"
+    },
+    {
+      "path": "artifacts/can_enable_20261008T084209/compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/can_enable_20261008T084209/fast_tests.log",
+      "bytes": 487,
+      "sha256": "3a72a7638e43cfe3c835ef3f212892765c088634c27cdd32c48dbba9a749e0a8"
+    },
+    {
+      "path": "artifacts/can_enable_20261008T084209/validation.json",
+      "bytes": 2091,
+      "sha256": "0433d2cd397016019def62d70f67c4307a43e461ebc6766f49e922dabdc76682"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/bundle_verification.json",
+      "bytes": 1196,
+      "sha256": "a977c99f67b0c2e91a9fea2eafe8509c584639e109224bf9b3dd3fa7ab87968b"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/fast_tests.log",
+      "bytes": 487,
+      "sha256": "078aca8dcf12fcb19ce972a50fe57a7fbc2c419241096b603f1dfd274946a80b"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/live_noop.log",
+      "bytes": 991,
+      "sha256": "d1b2954a8dab5a26b34c77c2d3a5329aa5ef2350ebfea92200685002e04ffe8f"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/live_validation.json",
+      "bytes": 2198,
+      "sha256": "8bc2e68a7aa2c85dd51b2055b283e10dc7c01cc45d8d7e31e2bb8836e910c319"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/read_state.json",
+      "bytes": 22269,
+      "sha256": "5e612779e85db5962be81b5ef79e34cddeda0d7cf4a84205de638ece94f17246"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/reboot_guard_tests.log",
+      "bytes": 113,
+      "sha256": "603cdcfc5135e246901d7012715f30393af2032b5284ad35cb1234ec29bf1814"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/root_tests.log",
+      "bytes": 140,
+      "sha256": "6a817ca0d3bd86e3c1e5c87aaed53118f4684d4a9a59f326d9185b844242f65d"
+    },
+    {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/validation.json",
+      "bytes": 2558,
+      "sha256": "8531acc53a0d32b22657ad75278f5df83a3859e68421c487074da78620671b7b"
+    },
+    {
+      "path": "artifacts/can_motor_enable_20261008T090200/bundle_verification.json",
+      "bytes": 1196,
+      "sha256": "947180393ca47ac88148e3f55a017e39c923f326d664105c6d5bb820f686f5d4"
+    },
+    {
+      "path": "artifacts/can_motor_enable_20261008T090200/fast_tests.log",
+      "bytes": 487,
+      "sha256": "cda1d0c3c8fa623158fa347edcb95f61c18645c912425ed4d8b24c236a37d8a5"
+    },
+    {
+      "path": "artifacts/can_motor_enable_20261008T090200/startup_tests.log",
+      "bytes": 180,
+      "sha256": "a5a8cc27833b4272f9067fa499b78d3112270378067b0beb5f918271c1d7405c"
+    },
+    {
+      "path": "artifacts/can_motor_enable_20261008T090200/validation.json",
+      "bytes": 3151,
+      "sha256": "8a437ddc4180641ca57acc8be7554f34959f3c0731a8f636f1ac5d0e167a8e64"
+    },
+    {
+      "path": "artifacts/can_reboot_fix_20261008T091238/bundle_verification.json",
+      "bytes": 1196,
+      "sha256": "885979e0414c40d415c316b44313cce864ebb0ff4159e021214100d5c56fa949"
+    },
+    {
+      "path": "artifacts/can_reboot_fix_20261008T091238/can0_passive.json",
+      "bytes": 444217,
+      "sha256": "64f04ac8ea29feb82a1a241d652efc32032ce23abb352a223485b74307e4a83f"
+    },
+    {
+      "path": "artifacts/can_reboot_fix_20261008T091238/can1_passive.json",
+      "bytes": 445450,
+      "sha256": "d4cc1b77db318cbb33beec03c7f9f1489b4f5e95d79a801e9e52f2351bdb226d"
+    },
+    {
+      "path": "artifacts/can_reboot_fix_20261008T091238/fast_tests.log",
+      "bytes": 487,
+      "sha256": "7a9e82afaf3610d511a0331bd11dcc36ef595c794205cd2b1cedc7a8fe9fcd43"
+    },
+    {
+      "path": "artifacts/can_reboot_fix_20261008T091238/root_tests.log",
+      "bytes": 129,
+      "sha256": "f3588c26ec395b4565f53ae1c77538e8328cd08f189e07296dda04dd71d0e08e"
+    },
+    {
+      "path": "artifacts/can_reboot_fix_20261008T091238/startup_service_tests.log",
+      "bytes": 400,
+      "sha256": "7e39ba548b59832a7f22d1b54f846ac2cab4db781029cc02da13debb533add8c"
+    },
+    {
+      "path": "artifacts/can_reboot_fix_20261008T091238/validation.json",
+      "bytes": 3666,
+      "sha256": "cf407832caf27de0fbed79dd54d7e09d43e289fbd27524d823de9ac47c305af1"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/bundle_verification.json",
+      "bytes": 1196,
+      "sha256": "e7c81b7a6d3bc32dc08adbf71c7d4cf0b1c7e4bed7b1dced23ecf78dedab4554"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/can0_passive.json",
+      "bytes": 436831,
+      "sha256": "c01c831c8f2ec0461016682efd556ce50e5793264dbfb72d4742108a74fe75cc"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/can1_passive.json",
+      "bytes": 436509,
+      "sha256": "cead373f917b06b11b7f921ed97761a9bef1266ed69ff6c14198e0656547679d"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/diagnosis.json",
+      "bytes": 5983,
+      "sha256": "30ab9ed17e2567897f97d4d869f2521cb3700dcc806834bd2890873f8c3083b2"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/fast_tests.log",
+      "bytes": 487,
+      "sha256": "9c292137add1790009b8bac22636630b72b064f897d2d0750b515375055502b5"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/receipt_summary.txt",
+      "bytes": 559,
+      "sha256": "96b33d9d666b6ecb2b3faf05629906828dec8265321fa03cd57658393aeb11f6"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/root_tests.log",
+      "bytes": 133,
+      "sha256": "1efdebc726863023e3951b17cec44a32b12b979f6d037e667c1d864b0693d550"
+    },
+    {
+      "path": "artifacts/can_startup_diagnosis_20261008T093033/validation.json",
+      "bytes": 2042,
+      "sha256": "f9ae4c5d1b996be0b04ba0724483eee86b24c6e745baedf9fa70bd706d4eff22"
+    },
+    {
+      "path": "artifacts/gripper_ack_repair_20261009/validation.json",
+      "bytes": 3246,
+      "sha256": "2922a5843f2794185fd459da6ad5f527f8ba69f4c258f0c597e0bbec8922bcc0"
+    },
+    {
+      "path": "artifacts/gripper_zero_20261009/validation.json",
+      "bytes": 6758,
+      "sha256": "c16380d56ea1bd6c66a76f87d17f9c4bce892f6c099c7fedbeea2b3fb5d64ab1"
+    },
+    {
+      "path": "artifacts/left_extract_5mm_20261009_run1/outcome.json",
+      "bytes": 2311,
+      "sha256": "8b7e6b485492064bd11e2d3bc531b7e24f6d65f0ae544b88a1513c31db18f7e2"
+    },
+    {
+      "path": "artifacts/left_lift_10cm_20261009_run1/final_left_passive.json",
+      "bytes": 282880,
+      "sha256": "6db8891a7080ac0faeff0066d5e257d5f5e44e3c8f1d88a40ba25e1814716869"
+    },
+    {
+      "path": "artifacts/near_target_fine_steps_20261007/before_hashes.json",
+      "bytes": 375,
+      "sha256": "32d94609faae6823d783808dd65a77609f4748e75803dd26dfe9173ce20066dd"
+    },
+    {
+      "path": "artifacts/near_target_fine_steps_20261007/finalize.py",
+      "bytes": 3398,
+      "sha256": "0c8c817038af8c956695caad8f62af78457d0aa76f69bdf8c008dea928418947"
+    },
+    {
+      "path": "artifacts/near_target_fine_steps_20261007/model_checks.json",
+      "bytes": 1106,
+      "sha256": "338e906b2f12611b485b659cf0e76840ef59ff2926191f2bded06b3eb0f79eed"
+    },
+    {
+      "path": "artifacts/near_target_fine_steps_20261007/single_joint_model_checks.json",
+      "bytes": 1132,
+      "sha256": "5fad01c2065224ef826444528dabba01b9426124de11cecd53b1270190a065d1"
+    },
+    {
+      "path": "artifacts/near_target_fine_steps_20261007/validation.json",
+      "bytes": 3375,
+      "sha256": "4bc1a38868df3949d433a6aa4e11e623db1aa202a920011e58654440261fe052"
+    },
+    {
+      "path": "artifacts/plug_extraction_valid_20261009/SHA256SUMS.txt",
+      "bytes": 414,
+      "sha256": "8a6bc22a7f4ae79a46be8810741bbfae248e9eb49cfe41c86ae29ae035e4cc9e"
+    },
+    {
+      "path": "artifacts/plug_extraction_valid_20261009/delivery.json",
+      "bytes": 474,
+      "sha256": "bf7a72ee59fbc0398a6f10ba1ed5f11572b2a8fbff80ce2baf1a372e737eec9d"
+    },
+    {
+      "path": "artifacts/plug_extraction_valid_20261009/manifest.json",
+      "bytes": 959193,
+      "sha256": "0711853ac4210c6c296a59afe9e9fec79ceb41312807eb165dfe7ea339bb440e"
+    },
+    {
+      "path": "artifacts/plug_extraction_valid_20261009/plug_extraction_20261009_valid.mp4",
+      "bytes": 27495493,
+      "sha256": "aee31a35f1220e1985b5b628e9e05703e85e8a4db878d9329b647077c92b5af9"
+    },
+    {
+      "path": "artifacts/plug_extraction_valid_20261009/plug_extraction_20261009_valid.zip",
+      "bytes": 27588453,
+      "sha256": "a7bbc6b66081b9e59fb91f7b9c52ce2d5b5c8a6d95cc904a570d27611ea4bc77"
+    },
+    {
+      "path": "artifacts/plug_extraction_valid_20261009/timeline.csv",
+      "bytes": 3811,
+      "sha256": "456204a837facd9d68572c2dc88c1456a3e6e9fbe1d7c97e88d5c8dda421f1e4"
+    },
+    {
+      "path": "artifacts/plug_rgb_window_repair_20261007/service_tests.log",
+      "bytes": 121,
+      "sha256": "eca2490adf46baaa6b71e94851def14c0a424619599980468bb0f5280750bcd0"
+    },
+    {
+      "path": "artifacts/plug_rgb_window_repair_20261007/validation.json",
+      "bytes": 8150,
+      "sha256": "c53a42a4f934dc09ba181133eb7d025334b77a4c9bbc495c876ced0e27642d8a"
+    },
+    {
+      "path": "artifacts/plug_timing_fixed_1791375427/independent_review.json",
+      "bytes": 10735,
+      "sha256": "8396e6f24d7886ae86f45b3624b3dfda55849c19c61db9f97870a43addab1fa2"
+    },
+    {
+      "path": "artifacts/plug_timing_fixed_1791375427/online_closeout.json",
+      "bytes": 192632,
+      "sha256": "cfa424b4564bb45edfafabfe80842d2ddc42e6f6eb1eb845b4eb9580d21e412d"
+    },
+    {
+      "path": "artifacts/plug_timing_fixed_1791375427/recording_validation.json",
+      "bytes": 1591,
+      "sha256": "03188d32523a88177cdee90266b82ccd471172cdbc8c3a210e797fe111f423de"
+    },
+    {
+      "path": "artifacts/reset_task_budget_20261009/validation.json",
+      "bytes": 8349,
+      "sha256": "0aaaad352b64466737c7b1bbefe850ca7d2b7b35ac49a53f3e813dc91dcb61ec"
+    },
+    {
+      "path": "artifacts/rgb_round_management_20261007/so3_validation.json",
+      "bytes": 3176,
+      "sha256": "8265b96e322b3c44853c031827ead65443bf9e71041ed4ad4cdac4b5644cd908"
+    },
+    {
+      "path": "artifacts/rgb_round_management_20261007/timing_independent_review.json",
+      "bytes": 804,
+      "sha256": "6f9e8093c91c94ced9e124c903b70b4288f73eec1159e7ab7fbee2cc90d4657d"
+    },
+    {
+      "path": "artifacts/rgb_round_management_20261007/validation.json",
+      "bytes": 1572,
+      "sha256": "507e022de9f90d9c1490581e68ed480cf745a72942c01a4fe1254947869ef0c8"
+    },
+    {
+      "path": "artifacts/single_arm_no_zero_20261009/validation.json",
+      "bytes": 3968,
+      "sha256": "3618961735cfaf884d3ab4bed37da59a79ed4e95d25f6e2b985d5dc03c20fc3f"
+    },
+    {
+      "path": "artifacts/startup_reset_20261009/validation.json",
+      "bytes": 4097,
+      "sha256": "10ba926de113ee5f50cd9500930ab453602078862f7cdfef261c2b939bb22052"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/before_hashes.json",
+      "bytes": 1778,
+      "sha256": "165e5e7b08119c4448222ef125a43387e7a85deffc8e413269a527f46e771e93"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/fast.json",
+      "bytes": 381,
+      "sha256": "b2e38be1d7b755970d8adc03f62fb8b0b280f6d178b982da8929340d38a3986b"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/fast.log",
+      "bytes": 487,
+      "sha256": "3b445dd54dbe773d7e6a9ae979213ab3d93b3a97aa4991e1aee7d6132ba7802c"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/finalize_validation.py",
+      "bytes": 6527,
+      "sha256": "c6e448527343fa52f8390ba8433f7af5c327c18456708f2383b6583c00e79fbc"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/pair.json",
+      "bytes": 952,
+      "sha256": "8595073aa2142db2920c3bf599536fc668a9cf5fded8608c968c1b3fe08d127c"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/pair.log",
+      "bytes": 1680,
+      "sha256": "cd284bed3fe58e2a104809345982e5883c8717eed641c44e7d67528d2cbc9034"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/pair_15deg_initial.json",
+      "bytes": 952,
+      "sha256": "8595073aa2142db2920c3bf599536fc668a9cf5fded8608c968c1b3fe08d127c"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/pair_15deg_initial.log",
+      "bytes": 1680,
+      "sha256": "cd284bed3fe58e2a104809345982e5883c8717eed641c44e7d67528d2cbc9034"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/pair_final.json",
+      "bytes": 958,
+      "sha256": "0d511b9516efa93d0d2b1212e09bcb1b242aa0e1d356004845c59e60c8a2e26c"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/pair_final.log",
+      "bytes": 470,
+      "sha256": "cd8e2170d4732a62a02683883a6a4b523c63453920f954179fcd2558e2c96b88"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/run_validation.py",
+      "bytes": 2575,
+      "sha256": "a480d2ed46e601cda89731c9f6724aa2a26d41a29342e23d6a3f457fe11c6b99"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/syntax.json",
+      "bytes": 383,
+      "sha256": "73dbf5a28ba0b8c2c3e6432b7370499807071402bd4671964fc713d1c7ae5073"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/syntax.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/task_budget_3h_1000_20261007/validation.json",
+      "bytes": 8683,
+      "sha256": "84573a06b22d46841502ced4a2afd7e6a4b92f9443d9cdfeb38682948dfc4cdf"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/joint_limits_f3e981d4c057411293018c3da5ce62b7/result.json",
+      "bytes": 70432,
+      "sha256": "772d1f0227cc122edd9153734913e85a153d4a62876dff0e4c0ff11a37aa3425"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_gripper_e47454da7f8047deb8daeded123951f7/result.json",
+      "bytes": 98078,
+      "sha256": "39ee6054f33cb79f3eedcd16d3f2bda10d0d9d32240dfc7cf0eada88d71cf4a0"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_00ea0af282834201b3878904f7df174f/result.json",
+      "bytes": 99999,
+      "sha256": "966f735f055df1b67e566da810d7cdf10584bf270a1103f54f3580672a769347"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_0585616769ed42599a701faba1b4611e/result.json",
+      "bytes": 102355,
+      "sha256": "765b3659e570f118bfd5ba4a4cddef69bbebda205b37fc8fc0253d91dafef5eb"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_09421b0c84b3401f90534f7f1495bb54/result.json",
+      "bytes": 68565,
+      "sha256": "c7ffe805e186b833b7a58dce17a8e92a1fc5c795ca508a2cdbd8bc2d06ea8d83"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_0fbb58a2163141a49d18c07f51dc285b/result.json",
+      "bytes": 101473,
+      "sha256": "58b966f73fb41fea2d988b0580d93bb5deff6caaf486b3dd3e7bda83095ee857"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_180f4c86d0b64d618a7fb0f492f08994/result.json",
+      "bytes": 99616,
+      "sha256": "e8bd2086a4ca94e2100689fa33068086649e94c2a15da54c54faa251894f9b06"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_1e75f822692745b78ad34016d51b6db8/result.json",
+      "bytes": 68218,
+      "sha256": "269f12eb11f6f921506c0873204b454fd06a7b52c7b29c9a956cbd6d4179e73b"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_1e8b16f766d246c18eca5284650f7555/result.json",
+      "bytes": 100334,
+      "sha256": "4ce59117c45a982fc25c278132ce58105de3aee047e3bc09f0e34879f490a784"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_24547881429f4fde8f1ee5be15310035/result.json",
+      "bytes": 103398,
+      "sha256": "cc725a05beddb67c06c1369e60db5ae94a6e23c8b648a5c8395d4e3b9fd42738"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_28c6a6f83f78451197241c66184716a2/result.json",
+      "bytes": 106498,
+      "sha256": "1801c88bd9d21a4c0296eae4e2a9e79c74701128e17901e4f287a980da8d99f0"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_2fc5f18af75f47b0ac28a17d775972d4/result.json",
+      "bytes": 99651,
+      "sha256": "d0b104cfa00110430ba3e10d8dea35920ebd3080d541cbf75ff26903f73b96dc"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_4702c67160dd4b128b4e370695ccfb9a/result.json",
+      "bytes": 100305,
+      "sha256": "29fbc5c8b7adf37f786ce1ea14f61fc28b5fbbc0ea488cfb0b174edc595b8e0b"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_49d6f929c9264c6993632929c7290ed4/result.json",
+      "bytes": 99588,
+      "sha256": "db501adde7188b8fd841e5f1d52c1bb96c99c5f9540ff578716c4914a33bae1d"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_4f994fb9b2684eda8d071e8c172c8df3/result.json",
+      "bytes": 106739,
+      "sha256": "e59952d8cf96d798593aa612aa096547dc33c362e877e6cb60850e1e85390967"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_536e7c14299840929bcdb1d291840f1d/result.json",
+      "bytes": 99538,
+      "sha256": "6e6ba51ccbeec14c303dc950b61f8655bda2542d1201e050530a7f7c04b48f34"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_5a6ecb4c442f402087dbb5e03e06d93d/result.json",
+      "bytes": 100006,
+      "sha256": "40c077fc1a411893ee026bccca868ccfc6b1df16dd621c28dce7c2d3b6e68486"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_6dc92cc1b7874b76a3742cd5c20ab7a9/result.json",
+      "bytes": 100292,
+      "sha256": "7103e344e2412e4c6450892943d6c627df401478c5d2fac854df49f2d12d2aa3"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_7f6e3d7a4c97495c94156684cb658e12/result.json",
+      "bytes": 44599,
+      "sha256": "5b87a8c17051d0fa7555aa315edac9d258508c61abfe33168062ab96bf575fbb"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_841abca50f414ea0b240208f154c6653/result.json",
+      "bytes": 101384,
+      "sha256": "696b964dc401ee277f050b005772063ad5465fee63b3f9eb05375ace892585d5"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_92d8cc65818d47b48addcd6bc380b5f8/result.json",
+      "bytes": 100297,
+      "sha256": "d5a70f6f6d0858e6e1b8cebdd62cb27d0650648a5dfe1109c60b31d0e08b65d9"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_a6cc024ea669442a9ca418582f03fe8d/result.json",
+      "bytes": 99533,
+      "sha256": "3d9c5022ac908eecd226c2b31305735b88434cde2bdc8b45ff6c9459e4fdfe4d"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_b4de202eb08e4cedbcaa1bc46dfcda1f/result.json",
+      "bytes": 99671,
+      "sha256": "13957a7adf025039d2c4a619a9510fb0e1ef5be498763d21f937cd961492e3c1"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_b9aa938a8f604c24bae37909be6e0b77/result.json",
+      "bytes": 99724,
+      "sha256": "0a46069ceb2b77938602a7bcd2d4792c17a46702e0c7b21e1345a5357fab4942"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_b9c774ecb27f4630b6a272abf31aef55/result.json",
+      "bytes": 99565,
+      "sha256": "5765b37997a0a731f3731b4e820ca0e297acacbca4da91323c9b37c2f5924ff5"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_ce70652186a34a75823bd823fd94bf7e/result.json",
+      "bytes": 100020,
+      "sha256": "99399eda7e6d732c70cac75ee80f505145c2055c7a045bc88d1ffd8f5dc04563"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_cf549a623488454a9fc296bf5638e493/result.json",
+      "bytes": 101960,
+      "sha256": "ac5828a4383941752ff83106fefcd4a1f81191f3b173c888aca9a4011c44b63c"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_d104a1c3eb2c4ec3b280a05f71466600/result.json",
+      "bytes": 99169,
+      "sha256": "a4394b28fed2e62630304e5b3fd4992c26cbf56fcdd1f8cb9672b4b11b8c9699"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_d380e5d66f7b48a1a086cc5746822640/result.json",
+      "bytes": 100411,
+      "sha256": "d09aa766a0b9a58901a85caab9c4cda6bf1a4bae364d7f47a1ff2ae00fd2142f"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_d5dfee8340b844cf9616b23ef90dfaa4/result.json",
+      "bytes": 74749,
+      "sha256": "3862a03f72f91bea360e1556bd2d15c1686f5b32d49ba279bd2feeccf90c770d"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_d892c985fb59433098b8fcefb67e45e3/result.json",
+      "bytes": 105790,
+      "sha256": "6adef6369a76c77e1d0578775eb4251f1f0a4e792cf3b0adb33e301f42587b6b"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_ed0b379ee25e4bad8eadf1acf4685203/result.json",
+      "bytes": 99515,
+      "sha256": "33507b711b442f232a7a07e1974fcadcc8c3c5a9e0ec60e6fa990dc5b04fc84b"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_fa9815b83d8343389b3ec24466e89ca6/result.json",
+      "bytes": 99025,
+      "sha256": "40004b4c1fbad41be8c2175753afc302530a7cebd3157eb598f9302a5153c382"
+    },
+    {
+      "path": "projects/piperx_cloth_demo/runs/single_supervised_move_feec00eeffaa45829f0612eaff40f815/result.json",
+      "bytes": 100496,
+      "sha256": "0ba45fe90bd1262b194e61300dd0d31b0dba29c723298435f31bb14b418f9e9a"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/focused_tests.log",
+      "bytes": 268,
+      "sha256": "71a282d6a25ca8123b5885479eeee1b8272cc78e300b0fac9e878c74a8a10a56"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/fast_tests.log",
+      "bytes": 487,
+      "sha256": "ed328b0ca7ee415bca30919a9909622bd6e122f60ed65a4c3588413be5346884"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/tools_tests.log",
+      "bytes": 166,
+      "sha256": "e80dc0e69bbeee32e4187ade29a41be01b5e7458bb9418ce11f8370f4593071a"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/runner_tests.log",
+      "bytes": 938,
+      "sha256": "db65cbcb7d0e42e991b857f6304d6dff24589a5fdc1db7452bd7ec88c9b63585"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/runner_tests_final.log",
+      "bytes": 112,
+      "sha256": "e98e31a234091394281549c9c1f04397e05106273fb3ae58623dc4fcfb347692"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/passive_can_tests.log",
+      "bytes": 118,
+      "sha256": "f7752f7a88ca4b285230fe3fb0e078000a269770c3e03480ea4a65ef76551f16"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/schema_test_final.log",
+      "bytes": 98,
+      "sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/piper_tests.log",
+      "bytes": 603320,
+      "sha256": "e016d1c86dd1ab1a4006ae92591932e8b892cd9d1facb202991eec9db079136b"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/full_failure_groups.json",
+      "bytes": 21916,
+      "sha256": "a3d6ae1b9b939e30a445391c9c6cedfdb3f1d9769d1c62bb9ad17747c8a0ebae"
+    },
+    {
+      "path": "artifacts/code_publication_20261009/video_audit.log",
+      "bytes": 124,
+      "sha256": "d3e163f8c3c898a0193e9bc66c5d616290a517759ab46ea83a00c1fd47ef2516"
+    }
+  ]
+}

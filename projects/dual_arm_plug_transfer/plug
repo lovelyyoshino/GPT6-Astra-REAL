@@ -1,0 +1,3 @@
+#!/home/agilex/miniconda3/envs/pi0_infer/bin/python
+from runner import main
+raise SystemExit(main())

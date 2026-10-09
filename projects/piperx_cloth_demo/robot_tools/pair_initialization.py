@@ -5,6 +5,8 @@ source/scene admission. It adopts no measured q as old target history. The four
 non-atomic frames remain an attended initialization, with no hold/stop fallback.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import validate_policy, joints_within
 import math
 import threading
 import time
@@ -32,13 +34,16 @@ def _observe(device):
 class _Initializer:
     def __init__(self, device, context, event_id, deadline_at):
         self.device, self.action = device, device._action
-        self.identity = checked_identity(device, context["identity"])
         self.context = copy.deepcopy(context)
+        if validate_policy(context.get("feedback_observation")) != self.action.feedback_policy:
+            raise RuntimeError("Observation policy differs from frozen device task")
+        self.identity = checked_identity(device, context["identity"])
         self.event_id, self.deadline = event_id, deadline_at
         self.thread = threading.get_ident()
         self.last_time = time.time()
         self.last_stamps = None
         self.last_sample = None
+        self.last_sample_monotonic = None
         self.plan = None
         self.frames = []
         self.mode_confirmed = False
@@ -94,9 +99,9 @@ class _Initializer:
             state, anchor = states[side], self.original_anchor[side]
             if not (active and side == selected):
                 position_limit = BOUNDS["position_span_m"] if self.device._task_ready else LIMITS["position_m"]
-                if (max(abs(a-b) for a,b in zip(state["joints_rad"], anchor["joints_rad"])) > .003
+                if (not joints_within(self.action.feedback_policy, side, state["joints_rad"], anchor["joints_rad"])
                         or math.dist(state["pose_m_rad"][:3], anchor["pose_m_rad"][:3]) > position_limit
-                        or self.action.rotation_distance(state["pose_m_rad"], anchor["pose_m_rad"]) > .003):
+                        or self.action.rotation_distance(state["pose_m_rad"], anchor["pose_m_rad"]) > rotation_tolerance(self.action.feedback_policy,side)):
                     raise RuntimeError(side + " initialization changed an uncommanded persistent arm anchor")
             if abs(state["gripper"]["width_m"]-anchor["gripper"]["width_m"]) > LIMITS["gripper_m"]:
                 raise RuntimeError(side + " initialization changed the persistent jaw anchor")
@@ -136,11 +141,53 @@ class _Initializer:
         self.tracking.record_failure(exc, sample, tracking)
 
     def read(self, *, journal=True):
+        began = time.monotonic()
         self.encoder_guard()
-        states = self.action.read() if journal else {
-            s: arms.snapshot(self.action.robots[s], self.action.grippers[s]) for s in SIDES}
-        self.check_states(states)
-        return self.last_sample
+        guarded = time.monotonic()
+        states = {s: arms.snapshot(self.action.robots[s], self.action.grippers[s]) for s in SIDES}
+        captured, captured_at = time.monotonic(), self.now()
+        try:
+            # Validate the actual RX before durable logging. Never replace a
+            # rejected sample or renew its timestamps to evade the 50 ms bound.
+            self.check_states(states)
+        except BaseException as exc:
+            rejected = pair_sample(self.identity, states, now=captured_at)
+            self.record_failure(exc, rejected, self.tracking.last_tracking)
+            self.action.report['after'] = copy.deepcopy(states)
+            self.action.report['samples'] += 1
+            try:
+                self.action.emit('initialization_feedback_rejected', {'sample':rejected,'error':str(exc)})
+            except BaseException as journal_error:
+                self.action.report['rejected_feedback_journal_error'] = str(journal_error)
+            raise
+        validated = time.monotonic()
+        self.last_sample_monotonic = captured
+        sample = self.last_sample
+        stages = dict(guard_s=guarded-began, snapshot_s=captured-guarded,
+                      validation_s=validated-captured, journal_s=0.)
+        if journal:
+            self.action.report['after'] = copy.deepcopy(states)
+            self.action.report['samples'] += 1
+            before_journal = time.monotonic()
+            self.action.emit('feedback', states)
+            stages['journal_s'] = time.monotonic()-before_journal
+        timing = self.action.report.setdefault('initialization_observation_timing', {'last':{},'maximum_s':{}})
+        timing['last'] = {'sample_id':sample['sample_id'],'captured_at':sample['captured_at'],**stages}
+        for key,duration in stages.items():
+            timing['maximum_s'][key] = max(timing['maximum_s'].get(key,0.),duration)
+        if journal:
+            self.encoder_guard()  # A deadline/cancel during logging still fails.
+        return sample
+
+    def arrival_observed(self, states):
+        state = states[self.identity['arm']]
+        error = matrix_error(fk_matrix(self.plan['model']['mdh'],state['joints_rad']),
+                             self.plan['model_target_flange_transform'])
+        self.action.report['model_arrival_error'] = error
+        return (self.action.all_after(states,self.action.sent_at) and self.mode_confirmed
+                and state['arm_status']['motion_status']==0
+                and joints_within(self.action.feedback_policy,self.identity['arm'],state['joints_rad'],self.plan['encoded_target_joints_rad'])
+                and error['position_error_m']<=.002 and error['so3_error_rad']<=.02)
 
     def send_frame(self, side, original, frame, *args, **kwargs):
         self.encoder_guard()
@@ -191,36 +238,39 @@ class _Initializer:
         action.report["target_calls_sent"] = 1
 
     def window(self, *, arrival=False):
-        began, previous, window, advances = None, None, None, 0
+        began, began_monotonic, previous, window, advances = None, None, None, None, 0
         deadline = time.monotonic()+10.
         while time.monotonic() < deadline:
             sample = self.read()
             states = sample["arms"]
-            state = states[self.identity["arm"]]
-            qualifies = True
-            if arrival:
-                fk = fk_matrix(self.plan["model"]["mdh"], state["joints_rad"])
-                error = matrix_error(fk, self.plan["model_target_flange_transform"])
-                self.action.report["model_arrival_error"] = error
-                qualifies = (self.action.all_after(states, self.action.sent_at) and self.mode_confirmed
-                    and state["arm_status"]["motion_status"] == 0
-                    and max(abs(a-b) for a,b in zip(state["joints_rad"], self.plan["encoded_target_joints_rad"])) <= .003
-                    and error["position_error_m"] <= .002 and error["so3_error_rad"] <= .02)
+            qualifies = not arrival or self.arrival_observed(states)
             if not qualifies:
                 began, previous, window, advances = None, None, None, 0
             elif window is None:
-                began, previous, advances = time.monotonic(), states, 0
+                began, began_monotonic = sample['captured_at'], self.last_sample_monotonic
+                previous, advances = states, 0
                 window = self.action.new_window(states)
             elif not self.action.extend_window(window, states):
                 if not arrival:
                     raise RuntimeError("Initialization baseline lost three-second stability")
-                began, previous, advances = time.monotonic(), states, 0
+                began, began_monotonic = sample['captured_at'], self.last_sample_monotonic
+                previous, advances = states, 0
                 window = self.action.new_window(states)
             elif self.action.advanced(previous, states):
                 previous, advances = states, advances+1
-            if began is not None and time.monotonic()-began >= 3. and advances >= 20:
+            if (began is not None and sample['captured_at']-began >= 3.
+                    and self.last_sample_monotonic-began_monotonic >= 3. and advances >= 20):
+                # Logging may take longer than the RX age limit. The previous
+                # accepted observations prove the window, never current TX.
+                sample = self.read(journal=False)
+                states = sample['arms']
+                if arrival and (not self.arrival_observed(states) or not self.action.extend_window(window,states)):
+                    began, previous, window, advances = None, None, None, 0
+                    continue
+                if not arrival and not self.action.extend_window(window,states):
+                    raise RuntimeError('Initialization baseline changed during feedback recording')
                 self.final_fresh(sample)
-                return sample, time.monotonic()-began, advances, window
+                return sample, self.last_sample_monotonic-began_monotonic, advances, window
             time.sleep(BOUNDS["poll_s"])
         raise RuntimeError("Initialization lacks a fresh three-second/20-advance " + ("arrival" if arrival else "baseline"))
 
@@ -286,7 +336,7 @@ def initialize_joint_target(device, arm, *, context, event_id, deadline_at):
         state = final["arms"][arm]
         if (not action.all_after(final["arms"], action.sent_at) or not runner.mode_confirmed
                 or state["arm_status"]["mode_feedback"] != 1 or state["arm_status"]["motion_status"] != 0
-                or max(abs(a-b) for a,b in zip(state["joints_rad"], runner.plan["encoded_target_joints_rad"])) > .003):
+                or not joints_within(action.feedback_policy, arm, state["joints_rad"], runner.plan["encoded_target_joints_rad"])):
             raise RuntimeError("Initialization arrival changed while persisting completion")
         arrival = matrix_error(fk_matrix(runner.plan["model"]["mdh"], state["joints_rad"]),
                                runner.plan["model_target_flange_transform"])
@@ -299,6 +349,7 @@ def initialize_joint_target(device, arm, *, context, event_id, deadline_at):
                  "target_raw": runner.plan["target_raw"][:], "frame_receipts": copy.deepcopy(runner.frames)}
         source = {"schema": "piper_pair_joint_initialization_receipt_v1", "event_id": event_id,
                   "identity": copy.deepcopy(identity), "purpose": runner.plan["purpose"],
+                  "feedback_observation": copy.deepcopy(action.feedback_policy),
                   "origin": copy.deepcopy(origin), "target_raw": cache["target_raw"][:],
                   "encoded_target_joints_rad": runner.plan["encoded_target_joints_rad"][:],
                   "completion_sample": copy.deepcopy(final), "plan_sha256": runner.plan["plan_sha256"],
@@ -306,6 +357,8 @@ def initialize_joint_target(device, arm, *, context, event_id, deadline_at):
                   "frame_receipts": copy.deepcopy(runner.frames), "strict_nominal": strict,
                   "within_feedback_tolerance": tolerance, "completed_at": runner.now(),
                   "ordinary_motion_authorized": False, "physical_stop_verified": None}
+        if runner.plan.get('target_selection') is not None:
+            source['target_selection'] = copy.deepcopy(runner.plan['target_selection'])
         runner.final_fresh(final)
         # Commit only the commanded arm's q/pose/mode; no peer/jaw reanchoring.
         for anchor in (action.idle_anchor, action.anchor):

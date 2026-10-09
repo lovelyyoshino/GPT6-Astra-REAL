@@ -166,6 +166,25 @@ def _validated_limits(data, *, run_id, owner, bindings, now):
             raw_hex = frame.get("payload_hex")
             _need(type(raw_hex) is str and re.fullmatch("[0-9a-f]{16}", raw_hex) is not None
                   and row.get("raw_response_hex") == raw_hex, "controller_limit_reply_invalid", "Original reply bytes required")
+            duplicates = window.get("identical_duplicate_frames", [])
+            _need(type(duplicates) is list and len(duplicates) < 32,
+                  "controller_limit_reply_invalid", "Bounded duplicate RX evidence required")
+            if "duplicate_policy" in window or duplicates:
+                _need(window.get("duplicate_policy") == "same_window_identical_payload_v1",
+                      "controller_limit_reply_invalid", "Unknown duplicate RX policy")
+            previous_stamp, previous_received = stamp, received
+            for duplicate in duplicates:
+                _need(type(duplicate) is dict and duplicate.get("side") == side
+                      and duplicate.get("valid_can_data_frame") is True
+                      and type(duplicate.get("dlc")) is int and duplicate["dlc"] == 8
+                      and duplicate.get("payload_hex") == raw_hex,
+                      "controller_limit_reply_invalid", "Duplicate reply must preserve the identical current value")
+                ds, dr = _num(duplicate.get("timestamp"), "duplicate stamp"), _num(duplicate.get("received_unix_s"), "duplicate received")
+                elapsed = _num(duplicate.get("request_elapsed_s"), "duplicate request elapsed")
+                _need(previous_stamp <= ds <= dr <= finished and previous_received <= dr
+                      and 0 <= elapsed <= 1.0,
+                      "controller_limit_window_invalid", "Duplicate cannot renew or leave its original window")
+                previous_stamp, previous_received = ds, dr
             raw = bytes.fromhex(raw_hex)
             _need(raw[0] == joint, "controller_limit_joint_mismatch", side+"/"+str(joint))
             _need(raw[7] == 0, "controller_limit_reply_invalid", "Reserved reply byte must be zero")

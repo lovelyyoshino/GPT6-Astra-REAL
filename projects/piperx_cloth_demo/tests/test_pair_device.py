@@ -737,6 +737,182 @@ class PairDeviceTests(SingleActionFixture):
         self.assertEqual(result["hardware_commands_sent"], 1)
         self.assertIn("both CAN arms", result["errors"][-1]["detail"])
 
+    def test_probe_completion_reads_after_slow_guard_without_resend(self):
+        self.device.open()
+        classifier = pair_device.classify_gripper_probe
+        original_guard = self.device._action.guard
+        pending_delay = [False]
+        def classify(**kw):
+            result = classifier(**kw)
+            pending_delay[0] = True
+            return result
+        def guard():
+            original_guard()
+            if pending_delay[0]:
+                self.clock.sleep(.15)
+        self.device._action.guard = guard
+        with patch.object(pair_device, "classify_gripper_probe", side_effect=classify):
+            result = self.device.execute_gripper_probe("right", .0455)
+        self.assertTrue(result["ok"], result.get("errors"))
+        self.assertEqual(result["hardware_commands_sent"], 1)
+        self.assertEqual(result["completion_feedback_order"], "host_guard_then_read_then_validate")
+        self.assertLessEqual(result["last_checked_feedback_age_s"], .1)
+
+    def test_probe_final_completion_guard_still_honors_cancellation(self):
+        self.device.open()
+        classifier = pair_device.classify_gripper_probe
+        completed = [False]
+        calls = [0]
+        original_guard = self.device._action.guard
+        def classify(**kw):
+            result = classifier(**kw)
+            completed[0] = True
+            return result
+        def guard():
+            original_guard()
+            if completed[0]:
+                calls[0] += 1
+                self.clock.sleep(.15)
+                if calls[0] == 2:
+                    raise RuntimeError("operator cancellation at final completion")
+        self.device._action.guard = guard
+        with patch.object(pair_device, "classify_gripper_probe", side_effect=classify):
+            result = self.device.execute_gripper_probe("right", .0455)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["hardware_commands_sent"], 1)
+        self.assertIn("operator cancellation", result["errors"][-1]["detail"])
+
+    def test_probe_final_completion_checks_new_health_after_slow_guard(self):
+        self.device.open()
+        classifier = pair_device.classify_gripper_probe
+        completed = [False]
+        calls = [0]
+        original_guard = self.device._action.guard
+        def classify(**kw):
+            result = classifier(**kw)
+            completed[0] = True
+            return result
+        def guard():
+            original_guard()
+            if completed[0]:
+                calls[0] += 1
+                self.clock.sleep(.15)
+                if calls[0] == 2:
+                    self.robots["left"].driver_enabled[0] = False
+        self.device._action.guard = guard
+        with patch.object(pair_device, "classify_gripper_probe", side_effect=classify):
+            result = self.device.execute_gripper_probe("right", .0455)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["hardware_commands_sent"], 1)
+        self.assertIn("both CAN arms", result["errors"][-1]["detail"])
+
+    def test_probe_completion_still_rejects_actually_stale_feedback(self):
+        self.device.open()
+        classifier = pair_device.classify_gripper_probe
+        original_read = self.device._action.read
+        stale = [None]
+        def classify(**kw):
+            result = classifier(**kw)
+            stale[0] = copy.deepcopy(kw["post_samples"][-1]["arms"])
+            self.clock.sleep(.15)
+            return result
+        def read():
+            return copy.deepcopy(stale[0]) if stale[0] is not None else original_read()
+        self.device._action.read = read
+        with patch.object(pair_device, "classify_gripper_probe", side_effect=classify):
+            result = self.device.execute_gripper_probe("right", .0455)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["hardware_commands_sent"], 1)
+        self.assertIn("100 ms", result["errors"][-1]["detail"])
+
+    def test_probe_slow_completion_guard_does_not_hide_new_health_fault(self):
+        self.device.open()
+        classifier = pair_device.classify_gripper_probe
+        original_guard = self.device._action.guard
+        pending_delay = [False]
+        def classify(**kw):
+            result = classifier(**kw)
+            pending_delay[0] = True
+            return result
+        def guard():
+            original_guard()
+            if pending_delay[0]:
+                pending_delay[0] = False
+                self.clock.sleep(.15)
+                self.robots["left"].driver_enabled[0] = False
+        self.device._action.guard = guard
+        with patch.object(pair_device, "classify_gripper_probe", side_effect=classify):
+            result = self.device.execute_gripper_probe("right", .0455)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["hardware_commands_sent"], 1)
+        self.assertIn("both CAN arms", result["errors"][-1]["detail"])
+
+    def recovery_source(self):
+        sample = self.device.open()
+        from robot_tools.retention_receipt import measured_anchor
+        return {"candidate_measurement": {"anchor": measured_anchor(sample["arms"]["right"]),
+                    "observed": {"width_m": sample["arms"]["right"]["gripper"]["width_m"]}},
+                "candidate_probe": {"requested_width_m": .046, "sent_at": self.clock.time()-10,
+                                    "trace_sha256": "a"*64}, "before": copy.deepcopy(sample["arms"])}
+
+    def test_supported_recovery_opens_once_and_confirms_without_grasp_or_joint_cache(self):
+        source = self.recovery_source()
+        result = self.device.recover_supported_gripper("right", .054, source_receipt=source)
+        self.assertTrue(result["ok"], result.get("errors"))
+        self.assertEqual(result["hardware_commands_sent"], 1)
+        self.assertEqual([f.arbitration_id for f in self.robots["right"].sent], [0x159])
+        self.assertEqual(self.robots["left"].sent, [])
+        self.assertEqual(self.device.grasp_states, {"left": None, "right": None})
+        self.assertEqual(self.device._joint_cache, {"left": None, "right": None})
+        confirmation = self.device.confirm_supported_recovery_release()
+        self.assertTrue(confirmation["ok"])
+        self.assertEqual(confirmation["hardware_commands_sent"], 0)
+        self.assertGreaterEqual(confirmation["measurement"]["ended_at"]-confirmation["measurement"]["started_at"], 3)
+        self.assertIsNone(confirmation["physical_stop_verified"])
+        self.assertEqual(len(self.robots["right"].sent), 1)
+        with self.assertRaises(RuntimeError):
+            self.device.recover_supported_gripper("right", .055, source_receipt=source)
+        self.assertEqual(len(self.robots["right"].sent), 1)
+
+    def test_supported_recovery_rejects_closing_without_tx(self):
+        source = self.recovery_source()
+        result = self.device.recover_supported_gripper("right", .049, source_receipt=source)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["hardware_commands_sent"], 0)
+        self.assertEqual(self.robots["right"].sent, [])
+
+    def test_supported_recovery_rejects_over_five_mm_without_tx(self):
+        self.robots["right"].width = .040
+        source = self.recovery_source()
+        result = self.device.recover_supported_gripper("right", .046, source_receipt=source)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["hardware_commands_sent"], 0)
+        self.assertEqual(self.robots["right"].sent, [])
+
+    def test_supported_recovery_rejects_historical_body_mismatch_without_tx(self):
+        source = self.recovery_source()
+        source["candidate_measurement"]["anchor"]["pose_m_rad"][0] += .01
+        with self.assertRaisesRegex(RuntimeError, "differs"):
+            self.device.recover_supported_gripper("right", .054, source_receipt=source)
+        self.assertEqual(self.robots["right"].sent, [])
+
+    def test_supported_recovery_needs_its_own_opening_before_confirmation(self):
+        self.device.open()
+        with self.assertRaisesRegex(RuntimeError, "completed recovery opening"):
+            self.device.confirm_supported_recovery_release()
+        self.assertEqual(self.robots["right"].sent, [])
+
+    def test_supported_recovery_open_failure_is_not_retried(self):
+        source = self.recovery_source()
+        self.robots["right"].fail_id = 0x159
+        result = self.device.recover_supported_gripper("right", .054, source_receipt=source)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["transmission_counts"]["right"]["attempted_frames"], 1)
+        self.assertEqual(result["transmission_counts"]["right"]["sent_frames"], 0)
+        with self.assertRaises(RuntimeError):
+            self.device.recover_supported_gripper("right", .055, source_receipt=source)
+        self.assertLessEqual(len(self.robots["right"].sent), 1)
+
     def test_probe_final_frame_rechecks_five_mm_after_slow_host_guard(self):
         self.device.open()
         def expand(before):

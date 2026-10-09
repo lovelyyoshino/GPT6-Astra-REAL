@@ -6,6 +6,7 @@ changes only with a complete arrived segment; a fresh semantic response is
 required before another segment. No controller or camera is opened here.
 """
 import copy
+from .task_roles import resolve_task_roles, role_fields
 
 OPERATIONS = frozenset(("extract_segment", "transport", "insert_segment"))
 MAX_NO_PROGRESS = 2  # Cumulative episode policy, never renewed by a new phase.
@@ -25,10 +26,11 @@ def validate(state):
         if state["status"] in ("proof_pending", "loaded_pending_visual", "retained_local"):
             _fail("loaded_state_without_history")
         return
-    _keys(data, ("source_id", "target_id", "local_anchor", "history", "pending", "no_progress_count"), "loaded")
+    _keys(data, ("source_id", "target_id", "local_anchor", "history", "pending", "no_progress_count",
+                 *role_fields(data)), "loaded")
     _id(data["source_id"], "source_id")
     _id(data["target_id"], "target_id")
-    if data["source_id"] == data["target_id"] or state["identity"]["arm"] != "right":
+    if data["source_id"] == data["target_id"] or state["identity"]["arm"] != resolve_task_roles(data)[0]:
         _fail("loaded_object_identity")
     _pose(data["local_anchor"], "local_anchor")
     if type(data["history"]) is not list or len(data["history"]) > 1024:
@@ -79,11 +81,14 @@ def validate(state):
             _fail("loaded_response_required")
 
 
-def allowed_next(state, operation, source_id, target_id):
+def allowed_next(state, operation, source_id, target_id, *, task_roles=None):
     from .grasp_episode import _fail
-    if state["identity"]["arm"] != "right" or operation not in OPERATIONS:
-        _fail("loaded_operation_not_supported")
     data = state.get("loaded")
+    roles = resolve_task_roles(task_roles if task_roles is not None else data or {})
+    if state["identity"]["arm"] != roles[0] or operation not in OPERATIONS:
+        _fail("loaded_operation_not_supported")
+    if data is not None and resolve_task_roles(data) != roles:
+        _fail("loaded_task_roles_changed")
     if state["status"] not in ("retained_static", "retained_local"):
         _fail("loaded_response_required")
     if data is None:
@@ -104,16 +109,18 @@ def allowed_next(state, operation, source_id, target_id):
 def apply(state, kind, evidence, now):
     from .grasp_episode import _keys, _id, _hash, _number, _pose, _scene, _fail
     if kind == "begin_loaded":
-        _keys(evidence, ("action_event_id", "operation", "source_id", "target_id", "target_raw", "scene", "context_sha256"), "loaded begin")
+        _keys(evidence, ("action_event_id", "operation", "source_id", "target_id", "target_raw", "scene", "context_sha256",
+                         *role_fields(evidence)), "loaded begin")
         for key in ("action_event_id", "source_id", "target_id"):
             _id(evidence[key], key)
         _hash(evidence["context_sha256"], "context_sha256")
-        allowed_next(state, evidence["operation"], evidence["source_id"], evidence["target_id"])
+        allowed_next(state, evidence["operation"], evidence["source_id"], evidence["target_id"], task_roles=evidence)
         if evidence["source_id"] == evidence["target_id"]:
             _fail("loaded_object_identity")
         scene = _scene(state, evidence["scene"], now)
         if not state.get("loaded"):
             state["loaded"] = {"source_id": evidence["source_id"], "target_id": evidence["target_id"],
+                **role_fields(evidence),
                 "local_anchor": copy.deepcopy(state["original_anchor"]), "history": [], "pending": None, "no_progress_count": 0}
         state["loaded"]["pending"] = {key: copy.deepcopy(evidence[key]) for key in ("action_event_id", "operation", "target_raw")}
         state["loaded"]["pending"]["requested_at"] = now

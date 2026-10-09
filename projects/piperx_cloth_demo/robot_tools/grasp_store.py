@@ -5,6 +5,7 @@ resolved by the owning host; persistence and schema checks do not authenticate
 RGB or establish a physical grasp. The real device still owns dispatch gates.
 """
 import json
+from .feedback_tolerance import task_policy
 from pathlib import Path
 import sqlite3
 
@@ -66,7 +67,8 @@ class GraspStore:
                 raise PairLedgerError("Previous grasp episode on this arm has not been explicitly released")
             state = new_episode(episode_id=episode_id, arm=arm, run_id=self.ledger.run_id,
                                 owner=owner, epoch=epoch, object_id=object_id, created_at=now,
-                                deadline_at=run["started_at"]+run["max_duration"])
+                                deadline_at=run["started_at"]+run["max_duration"],
+                                feedback_policy=task_policy(json.loads(self.ledger.contract_json).get("task",{})))
             encoded = _json_object(state, "grasp state")
             db.execute("INSERT INTO pair_grasp_episodes VALUES(?,?,?,?,?,?)",
                        (self.ledger.run_id, episode_id, arm, owner, state["revision"], encoded))

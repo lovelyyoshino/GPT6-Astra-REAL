@@ -23,10 +23,10 @@ Context schema ``piper_x_joint_path_context_v1``:
   inferred. That separate ordinary RGB contract supports latch-only cancel,
   keeps the same numeric hold reserve, and uses its own bounded post-send
   observation policy; it does not inherit startup's .1-radian origin allowance;
-  explicit piper_rgb_supervised_coarse_approach_v1 additionally binds the
+  explicit piper_rgb_supervised_coarse_approach_v2 additionally binds the
   current far-from-target observation, with only unloaded approach allowed.
-  Its separate fixed profile permits 3 degrees per joint, 20 mm requested and
-  encoded endpoints, and a 35 mm / .08 rad independent box and RX envelope.
+  Its separate fixed profile permits 20 degrees per joint, 30..100 mm requested and
+  encoded endpoints, and a 120 mm / .40 rad independent box and RX envelope.
   Only this latch-only profile has no extra hold reserve. Its complete strict
   box, real cache and partial updates remain checked. The host must establish
   both jaws have no episode; a text observation is not an execution permit;
@@ -36,7 +36,7 @@ Context schema ``piper_x_joint_path_context_v1``:
   are limited to 2 mm / .01 rad from origin and current model poses. These are
   software target limits, not force, object progress or grip qualification;
 * budget: {max_translation_m, max_rotation_rad}, bounded by 20 mm / .05 rad
-  for the existing profiles; the coarse tag requires exactly 35 mm / .08 rad;
+  for the existing profiles; the coarse tag requires exactly 120 mm / .40 rad;
 * unloaded_evidence: null, or {origin_sample_id, source:{ref,sha256}}.
 * initialization_sources: optional live, host-resolved first-target records for
   each side; only completed same-connection boundary targets can account for
@@ -53,6 +53,9 @@ collision, physical hold/stop, grasp, or loaded contact. Ordinary MOVE_L stays
 unchanged. Plans preserve raw controller telemetry separately from derived FK.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import validate_policy, joint_tolerances, joints_within, model_still_limits
+from functools import lru_cache
 from functools import wraps
 import hashlib
 import json
@@ -89,8 +92,9 @@ MAX_ROTATION_RAD = .05
 # software bounds, not manufacturer accuracy, force or collision certification.
 # Ordinary, metric, initialization and loaded contracts retain their bounds.
 COARSE_PROFILE_LIMITS = {
-    "max_joint_change_rad": math.radians(3), "target_translation_m": .020,
-    "process_translation_m": .035, "process_rotation_rad": .08,
+    "max_joint_change_rad": math.radians(20),
+    "min_target_translation_m": .030, "target_translation_m": .100,
+    "process_translation_m": .120, "process_rotation_rad": .40,
     "target_margin_rad": STEP["joint_margin_rad"], "monitor_band_rad": MONITOR_RAD,
     "speed_percent": 1, "hold_reserve_applied": False,
 }
@@ -107,17 +111,21 @@ def _geometry_kind(geometry):
                    COARSE_JOINT_PATH_SCHEMA), tag == COARSE_JOINT_PATH_SCHEMA
 
 
-def _tracking_policy(visual, coarse):
+def _tracking_policy(visual, coarse, feedback_policy=None, arm=None):
     step = COARSE_PROFILE_LIMITS["max_joint_change_rad"] if coarse else STEP["joint_change_rad"]
-    return {"mode": "bounded_postsend_settling" if visual else "strict",
+    result = {"mode": "bounded_postsend_settling" if visual else "strict",
         "transient_band_rad": STEP["joint_change_rad"] if visual else MONITOR_RAD,
         "max_cumulative_outside_band_s": 1.0 if visual else 0.,
         "max_origin_excursion_rad": step + MONITOR_RAD,
         "settle_tolerance_rad": MONITOR_RAD}
+    if feedback_policy is not None:
+        result.pop("settle_tolerance_rad")
+        result["settle_tolerances_rad"] = joint_tolerances(feedback_policy,arm)
+    return result
 
 
 def _coarse_step_within(start, target):
-    """Closed three-degree interval, exact on the SDK millidegree grid.
+    """Closed twenty-degree interval, exact on the SDK millidegree grid.
 
     Canonical integer feedback/targets can differ by an arithmetic ULP when
     radians are subtracted or added. Only exact roundtrips use integer units;
@@ -125,7 +133,7 @@ def _coarse_step_within(start, target):
     """
     a, b = round(math.degrees(start)*1000), round(math.degrees(target)*1000)
     if math.radians(a/1000) == start and math.radians(b/1000) == target:
-        return abs(b-a) <= 3000
+        return abs(b-a) <= 20000
     cap = COARSE_PROFILE_LIMITS["max_joint_change_rad"]
     return start-cap <= target <= start+cap
 
@@ -356,6 +364,8 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
     recovery = recovery_mode is not None
     geom = copy.deepcopy(context["geometry"])
     visual, coarse = _geometry_kind(geom)
+    feedback_policy = validate_policy(context.get("feedback_observation"))
+    _need(feedback_policy is None or visual and not recovery, "feedback_policy_requires_rgb_latch_only")
     if coarse:
         _need(not recovery, "visual_joint_recovery_unsupported")
     identity = _identity(context["identity"])
@@ -373,7 +383,7 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
         from .joint_ingress import resolve_initialization_ingress
         ingress = resolve_initialization_ingress(context.get("initialization_sources"),
             identity=identity, origin=origin, current=current,
-            effective_joint_limits_rad=limits, cached_target=context["cached_target"])
+            effective_joint_limits_rad=limits, cached_target=context["cached_target"], feedback_policy=feedback_policy)
     elif recovery:
         _need(not context.get("initialization_sources"), "ingress_recovery_contracts_cannot_mix")
     for side in SIDES:
@@ -412,7 +422,7 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
             boundary = lo if b < lo else hi
             _need(min(b, boundary) <= a <= max(b, boundary), "cached_target_outside_recovery_corridor")
         else:
-            _need(abs(a-b) <= MONITOR_RAD, "cached_target_not_at_original_anchor")
+            _need(abs(a-b) <= joint_tolerances(feedback_policy, arm)[i], "cached_target_not_at_original_anchor")
     loaded = type(geom) is dict and geom.get("schema") == LOADED_JOINT_PATH_SCHEMA
     loaded_context = copy.deepcopy(context.get("loaded_context"))
     _need(loaded or loaded_context is None, "loaded_context_requires_loaded_schema")
@@ -451,7 +461,9 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
             start_fk = fk_matrix(model["mdh"], start)
             for goal in (requested, encoded):
                 distance, _ = _error(start_fk, fk_matrix(model["mdh"], goal))
-                _need(distance <= COARSE_PROFILE_LIMITS["target_translation_m"], "model_endpoint_displacement")
+                _need(COARSE_PROFILE_LIMITS["min_target_translation_m"] <= distance
+                      <= COARSE_PROFILE_LIMITS["target_translation_m"], "model_endpoint_displacement",
+                      "Coarse approach requires each requested/encoded model endpoint to be 30..100 mm from origin and current")
     else:
         _need(endpoint_m <= RECOVERY["target_displacement_m"], "model_endpoint_displacement")
     contact_target_limit = None
@@ -467,8 +479,9 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
                 _need(rotation_distance <= .01, "loaded_contact_target_rotation")
     # Full independent-joint box includes caller endpoints, encoded endpoints,
     # known cache, all partial pair updates and quantization, from original q.
-    low = [min(vals)-MONITOR_RAD for vals in zip(q0, q, requested, encoded, cached)]
-    high = [max(vals)+MONITOR_RAD for vals in zip(q0, q, requested, encoded, cached)]
+    bands = joint_tolerances(feedback_policy, arm)
+    low = [min(vals)-band for vals,band in zip(zip(q0, q, requested, encoded, cached), bands)]
+    high = [max(vals)+band for vals,band in zip(zip(q0, q, requested, encoded, cached), bands)]
     excursions = [max(abs(lo-v), abs(hi-v)) for v, lo, hi in zip(q0, low, high)]
     active_sweep = passive_sweep = body_hold_sweep = relative = None
     if not visual:
@@ -477,7 +490,7 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
         body_hold_sweep = sum(r*MONITOR_RAD for r in radii[arm])
     flange_radii = [r-STEP["link_body_allowance_m"] for r in _radii(model["mdh"], 0.)]
     flange_sweep = sum(r*d for r, d in zip(flange_radii, excursions))
-    hold_sweep, hold_rotation = sum(r*MONITOR_RAD for r in flange_radii), 6*MONITOR_RAD
+    hold_sweep, hold_rotation = sum(r*b for r,b in zip(flange_radii,bands)), sum(bands)
     tracking_rotation = sum(excursions)
     model_box = None
     if not recovery:
@@ -486,10 +499,10 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
         flange_sweep, tracking_rotation = model_box["translation_m"], model_box["rotation_rad"]
         # Hold retains the original global-radius allowance. The tighter
         # flange-only calculation never changes body/attachment clearance.
-        hold_sweep = sum_products_upper(model_box["global_radius_bounds_m"], [MONITOR_RAD]*6)
-        hold_rotation = sum_upper([MONITOR_RAD]*6)
-        if coarse:
-            # This separate latch-only contract never dispatches a hold target.
+        hold_sweep = sum_products_upper(model_box["global_radius_bounds_m"], bands)
+        hold_rotation = sum_upper(bands)
+        if coarse or feedback_policy is not None:
+            # These RGB latch-only contracts never dispatch a hold target.
             # The strict box still includes cache, partial pair updates and
             # every-axis tracking tolerance; only the EXTRA hold is absent.
             hold_sweep, hold_rotation = 0., 0.
@@ -513,7 +526,7 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
     # does not enlarge the target or the strict box checked before ANY frame.
     # Its complete box is diagnostic, not a claim that every point satisfies
     # the original pose budgets; each RX sample must still pass those guards.
-    tracking_policy = _tracking_policy(visual, coarse)
+    tracking_policy = _tracking_policy(visual, coarse, feedback_policy, arm)
     origin_cap = tracking_policy["max_origin_excursion_rad"]
     postsend_envelope = {"low_rad": low[:], "high_rad": high[:]}
     postsend_model_box = copy.deepcopy(model_box)
@@ -531,6 +544,7 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
         mixed.append({"joint_pairs_updated": prefix, "joints_rad": hybrid,
                       "model_flange_transform": transform, "error_from_original": matrix_error(origin_fk[arm], transform)})
     plan = {"schema": PLAN_SCHEMA, "identity": identity, "recovery_mode": recovery_mode,
+        "feedback_observation": feedback_policy,
         "motion_profile": "coarse_approach" if coarse else "ordinary",
         "profile_limits": copy.deepcopy(COARSE_PROFILE_LIMITS) if coarse else None,
         "planning_joint_feedback_rad": {s: list(states[s]["joints_rad"]) for s in SIDES} if coarse else None,
@@ -583,6 +597,20 @@ def plan_joint_path(context, target_joints_rad, *, now, recovery_mode=None):
     return plan
 
 
+@lru_cache(maxsize=32)
+def _fixed_flange_box(mdh, origin, low, high):
+    """Memoize pure geometry only, keyed by every immutable numerical input.
+
+    No scene, sample, feedback age, target permission or success is cached.
+    The first admission computes the full outward-rounded box; each sample
+    still verifies the plan hash/policy and all live state constraints.
+    Returning scalars prevents callers from mutating the cached result.
+    """
+    from .joint_model_bounds import flange_box_bounds
+    value = flange_box_bounds(mdh, origin, low, high)
+    return value['translation_m'], value['rotation_rad']
+
+
 def _check_plan_policy(plan, visual, coarse):
     """A recomputed content hash cannot enlarge a known software profile.
 
@@ -605,7 +633,7 @@ def _check_plan_policy(plan, visual, coarse):
     else:
         _need(0 < translation <= RECOVERY["active_displacement_m"]
               and 0 < rotation <= MAX_ROTATION_RAD, "budget_enlarged")
-    _need(evidence_sha256(plan["tracking_policy"]) == evidence_sha256(_tracking_policy(visual, coarse)),
+    _need(evidence_sha256(plan["tracking_policy"]) == evidence_sha256(_tracking_policy(visual, coarse, validate_policy(plan.get("feedback_observation")),plan["identity"]["arm"])),
           "tracking_policy_changed")
     if not coarse:
         return
@@ -635,24 +663,28 @@ def _check_plan_policy(plan, visual, coarse):
               "joint_step_limit", "joint%d" % (i+1))
     cached = _cached(plan["cached_target"], plan["identity"], plan["origin"],
                      plan["effective_joint_limits_rad"][arm])
-    strict = {"low_rad": [min(values)-MONITOR_RAD for values in zip(q0,present,wanted,sent,cached)],
-              "high_rad": [max(values)+MONITOR_RAD for values in zip(q0,present,wanted,sent,cached)]}
+    bands = joint_tolerances(validate_policy(plan.get("feedback_observation")), arm)
+    strict = {"low_rad": [min(values)-band for values,band in zip(zip(q0,present,wanted,sent,cached),bands)],
+              "high_rad": [max(values)+band for values,band in zip(zip(q0,present,wanted,sent,cached),bands)]}
     cap = COARSE_PROFILE_LIMITS["max_joint_change_rad"]+MONITOR_RAD
     transient = STEP["joint_change_rad"]
     settling = {"low_rad": [max(min(a,b)-transient,a-cap) for a,b in zip(q0,sent)],
                 "high_rad": [min(max(a,b)+transient,a+cap) for a,b in zip(q0,sent)]}
     _need(plan["joint_envelope"] == strict and plan["postsend_joint_envelope"] == settling,
           "coarse_envelope_changed")
-    from .joint_model_bounds import flange_box_bounds
-    whole_box = flange_box_bounds(plan["model"]["mdh"], q0, strict["low_rad"], strict["high_rad"])
-    _need(whole_box["translation_m"] <= COARSE_PROFILE_LIMITS["process_translation_m"]
-          and whole_box["rotation_rad"] <= COARSE_PROFILE_LIMITS["process_rotation_rad"],
+    translation, rotation = _fixed_flange_box(
+        tuple(tuple(row) for row in plan['model']['mdh']), tuple(q0),
+        tuple(strict['low_rad']), tuple(strict['high_rad']))
+    _need(translation <= COARSE_PROFILE_LIMITS["process_translation_m"]
+          and rotation <= COARSE_PROFILE_LIMITS["process_rotation_rad"],
           "coarse_independent_box_budget")
     for start in (q0, present):
         start_fk = fk_matrix(plan["model"]["mdh"], start)
         for goal in (wanted, sent):
             distance, _ = _error(start_fk, fk_matrix(plan["model"]["mdh"], goal))
-            _need(distance <= COARSE_PROFILE_LIMITS["target_translation_m"], "model_endpoint_displacement")
+            _need(COARSE_PROFILE_LIMITS["min_target_translation_m"] <= distance
+                      <= COARSE_PROFILE_LIMITS["target_translation_m"], "model_endpoint_displacement",
+                      "Coarse approach requires each requested/encoded model endpoint to be 30..100 mm from origin and current")
 
 
 @_input_errors
@@ -672,6 +704,8 @@ def validate_joint_path_sample(plan, sample, *, now, phase="active"):
     identity, origin = plan["identity"], plan["origin"]
     arm, recovery = identity["arm"], plan["recovery_mode"] is not None
     visual, coarse = _geometry_kind(plan["geometry"])
+    feedback_policy = validate_policy(plan.get("feedback_observation"))
+    _need(feedback_policy is None or visual and not recovery, "feedback_policy_requires_rgb_latch_only")
     _check_plan_policy(plan, visual, coarse)
     settling = phase == "settling"
     _need(not settling or visual and plan["tracking_policy"]["mode"] == "bounded_postsend_settling",
@@ -707,7 +741,7 @@ def validate_joint_path_sample(plan, sample, *, now, phase="active"):
                 _need(all(a-cap <= v <= a+cap for v,a in zip(q,start)),
                       "joint_origin_excursion_limit")
         else:
-            _need(max(abs(a-b) for a, b in zip(q, start)) <= MONITOR_RAD, "stationary_joint_anchor", side)
+            _need(joints_within(feedback_policy, side, q, start), "stationary_joint_anchor", side)
             _need(state["arm_status"]["motion_status"] == 0, "stationary_motion_status", side)
         _need(state["arm_status"]["mode_feedback"] == base["arm_status"]["mode_feedback"], "movement_mode_changed", side)
         _need(state["gripper"]["foc_status"]["driver_enable_status"] is base["gripper"]["foc_status"]["driver_enable_status"], "jaw_enable_changed", side)
@@ -718,9 +752,11 @@ def validate_joint_path_sample(plan, sample, *, now, phase="active"):
         model_pose = fk_matrix(plan["model"]["mdh"], q)
         model_m, model_r = _error(plan["model_original_flange_transform"][side], model_pose)
         maximum_m = plan["budget"]["max_translation_m"] if active else POSITION_STILL_M
-        maximum_r = plan["budget"]["max_rotation_rad"] if active else ROTATION_STILL_RAD
+        maximum_r = plan["budget"]["max_rotation_rad"] if active else rotation_tolerance(feedback_policy,side)
         _need(raw_m <= maximum_m and raw_r <= maximum_r, "controller_relative_pose_envelope", side)
-        _need(model_m <= maximum_m and model_r <= maximum_r, "model_relative_pose_envelope", side)
+        model_max_m, model_max_r = ((maximum_m,maximum_r) if active else
+            model_still_limits(feedback_policy, side, plan["model"]["mdh"], POSITION_STILL_M,ROTATION_STILL_RAD))
+        _need(model_m <= model_max_m and model_r <= model_max_r, "model_relative_pose_envelope", side)
         if side == arm:
             outside = [{"joint_index": i+1, "observed_rad": v, "low_rad": lo, "high_rad": hi,
                         "excess_rad": max(lo-v,v-hi)}

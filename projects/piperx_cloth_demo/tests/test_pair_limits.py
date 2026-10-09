@@ -22,6 +22,8 @@ class QueryRobot(GripperRobot):
         self.clock, self.calls = clock, []
         self.reply_transform = lambda frame: frame
         self.extra_reply = False
+        self.extra_reply_transform = lambda frame: frame
+        self.extra_reply_count = 1
         self.no_reply_joint = None
         self.raw = reply_bytes
         self.on_query = None
@@ -54,7 +56,8 @@ class QueryRobot(GripperRobot):
         callback = self.reply_side.callback if self.reply_side is not None else self.callback
         callback(reply)
         if self.extra_reply:
-            callback(reply)
+            for _ in range(self.extra_reply_count):
+                callback(self.extra_reply_transform(copy.deepcopy(reply)))
 
 
 class PairLimitsTests(SingleGripperFixture):
@@ -193,16 +196,55 @@ class PairLimitsTests(SingleGripperFixture):
         self.assertFalse(report["ok"])
         self.assert_queries(1, 0)
 
-    def test_duplicate_reply_faults_and_preserves_both_raw_records(self):
+    def test_identical_reply_preserves_both_records_without_extra_queries(self):
         self.open()
         self.robots["left"].extra_reply = True
         report = self.device.inspect_joint_limits()
-        self.assertFalse(report["ok"])
+        self.assertTrue(report["ok"], report)
         window = report["joint_limits"]["left"]["1"]["response_evidence"]
         self.assertEqual(len(window["response_frames"]), 1)
-        self.assertEqual(len(window["rejected_frames"]), 1)
+        self.assertEqual(len(window["identical_duplicate_frames"]), 1)
+        self.assertEqual(len(window["rejected_frames"]), 0)
         self.assertFalse(window["active"])
-        self.assert_queries(1, 0)
+        self.assert_queries(6, 6)
+
+    def test_identical_reply_after_96_microseconds_is_idempotent(self):
+        self.open()
+        robot = self.robots['left']; robot.extra_reply = True
+        def later(frame):
+            self.clock.elapsed += .000096
+            frame.timestamp = self.clock.time()
+            return frame
+        robot.extra_reply_transform = later
+        report = self.device.inspect_joint_limits()
+        self.assertTrue(report['ok'], report)
+        self.assert_queries(6, 6)
+        self.assertEqual(report['actuator_commands_sent'], 0)
+        for row in report['joint_limits']['left'].values():
+            w = row['response_evidence']
+            self.assertEqual(w['response_frames'][0]['payload_hex'], w['identical_duplicate_frames'][0]['payload_hex'])
+            self.assertGreater(w['identical_duplicate_frames'][0]['timestamp'], w['response_frames'][0]['timestamp'])
+
+    def test_duplicate_conflict_flags_late_and_flood_still_fault(self):
+        def late(case, frame):
+            case.clock.elapsed += 1.001
+            frame.timestamp = case.clock.time()
+        for kind in ('conflict', 'joint', 'flags', 'late', 'flood'):
+            with self.subTest(kind=kind):
+                case = PairLimitsTests('runTest'); case.setUp()
+                try:
+                    case.open(); robot = case.robots['left']; robot.extra_reply = True
+                    def transform(frame):
+                        if kind == 'conflict': frame.data[6] ^= 1
+                        if kind == 'joint': frame.data[0] = 2
+                        if kind == 'flags': frame.is_error_frame = True
+                        if kind == 'late': late(case, frame)
+                        return frame
+                    robot.extra_reply_transform = transform
+                    if kind == 'flood': robot.extra_reply_count = 32
+                    r = case.device.inspect_joint_limits()
+                    self.assertFalse(r['ok'], r); case.assert_queries(1, 0)
+                finally: case.doCleanups()
 
     def test_reply_on_peer_connection_is_rejected(self):
         self.open()

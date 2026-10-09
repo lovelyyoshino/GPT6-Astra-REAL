@@ -152,3 +152,43 @@ move 仍是固定 1% MOVE_L，最大 30 mm/0.05 rad；jaw 是 0–55 mm、厂家
 原 `original_anchor`、probe 与所有段历史不变。只有完成回执建立的 `local_anchor` 才用于右侧段间静止监测；新图确认后记 `retained_local`。完全脱离源孔的响应才允许横移；带载对齐用 `transport` 的最后一小段并用新图记录 `target_aligned`，不能改名为空爪 `align`。当前目标对齐响应才允许插入。`contact_support_verified` 和通用 `contact_step_supported` 不被设真，电流/估算力矩只作未标定诊断。机器人到位、语义进展与整项任务成功分别记录。
 
 右侧就位后复用受支撑 `release_retreat` 开爪和 `robot_pair_confirm_release`。该测量以真实最后局部锚为身体基准，仍保留初始 probe 锚。确认后空爪 `joint release_retreat` 也可显式 RGB 准入，用本段 `release_retreat_observation` 和 `corridor_observation`；仍先检查宿主已确认释放 token，不能改名普通接近绕过。右侧退出后再释放/撤离左侧。最终需至少相隔两秒的两次新图确认独立稳定；软件贯穿测试和发送完成都不替代该实物结果。
+
+## 2026-10-07 三小时预算与 3–10 cm 粗接近
+
+显式授权的新执行窗口支持最多 `max_steps=1000, max_duration_s=10800`，管理提案、激活账本、宿主及工具 schema 使用同一上限。打开宿主仍默认 128／900，扩展预算须匹配已激活的 execution epoch；重连不重新计时，旧故障与累计历史保留。
+
+`motion_profile="coarse_approach"` 现在绑定 `piper_rgb_supervised_coarse_approach_v2`：双爪空载、远离目标且当前整臂及附件通道明确时，请求与编码后的 FK 法兰终点相对原点和当前反馈都须在 30–100 mm；每轴变化最多 20°，独立关节盒及逐样本 raw/FK 过程上限 120 mm／0.40 rad。过程余量不是目标行程；相同 1% 速度、厂家／控制器限位交集、量化、缓存／分帧守卫及另一臂保持仍有效。小于 30 mm 切回 ordinary，临近目标用约 10 mm 或更小，接触沿用原 2 mm 分支。旧 v1 记录只作历史，不继承新限幅；一次事件仍至多一次派发。
+
+先选较大可准入步长以减少观察与决策周期，逐段用新图修正，不能预排路径或强求每个方向都达到 100 mm。软件离线测试不代表实机位移、物体进展或提速；图像 30 秒期限、最终三秒稳定及异常锁存不变。
+
+
+2026-10-08 当前插头任务的右 J4 有界反馈档已接通：`robot_pair_open` 可显式传 `feedback_observation_profile="right_j4_bounded_v1"` 与原用户许可 `feedback_observation_statement`，冻结到任务合同。右 J4 上限 0.5°，其他关节仍为 0.003 rad；准备、RGB joint、试夹、保持和释放使用同一档，右臂静止 SO(3) 姿态也使用 0.5°，原始法兰平移、夹爪、限位及单次发送限制保持。新任务准入文件的 `site_context.feedback_observation` 必须一致，旧运行不在线换档、清故障或重新计时。具体字段、使用范围和离线证据见[反馈波动处理](../../../.agents/skills/piper-task-pipeline/references/feedback-tolerance.md)。
+
+该档的 PiPER X/default 连接在 `coherent_feedback.py` 中对厂家原始解码结果按组发布：姿态三帧和关节三帧分别要求顺序完整、组内接收跨度最多 2 ms。解码更新与复制共用锁，未收齐时保留上一组的原始时间戳，不能给旧反馈续期。`feedback_assembly` 同时保存实际 SDK 缓存、组字节、未完成分帧及首个读取错误；设备健康检查照常进行。完整组的数值仍直接接受原守卫检查，0.5° 档不再扩大。此接收分组没有固件周期 ID，不声明整个快照同时采样；未启用档位的旧入口保持原行为。离线回放与回归见 `artifacts/coherent_feedback_20261008/validation.json`，不构成旧故障恢复或实物成功证据。
+## 2026-10-09 软件重置后的首次任务预算
+
+同一干净平台在首次任务登记前若需要修正已确认完全闭合的空爪零点，可显式使用 `robot_calibrate_empty_gripper_zero_once`。该入口要求选中夹爪失能，原厂单帧置零、ACK 和新零位反馈全部成立后才报告成功；不发送开合目标或本体运动。未决／失败锁存整个平台并禁止重试。成功维护记录可随首次任务预算冻结，失败记录不能通过该登记绕过。
+
+`startup_reset.enroll_task_budget(project, run_id, task, authorization, max_steps=1000, max_duration_s=10800)` 是零设备访问的管理入口，仅覆盖本次启动内已经完整成功的双臂 reset startup、尚无任何新任务行或动作的起点。它检查原归档哈希、启动回执、无 owner/未决事务/新故障，冻结实际用户新任务授权、角色、代码与预算；不会自动发送使能、初始化、夹爪或运动命令。`authorization` 记录原用户消息、接收时间、`decision="authorize_explicit_new_task"` 和匹配的两个预算值。
+
+登记只追加 `pair_reset_task_budgets` 和首个 `pair_runs`，保留原重置记录及历史故障行；从登记时起计时，后续重连不续时。只能以 `connection_mode="prepare"` 打开相同 run；任何已有新任务活动、重复登记、不同 run 或预算均拒绝。物理释放、夹爪零点、当前图像、目标缓存与双臂动作资格仍由正常入口核对。实际设备尚不具备准备条件时，先完成离线修复，临近在线执行再登记预算。
+
+# 未打开轮次的登记数据修复（2026-10-08）
+
+`initial_rx_zero_tx_fault` 的登记、扩展预算识别和宿主读取现已接通。此类型必须复验原始父运行、零发送失败、完整关闭记录及登记时的归档证据，不能仅凭类型名称恢复控制。关闭记录使用原登记冻结的绝对引用与哈希，不依赖宿主启动目录。
+
+已登记但从未打开的当前轮次，可由管理入口 `pair_round.revise_unopened_round(path, run_id, expected_contract_sha256=..., project_root=..., reason=...)` 追加一次代码合同修订。它只适用于本次登记兼容性修复的三个源文件，要求零步骤、无事件、owner、未决发送、当前故障或持物记录，且登记后的状态时间没有推进；曾 claim 后退出的空轮次也不适用。
+
+修订只 INSERT `pair_unopened_round_revisions`，不更新原 `pair_runs`、登记、预算和故障。预算识别、宿主构造、状态输出与历史审计统一读取有效合同。原截止时间继续消耗；重复修订、额外源代码变化、过期、任何发送或历史篡改均拒绝。该管理操作没有 CAN 或相机访问，也不授予运动资格。
+
+后续 `robot_pair_open` 必须使用 `connection_mode="prepare"`，重新获得当前设备状态、限位与目标来源；原失败目标不重放，归档 RGB 不作为当前现场准入。50 ms 反馈年龄限制保持不变。使用现有 `pi0_infer` Python 3.10 运行服务与相关贯穿测试；系统 Python 3.8 不支持现有来源读取器使用的 `Path.is_relative_to`。
+
+本轮验证覆盖真实 `ToolService → PairHost → PairLedger` 和内存设备，以及当前真实账本副本上的两次打开/关闭。真实账本仅追加行政修订，未启动设备或完成插拔。完整结果见 `artifacts/data_path_repair_20261008/validation.json`（项目根目录）。
+
+## 完整闭爪帧后的末次反馈超时恢复
+
+`supported_gripper_recovery` 仅覆盖完整单帧、原始 trace 已构成稳定接触候选、随后末次 age/skew 检查失败的已关闭宿主。显式修复指令、原始帧与 trace 审计、当前三路 RGB 和零 TX 双臂反馈均须通过。原失败、owner 历史、任务起点、期限和累计步数保留；不转移旧抓持或关节缓存。
+
+管理员在原库追加受限接续后，以 `prepare` 打开唯一宿主，零 TX `robot_pair_promote_ready`。第一项物理动作只能是 `robot_pair_recover_supported_gripper`：当前图显示独立支撑、同侧开口增量最多 5 mm、名义力保持 0.2 N、一次 0x159，不发送本体目标。随后新图显示物体与手指分离，调用 `robot_pair_confirm_recovery_release` 取得新的三秒零 TX 反馈。两项按序成功前，账本和宿主均禁止普通查询、初始化和任务目标。成功仅解决机械残余状态；之后同一宿主按正常空爪准备、抓持和双臂支撑流程接续。
+
+此入口不是直接拔出、抓持成功确认或清故障按钮。已有失败不能改写为成功，开爪失败或回执不确定不重试，未完成分离就关闭仍锁存。软件测试不代表实际开爪、支撑或拔插成功。

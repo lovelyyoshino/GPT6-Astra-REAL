@@ -120,10 +120,32 @@ class PairRoundTests(unittest.TestCase):
 
     def test_invalid_window_and_caps_refuse_read_only(self):
         before=self.rows()
-        for kw in ({'max_steps':501},{'max_steps':True},{'max_duration_s':3601},{'started_at':3700.},
+        for kw in ({'max_steps':1001},{'max_steps':True},{'max_duration_s':10801},{'started_at':3700.},
                    {'started_at':4011.},{'started_at':float('nan')},{'new_run_id':'new'}, {'clock':lambda:7600.}):
             with self.subTest(kw=kw),self.assertRaises((PairLedgerError,ValueError)):self.prepare(**kw)
             self.assertEqual(before,self.rows())
+
+    def test_three_hour_thousand_step_round_reopen_keeps_original_deadline(self):
+        before=self.rows()
+        proposal=self.prepare(max_steps=1000,max_duration_s=10800)
+        authorization=self.authorize(proposal)
+        authorization['statement']='Begin a new three hour round, at most 1000 commands'
+        result=self.activate(proposal,authorization)
+        self.assertTrue(activated_execution_budget(self.path,'round-2',max_steps=1000,max_duration_s=10800))
+        self.now=4200.
+        new=PairLedger(self.path,'round-2',result['new_contract'],max_steps=1000,max_duration_s=10800,clock=lambda:self.now)
+        state=new.claim('three-hour-owner')
+        self.assertEqual((state['max_steps'],state['remaining_steps'],state['started_at'],state['deadline_s']),
+                         (1000,1000,4000.,14800.))
+        new.release('three-hour-owner')
+        self.now=4800.
+        reopened=PairLedger(self.path,'round-2',result['new_contract'],max_steps=1000,max_duration_s=10800,clock=lambda:self.now)
+        state=reopened.claim('reopened-owner')
+        self.assertEqual((state['started_at'],state['deadline_s'],state['remaining_s']), (4000.,14800.,10000.))
+        reopened.release('reopened-owner')
+        current=self.rows()
+        self.assertEqual(before['pair_runs'],[r for r in current['pair_runs'] if r['run_id']!='round-2'])
+        self.assertEqual(before['pair_events'],current['pair_events'])
 
     def test_unknown_or_partial_receipts_refuse(self):
         for mutate in (lambda r:r['transmission_counts']['left'].update(attempted_frames=1),

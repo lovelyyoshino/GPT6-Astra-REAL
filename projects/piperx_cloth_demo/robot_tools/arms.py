@@ -216,8 +216,13 @@ def snapshot(robot, gripper=None):
     The SDK timestamp is the CAN frame's host Unix receive time, not device time.
     """
     # These are manufacturer-decoded fragments, not our own CAN decoding.
-    fragments = {name: copy.deepcopy(getattr(robot._parser, name, None))
-                 for name in PARTS + DRIVERS}
+    grouped = getattr(robot, '_pair_coherent_feedback', None)
+    assembly = None
+    if grouped is None:
+        fragments = {name: copy.deepcopy(getattr(robot._parser, name, None))
+                     for name in PARTS + DRIVERS}
+    else:
+        fragments, assembly = grouped.snapshot(PARTS + DRIVERS)
     if gripper is None:
         gripper = getattr(robot, "_effector", None)
     fragments["gripper"] = copy.deepcopy(getattr(getattr(gripper, "_parser", None), "gripper", None))
@@ -243,6 +248,8 @@ def snapshot(robot, gripper=None):
               "drivers": {}, "hardware_commands_sent": 0,
               "gripper": {"status": "unavailable", "reason": "no_passive_gripper_feedback_received"},
               "telemetry_scope": "arm_status, joints, flange_pose, six_driver_states, gripper"}
+    if assembly is not None:
+        result['feedback_assembly'] = assembly
     if all(fragments[n] is not None for n in PARTS[1:4]):
         result["joints_rad"] = [getattr(fragments["joint_" + pair].msg, "joint_%d" % i)
                                 for pair, indexes in (("12", (1, 2)), ("34", (3, 4)), ("56", (5, 6)))

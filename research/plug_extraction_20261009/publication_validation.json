@@ -1,0 +1,113 @@
+{
+  "schema": "plug_code_publication_v1",
+  "date": "2026-10-09",
+  "scope": "Offline source publication and video-selection audit; no robot, camera, ROS or paid-model calls in this publication task.",
+  "hardware_accessed": false,
+  "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+  "source_manifest_unchanged": true,
+  "checks": {
+    "core_single_arm": {
+      "status": "passed",
+      "tests": 167,
+      "log": "artifacts/code_publication_20261009/focused_tests.log",
+      "log_sha256": "71a282d6a25ca8123b5885479eeee1b8272cc78e300b0fac9e878c74a8a10a56"
+    },
+    "fast_regressions": {
+      "status": "passed",
+      "tests": 387,
+      "log": "artifacts/code_publication_20261009/fast_tests.log",
+      "log_sha256": "ed328b0ca7ee415bca30919a9909622bd6e122f60ed65a4c3588413be5346884"
+    },
+    "management_tools": {
+      "status": "passed",
+      "tests": 67,
+      "log": "artifacts/code_publication_20261009/tools_tests.log",
+      "log_sha256": "e80dc0e69bbeee32e4187ade29a41be01b5e7458bb9418ce11f8370f4593071a"
+    },
+    "plug_runner": {
+      "status": "passed",
+      "tests": 13,
+      "log": "artifacts/code_publication_20261009/runner_tests_final.log",
+      "log_sha256": "e98e31a234091394281549c9c1f04397e05106273fb3ae58623dc4fcfb347692"
+    },
+    "passive_can": {
+      "status": "passed",
+      "tests": 19,
+      "log": "artifacts/code_publication_20261009/passive_can_tests.log",
+      "log_sha256": "f7752f7a88ca4b285230fe3fb0e078000a269770c3e03480ea4a65ef76551f16"
+    },
+    "tool_schema_followup": {
+      "status": "passed",
+      "tests": 1,
+      "log": "artifacts/code_publication_20261009/schema_test_final.log",
+      "log_sha256": "d10ffbd9f0faa72cd6837063279524e199b59fbc3d035051302a1e8dbc4b36ad"
+    },
+    "legacy_full_suite_probe": {
+      "status": "failed",
+      "tests_run": 2106,
+      "failures": 169,
+      "errors": 262,
+      "skipped": 7,
+      "elapsed_s": 407.144,
+      "log": "artifacts/code_publication_20261009/piper_tests.log",
+      "log_sha256": "e016d1c86dd1ab1a4006ae92591932e8b892cd9d1facb202991eec9db079136b",
+      "failure_groups": "artifacts/code_publication_20261009/full_failure_groups.json",
+      "notes": [
+        "Missing local artifacts/model-source evidence and a referenced final_read_state.json prevent many offline fixtures from reaching their intended assertions. Those original files are deliberately not imported as deployment qualification.",
+        "Pinned historical source-scope audits reject accumulated later changes; several fixture API mismatches remain (snapshot gripper argument, PairHost.runs, role data).",
+        "This probe ran before the stale tool-count assertion (38 versus 46) was corrected. Its focused follow-up passed; no claim that all other full-suite failures are resolved.",
+        "The passing groups overlap with this suite; counts must not be summed as unique tests. No clean baseline full-suite comparison was performed for this publication."
+      ]
+    },
+    "video_selection": {
+      "successful_actions": 27,
+      "excluded_failures": 6,
+      "duration_s": 217.4,
+      "hardware_accessed": false,
+      "files_written": false
+    },
+    "syntax": {
+      "status": "passed",
+      "commands": [
+        "python3 -m compileall -q projects/piper_right_pick_demo/src",
+        "python -m compileall -q projects/piperx_cloth_demo/robot_tools projects/dual_arm_plug_transfer tools"
+      ]
+    },
+    "bundle_integrity": {
+      "status": "passed",
+      "source_snapshot_status": "verified_with_optimization_overrides_with_runtime_omissions",
+      "optimization_status": "verified_with_runtime_omissions",
+      "bundle_checksum_status": "verified_with_runtime_omissions",
+      "runtime_omission_status": "verified",
+      "remote_source_files": 743,
+      "source_unmodified_files": 708,
+      "source_files_explained_by_optimization": 31,
+      "source_files_omitted": 4,
+      "optimization_entries": 350,
+      "optimized_verified_files": 348,
+      "optimized_omitted_files": 2,
+      "bundle_checksum_entries": 1065,
+      "bundle_checksum_omitted_files": 4,
+      "runtime_omission_entries": 4,
+      "omitted_runtime_files": [
+        "projects/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+        "projects/piper_right_pick_demo/configs/astra_fast_live.local.json",
+        "projects/piper_right_pick_demo/configs/gpt_tools.local.json",
+        "projects/piper_right_pick_demo/configs/site.local.json"
+      ],
+      "hardware_accessed": false,
+      "errors": [],
+      "note": "Verified in the exported index with runtime authorization omitted. Final index verification is repeated before commit; no runtime evidence is activated."
+    },
+    "git_diff_check": {
+      "status": "passed"
+    }
+  },
+  "uncommitted_preserved": [
+    "projects/piperx_cloth_demo/configs/robot.json: local boot-bound authorization fields omitted from distribution snapshot",
+    "projects/piper_right_pick_demo/调试过程.md: unrelated pre-existing prose edits"
+  ],
+  "physical_result_reference": "research/plug_extraction_20261009/README.md",
+  "large_artifacts_in_git": false,
+  "full_suite_passed": false
+}

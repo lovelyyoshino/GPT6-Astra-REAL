@@ -5,6 +5,8 @@ adapter's measured trace, not caller assertions of contact or support. Width
 shortfall can suggest contact; it cannot identify an object or prove acceptance.
 """
 import math
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import validate_policy, joint_tolerances, joints_within, describe
 
 from . import arms
 from .single_supervised_actions import BOUNDS
@@ -127,40 +129,48 @@ def _check_trace(samples, label):
     return advances
 
 
-def _stable(samples, *, selected=None, stationary_reference=None):
+def _stable(samples, *, selected=None, stationary_reference=None, feedback_policy=None,
+            stationary_body_reference=None):
     """Existing stable spans; all uncommanded components retain their anchor."""
     spans = {}
     for side in SIDES:
         states = [sample["arms"][side] for sample in samples]
         poses = [state["pose_m_rad"] for state in states]
         widths = [state["gripper"]["width_m"] for state in states]
-        joint_span = max(max(values)-min(values) for values in zip(*(state["joints_rad"] for state in states)))
+        joint_spans = [max(values)-min(values) for values in zip(*(state["joints_rad"] for state in states))]
+        joint_span = max(joint_spans)
         position_span = math.sqrt(sum((max(values)-min(values))**2 for values in zip(*(pose[:3] for pose in poses))))
         rotation_span = _rotation_span(poses)
         spans[side] = {"joint_rad": joint_span, "position_m": position_span,
                        "rotation_rad": rotation_span, "jaw_m": max(widths)-min(widths)}
-        if (joint_span > BOUNDS["joint_span_rad"] or position_span > BOUNDS["position_span_m"]
-                or rotation_span > BOUNDS["rotation_span_rad"] or max(widths)-min(widths) > BOUNDS["jaw_span_m"]):
+        if (any(v > limit for v,limit in zip(joint_spans,joint_tolerances(feedback_policy,side)))
+                or position_span > BOUNDS["position_span_m"]
+                or rotation_span > rotation_tolerance(feedback_policy,side) or max(widths)-min(widths) > BOUNDS["jaw_span_m"]):
             raise ValueError(side + " exceeds existing stable-window spans")
         if stationary_reference is not None:
             origin = stationary_reference[side]
+            body_origin = (origin if stationary_body_reference is None else
+                           stationary_body_reference[side])
             for state in states:
-                if (max(abs(a-b) for a, b in zip(state["joints_rad"], origin["joints_rad"])) > BOUNDS["joint_span_rad"]
-                        or math.dist(state["pose_m_rad"][:3], origin["pose_m_rad"][:3]) > BOUNDS["position_span_m"]
-                        or _rotation(state["pose_m_rad"], origin["pose_m_rad"]) > BOUNDS["rotation_span_rad"]):
+                if (not joints_within(feedback_policy, side, state["joints_rad"], body_origin["joints_rad"])
+                        or math.dist(state["pose_m_rad"][:3], body_origin["pose_m_rad"][:3]) > BOUNDS["position_span_m"]
+                        or _rotation(state["pose_m_rad"], body_origin["pose_m_rad"]) > rotation_tolerance(feedback_policy,side)):
                     raise ValueError(side + " moved from the pre-send stationary arm anchor")
                 if side != selected and abs(state["gripper"]["width_m"]-origin["gripper"]["width_m"]) > LIMITS["gripper_m"]:
                     raise ValueError(side + " uncommanded jaw moved from the pre-send anchor")
     return spans
 
 
-def classify_gripper_probe(*, arm, requested_width_m, sent_at, baseline_samples, post_samples):
+def classify_gripper_probe(*, arm, requested_width_m, sent_at, baseline_samples, post_samples,
+                           feedback_policy=None, stationary_body_reference=None):
     """Return target_arrived, settled_contact_candidate, or unconfirmed.
 
 Each sample is {'observed_at_s': host_read_time, 'arms': {left: raw, right: raw}}.
 Traces must cover the complete baseline and post-send observation, including any
 transient motion. Numerical policies are reused software observation bounds,
 not manufacturer contact thresholds, force calibration or physical proof.
+An optional adapter-owned body reference preserves an audited original origin;
+it changes neither the measured trace nor jaw/mode origins or stable spans.
 """
     result = {"outcome": "unconfirmed", "accepted": None, "arrival_confirmed": False,
               "grasp_verified": False, "contact_verified": None, "contact_support_verified": False,
@@ -170,8 +180,22 @@ not manufacturer contact thresholds, force calibration or physical proof.
               "completion": "unconfirmed", "max_probe_closure_m": MAX_PROBE_CLOSURE_M,
               "reasons": [], "scope": "Measured response classification only; no hardware action or admission"}
     try:
+        feedback_policy = validate_policy(feedback_policy)
+        if feedback_policy is not None:
+            result["feedback_observation"] = describe(feedback_policy)
         if arm not in SIDES:
             raise ValueError("Explicit left/right selected arm required")
+        if stationary_body_reference is not None:
+            if type(stationary_body_reference) is not dict or set(stationary_body_reference) != set(SIDES):
+                raise ValueError("Explicit stationary body reference requires both arms")
+            for origin in stationary_body_reference.values():
+                if type(origin) is not dict or set(origin) != {"joints_rad", "pose_m_rad"}:
+                    raise ValueError("Stationary body reference contains only joints and pose")
+                for values in origin.values():
+                    if type(values) is not list or len(values) != 6:
+                        raise ValueError("Stationary body reference requires six joint/pose values")
+                    for value in values:
+                        _number(value, "stationary body reference")
         target = _number(requested_width_m, "requested_width_m")
         sent_at = _number(sent_at, "sent_at")
         if sent_at <= 0 or not 0 <= target <= 0.055:
@@ -194,14 +218,17 @@ not manufacturer contact thresholds, force calibration or physical proof.
         baseline_duration = baseline_samples[-1]["observed_at_s"]-baseline_samples[0]["observed_at_s"]
         if baseline_duration < BOUNDS["stable_s"] or baseline_advances < BOUNDS["minimum_feedback_advances"]:
             raise ValueError("Baseline lacks existing three-second/20-advance evidence")
-        baseline_spans = _stable(baseline_samples)
         origin = baseline_samples[0]["arms"]
+        baseline_spans = _stable(baseline_samples, feedback_policy=feedback_policy,
+            selected=arm, stationary_reference=origin if stationary_body_reference is not None else None,
+            stationary_body_reference=stationary_body_reference)
         baseline_widths = [sample["arms"][arm]["gripper"]["width_m"] for sample in baseline_samples]
         if any(not probe_closure_within_bound(width, target) for width in baseline_widths):
             raise ValueError("Every baseline width requires a closing probe within 5 mm")
         for sample in post_samples:
             # Full trace checks cannot be replaced by a quiet final suffix.
-            _stable([sample], selected=arm, stationary_reference=origin)
+            _stable([sample], selected=arm, stationary_reference=origin, feedback_policy=feedback_policy,
+                    stationary_body_reference=stationary_body_reference)
             for side in SIDES:
                 if sample["arms"][side]["arm_status"]["mode_feedback"] != origin[side]["arm_status"]["mode_feedback"]:
                     raise ValueError(side + " motion mode changed during a jaw-only probe")
@@ -216,7 +243,8 @@ not manufacturer contact thresholds, force calibration or physical proof.
         settled_advances = _check_trace(settled, "settled")
         if settled_advances < BOUNDS["minimum_feedback_advances"]:
             raise ValueError("Settled trace lacks 20 complete independently advancing samples")
-        settled_spans = _stable(settled, selected=arm, stationary_reference=origin)
+        settled_spans = _stable(settled, selected=arm, stationary_reference=origin, feedback_policy=feedback_policy,
+                               stationary_body_reference=stationary_body_reference)
         final_jaw = post_samples[-1]["arms"][arm]["gripper"]
         final_widths = [sample["arms"][arm]["gripper"]["width_m"] for sample in settled]
         closure = baseline_widths[-1]-final_jaw["width_m"]

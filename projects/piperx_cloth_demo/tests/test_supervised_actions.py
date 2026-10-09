@@ -99,6 +99,8 @@ class SupervisedActionsTests(TakeoverFixture):
         self.assertFalse(result["controller_at_target"])
         self.assertEqual(result["raw_motion_status"], {"left": 1, "right": 1})
         self.assertAlmostEqual(result["pose_error"]["position_m"], 0.006)
+        self.assertAlmostEqual(result["pose_error"]["rotation_rad"], 0.)
+        self.assertNotIn("joint_error", result)
 
     def test_stable_jaw_short_of_target_is_observation_not_contact_proof(self):
         self.robots["right"].accept = False

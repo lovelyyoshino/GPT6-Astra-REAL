@@ -90,6 +90,16 @@
       ],
       "hardware_accessed": false,
       "errors": []
+    },
+    "supported_gripper_recovery_20261008": {
+      "artifact": "artifacts/supported_gripper_recovery_20261008/validation.json",
+      "software_only": false,
+      "hardware_success_claimed": false,
+      "offline_validation": "artifacts/supported_gripper_recovery_20261008/validation.json",
+      "live_outcome": "artifacts/supported_gripper_recovery_20261008/outcome.json",
+      "live_task_success": false,
+      "physical_stop_verified": null,
+      "video_verification": "artifacts/supported_gripper_recovery_20261008/video_verification.json"
     }
   },
   "implemented": {
@@ -5948,5 +5958,2826 @@
       "A new round requires explicit exact user-message authorization and supported clean history; arbitrary run IDs do not renew budget.",
       "Earlier validation entries remain historical and are not rewritten."
     ]
+  },
+  "followup_query_duplicate_repair_20261007": {
+    "written_at": 1791374520.344757,
+    "status": "implemented_offline",
+    "root_cause": "The receiver rejected any second 0x473 reply, even identical current-window values. Protocol value has no transaction ID; exact duplication origin (firmware/bus/USB) is undetermined.",
+    "raw_evidence": "rpc_00004.json",
+    "rx_driver_timestamp_delta_s": 9.655952453613281e-05,
+    "payload_identical": true,
+    "tx_queries": 1,
+    "actuator_commands_sent": 0,
+    "diagnostic_review": "Independent agent inspected official local SDK commit 841a625 callback and parser before implementation; final changes implemented and tested by primary agent after collaborator usage exhaustion.",
+    "validation_logs": [
+      "query_dedup_tests.log",
+      "query_round_tests.log",
+      "query_repair_final_tests.log"
+    ],
+    "source_sha256": {
+      "projects/piperx_cloth_demo/robot_tools/pair_limits.py": "c6c061c33dd18645c4eb7136bf8451b5a8339b6823ac399ea79dc60032fdb4da",
+      "projects/piperx_cloth_demo/robot_tools/joint_sources.py": "233edbd7806cead572e4c8c9e68646b2cbd0a9f29c6a72bbeb4237144bb29859",
+      "projects/piperx_cloth_demo/robot_tools/pair_round.py": "ac60e94a815b516ce8fdbc55f051af26adffd6870ed52d55f12f2203a16ad646",
+      "projects/piperx_cloth_demo/robot_tools/pair_ledger.py": "994778fa39fb8d30d08b7ec9b3f7f775d57bdd43d5cd496c27addf5c47437a79",
+      "projects/piperx_cloth_demo/tests/test_pair_limits.py": "ea8f4daa74e4d8e9881f89afce62b9113bf78a965393321a84f0455e8a766cf3",
+      "projects/piperx_cloth_demo/tests/test_joint_sources.py": "bd9a9bed76f8612b8e2a3f1fee8509381773d39b9cead85be651ca30c0cae2d4",
+      "projects/piperx_cloth_demo/tests/test_pair_query_round.py": "af3f99ac4de96dd209ff420bf6aa85df3396159fe4574381bed47cef35d7ec89"
+    },
+    "compile_passed": true,
+    "new_live_execution": false,
+    "physical_task_success": false,
+    "old_faults_preserved": true,
+    "new_timer_requires_explicit_user_request": true,
+    "final_tests": {
+      "count": 193,
+      "elapsed_s": 15.375,
+      "exit_code": 0
+    },
+    "earlier_tests": {
+      "dedup": 75,
+      "management": 118
+    }
+  },
+  "followup_geometry_validation_timing_20261007": {
+    "scope": "Offline geometry-cache repair followed by 35 successful live v1 motions; next segment ended on distinct RGB expiry",
+    "targeted_tests": {
+      "combined": 192,
+      "final_admin_and_geometry": 109,
+      "status": "passed",
+      "python": "pi0_infer Python 3.10"
+    },
+    "system_python_attempt": {
+      "status": "incompatible",
+      "reason": "Python 3.8 lacks pathlib.Path.is_relative_to; rerun using existing supported Python 3.10",
+      "log": "/home/agilex/GPT6-Astra-REAL/artifacts/plug_query_fixed_1791374566/timing_system_python_incompatible.log"
+    },
+    "repair": "Memoize immutable model/origin/envelope geometry only; retain per-sample plan hash, live feedback and 50ms final guard. Narrow zero-TX repaired continuation preserves parent deadline and unused steps.",
+    "independent_review": "artifacts/plug_timing_fixed_1791375427/independent_review.json",
+    "physical_task_complete": false,
+    "physical_revalidation": "artifacts/plug_timing_fixed_1791375427/online_closeout.json"
+  },
+  "followup_task_budget_3h_coarse_v2_20261007": {
+    "scope": "Explicit 10800-second/1000-event pair budgets; 1000-cycle new offline contracts; RGB coarse approach v2 30..100 mm and 20 degrees per joint",
+    "hardware_accessed": false,
+    "real_model_called": false,
+    "physical_task_success": null,
+    "actual_speed_improvement": null,
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "checks": {
+      "pair_final": {
+        "command": [
+          "/home/agilex/miniconda3/envs/pi0_infer/bin/python3.10",
+          "-c",
+          "import unittest; from unittest.mock import patch; patch('socket.socket',side_effect=AssertionError('No hardware/network in offline validation')).start(); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_joint_path', 'test_pair_joint_adapter', 'test_coarse_joint_adapter', 'test_host_coarse_approach', 'test_host_rgb_joint', 'test_pair_host', 'test_pair_ledger', 'test_pair_restart', 'test_pair_round', 'test_pair_service', 'test_pair_continuation', 'test_pair_freshness_round', 'test_pair_query_round']); r=unittest.TextTestRunner(verbosity=1).run(suite); raise SystemExit(not r.wasSuccessful())"
+        ],
+        "cwd": "/home/agilex/GPT6-Astra-REAL/projects/piperx_cloth_demo",
+        "exit_code": 0,
+        "elapsed_s": 215.894,
+        "tests": 368,
+        "log": "artifacts/task_budget_3h_1000_20261007/pair_final.log",
+        "hardware_accessed": false,
+        "real_model_called": false
+      },
+      "fast": {
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_fast*.py"
+        ],
+        "cwd": "/home/agilex/GPT6-Astra-REAL/projects/piper_right_pick_demo",
+        "exit_code": 0,
+        "elapsed_s": 4.329,
+        "tests": 387,
+        "log": "artifacts/task_budget_3h_1000_20261007/fast.log",
+        "hardware_accessed": false,
+        "real_model_called": false
+      },
+      "syntax": {
+        "command": [
+          "python3",
+          "-m",
+          "compileall",
+          "-q",
+          "projects/piper_right_pick_demo/src",
+          "projects/piperx_cloth_demo/robot_tools"
+        ],
+        "cwd": "/home/agilex/GPT6-Astra-REAL",
+        "exit_code": 0,
+        "elapsed_s": 0.033,
+        "tests": null,
+        "log": "artifacts/task_budget_3h_1000_20261007/syntax.log",
+        "hardware_accessed": false,
+        "real_model_called": false
+      }
+    },
+    "changed_files_sha256": {
+      ".agents/skills/piper-task-pipeline/SKILL.md": "e2da540520c6892fc6da2390141321a8bbd83cf9354112a8ca10571f5e7e0cdb",
+      ".agents/skills/piper-task-pipeline/references/audited-restart.md": "d85418cabd0a388e76dd4f9f7b302bc70acc81eae128dad370e7be5ac69e34bd",
+      ".agents/skills/piper-task-pipeline/references/online-readiness.md": "4fcf54a08add131582e4ac842713b8d5c6231acca46d7c24580c43be10a14edc",
+      "OPTIMIZATION_GUIDE.md": "bc86b186eea197ad541512023d6dff5742d037e99d5fbf1c8db632d68f8c3426",
+      "projects/piper_right_pick_demo/src/right_pick/fast_task_pipeline.py": "313e445402be5a2243dd3975e7cb9b5dfa9551dc5c282dc37774ad2663f8ed9f",
+      "projects/piper_right_pick_demo/src/right_pick/fast_task_session.py": "e196c7026f6050953661482faa164bcfe7569df02bc0a31e5cd5aa47b5e9b96c",
+      "projects/piper_right_pick_demo/src/right_pick/fast_task_spec.py": "066e44b16a2fc4c24b8b880f4112f468331829b0dbe76a784741b801548dd7a9",
+      "projects/piper_right_pick_demo/tests/test_fast_plug_transfer_recipe.py": "5cc3601e4d73e9c824351fe373dcd5ad22f4406819d8d289bed8d76398ed39f1",
+      "projects/piper_right_pick_demo/tests/test_fast_task_session.py": "c1ebcfe685916535d9162542369b795d51ddd533f1383d8cdcba8e6914d561e2",
+      "projects/piperx_cloth_demo/docs/PAIR_HOST.md": "253f9d92cc40e3743d504a77c45534d3c4038e385e1e500b7fb19c1415abfe05",
+      "projects/piperx_cloth_demo/robot_tools/joint_path.py": "0225b1916c5ad6bebeebb11096568344e61e0fcbebfc23d1fcda59f1391babe0",
+      "projects/piperx_cloth_demo/robot_tools/pair_host.py": "26891e78f5b90fb85fe5e91ef378f265b7d5f0b291c672a0f51057f28c148189",
+      "projects/piperx_cloth_demo/robot_tools/pair_ledger.py": "46de875a4f151413ac1dd9770ceeba278feea9503a76c775936301a18aad4537",
+      "projects/piperx_cloth_demo/robot_tools/pair_restart.py": "406096d9ded375b6d710614be75bf9cf0b0e4e1f9c2c6efc975bbfbc43aae07f",
+      "projects/piperx_cloth_demo/robot_tools/pair_round.py": "8fd747cce0e6a76989daaaa92f56ea9967d75bd21be34f82b227ba4e5e81bc0d",
+      "projects/piperx_cloth_demo/robot_tools/rgb_supervision.py": "19ae10b870969b8d47bdd6c61dbb2573c51df4cf6a2de328c745ea84b5d3b7d2",
+      "projects/piperx_cloth_demo/robot_tools/service.py": "0a4bf5ceb39ff8093633e994a1fadab3db46e01a327dfeff51489cca5b60a885",
+      "projects/piperx_cloth_demo/tests/test_coarse_joint_adapter.py": "c968ca5a636cd564dad79c06d3273bb660905271af9148b85c0b5962576fe37c",
+      "projects/piperx_cloth_demo/tests/test_host_coarse_approach.py": "6cb75f1a875addaf3812f94d5b5655d7d9db21b30434cf5a25f1d7f0c175b83e",
+      "projects/piperx_cloth_demo/tests/test_joint_path.py": "a1da73862395b23c046092bc13cb96860878bdd8085776638856a562834a2887",
+      "projects/piperx_cloth_demo/tests/test_pair_restart.py": "7179e34e05bf90f0719ec5a1dc12e93cd01c41667e78d42e5bd3b3b5749fcd84",
+      "projects/piperx_cloth_demo/tests/test_pair_round.py": "fbc68abf9bbde557b39a699c5580c08b5cf6897457b7ae3040f532bbc3a4ee3c",
+      "projects/piperx_cloth_demo/tests/test_pair_service.py": "76e91d7099ddffb64092c630baba3d3601dbf62e6cd794da6c772ebc1a8ed93c"
+    },
+    "implemented": {
+      "explicit_pair_budget": {
+        "max_steps": 1000,
+        "max_duration_s": 10800,
+        "existing_run_budget_reset": false
+      },
+      "new_offline_budget": {
+        "max_cycles": 1000,
+        "max_model_calls": 1000,
+        "max_elapsed_s": 10800
+      },
+      "coarse_profile": {
+        "schema": "piper_rgb_supervised_coarse_approach_v2",
+        "target_translation_m": [
+          0.03,
+          0.1
+        ],
+        "joint_change_deg": 20,
+        "process_translation_m": 0.12,
+        "process_rotation_rad": 0.4,
+        "speed_percent": 1,
+        "requested_and_encoded_checked": true,
+        "origin_and_current_checked": true,
+        "rotation_only_below_30mm_uses_coarse": false,
+        "near_target_profile": "ordinary",
+        "loaded_contact_profile_unchanged": true
+      }
+    },
+    "independent_review": [
+      {
+        "reviewer": "budget_review",
+        "finding": "Old offline contracts would become unreadable after a default-budget change.",
+        "resolution": "Narrow exact old/new default-contract compatibility preserves frozen budgets, start, contract hash and history; all other changes refuse.",
+        "tests": "Builtin and declarative recipe migration/reopen regressions; full fast suite."
+      },
+      {
+        "reviewer": "coarse_review",
+        "finding": "No blocking bypass found; requested minimum, quantization crossing and old-v1 rejection tests.",
+        "resolution": "Added 29.9/30.1/99.9/100.1 mm checks, both quantization directions at 30/100 mm, v1 rejection, host zero-claim refusal, native FakeCAN near-100 mm and exact 20-degree once-only events. Per user clarification, pure rotation under 30 mm remains refused.",
+        "tests": "Full joint-path, adapter, host and budget targeted suite; reviewer also confirmed 20-degree/20000-millidegree limits and 0.40-radian process envelope propagate consistently."
+      }
+    ],
+    "development_checks": [
+      "Initial 15-degree broad suite: 366 tests, one fixture error from constructing two observations before using the first; fixed by acquiring each scene immediately before its request without changing production freshness guards.",
+      "An intermediate broad run was interrupted after anomalous waiting; exact 20-degree native transport independently passed. Final captured suite has a 400-second runner timeout and streams logs."
+    ],
+    "limitations": [
+      "Pure FK targets and FakeCAN receipts are synthetic, not measured arm displacement, collision clearance, physical stopping or task success.",
+      "At 1% speed the existing 30-second RGB deadline and stable windows still apply; 100 mm is not guaranteed feasible or completable at every pose/direction.",
+      "Ordinary pair-open defaults and existing epochs remain unchanged; expanded budgets use exact activated explicit-budget epochs. No real epoch was activated.",
+      "Stage/no-progress limits still terminate early; 1000 is an upper bound, not a promise to exhaust every cycle.",
+      "System Python 3.8 adapter tests encounter existing Path.is_relative_to incompatibility. Final pair suite uses the existing pi0_infer Python 3.10 with real sockets blocked.",
+      "Legacy full-library suites were not rerun and their previously documented missing-evidence/API/schema results are preserved separately."
+    ]
+  },
+  "followup_rgb_window_and_postsend_round_20261007": {
+    "written_at": 1791379252.2343023,
+    "scope": "RGB minimum execution window plus explicit expired full-send RGB fault restart; SO3 diameter only for this new recovery evidence branch",
+    "hardware_during_implementation": false,
+    "root_current_passive_zero_tx_reads": true,
+    "new_online_execution_started": false,
+    "physical_task_complete": false,
+    "changes": {
+      "rgb_preclaim_minimum_s": 12,
+      "rgb_first_frame_minimum_s": 9,
+      "strictly_greater_than_minima": true,
+      "original_rgb_age_s": 30,
+      "original_feedback_age_s": 0.05,
+      "observation_max_timeout_s": 20,
+      "minimum_is_completion_guarantee": false,
+      "parent_kind": "postsend_rgb_expiry_fault",
+      "old_faults_and_budget_preserved": true,
+      "new_budget_requires_explicit_request": true,
+      "new_recovery_orientation_metric": "SO3 full-trace pairwise diameter",
+      "unchanged_orientation_limit_rad": 0.003,
+      "legacy_orientation_metric_unchanged": true
+    },
+    "tests": {
+      "timing": {
+        "count": 118,
+        "duration_s": 133.765,
+        "exit_code": 0,
+        "evidence_kind": "agent actual tool receipt",
+        "tool_chunk": "2f682a",
+        "session_id": 4990,
+        "python": "pi0_infer3.10",
+        "socket_socket_blocked": true
+      },
+      "late_claim_regression": {
+        "count": 1,
+        "duration_s": 4.375,
+        "exit_code": 0,
+        "tool_chunk": "286a85",
+        "session_id": 80911
+      },
+      "round_and_so3": {
+        "schema": "postsend_rgb_recovery_so3_validation_v1",
+        "hardware_commands_sent": 0,
+        "activated": false,
+        "scope": "Only postsend_rgb_expiry_fault archival recovery audit; no live guard or threshold change",
+        "default_orientation_metric": "euler_span_bound",
+        "default_audit_output_unchanged": true,
+        "new_branch_orientation_metric": "so3_diameter",
+        "source_sha256": {
+          "robot_tools/pair_continuation.py": "28e241b45960e9a98bf77a391637ddec5dcfbf2d9af256d89e6ba66d58586d82",
+          "robot_tools/pair_round.py": "9bc82b3ec93f7184d4271059f2942f226d892517fdeaa656c1607830266e78d4",
+          "tests/test_pair_rgb_round.py": "fa93f651589755d219bbe9a95d1777c30c98c5670ed36aaf48f334fa51c53417"
+        },
+        "tests": [
+          {
+            "module": "test_pair_rgb_round",
+            "executed": 9,
+            "elapsed_s": 2.67,
+            "result": "passed"
+          },
+          {
+            "modules": "test_pair_continuation test_pair_round test_pair_query_round test_pair_freshness_round test_pair_rgb_round test_pair_ledger",
+            "executed": 103,
+            "elapsed_s": 16.007,
+            "result": "passed"
+          },
+          {
+            "module": "test_pair_rgb_round.RGBExpiryRoundTests.test_so3_covers_interior_pairwise_diameter_not_only_endpoints",
+            "executed": 1,
+            "elapsed_s": 0.302,
+            "result": "passed",
+            "note": "Stronger pair of opposite interior extrema added after combined suite; equal endpoints and each endpoint-to-interior angle below limit"
+          }
+        ],
+        "real_new_trace_audit": {
+          "left": {
+            "method": "pairwise_so3_diameter",
+            "convention": "Rz(yaw) Ry(pitch) Rx(roll)",
+            "sample_count": 384,
+            "euler_span_sum_bound_rad": 0.0030892327760299633,
+            "so3_diameter_rad": 0.000959048945633287,
+            "overall_limit_rad": 0.003,
+            "individual_euler_axis_limit_rad": 0.003
+          },
+          "right": {
+            "method": "pairwise_so3_diameter",
+            "convention": "Rz(yaw) Ry(pitch) Rx(roll)",
+            "sample_count": 384,
+            "euler_span_sum_bound_rad": 0.0,
+            "so3_diameter_rad": 0.0,
+            "overall_limit_rad": 0.003,
+            "individual_euler_axis_limit_rad": 0.003
+          }
+        },
+        "real_readonly_proposal": "/home/agilex/GPT6-Astra-REAL/artifacts/rgb_round_management_20261007/real_current_trace_proposal.json",
+        "old_archived_failure_record_preserved_in": "/home/agilex/GPT6-Astra-REAL/artifacts/rgb_round_management_20261007/validation.json",
+        "compile": "passed",
+        "git_diff_check": "passed",
+        "independent_review": {
+          "reviewer": "audit_current_motion_profile",
+          "mode": "read_only_static",
+          "blocking_findings": [],
+          "tests_rerun_by_reviewer": false,
+          "confirmed": [
+            "Default Euler sum guard and audit output unchanged",
+            "Only postsend_rgb_expiry_fault selects SO3 in prepare and activate with canonical recheck",
+            "Full-trace pairwise quaternion diameter under RzRyRx convention",
+            "Individual Euler/joint/translation/time/identity/health checks unchanged",
+            "New round requires complete four-frame unloaded send and sole RGB-expiry fault",
+            "Pending/unknown sends and other faults refused; old faults preserved; expired parent and exact new user budget authorization required"
+          ]
+        },
+        "physical_task_success": null
+      },
+      "service": {
+        "count": 22,
+        "duration_s": 0.203,
+        "exit_code": 0,
+        "log": "artifacts/plug_rgb_window_repair_20261007/service_tests.log"
+      },
+      "compileall": {
+        "exit_code": 0,
+        "tool_chunk": "569103"
+      },
+      "skill_frontmatter": {
+        "status": "valid",
+        "tool_chunk": "fbc27c"
+      }
+    },
+    "independent_reviews": {
+      "timing": "artifacts/rgb_round_management_20261007/timing_independent_review.json",
+      "round_and_so3": {
+        "reviewer": "/root/audit_current_motion_profile",
+        "method": "Read-only cross-review, no tests rerun or hardware",
+        "blocking_findings": [],
+        "confirmed": [
+          "Exact all-four-frame RGB-only failure and source/identity/count audit",
+          "No unresolved grasp/hold/pending/unknown frame histories",
+          "New explicit after-expiry authorization; old facts/owners/budgets preserved",
+          "SO3 only for new parent kind in both prepare and activate; same numerical thresholds",
+          "Interior opposite extrema tested, not just endpoints"
+        ]
+      }
+    },
+    "previous_run_closeout": "artifacts/plug_timing_fixed_1791375427/online_closeout.json",
+    "changed_files_sha256": {
+      ".agents/skills/piper-task-pipeline/references/audited-restart.md": "9db1458966e5b8db1f3e5f69d35c91f1704cba5e5cad4e3f8e93578dd8b7775a",
+      ".agents/skills/piper-task-pipeline/references/online-readiness.md": "4f06d6a568d8c318aa35dff6af5bd26a20a0b3471e3e82cf9a57c9f58a384749",
+      "projects/piperx_cloth_demo/robot_tools/pair_continuation.py": "28e241b45960e9a98bf77a391637ddec5dcfbf2d9af256d89e6ba66d58586d82",
+      "projects/piperx_cloth_demo/robot_tools/pair_host.py": "eb15ee89a840675c78bc5d2a89cba13bd8fa74a835152e755bafc9a1b83496bd",
+      "projects/piperx_cloth_demo/robot_tools/pair_joint_adapter.py": "a42e7f8d12d6ad0f7eb1133aa35ee2cd82a597a65cf991549aec64ea5a2d7699",
+      "projects/piperx_cloth_demo/robot_tools/pair_ledger.py": "5fd8ad9d8a5fa688d5531ed10328074cc17c31e857be37599d10e4a98ab5a03d",
+      "projects/piperx_cloth_demo/robot_tools/pair_round.py": "9bc82b3ec93f7184d4271059f2942f226d892517fdeaa656c1607830266e78d4",
+      "projects/piperx_cloth_demo/robot_tools/service.py": "635acc9eec045a21ea8731abecd322c75efac08e13136b571ac6405324d8ac82",
+      "projects/piperx_cloth_demo/tests/test_coarse_joint_adapter.py": "89943a66511ab30ac0fba9508016e5f1aa5aca6a87ef86ce3ddac52d79b10549",
+      "projects/piperx_cloth_demo/tests/test_host_rgb_initialization.py": "150bc80fe3e50150fcabb52f90899dc9b4abb02467b5ac581b841f8d67c3ffad",
+      "projects/piperx_cloth_demo/tests/test_host_rgb_joint.py": "7d627da52d93eb0858d02037a3df0e8c9f7dbe1dd31c1ec0d0045d40f2e7304e",
+      "projects/piperx_cloth_demo/tests/test_pair_joint_adapter.py": "e8d9a7f657d7b8122f06900cbc25382f20084ce88091f47c14f84cd050ae1940",
+      "projects/piperx_cloth_demo/tests/test_pair_rgb_round.py": "fa93f651589755d219bbe9a95d1777c30c98c5670ed36aaf48f334fa51c53417"
+    },
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "limits": [
+      "No physical plug transfer success yet",
+      "12/9 seconds are minimum reserves; original deadline can still end an unusually slow segment",
+      "New v2 real movements must be judged from current images and actual receipts"
+    ]
+  },
+  "followup_near_target_fine_steps_20261007": {
+    "scope": "Near-target progressive millimetre step selection in L2/L3 guidance",
+    "hardware_accessed": false,
+    "real_model_called": false,
+    "executable_control_changed": false,
+    "physical_position_accuracy_verified": false,
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "candidate_checks": [
+      {
+        "hardware_accessed": false,
+        "real_model_called": false,
+        "physical_position_accuracy_verified": false,
+        "scope": "Pure pinned robot model candidate checks; no device or object coordinates",
+        "results": [
+          {
+            "requested_scale_mm": 0.5,
+            "synthetic_model_target_mm": 0.49999999999998723,
+            "admitted": true,
+            "encoded_model_target_mm": 0.5024458436086937
+          },
+          {
+            "requested_scale_mm": 1.0,
+            "synthetic_model_target_mm": 0.9999999999998946,
+            "admitted": true,
+            "encoded_model_target_mm": 0.9999165926160845
+          },
+          {
+            "requested_scale_mm": 2.0,
+            "synthetic_model_target_mm": 1.9999999999998617,
+            "admitted": true,
+            "encoded_model_target_mm": 1.999830108777414
+          },
+          {
+            "requested_scale_mm": 5.0,
+            "synthetic_model_target_mm": 5.000000000000076,
+            "admitted": false,
+            "reason": "insufficient_remaining_hold_budget"
+          },
+          {
+            "requested_scale_mm": 10.0,
+            "synthetic_model_target_mm": 7.125564435043484,
+            "admitted": false,
+            "reason": "insufficient_remaining_hold_budget"
+          }
+        ]
+      },
+      {
+        "hardware_accessed": false,
+        "real_model_called": false,
+        "physical_position_accuracy_verified": false,
+        "scope": "Pure pinned robot model, single joint synthetic near-target candidates; original safety bounds unchanged",
+        "results": [
+          {
+            "requested_scale_mm": 0.5,
+            "synthetic_model_target_mm": 0.49999999999991607,
+            "admitted": true,
+            "encoded_model_target_mm": 0.4980544753854061
+          },
+          {
+            "requested_scale_mm": 1.0,
+            "synthetic_model_target_mm": 0.9999999999999688,
+            "admitted": true,
+            "encoded_model_target_mm": 1.0027494585053414
+          },
+          {
+            "requested_scale_mm": 2.0,
+            "synthetic_model_target_mm": 1.999999999999909,
+            "admitted": true,
+            "encoded_model_target_mm": 1.9988564720143176
+          },
+          {
+            "requested_scale_mm": 5.0,
+            "synthetic_model_target_mm": 4.99999999999994,
+            "admitted": true,
+            "encoded_model_target_mm": 5.000431303087478
+          },
+          {
+            "requested_scale_mm": 9.0,
+            "synthetic_model_target_mm": 8.999999999999972,
+            "admitted": false,
+            "reason": "insufficient_remaining_hold_budget"
+          }
+        ]
+      }
+    ],
+    "result": "Existing ordinary entry admits synthetic 0.5/1/2/5 mm targets. Other pose-dependent larger candidates refuse under unchanged process budgets. New guidance uses 5..10 mm then 1..3 mm then ~1 mm or smaller where admitted.",
+    "limitations": [
+      "No new physical precision measurement or task execution.",
+      "No tests added for documentation-only change; prior 755 software regressions are historical, not rerun here."
+    ]
+  },
+  "followup_can_enable_20261008": {
+    "scope": "Root CAN discovery and manual SocketCAN interface enable utility",
+    "written_at": "2026-10-08T08:43:13",
+    "implementation_files": [
+      "can_enable.sh",
+      "tools/can_enable.py",
+      "tools/tests/test_can_enable.py",
+      "README.md"
+    ],
+    "tests": {
+      "can_utility": {
+        "count": 10,
+        "status": "passed",
+        "log": "artifacts/can_enable_20261008T084209/can_tests.log",
+        "subprocesses_mocked": true
+      },
+      "existing_fast_suite": {
+        "count": 387,
+        "status": "passed",
+        "log": "artifacts/can_enable_20261008T084209/fast_tests.log",
+        "command": "PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_fast*.py'"
+      },
+      "existing_src_compileall": {
+        "status": "passed",
+        "log": "artifacts/can_enable_20261008T084209/compile.log"
+      },
+      "bash_syntax": "passed",
+      "read_only_list": "passed",
+      "dry_run": "passed",
+      "bundle_verification": {
+        "status": "failed",
+        "errors": [
+          "Optimized hash mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py",
+          "Checksum mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py"
+        ],
+        "log": "artifacts/can_enable_20261008T084209/bundle_verification.json",
+        "unrelated_file_not_modified_by_this_change": "projects/piperx_cloth_demo/robot_tools/pair_round.py"
+      }
+    },
+    "live_observation": {
+      "method": "ip -j -details link show and sysfs device paths; no CAN socket",
+      "interfaces": {
+        "can0": "DOWN / STOPPED",
+        "can1": "DOWN / STOPPED"
+      }
+    },
+    "can_configuration_changed": false,
+    "can_frames_sent": false,
+    "robot_enabled": false,
+    "camera_started": false,
+    "ros_started": false,
+    "real_model_called": false,
+    "physical_enable_tested": false,
+    "password_stored": false,
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "review": "Primary-agent review of all-interface preflight, UP idempotence, USB re-enumeration after sudo, first-error exit, no restart/down/rename or robot command path."
+  },
+  "followup_can_motor_enable_20261008": {
+    "written_at": "2026-10-08T09:03:03",
+    "scope": "Default root script now configures CAN and routes selected-arm motor startup through existing ToolService contracts.",
+    "implementation_files": [
+      "can_enable.sh",
+      "tools/can_enable.py",
+      "tools/can_motor_enable.py",
+      "tools/tests/test_can_enable.py",
+      "tools/tests/test_can_motor_enable.py",
+      "README.md"
+    ],
+    "default_motor_startup": true,
+    "can_only_option_preserves_old_behavior": true,
+    "dispatch_tools": [
+      "robot_startup_arms",
+      "robot_startup_arm"
+    ],
+    "new_can_encoder": false,
+    "read_only_hardware_metadata_checked": [
+      "ip link state",
+      "sysfs USB bindings"
+    ],
+    "can_frames_sent_during_development": 0,
+    "motor_enable_executed_during_development": false,
+    "camera_started": false,
+    "ros_started": false,
+    "real_model_called": false,
+    "holding_validated": false,
+    "password_stored": false,
+    "tests": {
+      "root_script": {
+        "count": 29,
+        "status": "passed",
+        "tool_chunk": "0e6cdf",
+        "subprocesses_mocked": true,
+        "motor_sockets_blocked": true
+      },
+      "existing_startup_contracts": {
+        "count": 81,
+        "status": "passed",
+        "log": "artifacts/can_motor_enable_20261008T090200/startup_tests.log",
+        "hardware_mocked": true
+      },
+      "existing_fast_suite": {
+        "count": 387,
+        "status": "passed",
+        "log": "artifacts/can_motor_enable_20261008T090200/fast_tests.log"
+      },
+      "existing_src_compileall": "passed",
+      "bash_syntax": "passed",
+      "python_ast": "passed",
+      "diff_whitespace": "passed",
+      "dry_run": "passed; only ip metadata and configuration plan, no device connection",
+      "live_read_only_preflight": {
+        "status": "blocked_as_expected",
+        "tool_chunk": "8e5a2f",
+        "exit_code": 1,
+        "database": "projects/piperx_cloth_demo/runs/pair_sessions.sqlite",
+        "owner": "host_3ded9964741c4210b2907225c4153af5",
+        "fault_reason": "Claimed preparation/query failed or uncertain: First-target initialization incomplete, uncertain or inconsistent",
+        "old_ledger_changed": false
+      },
+      "bundle_verification": {
+        "status": "failed",
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Optimized hash mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py"
+        ],
+        "log": "artifacts/can_motor_enable_20261008T090200/bundle_verification.json",
+        "unrelated_files_left_unchanged_by_this_task": true
+      }
+    },
+    "review": "Reviewed selected-arm routing, SDK IntEnum compatibility, no-op CAN still reaching motor stage, complete-selection refusal, current USB binding, owner/fault refusal, failed/uncertain result propagation, and six-driver receipt checks. Actual motor startup and position holding were not tested.",
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "existing_startup_actuator_code_changed": false
+  },
+  "followup_can_reboot_startup_fix_20261008": {
+    "written_at": "2026-10-08T09:14:52",
+    "scope": "Fix standalone CAN/motor utility rejecting all startup because of pre-reboot historical task owners/faults.",
+    "implementation_files": [
+      "README.md",
+      "tools/can_motor_enable.py",
+      "tools/tests/test_can_motor_enable.py",
+      "projects/piperx_cloth_demo/robot_tools/reboot_startup.py",
+      "projects/piperx_cloth_demo/robot_tools/service.py",
+      "projects/piperx_cloth_demo/tests/test_reboot_startup.py"
+    ],
+    "new_fixed_tool": "robot_startup_after_host_reboot",
+    "ordinary_task_and_startup_fault_gates_unchanged": true,
+    "requires_operator_robot_power_cycle_and_current_clearance_confirmation": true,
+    "host_boot_does_not_prove_robot_power_cycle": true,
+    "reboot_branch_preserves_original_task_faults_owners_and_budgets": true,
+    "original_startup_executor_and_limits_reused": true,
+    "durable_boot_arm_claim_precedes_first_mode_send": true,
+    "tests": {
+      "root_script": {
+        "count": 30,
+        "status": "passed",
+        "log": "artifacts/can_reboot_fix_20261008T091238/root_tests.log"
+      },
+      "reboot_and_existing_startup_service": {
+        "count": 131,
+        "status": "passed",
+        "log": "artifacts/can_reboot_fix_20261008T091238/startup_service_tests.log",
+        "physical_sockets_mocked_or_blocked": true
+      },
+      "existing_fast_suite": {
+        "count": 387,
+        "status": "passed",
+        "log": "artifacts/can_reboot_fix_20261008T091238/fast_tests.log"
+      },
+      "compileall_existing_src": "passed",
+      "bash_syntax": "passed",
+      "diff_whitespace": "passed",
+      "current_read_only_startup_check": {
+        "status": "passed",
+        "startup_route": "reboot_startup",
+        "tool_chunk": "1b7d80"
+      },
+      "bundle_verification": {
+        "status": "failed",
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Optimized hash mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py"
+        ],
+        "log": "artifacts/can_reboot_fix_20261008T091238/bundle_verification.json",
+        "unrelated_files_not_modified_by_this_task": true
+      }
+    },
+    "current_passive_observations": {
+      "can0": {
+        "path": "artifacts/can_reboot_fix_20261008T091238/can0_passive.json",
+        "frames_received": 9120,
+        "frames_sent": 0,
+        "complete": true,
+        "ctrl_mode": "STANDBY",
+        "all_six_joint_drivers_enabled": false,
+        "gripper_enabled": false,
+        "error_code": 0
+      },
+      "can1": {
+        "path": "artifacts/can_reboot_fix_20261008T091238/can1_passive.json",
+        "frames_received": 9120,
+        "frames_sent": 0,
+        "complete": true,
+        "ctrl_mode": "STANDBY",
+        "all_six_joint_drivers_enabled": false,
+        "gripper_enabled": false,
+        "error_code": 0
+      }
+    },
+    "production_ledger_modified": false,
+    "real_enable_commands_sent": 0,
+    "task_targets_sent": 0,
+    "camera_started": false,
+    "ros_started": false,
+    "real_model_called": false,
+    "physical_motor_startup_tested": false,
+    "position_hold_verified": false,
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "review": "Read all historical/current scope generations, preserve task fault guards, refuse current-boot activity, live owners, held objects and pending sends; reserve startup before TX, keep failure/process-loss pending, verify SDK/FakeCAN startup and unchanged old rows. Linux reboot and operator robot-reset/scene confirmation remain separate evidence."
+  },
+  "followup_can_startup_diagnosis_20261008": {
+    "written_at": "2026-10-08T09:33:02",
+    "scope": "Diagnose enable-completed but startup-drift-aborted receipt; clarify startup uses current pose and requires no homing; separate enable-bit observations from failed overall admission in CLI.",
+    "implementation_files": [
+      "tools/can_motor_enable.py",
+      "tools/tests/test_can_motor_enable.py",
+      "README.md"
+    ],
+    "diagnosis_path": "artifacts/can_startup_diagnosis_20261008T093033/diagnosis.json",
+    "receipt_summary_preview": "artifacts/can_startup_diagnosis_20261008T093033/receipt_summary.txt",
+    "tests": {
+      "root_script": {
+        "status": "passed",
+        "count": 34,
+        "log": "artifacts/can_startup_diagnosis_20261008T093033/root_tests.log"
+      },
+      "existing_fast_suite": {
+        "status": "passed",
+        "count": 387,
+        "log": "artifacts/can_startup_diagnosis_20261008T093033/fast_tests.log"
+      },
+      "compileall_existing_src": "passed",
+      "bash_syntax": "passed",
+      "diff_whitespace": "passed",
+      "bundle_verification": {
+        "status": "failed",
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Optimized hash mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py"
+        ],
+        "log": "artifacts/can_startup_diagnosis_20261008T093033/bundle_verification.json",
+        "unrelated_files_not_modified_by_this_task": true
+      }
+    },
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "controller_thresholds_unchanged": true,
+    "controller_code_unchanged": true,
+    "original_run_records_unchanged": true,
+    "real_control_commands_sent": 0,
+    "can_read_only_receivers_opened": true,
+    "position_hold_verified": false,
+    "camera_started": false,
+    "ros_started": false,
+    "real_model_called": false,
+    "production_ledger_modified": false
+  },
+  "followup_can_enabled_noop_fix_20261008": {
+    "written_at": "2026-10-08T09:39:46",
+    "scope": "Allow the root CAN utility to read fresh enabled-motor state and return without sending after a prior failed startup. Separate USB binding checks from network/motor write admission at all three early entry gates.",
+    "implementation_files": [
+      "tools/can_enable.py",
+      "tools/can_motor_enable.py",
+      "tools/tests/test_can_enable.py",
+      "tools/tests/test_can_motor_enable.py",
+      "README.md"
+    ],
+    "live_validation": {
+      "path": "artifacts/can_enabled_noop_fix_20261008T093836/live_validation.json",
+      "root_args": [
+        "--all"
+      ],
+      "exit_code": 0,
+      "tool_calls": [
+        "robot_read_state"
+      ],
+      "network_tx_delta": {
+        "can0": 0,
+        "can1": 0
+      },
+      "protected_unchanged": true,
+      "both_arms_six_joint_enable_confirmed": true,
+      "guarded_against_any_write": true
+    },
+    "tests": {
+      "root_script": {
+        "status": "passed",
+        "count": 41,
+        "log": "artifacts/can_enabled_noop_fix_20261008T093836/root_tests.log"
+      },
+      "existing_reboot_guard": {
+        "status": "passed",
+        "count": 14,
+        "log": "artifacts/can_enabled_noop_fix_20261008T093836/reboot_guard_tests.log"
+      },
+      "existing_fast_suite": {
+        "status": "passed",
+        "count": 387,
+        "log": "artifacts/can_enabled_noop_fix_20261008T093836/fast_tests.log"
+      },
+      "compileall_existing_src": "passed",
+      "bash_syntax": "passed",
+      "diff_whitespace": "passed",
+      "bundle_verification": {
+        "status": "failed",
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Optimized hash mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piperx_cloth_demo/robot_tools/pair_round.py"
+        ],
+        "log": "artifacts/can_enabled_noop_fix_20261008T093836/bundle_verification.json",
+        "unrelated_files_not_modified_by_this_task": true
+      }
+    },
+    "motor_send_fault_gate_preserved": true,
+    "network_bringup_fault_gate_preserved": true,
+    "read_state_can_bypass_send_gate_but_cannot_send": true,
+    "original_failure_and_claims_unchanged": true,
+    "controller_thresholds_unchanged": true,
+    "real_control_commands_sent": 0,
+    "position_hold_verified": false,
+    "camera_started": false,
+    "ros_started": false,
+    "real_model_called": false,
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03"
+  },
+  "followup_plug_resume_opening_audit_20261008": {
+    "written_at": "2026-10-08T09:56:29.637855",
+    "scope": "Read-only hardware resume audit and narrow offline review of one completed empty-jaw opening in the old RGB-expiry recovery history.",
+    "implementation_files": [
+      "projects/piperx_cloth_demo/robot_tools/pair_round.py",
+      "projects/piperx_cloth_demo/tests/test_pair_rgb_round_opening.py",
+      ".agents/skills/piper-task-pipeline/references/audited-restart.md"
+    ],
+    "hardware_commands_sent_by_this_session": 0,
+    "CAN_feedback_received": true,
+    "RGB_received": true,
+    "real_task_complete": false,
+    "recovery_activated": false,
+    "controller_limits_or_thresholds_changed": false,
+    "old_faults_and_budget_preserved": true,
+    "password_stored": false,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "tests": {
+      "targeted_unittest_count": 32,
+      "result": "passed",
+      "interpreter": "pi0_infer Python 3.10",
+      "suites": [
+        "test_pair_rgb_round_opening.RGBOpeningRoundTests",
+        "test_pair_rgb_round.RGBExpiryRoundTests",
+        "test_pair_round.PairRoundTests",
+        "test_pair_freshness_round.FreshnessRoundTests",
+        "test_pair_query_round.QueryRoundTests"
+      ],
+      "hardware": "FakeCAN with real sockets forbidden"
+    },
+    "independent_review": {
+      "found": [
+        "missing numeric stability checks",
+        "subresolution jaw change accepted",
+        "stale nested jaw timestamps accepted"
+      ],
+      "fixes_applied": true,
+      "final_review": "passed: original accepted; zero stability, 2-micrometre opening, stale selected/peer jaw and peer arm rejected"
+    },
+    "real_history_readonly_snapshot": {
+      "accepted": true,
+      "steps": 17,
+      "fault_id": 13,
+      "left_frames": 63,
+      "right_frames": 10,
+      "database_written": false
+    },
+    "current_evidence": "/home/agilex/GPT6-Astra-REAL/artifacts/plug_resume_20261008_1791419850/resume_audit.json",
+    "remaining_blockers": [
+      "Current CAN/P mode with disabled jaws is outside old recovery evidence admission; no bypass or repeat enable.",
+      "Right J4 repeatedly varies about 0.5 degrees; operator reports visually stable and untouched; raw CAN corroborates variation.",
+      "Old window expired; no new execution budget activated."
+    ],
+    "bundle_verification": {
+      "status": "blocked_by_preexisting_unrelated_document_change",
+      "report": "artifacts/plug_resume_20261008_1791419850/bundle_verification.json",
+      "errors": [
+        "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+        "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+      ]
+    }
+  },
+  "followup_dual_plug_supervised_project_20261008": {
+    "project": "projects/dual_arm_plug_transfer",
+    "evidence": "artifacts/dual_plug_supervised_20261008/validation.json",
+    "new_client_tests": 10,
+    "new_client_tests_status": "passed",
+    "actual_rgb_capture_status": "passed",
+    "pair_open_error": "PairLedgerFault: Run is outside the explicitly authorized current round",
+    "pair_ledger_unchanged_after_attempt": true,
+    "control_commands_sent": 0,
+    "task_completed": false,
+    "new_task_enrollment_status": "implementation_and_review_in_progress"
+  },
+  "followup_feedback_tolerance_preference_20261008": {
+    "scope": "Persist user-authorized bounded feedback tolerance preference and eliminate repetitive refusal workflow; documentation only",
+    "at": 1791429048.6652706,
+    "changed_files": [
+      "AGENTS.md",
+      ".agents/skills/piper-task-pipeline/SKILL.md",
+      ".agents/skills/piper-task-pipeline/references/feedback-tolerance.md",
+      ".agents/skills/piper-task-pipeline/references/audited-restart.md",
+      ".agents/skills/piper-task-pipeline/references/online-readiness.md",
+      "OPTIMIZATION_GUIDE.md"
+    ],
+    "user_request_file": "/home/agilex/GPT6-Astra-REAL/artifacts/feedback_tolerance_preference_1791428823021994672/request.json",
+    "checks": {
+      "skill_quick_validate": "passed",
+      "local_links": "passed; no missing local links",
+      "conflicting_J4_absolute_refusal": "replaced with current user authorization and explicit runtime implementation gap",
+      "bundle_verifier": {
+        "status": "failed_due_to_existing_file_hash_mismatches",
+        "unrelated_files": [
+          {
+            "path": "projects/piper_right_pick_demo/调试过程.md",
+            "changed_by_this_update": false,
+            "recorded_optimized_hash_before_update": null,
+            "recorded_source_hash": "a91a7650abf865e6020d0b07fb407826b9de8557320dbfff71dc1f0d0aa710b8",
+            "current_hash": "58bb59376d17cfb89aac6a2ca2ee46b45339f16445bed35328ef60e6d9fd4107"
+          },
+          {
+            "path": "projects/piperx_cloth_demo/robot_tools/pair_host.py",
+            "changed_by_this_update": false,
+            "recorded_optimized_hash_before_update": "eb15ee89a840675c78bc5d2a89cba13bd8fa74a835152e755bafc9a1b83496bd",
+            "recorded_source_hash": null,
+            "current_hash": "7f49382139a8d0e1d81b9eb665bd8e74ae02496f8acfc605f614ab5301f1ce48"
+          },
+          {
+            "path": "projects/piperx_cloth_demo/robot_tools/pair_ledger.py",
+            "changed_by_this_update": false,
+            "recorded_optimized_hash_before_update": "5fd8ad9d8a5fa688d5531ed10328074cc17c31e857be37599d10e4a98ab5a03d",
+            "recorded_source_hash": null,
+            "current_hash": "c3a7ca9c506d03b49e3167b52c41c78819cc6e428314cd91fec13db159e2c6fd"
+          }
+        ]
+      }
+    },
+    "hardware_accessed": false,
+    "camera_started": false,
+    "control_service_started": false,
+    "real_model_called": false,
+    "executable_control_code_changed": false,
+    "numeric_tolerances_changed": false,
+    "task_completed": false,
+    "runtime_rejection_resolved": false,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "limitations": [
+      "Current pair enrollment/preparation/initialization/motion/contact guards have not been adapted.",
+      "No physical plug extraction/insertion or hardware qualification established."
+    ],
+    "review": {
+      "scope": "Self-review against user wording, current source and prior runtime evidence",
+      "separations": [
+        "long-term preference vs current-task site authorization",
+        "user tolerance vs unproven physical cause",
+        "documentation vs executable acceptance",
+        "software checks vs physical task success"
+      ]
+    }
+  },
+  "followup_pair_feedback_tolerance_runtime_20261008": {
+    "validation": "artifacts/pair_feedback_tolerance_1791429723018917586/validation.json",
+    "profile": "right_j4_bounded_v1",
+    "right_j4_degrees": 0.5,
+    "other_joints_rad": 0.003,
+    "targeted_tests_passed": 282,
+    "new_tests_passed": 12,
+    "full_legacy_status": "1616 tests: 2 pre-existing failures, reproduced on before snapshot",
+    "hardware_commands_sent": 0,
+    "physical_task_completed": false
+  },
+  "followup_pair_feedback_pose_20261008": {
+    "validation": "artifacts/pair_feedback_pose_followup_20261008/validation.json",
+    "tests_passed": 363,
+    "hardware_commands_sent": 0,
+    "physical_task_completed": false
+  },
+  "followup_pair_feedback_source_profile_20261008": {
+    "validation": "artifacts/pair_feedback_source_followup_20261008/validation.json",
+    "related_tests_passed": 203,
+    "fast_tests_passed": 387,
+    "hardware_commands_during_offline_repair": 0,
+    "physical_task_completed": false,
+    "existing_session_fault_and_budget_preserved": true
+  },
+  "preparation_close_continuation_20261008": {
+    "validation": "artifacts/preparation_close_continuation_20261008/validation.json",
+    "unique_related_tests": 144,
+    "fast_tests": 387,
+    "same_run_budget_preserved": true,
+    "hardware_during_implementation": false,
+    "physical_task_completed": false
+  },
+  "coherent_feedback_20261008": {
+    "validation": "artifacts/coherent_feedback_20261008/validation.json",
+    "related_tests_passed": 256,
+    "fast_tests_passed": 387,
+    "hardware_accessed": false,
+    "physical_task_completed": false,
+    "faults_and_budgets_preserved": true,
+    "receive_group_span_s": 0.002
+  },
+  "feedback_continuation_20261008": {
+    "validation": "artifacts/feedback_continuation_20261008/validation.json",
+    "related_tests_passed": 120,
+    "fast_tests_passed": 387,
+    "hardware_during_implementation": false,
+    "original_budget_preserved": true,
+    "physical_task_completed": false
+  },
+  "initialization_schedule_20261008": {
+    "validation": "artifacts/initialization_schedule_20261008/validation.json",
+    "related_tests_passed": 124,
+    "fast_tests_passed": 387,
+    "hardware_during_repair": false,
+    "physical_task_completed": false,
+    "faults_and_original_budget_preserved": true
+  },
+  "initialization_continuation_20261008": {
+    "validation": "artifacts/initialization_continuation_20261008/validation.json",
+    "related_tests_passed": 196,
+    "fast_tests_passed": 387,
+    "hardware_during_repair": false,
+    "faults_and_original_budget_preserved": true,
+    "physical_task_completed": false
+  },
+  "initialization_endpoint_20261008": {
+    "validation": "artifacts/initialization_endpoint_20261008/validation.json",
+    "related_tests_passed": 290,
+    "fast_tests_passed": 387,
+    "hardware_during_repair": false,
+    "faults_and_original_budget_preserved": true,
+    "physical_task_completed": false
+  },
+  "initial_rx_round_20261008": {
+    "validation": "artifacts/predispatch_feedback_repair_20261008/validation.json",
+    "new_round_tests_passed": 7,
+    "related_tests_passed": 165,
+    "related_test_errors": 3,
+    "fast_tests_passed": 387,
+    "hardware_during_repair": false,
+    "physical_task_completed": false,
+    "repair_status": "incomplete_offline_candidate_only",
+    "recovery_draft_withdrawn": true,
+    "host_open_rejected": true,
+    "hardware_commands_sent": 0
+  },
+  "data_path_repair_20261008": {
+    "status": "applied_without_hardware",
+    "validation": "artifacts/data_path_repair_20261008/validation.json",
+    "original_rows_and_budget_preserved": true,
+    "hardware_accessed": false,
+    "physical_task_completed": false
+  },
+  "arm_cycle_history_audit_20261008": {
+    "validation": "artifacts/arm_cycle_history_audit_20261008/validation.json",
+    "focused_tests_passed": 49,
+    "fast_tests_passed": 387,
+    "archived_round_suite_errors": 23,
+    "hardware_commands_sent": 0,
+    "physical_task_completed": false,
+    "task_recovery_activated": false,
+    "bundle_check_status": "failed_preexisting_manifest_and_checksum_mismatches"
+  },
+  "piper_x_configuration_reconfirmation_20261008": {
+    "validation": "artifacts/piper_x_configuration_20261008/validation.json",
+    "configured_models": {
+      "left": "piper_x",
+      "right": "piper_x"
+    },
+    "actual_sdk_driver_models_verified_offline": true,
+    "sdk_tests_passed": 6,
+    "fast_tests_passed": 387,
+    "compileall_passed": true,
+    "hardware_commands_sent": 0,
+    "controller_limits_written": false,
+    "physical_task_completed": false,
+    "bundle_check_status": "failed_preexisting_58_manifest_and_checksum_mismatches"
+  },
+  "arm_cycle_task_recovery_20261008": {
+    "validation": "artifacts/arm_cycle_task_recovery_20261008/validation.json",
+    "focused_tests_passed": 201,
+    "fast_tests_passed": 387,
+    "hardware_commands_sent_during_repair": 0,
+    "task_recovery_activated": true,
+    "physical_task_completed": false,
+    "live_outcome": "artifacts/arm_cycle_task_recovery_20261008/outcome.json",
+    "gripper_preparation_success": true,
+    "controller_limits_written": false
+  },
+  "manufacturer_wrist_limits_20261008": {
+    "validation": "artifacts/controller_limits_piper_x_20261008/validation.json",
+    "focused_tests_passed": 71,
+    "fast_tests_passed": 387,
+    "controller_limits_written": null,
+    "physical_task_completed": false,
+    "configuration_frames_sent": 1,
+    "controller_limits_readback_verified": false,
+    "receipt_normalization_tests_passed": 23,
+    "live_outcome": "artifacts/controller_limits_piper_x_20261008/outcome.json"
+  },
+  "configuration_ack_recovery_20261008": {
+    "scope": "offline software regression plus real diagnostic; no manipulation completed",
+    "python310_regression": {
+      "tests": 157,
+      "passed": true,
+      "log": "artifacts/controller_limits_resume_20261008/regression_py310.log"
+    },
+    "fast_regression": {
+      "tests": 387,
+      "passed": true
+    },
+    "system_python_regression": {
+      "tests": 157,
+      "errors": 41,
+      "reason": "Python3.8 lacks Path.is_relative_to; rerun in existing robot Python3.10 passed"
+    },
+    "compileall_passed": true,
+    "diagnostic": "projects/piperx_cloth_demo/runs/configuration_diagnostic_e55f84cf5798473e8ad0af331b8a83f6/result.json",
+    "manufacturer_limits_tenth_degree": [
+      -890,
+      890
+    ],
+    "physical_task_completed": false,
+    "actual_maintenance_passed": true,
+    "live_outcome": "artifacts/controller_limits_resume_20261008/outcome.json",
+    "new_fault": "visual_rgb_expired after fully returned right coarse MOVE_J"
+  },
+  "coarse_rgb_round_continuation_20261008": {
+    "validation": "artifacts/coarse_rgb_recovery_20261008/validation.json",
+    "offline_window_tests": 57,
+    "offline_ledger_tests": 112,
+    "offline_fast_tests": 387,
+    "all_passed": true,
+    "canonical_history_copy_integration": "artifacts/coarse_rgb_recovery_20261008/offline_lineage_integration.json",
+    "hardware_commands_sent_during_repair": 0,
+    "physical_task_completed": false,
+    "actual_continuation_success": true,
+    "actual_gripper_probe_sent_once": true,
+    "live_outcome": "artifacts/coarse_rgb_recovery_20261008/outcome.json",
+    "bundle_preexisting_errors_remaining": 51
+  },
+  "manual_repositioned_gripper_continuation_20261008": {
+    "robot_regression_tests_passed": 104,
+    "probe_audit_tests_passed": 28,
+    "offline_integration": "artifacts/gripper_reposition_20261008/offline_integration.json",
+    "hardware_commands_sent_during_repair": 0,
+    "physical_task_completed": false,
+    "validation": "artifacts/gripper_reposition_20261008/validation.json",
+    "fast_tests_passed": 387,
+    "actual_enrollment_activated": true,
+    "actual_closing_m": 0.00126,
+    "actual_probe_outcome": "candidate_then_final_feedback_freshness_fault",
+    "live_outcome": "artifacts/gripper_reposition_20261008/outcome.json"
+  },
+  "gripper_completion_feedback_order_20261008": {
+    "validation": "artifacts/gripper_completion_feedback_20261008/validation.json",
+    "distinct_offline_tests_passed": 120,
+    "physical_task_completed": false,
+    "physically_verified_after_repair": false,
+    "hardware_recovery_available": false
+  },
+  "metadata_reconciliation_20261008_2155": {
+    "schema": "piper_metadata_reconciliation_v1",
+    "recorded_at": "2026-10-08T14:27:06.089168+00:00",
+    "scope": "Metadata and checksum reconciliation only; frozen control files and tests were read, not changed or executed.",
+    "changed_control_sources": false,
+    "new_tests_run": false,
+    "hardware_accessed_this_metadata_update": false,
+    "real_ledger_modified": false,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "source_manifest_unchanged": true,
+    "prior_manifest_entries_preserved_outside_scope": true,
+    "root_latest_eleven_entries_preserved": true,
+    "unresolved": [
+      {
+        "local_path": "projects/piper_right_pick_demo/调试过程.md",
+        "current_sha256": "58bb59376d17cfb89aac6a2ca2ee46b45339f16445bed35328ef60e6d9fd4107",
+        "source_sha256": "a91a7650abf865e6020d0b07fb407826b9de8557320dbfff71dc1f0d0aa710b8",
+        "description": "Two pre-existing phrasing edits; author and originating task remain unknown. Independently reviewed, but not certified as a CAN/control change or indexed as a known optimization.",
+        "prior_record": "metadata/generalization_validation_20261007.json#followup_feedback_tolerance_preference_20261008"
+      }
+    ],
+    "historical_validation": {
+      "role_record": "artifacts/plug_role_repair_20261008/role_validation.json",
+      "role_hashes_match_current": [
+        "projects/piperx_cloth_demo/robot_tools/host_loaded.py",
+        "projects/piperx_cloth_demo/robot_tools/loaded_episode.py",
+        "projects/piperx_cloth_demo/robot_tools/rgb_supervision.py",
+        "projects/piperx_cloth_demo/tests/test_host_loaded_joint.py"
+      ],
+      "joint_diagnostic_log": "artifacts/plug_resume_20261008_1625/joint_diagnostic_tests.txt",
+      "joint_diagnostic_logged_tests": 123,
+      "can_power_cycle_logs": {
+        "can_helper_tests.log": 47,
+        "startup_tests.log": 73,
+        "startup_service_tests.log": 103,
+        "fast_tests.log": 387
+      },
+      "note": "Counts are previously saved results, not new runs or one nonoverlapping total. CAN and diagnostic logs do not bind every current file by hash."
+    },
+    "independent_review": {
+      "agent": "/root/repair_open_integration_tests",
+      "scope": "Read-only before-source/hash comparison and historical log review for four CAN files and the unrelated debugging note."
+    },
+    "limitations": [
+      "Checksum consistency is not real manipulation success, physical qualification or a fresh full test-suite pass.",
+      "The existing OPTIMIZATION_GUIDE reference to artifacts/arm_power_cycle_20261008/validation.json has no file at review time; changed_files.json and saved logs exist. No documentation/control source was changed."
+    ],
+    "prior_bundle_report": "artifacts/plug_continue_20261008_2155/bundle_verification.json",
+    "resulting_bundle_report": "artifacts/plug_continue_20261008_2155/bundle_after_metadata.json",
+    "known_historical_files_count": 19,
+    "details": "artifacts/plug_continue_20261008_2155/metadata_reconciliation.json",
+    "bundle_check_result": {
+      "status": "failed",
+      "optimization_status": "verified_with_runtime_omissions",
+      "runtime_omission_status": "verified",
+      "optimized_verified_files": 378,
+      "errors": [
+        "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+        "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+      ]
+    },
+    "metadata_dependency_hash_updates": [
+      "metadata/generalization_validation_20261007.json",
+      "metadata/optimization_manifest.json"
+    ]
+  },
+  "supported_contact_reacquisition_20261008": {
+    "schema": "piper_supported_contact_reacquisition_validation_v1",
+    "recorded_at": "2026-10-08T14:52:16.188278+00:00",
+    "scope": "Audited same-budget supported left-jaw reacquisition after a complete successful opening; at most three image-supervised narrowing probes, then RX-only candidate retention.",
+    "implementation_files_sha256": {
+      "projects/piperx_cloth_demo/robot_tools/host_recovery.py": "2715cdf714b2db30a66b3708db7f893f22af6110377b579d1505d750be4a4a1f",
+      "projects/piperx_cloth_demo/robot_tools/pair_host.py": "ef67547f4c2d1816ade469a0b2428158034500fcdb5d15e5393e733770a0381a",
+      "projects/piperx_cloth_demo/robot_tools/service.py": "088dbff8a43a2faa7bb28440b005e0659beb60e93c8d3563daedba2fef277faa",
+      "projects/piperx_cloth_demo/robot_tools/pair_device.py": "381e8a736cbf4453de476d21a92231502ce9be4be6bd5ed55c21b9241a927393",
+      "projects/piperx_cloth_demo/robot_tools/supported_gripper_recovery.py": "364ba6b15a127f760b653f8171545501ab00509d942dd0dd5d57470af4fb8481",
+      "projects/piperx_cloth_demo/robot_tools/pair_ledger.py": "13e7214cef346922eafdf9c0e6be82d380a44872a5ce364fb60c182a586f98c8",
+      ".agents/skills/piper-manipulation/references/bounded-contact.md": "a39b739c253e0ce15d0986cb316a3942e47c2244ee84892487d96ada632e6093",
+      ".agents/skills/piper-task-pipeline/references/audited-restart.md": "f3d72f4b3fe1bc72b175fddbe755ab8fcb7a3636d514f0bc92551400b378fd6f",
+      "projects/piperx_cloth_demo/tests/test_supported_reacquisition_device.py": "0e3a95d6cef2d2414478eea2f8e717fa942e30ae9fec3b2b97e5609d093f4219",
+      "projects/piperx_cloth_demo/tests/test_supported_contact_reacquisition_review.py": "e1766c7f51dcc2a825429c034295e7f89b287fca5e33d855df33dc4af38f6cba"
+    },
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "hardware_accessed_by_offline_tests_or_metadata_agent": false,
+    "canonical_ledger_modified_by_offline_tests_or_metadata_agent": false,
+    "physical_task_completed": false,
+    "physical_manipulation_success_from_tests": null,
+    "preserved_constraints": [
+      "Both original body anchors; successful opening actual width as initial selected-jaw reference; later actual completed jaw width only.",
+      "Per-probe requested and encoded closure <=5 mm, nominal force 0.2, three-second baseline and unchanged feedback freshness/health bounds.",
+      "Another probe only after complete target_arrived with no candidate, identical source and strictly smaller requested/encoded target; maximum three probes.",
+      "Right arm and body TX prohibited in this scope; no joint-cache inheritance, empty/released inference, automatic retry or single-left-arm extraction authority.",
+      "Existing faults, original event history, run, used steps and deadline retained."
+    ],
+    "checks": {
+      "device": {
+        "report": "artifacts/supported_contact_reacquisition_20261008/device_validation.json",
+        "tests_passed": 112,
+        "duration_s": 54.215,
+        "components": {
+          "new_reacquisition": 19,
+          "existing_opening_continuation": 12,
+          "existing_pair_device": 81
+        }
+      },
+      "host_service_review": {
+        "log": "artifacts/plug_continue_20261008_2155/contact_reacquisition_review.log",
+        "tests_passed": 12,
+        "duration_s": 23.083,
+        "components": {
+          "new_host_service_native_fakecan": 7,
+          "existing_host_recovery": 5
+        },
+        "limitation": "Enrollment and phase reader synthetic; device uses native SDK encoder with FakeCAN."
+      },
+      "existing_host_and_grasp": {
+        "log": "artifacts/plug_continue_20261008_2155/contact_reacquisition_host_regression.log",
+        "tests_passed": 67,
+        "duration_s": 28.63
+      },
+      "real_phase_reader_review": {
+        "log": "artifacts/plug_continue_20261008_2155/contact_reacquisition_runtime_review.log",
+        "tests_passed": 7,
+        "duration_s": 15.801,
+        "note": "Same seven new cases rerun through production _contact_runtime against temporary host SQL rows; temporary subclass, no source modification, not seven additional unique tests."
+      },
+      "copied_actual_lineage": {
+        "report": "artifacts/supported_contact_reacquisition_20261008/offline_contact_integration.json",
+        "checks_passed": 10,
+        "synthetic_current_evidence_authority_and_receipts": true,
+        "canonical_ledger_modified": false
+      },
+      "management_regression": {
+        "log": "artifacts/supported_contact_reacquisition_20261008/management_regression.log",
+        "test_batches_passed": [
+          5,
+          19
+        ],
+        "duration_s": [
+          0.123,
+          0.204
+        ]
+      },
+      "skill_references": {
+        "quick_validate": [
+          ".agents/skills/piper-manipulation",
+          ".agents/skills/piper-task-pipeline"
+        ],
+        "passed": true
+      },
+      "bundle": {
+        "report": "artifacts/supported_contact_reacquisition_20261008/bundle_after_metadata.json",
+        "command": "python3 tools/verify_bundle.py",
+        "exit_code": 1,
+        "status": "failed",
+        "optimization_status": "verified_with_runtime_omissions",
+        "runtime_omission_status": "verified",
+        "optimized_verified_files": 380,
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "new_scope_errors": 0,
+        "preexisting_debugging_note_retained": true
+      }
+    },
+    "independent_review": {
+      "agent": "/root/repair_open_integration_tests",
+      "report_sources": [
+        "artifacts/plug_continue_20261008_2155/contact_reacquisition_review.log",
+        "artifacts/plug_continue_20261008_2155/contact_reacquisition_runtime_review.log"
+      ],
+      "result": "No new body/right TX, reference rebasing, candidate identity transfer or motion authority found in the reviewed device and host scope."
+    },
+    "metadata_scope": {
+      "authorized_files": [
+        "projects/piperx_cloth_demo/robot_tools/host_recovery.py",
+        "projects/piperx_cloth_demo/robot_tools/pair_host.py",
+        "projects/piperx_cloth_demo/robot_tools/service.py",
+        "projects/piperx_cloth_demo/robot_tools/pair_device.py",
+        "projects/piperx_cloth_demo/robot_tools/supported_gripper_recovery.py",
+        "projects/piperx_cloth_demo/robot_tools/pair_ledger.py",
+        ".agents/skills/piper-manipulation/references/bounded-contact.md",
+        ".agents/skills/piper-task-pipeline/references/audited-restart.md",
+        "projects/piperx_cloth_demo/tests/test_supported_reacquisition_device.py",
+        "projects/piperx_cloth_demo/tests/test_supported_contact_reacquisition_review.py"
+      ],
+      "new_test_base_source_sha256": null,
+      "historical_debugging_note_not_modified_or_reclaimed": "projects/piper_right_pick_demo/调试过程.md",
+      "historical_note_sha256": "58bb59376d17cfb89aac6a2ca2ee46b45339f16445bed35328ef60e6d9fd4107",
+      "other_manifest_entries_preserved": true
+    },
+    "limitations": [
+      "Software/FakeCAN and copied-database checks are not physical grasp or plug-transfer success.",
+      "Test batches include overlapping cases and are not reported as one unique combined total.",
+      "The pre-existing unclaimed debugging-note change remains a bundle error; it is not silently rehashed."
+    ]
+  },
+  "supported_contact_rgb_preclaim_reserve_20261008": {
+    "schema": "piper_contact_rgb_preclaim_reserve_validation_v1",
+    "recorded_at": "2026-10-08T14:59:37.948774+00:00",
+    "scope": "After the real zero-TX RGB-expiry failure, reuse existing minimum RGB dispatch reserve for contact_probe and contact_probe_release before episode/claim creation.",
+    "implementation_files_sha256": {
+      "projects/piperx_cloth_demo/robot_tools/pair_host.py": "ca107a8e207e29a5db18241525dadb0a2f17b6cd73932926744ae99bc96ad18c",
+      ".agents/skills/piper-manipulation/references/bounded-contact.md": "f272a2eb0e57fe15ce7c7245b139c64032e339cedeae6787a0ffaaf76901a5e0",
+      "projects/piperx_cloth_demo/tests/test_supported_contact_reacquisition_review.py": "6c1bca9409a95720a8c48d88857fd8919ee39fb270f3c68b4553ae1a79b7b9b4"
+    },
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "source_manifest_unchanged": true,
+    "changes": [
+      "Insufficient remaining RGB lifetime returns refresh_required before any new episode, event claim, budget consumption or transmission.",
+      "Fresh RGB can admit the next proposed action; the prior claimed failed event and fault remain unchanged.",
+      "RGB TTL, feedback freshness, three-second baseline, force, motion limits and all post-claim fault handling remain unchanged."
+    ],
+    "physical_attempt": {
+      "source": "artifacts/supported_contact_reacquisition_20261008/actual_result.json",
+      "event_id": "left-supported-reacquire-1",
+      "step": 16,
+      "ledger_status": "complete",
+      "success": false,
+      "requested_jaw_mm": 34.0,
+      "hardware_commands_sent": 0,
+      "transmission_counts": {
+        "left": {
+          "attempted_frames": 0,
+          "blocked_frames": 0,
+          "sent_frames": 0
+        },
+        "right": {
+          "attempted_frames": 0,
+          "blocked_frames": 0,
+          "sent_frames": 0
+        }
+      },
+      "measured_deltas": {
+        "left": {
+          "jaw_before_mm": 38.36,
+          "jaw_after_mm": 38.36,
+          "joint_delta_deg": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "raw_flange_delta_mm": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "right": {
+          "jaw_before_mm": 41.3,
+          "jaw_after_mm": 41.3,
+          "joint_delta_deg": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "raw_flange_delta_mm": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "error": [
+        {
+          "detail": "Pair RGB scene is stale",
+          "type": "PairHostError"
+        }
+      ],
+      "diagnosis": {
+        "image_age_at_submit_s": 27.029535532,
+        "remaining_image_window_at_submit_s": 2.970464468,
+        "required_baseline_s": 3.0,
+        "observe_return_to_submit_s": 18.2299327,
+        "submit_to_claim_s": 0.023592949,
+        "cause": "Caller delay consumed image window; missing preclaim contact execution-window check admitted a baseline that could not complete before RGB expiry",
+        "repair_scope": "Offline host preclaim refresh gate only; original fault preserved; no new attempt"
+      },
+      "physical_stop_verified": null,
+      "task_completed": false,
+      "automatic_retry": false,
+      "after_rgb": "/home/agilex/GPT6-Astra-REAL/artifacts/supported_contact_reacquisition_20261008/cameras/capture_32e5dafe507143df96b407d6810f7bf0/observation.json",
+      "session_log": "/home/agilex/GPT6-Astra-REAL/projects/dual_arm_plug_transfer/runs/plug_left_reacquire_20261008_2251/session.jsonl",
+      "visual_result": "Charger remains seated in source socket; strip remains on table; left right fingertip may still touch; full separation and bilateral grasp unconfirmed",
+      "interpretation": "No jaw/body frame was attempted or sent; not a completed grasp attempt or manipulation success."
+    },
+    "recording": {
+      "report": "/home/agilex/GPT6-Astra-REAL/artifacts/supported_contact_reacquisition_20261008/cameras/continuous_recording/report.json",
+      "status": "closed",
+      "started_at": 1791470595.9544697,
+      "finished_at": 1791471265.1904924,
+      "frames_recorded": {
+        "front": 20006,
+        "left_hand": 20006,
+        "right_hand": 20006
+      },
+      "device_frame_gaps": {
+        "front": 1,
+        "left_hand": 1,
+        "right_hand": 0
+      },
+      "cleanup_errors": [],
+      "failure": null,
+      "video_timing": "nominal configured fps; actual receipts/device times in frames.jsonl",
+      "videos": {
+        "front": "artifacts/supported_contact_reacquisition_20261008/cameras/continuous_recording/front.avi",
+        "left_hand": "artifacts/supported_contact_reacquisition_20261008/cameras/continuous_recording/left_hand.avi",
+        "right_hand": "artifacts/supported_contact_reacquisition_20261008/cameras/continuous_recording/right_hand.avi"
+      },
+      "decoding_audited_by_metadata_agent": false
+    },
+    "offline_validation": {
+      "log": "artifacts/supported_contact_reacquisition_20261008/rgb_reserve_host_regression.log",
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:tests /home/agilex/miniconda3/envs/pi0_infer/bin/python -m unittest test_supported_contact_reacquisition_review test_host_supported_recovery test_pair_host test_host_grasp_integration -v",
+      "cwd": "projects/piperx_cloth_demo",
+      "tests_passed": 81,
+      "duration_s": 54.623,
+      "components": {
+        "contact_reacquisition_review": 9,
+        "host_supported_recovery": 5,
+        "existing_host_and_grasp": 67
+      },
+      "regressions": [
+        "27-second image age returns preclaim refresh with zero TX/event/episode/budget use/fault.",
+        "Fresh RGB subsequently executes through the normal bounded entry.",
+        "Ordinary release refresh preserves its original candidate and residual target."
+      ],
+      "hardware_accessed": false,
+      "physical_success_proven": false
+    },
+    "metadata_scope": {
+      "authorized_files": [
+        "projects/piperx_cloth_demo/robot_tools/pair_host.py",
+        ".agents/skills/piper-manipulation/references/bounded-contact.md",
+        "projects/piperx_cloth_demo/tests/test_supported_contact_reacquisition_review.py"
+      ],
+      "source_manifest_preserved": true,
+      "other_manifest_entries_preserved": true,
+      "historical_debugging_note_not_modified_or_reclaimed": true,
+      "canonical_fault_or_receipt_modified": false,
+      "control_code_modified_by_metadata_agent": false
+    },
+    "bundle_check": {
+      "report": "artifacts/supported_contact_reacquisition_20261008/bundle_after_rgb_reserve.json",
+      "command": "python3 tools/verify_bundle.py",
+      "exit_code": 1,
+      "status": "failed",
+      "optimization_status": "verified_with_runtime_omissions",
+      "runtime_omission_status": "verified",
+      "errors": [
+        "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+        "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+      ],
+      "new_scope_errors": 0,
+      "preexisting_debugging_note_retained": true
+    }
+  },
+  "supported_contact_zero_tx_round_20261008": {
+    "schema": "piper_supported_contact_zero_tx_round_validation_v1",
+    "recorded_at": "2026-10-08T15:26:20.458221+00:00",
+    "scope": "Explicit user-authorized new round after completed zero-TX RGB-expiry contact failure and closed host; initial scope remains left-jaw supported reacquisition only.",
+    "implementation_files_sha256": {
+      "projects/piperx_cloth_demo/robot_tools/pair_round.py": "fcb122e14d2028956e44587e8aa0d602b36512da99b024aef56482c8b278cd59",
+      "projects/piperx_cloth_demo/robot_tools/supported_gripper_recovery.py": "40395c6bdcf720c972802306e7e7bc8b5ba31268cdfe9c4e8590eb9dd39c872e",
+      "projects/piperx_cloth_demo/robot_tools/pair_ledger.py": "5b3886c8fc29be885b63245b33d89feee508bf5ceeaa8f59b6192ddd48646e09",
+      "projects/piperx_cloth_demo/robot_tools/pair_task_enrollment.py": "b90888cdeee12dae3906da09268e447401234339eaa663b4eb20448e705f68fb",
+      ".agents/skills/piper-task-pipeline/references/audited-restart.md": "1256bf83ba6b24c814ffa066d4c644aeeecdc641687efe752b5d4ff26be9fa74",
+      "projects/piperx_cloth_demo/tests/test_contact_zero_tx_round_review.py": "66fe5c6f231788502df29425859b493d57c6d208cc9f79fbd0480d94ad0fb6c2",
+      "projects/piperx_cloth_demo/tests/test_supported_gripper_recovery.py": "fabed2fd2e11cc3b98b7579fa382cf95217679b25356934ab87368439d1ffec5",
+      "projects/piperx_cloth_demo/tests/test_supported_opening_continuation_review.py": "f336dc677b62fd4dea6626db0350fb568a73d6ed360abffbb23e4fafa3847d6f"
+    },
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "source_manifest_unchanged": true,
+    "authorization_source": "artifacts/contact_zero_tx_restart_20261008/user_new_round_instruction.json",
+    "authorization": {
+      "decision": "authorize_explicit_new_round",
+      "max_steps": 1000,
+      "max_duration_s": 10800,
+      "budget_start_policy": "after_repair_before_online_execution"
+    },
+    "history_preserved": {
+      "parent_run_id": "plug_manufacturer_limits_1791461112",
+      "failed_event_id": "left-supported-reacquire-1",
+      "prior_steps": 16,
+      "fault_ids": [
+        36,
+        37
+      ],
+      "original_attempt_commands_sent": 0,
+      "parent_result": "artifacts/supported_contact_reacquisition_20261008/actual_result.json",
+      "faults_cleared": false,
+      "old_receipts_rewritten": false,
+      "old_event_replayed": false
+    },
+    "bounded_scope": [
+      "The completed zero-TX claim consumes one of the three reacquisition stage attempts; the new round admits at most two remaining independent closures.",
+      "The unsent old 34-mm request is not treated as a completed target; new event/current RGB admission remains mandatory.",
+      "Left jaw only; <=5-mm requested and encoded closure, nominal force 0.2, fresh RGB before each attempt; right/body TX prohibited.",
+      "A successful candidate can be retained with new RGB and zero TX; no ordinary motion, limit query, initialization, release or extraction eligibility.",
+      "Exact canonical empty episode requires all original false/null/binding/revision/deadline fields; it is not proof of physical empty jaws."
+    ],
+    "checks": {
+      "copied_actual_lineage": {
+        "report": "artifacts/contact_zero_tx_restart_20261008/offline_round_integration.json",
+        "log": "artifacts/contact_zero_tx_restart_20261008/offline_round_integration.log",
+        "checks_passed": 10,
+        "canonical_ledger_modified": false,
+        "sockets_forbidden": true,
+        "synthetic_authorization_evidence_and_child_receipts": true
+      },
+      "pair_round_regression": {
+        "log": "artifacts/contact_zero_tx_restart_20261008/round_regression.log",
+        "tests_passed": 12,
+        "duration_s": 2.534
+      },
+      "ledger_enrollment_recovery_regression": {
+        "log": "artifacts/contact_zero_tx_restart_20261008/ledger_enrollment_regression.log",
+        "tests_passed": 81,
+        "duration_s": 7.052,
+        "fixture_correction": "Two old fixtures now declare actual pair_rounds run_id/record_json columns; initial 18 fixture errors were resolved without loosening production schema."
+      },
+      "independent_full_review": {
+        "log": "artifacts/contact_zero_tx_restart_20261008/independent_full_review_tests.log",
+        "tests_passed": 18,
+        "duration_s": 93.214,
+        "components": {
+          "host_native_fakecan_and_runtime_gate": 15,
+          "explicit_opt_in_readonly_actual_db_backup_tests": 3
+        },
+        "archived_test_opt_in": "PIPER_RUN_ARCHIVED_CONTACT_TESTS=1",
+        "canonical_ledger_modified": false,
+        "note": "Three opt-in tests read the actual DB via read-only backup; changes and synthetic new authorization, clock and RGB are confined to temporary copies. Production budget validator and PairHost prepare-open are exercised."
+      },
+      "independent_final_empty_shell_cases": {
+        "log": "artifacts/contact_zero_tx_restart_20261008/independent_empty_shell_followup.log",
+        "tests_passed": 1,
+        "duration_s": 34.324,
+        "note": "Targeted rerun after exact canonical-empty check; includes three contradictory-state negatives and overlaps the full review."
+      },
+      "skill": {
+        "command": "python3 /home/agilex/.codex/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/piper-task-pipeline",
+        "passed": true,
+        "reported_by": "root"
+      },
+      "bundle": {
+        "report": "artifacts/contact_zero_tx_restart_20261008/bundle_after_metadata.json",
+        "command": "python3 tools/verify_bundle.py",
+        "exit_code": 1,
+        "status": "failed",
+        "optimization_status": "verified_with_runtime_omissions",
+        "runtime_omission_status": "verified",
+        "optimized_verified_files": 381,
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "new_scope_errors": 0,
+        "preexisting_debugging_note_retained": true
+      }
+    },
+    "test_counts_not_summed_as_unique_total": true,
+    "offline_tests_hardware_accessed": false,
+    "offline_tests_canonical_ledger_modified": false,
+    "new_round_physical_result": null,
+    "physical_result_note": "This record seals the offline implementation/tests; no new-round physical result is asserted by this metadata update. Actual live execution is recorded separately by root.",
+    "physical_plug_transfer_completed": false,
+    "metadata_scope": {
+      "authorized_files": [
+        "projects/piperx_cloth_demo/robot_tools/pair_round.py",
+        "projects/piperx_cloth_demo/robot_tools/supported_gripper_recovery.py",
+        "projects/piperx_cloth_demo/robot_tools/pair_ledger.py",
+        "projects/piperx_cloth_demo/robot_tools/pair_task_enrollment.py",
+        ".agents/skills/piper-task-pipeline/references/audited-restart.md",
+        "projects/piperx_cloth_demo/tests/test_contact_zero_tx_round_review.py",
+        "projects/piperx_cloth_demo/tests/test_supported_gripper_recovery.py",
+        "projects/piperx_cloth_demo/tests/test_supported_opening_continuation_review.py"
+      ],
+      "new_test_base_source_sha256": null,
+      "unknown_debugging_note_unmodified_and_not_reclaimed": "projects/piper_right_pick_demo/调试过程.md",
+      "unknown_debugging_note_sha256": "58bb59376d17cfb89aac6a2ca2ee46b45339f16445bed35328ef60e6d9fd4107",
+      "other_manifest_entries_preserved": true,
+      "control_or_test_files_modified_by_metadata_agent": false
+    }
+  },
+  "supported_contact_body_reference_and_sent_continuation_20261008": {
+    "status": "offline_implementation_validated_not_physical_success",
+    "scope": "Immutable supported-contact body reference and exact one-frame sent-failure continuation in the unchanged current budget.",
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "source_sha256": {
+      "projects/piperx_cloth_demo/robot_tools/pair_device.py": "506af576f5f56f179216bdd59d933a8eb6f20598eb97cb6550ab9ec1e0d4fde5",
+      "projects/piperx_cloth_demo/robot_tools/single_supervised_actions.py": "3e623bc5a1a14e1760e13f3906a54d96ea38faf729f7399ed04739e19066ebff",
+      "projects/piperx_cloth_demo/robot_tools/contact_receipt.py": "a733a4538f0e19bb534140996a7c9ceb1d0d56988dace7ad5c7c5c0c2532b078",
+      "projects/piperx_cloth_demo/robot_tools/supported_gripper_recovery.py": "2a387577b7c0f63e10fe70e4d5b5fc81c5659f501027b984dc696e22925af77f",
+      "projects/piperx_cloth_demo/robot_tools/pair_ledger.py": "969327f1147cda93fca67ac1aa8e62de510bf519f3843a12561f77805c52e3de",
+      "projects/piperx_cloth_demo/tests/test_supported_reacquisition_device.py": "7228c7a0a9cd68ea3fa42af02915ab8f7c15bbffd444eaf099bfa723b0f4a9bc",
+      "projects/piperx_cloth_demo/tests/test_sent_contact_continuation_review.py": "93328466ad95c58dcdca246a0724bebdc9b9316ef0bcb809c5e55d78ca816d9f",
+      ".agents/skills/piper-manipulation/references/bounded-contact.md": "3c4427a59dca6ad468bd169aaab8cec8d3cf412d7c54d9b1fdf9708a8ebf8b86",
+      ".agents/skills/piper-task-pipeline/references/audited-restart.md": "92b8a1d9336be8d4c0de78277cc64ca44788338cfce81d893c2db3da169ac34d",
+      "OPTIMIZATION_GUIDE.md": "4bce4aba9fd2cbd8f949fa410cbdc872ce807a11005a4d4a78c3b67ac2a51914"
+    },
+    "changes": [
+      "Single-action, persistent idle, explicit original-body guard and contact classifier use the same original candidate/peer body anchors only in audited supported reacquisition.",
+      "Fresh three-second/20-advance baseline, final stable-window spans, jaw/mode references, original numeric thresholds and right J4 policy stay enforced.",
+      "Append one restricted continuation for a complete single-frame failure; preserve old faults, failed receipt, consumed steps, original deadline, source owner retirement and actual current-round user authority.",
+      "Keep the old successful opening provenance distinct from a new residual-jaw observation; consumed stage attempts remain two with exactly one left-jaw closure remaining.",
+      "New requested and encoded target must both be below the prior sent target; no replay, fourth attempt, right/body TX or extraction authority."
+    ],
+    "preserved_historical_failure": {
+      "run_id": "plug_contact_resume_1791473089",
+      "event_id": "left-contact-round-probe-1",
+      "source_analysis": "artifacts/contact_zero_tx_restart_20261008/anchor_conflict_analysis.json",
+      "source_journal_index": "artifacts/contact_zero_tx_restart_20261008/sent_contact_journal_index.json",
+      "action_feedback_samples": 124,
+      "post_fault_feedback_samples": 3394,
+      "retroactive_success_claimed": false
+    },
+    "checks": {
+      "device_regression": {
+        "log": "artifacts/contact_body_reference_repair_20261008/device_regression.log",
+        "tests_passed": 177,
+        "duration_s": 62.279,
+        "report": "artifacts/contact_body_reference_repair_20261008/validation.json",
+        "scope": "Native FakeCAN, pure classifier and synthetic observations; no live devices."
+      },
+      "management_regression": {
+        "log": "artifacts/contact_anchor_continue_20261008/management_regression.log",
+        "tests_passed": 93,
+        "duration_s": 9.912
+      },
+      "fast_regression": {
+        "log": "artifacts/contact_anchor_continue_20261008/fast_regression.log",
+        "tests_passed": 387,
+        "duration_s": 3.448,
+        "cwd": "projects/piper_right_pick_demo"
+      },
+      "copied_actual_lineage": {
+        "report": "artifacts/contact_anchor_continue_20261008/offline_integration.json",
+        "log": "artifacts/contact_anchor_continue_20261008/offline_integration.log",
+        "checks_passed": 9,
+        "canonical_ledger_modified": false,
+        "sockets_forbidden": true,
+        "synthetic_current_observations_and_new_receipt": true,
+        "real_existing_authorization_read_only": true
+      },
+      "independent_review": {
+        "report": "artifacts/contact_anchor_continue_20261008/independent_review.json",
+        "unique_tests_passed": 7,
+        "components": {
+          "native_host_fakecan": 4,
+          "archived_real_parent_temporary_copy": 3
+        },
+        "initial": {
+          "log": "artifacts/contact_anchor_continue_20261008/independent_review_tests.log",
+          "tests": 7,
+          "passed": 6,
+          "errors": 1,
+          "duration_s": 91.764,
+          "error": "Test fixture clock omitted sleep; no production code failure."
+        },
+        "affected_test_rerun": {
+          "log": "artifacts/contact_anchor_continue_20261008/independent_host_prepare_followup.log",
+          "tests_passed": 1,
+          "duration_s": 29.344,
+          "note": "Only the affected prepare-open test rerun after fixing its clock; actual source-to-device envelope validation included."
+        },
+        "canonical_ledger_modified": false,
+        "archived_test_opt_in": "PIPER_RUN_ARCHIVED_CONTACT_TESTS=1",
+        "note": "Native host tests use synthetic archived source; copied-ledger tests retain actual enrollment/budget validators and actual PairHost prepare-open. No physical qualification."
+      },
+      "syntax": {
+        "method": "Python 3.10 compile(bytes, path, exec) for the five control sources and two tests; no imports, sockets or bytecode writes",
+        "files": 7,
+        "passed": true
+      },
+      "bundle": {
+        "command": "python3 tools/verify_bundle.py",
+        "report": "artifacts/contact_anchor_continue_20261008/bundle_after_metadata.json",
+        "status": "failed",
+        "exit_code": 1,
+        "optimization_status": "verified_with_runtime_omissions",
+        "runtime_omission_status": "verified",
+        "optimized_verified_files": 382,
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "new_scope_errors": 0,
+        "preexisting_debugging_note_retained": true
+      },
+      "metadata_diff_check": {
+        "command": "git diff --check -- metadata/generalization_validation_20261007.json metadata/optimization_manifest.json SHA256SUMS",
+        "exit_code": 0
+      }
+    },
+    "test_counts_not_summed_as_unique_total": true,
+    "offline_tests_hardware_accessed": false,
+    "offline_tests_canonical_ledger_modified": false,
+    "physical_result": null,
+    "physical_stop_verified": null,
+    "physical_result_note": "This metadata update records offline implementation and tests only. Root records any subsequent live activation/action separately; no grasp or plug transfer completion is asserted.",
+    "metadata_scope": {
+      "authorized_files": [
+        "projects/piperx_cloth_demo/robot_tools/pair_device.py",
+        "projects/piperx_cloth_demo/robot_tools/single_supervised_actions.py",
+        "projects/piperx_cloth_demo/robot_tools/contact_receipt.py",
+        "projects/piperx_cloth_demo/robot_tools/supported_gripper_recovery.py",
+        "projects/piperx_cloth_demo/robot_tools/pair_ledger.py",
+        "projects/piperx_cloth_demo/tests/test_supported_reacquisition_device.py",
+        "projects/piperx_cloth_demo/tests/test_sent_contact_continuation_review.py",
+        ".agents/skills/piper-manipulation/references/bounded-contact.md",
+        ".agents/skills/piper-task-pipeline/references/audited-restart.md",
+        "OPTIMIZATION_GUIDE.md"
+      ],
+      "metadata_agent_modified_files": [
+        "metadata/generalization_validation_20261007.json",
+        "metadata/optimization_manifest.json",
+        "SHA256SUMS"
+      ],
+      "controls_tests_skills_guide_modified_by_metadata_agent": false,
+      "old_source_manifest_preserved": true,
+      "unresolved_debugging_note": "projects/piper_right_pick_demo/调试过程.md",
+      "unresolved_debugging_note_sha256": "58bb59376d17cfb89aac6a2ca2ee46b45339f16445bed35328ef60e6d9fd4107",
+      "other_manifest_entries_preserved": true
+    }
+  },
+  "existing_supported_contact_observation_20261009": {
+    "status": "offline_existing_contact_observation_validated_not_physical_success",
+    "scope": "One independently audited zero-TX current supported-contact observation; old unconfirmed closure remains failed and exhausted local closure budget is unchanged.",
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "source_sha256": {
+      "projects/piperx_cloth_demo/robot_tools/pair_device.py": "074d93d685ec99f962cd3fd24ec5642f6b59a6daa3b35b2cc0aec924d83f17c9",
+      "projects/piperx_cloth_demo/robot_tools/supported_contact_measurement.py": "48440c23a832b0d26cf11e383e7feb825e3a82fe6bc49db822ca6fab9c1eaf24",
+      "projects/piperx_cloth_demo/tests/test_supported_contact_observation_device.py": "a46c1686b14c0496e49eec4114e4c61a00295e879e38ceafd9e2f7402d3bfc21",
+      "projects/piperx_cloth_demo/robot_tools/pair_host.py": "2e501a27cca6fe1d4664fd309369474216b58ba44af4b4aa1fba285cd65bc669",
+      "projects/piperx_cloth_demo/robot_tools/host_grasp.py": "615e74d801b1e01fbe9351db67b5cb4d9bc829cd7632a565f0d4368f415f05ba",
+      "projects/piperx_cloth_demo/robot_tools/grasp_episode.py": "f3954e06aed1d64c2a8b11f4122a4ff43555f768795a03cf7774fc9f0d27c206",
+      "projects/piperx_cloth_demo/robot_tools/host_recovery.py": "b35d08acebb02b632fe2388be7a7d91d2a7a8bba6e2877dd40c4f88a9f9b690e",
+      "projects/piperx_cloth_demo/robot_tools/service.py": "f48272afcfa99de386fa740509d92a420a93a828ecad9dc1beee8ac992c775a0",
+      "projects/piperx_cloth_demo/tests/test_supported_contact_observation_host.py": "2f95a15009ec2c7eda4ce0047f3c03c1c10048bdf7723c3a8c7fa4f2c6de87aa",
+      "projects/piperx_cloth_demo/robot_tools/supported_gripper_recovery.py": "93daf364329179f896456356541c09b89ed146164a456395fbee7d2c61a882c7",
+      "projects/piperx_cloth_demo/robot_tools/pair_ledger.py": "ad8ba935ef80a1b67a91ad2b83e117e1fd549b16e60dcb63aa4269a37322e5cc",
+      "projects/piperx_cloth_demo/tests/test_existing_contact_observation_manager.py": "9dc3a124e24bf21154827f2de19c34a07d8460b9ad8d831b381cbac38cfbf130",
+      ".agents/skills/piper-manipulation/references/bounded-contact.md": "1135e68a52f4d464725f6214140ede1a46a80f03eb377d16437cbb336210b89c",
+      "OPTIMIZATION_GUIDE.md": "1af5ab7e2229d765239773e23e7069ff45c5ad4e85d72b311f7b66d4645e8020",
+      "projects/dual_arm_plug_transfer/runner.py": "122b16047c4a1806861701332e01b910f9e543c966d7257bcc9bf7ea2769dc68",
+      "projects/dual_arm_plug_transfer/tests/test_runner.py": "c01780244c7726e9b9d94dc84ed710bfaae56a6936f5ea4178e4c13fcfb536e6"
+    },
+    "changes": [
+      "Add a separate existing_target_observation candidate based on fresh three-second/20-advance feedback, current RGB and exact audited bilateral-contact user source; preserve original body anchors and independent residual jaw reference.",
+      "Bind new observation event/trace separately from the original failed sent target, receipt and times; no fabricated candidate_probe, closure displacement or retroactive successful action.",
+      "Append a one-observation scope to the same run with consumed_probe_count=3 and remaining_probe_count=0; preserve original faults, deadline, steps and all previous rows.",
+      "Allow common zero-TX static retention for the new candidate; this restricted context blocks all joint/jaw/query/initialization and loaded CAN dispatch.",
+      "Use explicit rgb_and_user_contact_observation provenance, retaining user-source path/SHA rather than relabeling occluded contact as pure RGB evidence.",
+      "Wire robot_pair_observe_supported_contact through the existing CLI allowlist, refresh-required handling and asynchronous receipt recognition; keep successful zero-TX observation distinct from fault/unknown results without false local latching."
+    ],
+    "checks": {
+      "device": {
+        "report": "artifacts/current_contact_observation_20261009/device_validation.json",
+        "passed": 191,
+        "failed": 0,
+        "unittest_duration_s": 64.841,
+        "new_device_tests": 14,
+        "existing_regression_tests": 177,
+        "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:tests /home/agilex/miniconda3/envs/pi0_infer/bin/python -m unittest test_supported_contact_observation_device test_supported_reacquisition_device test_contact_receipt test_supported_opening_continuation_device test_pair_device test_single_supervised_actions test_retention_receipt",
+        "cwd": "projects/piperx_cloth_demo",
+        "log": "artifacts/current_contact_observation_20261009/device_regression.log",
+        "kind": "Native FakeCAN/synthetic RX and pure measurements; no hardware or canonical DB access."
+      },
+      "host": {
+        "report": "artifacts/current_contact_observation_20261009/host_validation.json",
+        "new": {
+          "tests_passed": 10,
+          "duration_s": 45.813,
+          "log": "artifacts/current_contact_observation_20261009/host_tests.log",
+          "components": {
+            "native_host_actual_runtime_fakecan": 7,
+            "pure_episode": 2,
+            "readonly_real_ledger_backup_prepare_open": 1
+          }
+        },
+        "existing_regression": {
+          "tests_passed": 157,
+          "duration_s": 53.372,
+          "log": "artifacts/current_contact_observation_20261009/host_episode_regression.log",
+          "modules": [
+            "test_pair_host",
+            "test_host_grasp_integration",
+            "test_grasp_episode",
+            "test_grasp_store",
+            "test_host_supported_recovery",
+            "test_supported_contact_reacquisition_review"
+          ]
+        },
+        "final_runtime_followup": {
+          "tests_passed": 7,
+          "duration_s": 8.484,
+          "log": "artifacts/current_contact_observation_20261009/host_runtime_final_followup.log",
+          "note": "Targeted rerun after management tightened successful typed receipt/body/trace binding; overlaps seven of the ten new tests."
+        },
+        "syntax": {
+          "files": 6,
+          "passed": true,
+          "method": "compile bytes only; no module execution"
+        },
+        "diff_check": {
+          "exit_code": 0
+        }
+      },
+      "management": {
+        "tests_passed": 97,
+        "duration_s": 10.668,
+        "existing_regression_tests": 93,
+        "new_tests": 4,
+        "log": "artifacts/existing_supported_contact_20261009/management_regression.log"
+      },
+      "copied_actual_lineage": {
+        "report": "artifacts/existing_supported_contact_20261009/offline_integration.json",
+        "checks_passed": 8,
+        "offline_only": true,
+        "canonical_ledger_modified": false,
+        "sockets_forbidden": true,
+        "synthetic_current_observations_and_new_receipt": true,
+        "real_history_and_user_sources_read_only": true,
+        "wall_seconds": {
+          "prepare": 8.174622781996732,
+          "activate": 14.34086609500082,
+          "budget": 8.048858321999433
+        },
+        "passed": [
+          "real_complete_frame_and_raw_unconfirmed_trace_remain_failed",
+          "only_new_observation_scope_append_preserves_all_old_events_faults_steps_and_budget",
+          "full_recursive_audit_preserves_exact_original_budget",
+          "actual_manager_source_passes_real_device_schema_without_old_candidate_transfer",
+          "left_observation_only_blocks_right_all_targets_initialization_query_and_changed_source",
+          "new_zero_tx_observation_consumes_one_step_and_pending_failed_never_retry",
+          "audit_remains_valid_after_new_failed_zero_tx_descendant",
+          "retroactive_original_failure_success_is_rejected"
+        ]
+      },
+      "independent_review": {
+        "finding_and_fix": "Root identified mixed RGB/user provenance. Typed visual source and artifact now retain the exact user source; missing source, pure-RGB relabeling and changed receipt source are covered by refusal cases.",
+        "followup_tests_overlap_new_host_tests": true
+      },
+      "bundle": {
+        "command": "python3 tools/verify_bundle.py",
+        "report": "artifacts/existing_supported_contact_20261009/bundle_after_metadata.json",
+        "status": "failed",
+        "exit_code": 1,
+        "optimization_status": "verified_with_runtime_omissions",
+        "runtime_omission_status": "verified",
+        "optimized_verified_files": 386,
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "new_scope_errors": 0,
+        "preexisting_debugging_note_retained": true
+      },
+      "cli_forwarding": {
+        "tests_passed": 13,
+        "duration_s": 0.092,
+        "log": "artifacts/existing_supported_contact_20261009/cli_regression.log",
+        "modules": [
+          "test_runner",
+          "test_role_plan"
+        ],
+        "scope": "Offline retained-service forwarding and role-plan regression; observation success/failure receipt handling, refresh_required handling and asynchronous receipt recognition. No hardware calls or canonical ledger writes.",
+        "production_change_timing": "Control code changed and frozen by root before the new online host was opened; metadata-only update while the host is online."
+      },
+      "bundle_after_cli_forwarding": {
+        "command": "python3 tools/verify_bundle.py",
+        "report": "artifacts/existing_supported_contact_20261009/bundle_after_cli_metadata.json",
+        "status": "failed",
+        "exit_code": 1,
+        "optimization_status": "verified_with_runtime_omissions",
+        "runtime_omission_status": "verified",
+        "optimized_verified_files": 386,
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "new_scope_errors": 0,
+        "preexisting_debugging_note_retained": true
+      },
+      "bundle_after_actual_execution_record": {
+        "command": "python3 tools/verify_bundle.py",
+        "report": "artifacts/existing_supported_contact_20261009/bundle_after_actual_metadata.json",
+        "status": "failed",
+        "exit_code": 1,
+        "optimization_status": "verified_with_runtime_omissions",
+        "optimized_verified_files": 386,
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "new_scope_errors": 0,
+        "preexisting_debugging_note_retained": true
+      }
+    },
+    "fixture_limitations": [
+      "Native tests use synthetic archived sources and patch only the source lookup and host scope state resolver; the actual management runtime evaluates SQL rows.",
+      "One explicitly opted-in test takes a mode=ro canonical backup; activation and host claims mutate only its temporary copy, with socket construction forbidden and new passive/RGB evidence labelled synthetic.",
+      "The initial partial-file run before OBSERVATION_TABLE was defined is retained under artifacts/current_supported_contact_20261009/host_tests.log; it was a concurrent implementation snapshot, not a hardware result."
+    ],
+    "test_counts_not_summed_as_unique_total": true,
+    "offline_tests_hardware_accessed": false,
+    "offline_tests_canonical_ledger_modified": false,
+    "physical_task_success": false,
+    "grasp_strength_verified": false,
+    "physical_stop_verified": null,
+    "physical_result_note": "Offline test records remain separate from actual_execution. Real zero-TX observation and static retention completed, while the charger remains in the original socket and the plug-transfer task is incomplete. The same owner was left open in RX-only monitoring at the recorded handoff; no physical-stop claim.",
+    "metadata_scope": {
+      "modified_files": [
+        "metadata/generalization_validation_20261007.json",
+        "OPTIMIZATION_GUIDE.md",
+        "metadata/optimization_manifest.json",
+        "SHA256SUMS"
+      ],
+      "controls_tests_skills_modified_by_metadata_agent": false,
+      "other_manifest_entries_preserved": true,
+      "preexisting_debugging_note_retained": true
+    },
+    "actual_execution": {
+      "status": "current_contact_candidate_and_static_retention_verified_zero_tx_task_incomplete",
+      "sources": {
+        "artifacts/existing_supported_contact_20261009/actual_result.json": "83765a33b0afb3c1b7e49a5b332dd863331b86fa699924ce65abb1df0d4e571a",
+        "artifacts/existing_supported_contact_20261009/actual_contact_receipt.json": "1f0d8faeb556b7abfbc0fb3b2296fce8c82b9c5b98ebc31c264d98b2579334f9",
+        "artifacts/existing_supported_contact_20261009/actual_retention_receipt.json": "5e19f7895d35e0098fd7552e948570569fe25fe96f4bbe893066158e35487288",
+        "artifacts/existing_supported_contact_20261009/handoff_status.json": "ac08b86950ed0335fccdaa324fd7f87db3a00216e574ccc129d5a21cd48abfca"
+      },
+      "run_id": "plug_contact_resume_1791473089",
+      "owner_at_handoff": "host_219fc29f889b4620b33b4ae815852e5f",
+      "source_user_contact": "artifacts/contact_anchor_continue_20261008/user_bilateral_contact.json",
+      "observation": {
+        "event_id": "left-existing-supported-contact-observation",
+        "ok": true,
+        "started_at": 1791477133.3031166,
+        "finished_at": 1791477136.3183715,
+        "duration_s": 3.0152549743652344,
+        "feedback_advances": 85,
+        "trace_sha256": "082fef8e362947fb9ecb904fd0e5bc1844343113578714b0c5e572ccfc456eaf",
+        "planned_joint_delta_deg": 0,
+        "planned_flange_displacement_mm": 0,
+        "planned_jaw_change_mm": 0,
+        "actual_delta": {
+          "left": {
+            "jaw_before_mm": 33.25,
+            "jaw_after_mm": 33.25,
+            "jaw_delta_mm": 0,
+            "joint_delta_deg": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flange_xyz_delta_mm": [
+              0,
+              0,
+              0
+            ]
+          },
+          "right": {
+            "jaw_before_mm": 41.3,
+            "jaw_after_mm": 41.3,
+            "jaw_delta_mm": 0,
+            "joint_delta_deg": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flange_xyz_delta_mm": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "hardware_commands_sent": 0,
+        "transmission_counts": {
+          "left": {
+            "attempted_frames": 0,
+            "sent_frames": 0,
+            "blocked_frames": 0
+          },
+          "right": {
+            "attempted_frames": 0,
+            "sent_frames": 0,
+            "blocked_frames": 0
+          }
+        },
+        "receipt": "artifacts/existing_supported_contact_20261009/actual_contact_receipt.json"
+      },
+      "retention": {
+        "event_id": "left-existing-supported-contact-retain",
+        "ok": true,
+        "status": "retained_static",
+        "started_at": 1791477212.4446063,
+        "finished_at": 1791477215.4547644,
+        "feedback_advances": 86,
+        "trace_sha256": "a9dc5491d2804377160e1df90be9c7c38ae619d7ebb3eb2c6bc0bf110d2ddc36",
+        "hardware_commands_sent": 0,
+        "receipt": "artifacts/existing_supported_contact_20261009/actual_retention_receipt.json"
+      },
+      "budget": {
+        "started_at": 1791473089.133019,
+        "deadline_s": 1791483889.133019,
+        "steps": 3,
+        "max_steps": 1000,
+        "new_budget_allocated": false,
+        "old_failures_preserved": true,
+        "consumed_closing_probes": 3,
+        "remaining_closing_probes": 0,
+        "deadline_local": "2026-10-09 02:24:49.133019 Asia/Shanghai"
+      },
+      "object_result": "Charger remains between left fingers and engaged with original socket; strip remains table-supported; extraction and transfer not completed.",
+      "after_rgb": "/home/agilex/GPT6-Astra-REAL/artifacts/existing_supported_contact_20261009/cameras/capture_2c77e194d0784fad8b8b6c8f94b1e405/observation.json",
+      "recording_report": "artifacts/existing_supported_contact_20261009/cameras/continuous_recording/report.json",
+      "recording": {
+        "status": "closed",
+        "started_at": 1791476910.7929285,
+        "finished_at": 1791477316.9331627,
+        "frames_recorded": {
+          "front": 12144,
+          "left_hand": 12144,
+          "right_hand": 12144
+        },
+        "device_frame_gaps": {
+          "front": 1,
+          "left_hand": 0,
+          "right_hand": 0
+        },
+        "cleanup_errors": [],
+        "event_timestamp_coverage": {
+          "observation": true,
+          "retention": true
+        },
+        "exposure_continuity_certified": false
+      },
+      "session_log": "projects/dual_arm_plug_transfer/runs/plug_left_existing_contact_20261009_0033/session.jsonl",
+      "control_session_closed": false,
+      "monitoring_state_at_handoff": "Same bounded owner left open in existing-target RX-only monitoring; observation context blocks all new TX, no new commands queued.",
+      "host_open_at_handoff": true,
+      "active_event_id_at_handoff": null,
+      "physical_stop_verified": null,
+      "grasp_strength_verified": false,
+      "task_completed": false,
+      "return_completed": false,
+      "remaining_gaps": [
+        "Existing supported-contact scope admits observation/retention only and prohibits TX.",
+        "New connection has no known joint target cache; present initialization covers unloaded arms only, and official split-frame protocol does not establish bounded activation of unknown cached targets while in contact.",
+        "Current loaded extraction requires real retained episodes on worker and support arms; independent tabletop support with right arm stationary has not been integrated."
+      ],
+      "termination_reason": "current_contact_and_static_retention_verified_extraction_adapter_unavailable",
+      "first_admission_refresh": {
+        "hardware_commands_sent": 0,
+        "event_claimed": false,
+        "error": "Fresh post-startup passive evidence required",
+        "preserved_sources": "artifacts/existing_supported_contact_20261009/freshness_attempt_1",
+        "next_admission": "Refreshed passive samples and current RGB; same budget, no hardware retry."
+      },
+      "limits": [
+        "Zero-TX contact observation and static retention do not certify grip strength, loaded extraction, transfer, insertion or physical stop.",
+        "The new observation preserves the old unconfirmed closing failure, all three consumed closing probes and the original global deadline.",
+        "Recording timestamps cover both events; the reported front-camera gap remains recorded and exposure continuity is not certified.",
+        "Host state is the saved handoff snapshot; no metadata edit queried or changed the live host."
+      ]
+    }
+  },
+  "dual_arm_extraction_design_20261009": {
+    "status": "design_only_offline_checks_passed",
+    "execution_available": false,
+    "hardware_commands_sent": 0,
+    "hardware_connections_opened": 0,
+    "camera_started": false,
+    "control_code_changed": [],
+    "canonical_recipe_unchanged": true,
+    "role_projection_checked": true,
+    "worker_arm": "left",
+    "support_arm": "right",
+    "role_projection": "/home/agilex/GPT6-Astra-REAL/artifacts/dual_arm_extraction_design_20261009/role_projection.json",
+    "design_path": "projects/dual_arm_plug_transfer/README.md",
+    "source_actual_result": "artifacts/existing_supported_contact_20261009/actual_result.json",
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "checks": [
+      "Pure existing role projection: right stabilizer, left charger worker; source recipe and left target unchanged.",
+      "All canonical control files match the last retained live host contract; no control code changed."
+    ],
+    "physical_test_performed": false,
+    "physical_task_success": false,
+    "implementation_claimed": false,
+    "independent_review": {
+      "reviewer": "/root/review_dual_extraction_design",
+      "outcome": "passed_after_two_wording_corrections",
+      "findings_fixed": [
+        "Restart/expiry does not imply either gripper is empty; still-contacting state must use supported recovery.",
+        "55 mm is the existing tool command opening limit, not a claimed manufacturer mechanical travel."
+      ],
+      "hardware_accessed": false
+    },
+    "design_sha256": "f72100c690521ad7156ac88ca130419942a9af6d8fb3186d9f73365a4e1feeb0",
+    "not_implemented": [
+      "Audited transition from current zero-TX contact scope through supported release and confirmed separation to normal preparation.",
+      "General-host existing-contact classification when ordinary closing-response probe is insufficient, if needed by current scene."
+    ],
+    "report": "artifacts/dual_arm_extraction_design_20261009/validation.json",
+    "scope": "Design-only README extension; no runtime changes, hardware action, new task round or implementation claim."
+  },
+  "startup_reset_20261009": {
+    "validation": "artifacts/startup_reset_20261009/validation.json",
+    "software_reset_executed": true,
+    "hardware_commands_sent": 0,
+    "focused_tests_passed": 134,
+    "fast_tests_passed": 387,
+    "physical_release_verified": null,
+    "physical_stop_verified": null,
+    "known_unrelated_bundle_issue": "projects/piper_right_pick_demo/调试过程.md"
+  },
+  "reset_initial_task_budget_20261009": {
+    "schema_version": 1,
+    "date": "2026-10-09",
+    "scope": "Explicit first-task budget enrollment after completed software-reset startup",
+    "changes": [
+      "Zero-device-I/O administrative enrollment freezes user authorization, task roles, source contract and 1000-step/10800-second maximum budget before first run",
+      "Repeated enrollment, different run, active/pending/fault state, failed startup, changed archive and ready-mode opening refuse",
+      "Existing run clock and history remain unchanged on reconnect"
+    ],
+    "source_manifest_unchanged": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "checks": {
+      "new_budget": {
+        "tests": 11,
+        "passed": 11,
+        "log": "artifacts/reset_task_budget_20261009/new_budget_tests.log",
+        "scope": "Real SQLite and ToolService/PairHost with FakeCAN or memory devices; physical sockets prohibited"
+      },
+      "targeted_pair": {
+        "tests": 142,
+        "passed": 142,
+        "log": "artifacts/reset_task_budget_20261009/pair_tests.log",
+        "note": "Earlier combined run included nine of the new tests; overlapping counts must not be summed."
+      },
+      "historical_ledger": {
+        "tests": 148,
+        "passed": 123,
+        "errors": 25,
+        "log": "artifacts/reset_task_budget_20261009/ledger_regressions.log",
+        "baseline_log": "artifacts/reset_task_budget_20261009/ledger_baseline_regressions.log",
+        "same_error_test_names_as_before": true,
+        "error_test_names": [
+          "test_any_current_event_blocks_revision_even_with_zero_step_counter (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_budget_or_original_authorization_change_blocks_revision (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_expired_window_or_clock_rollback_cannot_reset_time (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_historical_parent_fault_tampering_blocks_revision (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_live_process_wrong_digest_or_empty_reason_blocks_revision (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_owner_active_scope_fault_or_steps_blocks_revision (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_previously_claimed_and_released_empty_round_cannot_be_revised (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_ready_connection_cannot_skip_post_revision_preparation (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_real_host_open_preserves_history_budget_and_requires_fresh_preparation (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_reopened_preparation_host_keeps_budget_and_reaudits_parent_history (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_revision_is_single_use_and_does_not_grant_a_different_budget (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_source_change_after_revision_refuses_before_device_construction (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_tampered_revision_refuses_before_device_construction (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_tool_service_routes_to_real_host_without_patching_admission (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_unrelated_control_code_or_device_binding_change_blocks_revision (test_pair_unopened_round.UnopenedRoundTests)",
+          "test_append_only_round_preserves_faults_and_blocks_old_owner (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_cleanup_transmissions_or_missing_finally_refuse (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_historical_closure_paths_are_cwd_independent_and_hash_bound (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_live_host_changed_source_and_stale_evidence_refuse (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_nonchild_revision_and_modified_original_authorization_refuse (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_original_enrollment_is_rechecked_read_only_after_child_claim (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_partial_send_other_failure_or_missing_sample_refuses (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_unrelated_control_change_and_missing_authorization_refuse (test_pair_initial_rx_round.InitialRXRoundTests)",
+          "test_activation_preserves_all_history_budget_and_rejects_old_owners_and_contract (test_preparation_continuation.PreparationContinuationTests)",
+          "test_changed_code_evidence_and_deadline_do_not_write_scope (test_preparation_continuation.PreparationContinuationTests)"
+        ],
+        "cause": "Archived recovery fixtures require narrow historical source changes. Current code was already outside those contracts before this turn; no recovery guard widened."
+      },
+      "fast_regressions": {
+        "tests": 387,
+        "passed": 387,
+        "log": "artifacts/reset_task_budget_20261009/fast_tests.log"
+      },
+      "compileall": {
+        "command": "python3 -m compileall -q src",
+        "project": "projects/piper_right_pick_demo",
+        "exit_code": 0
+      },
+      "diff_check": {
+        "exit_code": 0
+      }
+    },
+    "review": {
+      "method": "Separate manual transaction and dispatch-boundary review, real service/host integration, and exact before-change snapshot regression comparison",
+      "findings": [
+        "Normal host open consumes the first-task route even with zero TX.",
+        "Root-scope restriction prevents alternate run creation after enrollment.",
+        "Expanded budget is not task readiness; prepare mode and unchanged physical guards still apply.",
+        "Integration fixture had a minimal historical grasp table; isolated test setup now lets the real host create its full empty schema. No production schema or recorded evidence was rewritten."
+      ]
+    },
+    "online_observation": {
+      "hardware_commands_sent_this_turn": 0,
+      "startup_receipt": "projects/piperx_cloth_demo/runs/reset_startup_2393798f93f24b6ab424b20efe91024b/result.json",
+      "startup_receipt_success": true,
+      "joints_enabled_both": true,
+      "grippers_enabled_both": false,
+      "passive_sources": [
+        "artifacts/reset_task_budget_20261009/current_left.json",
+        "artifacts/reset_task_budget_20261009/current_right.json"
+      ],
+      "observed_gripper_width_mm": {
+        "left": 30.73,
+        "right": -5.46
+      },
+      "right_raw_0x2a8_payload": "ffffeaac00000000",
+      "right_negative_reading_agrees_with_existing_startup_SDK": true,
+      "negative_width_physical_cause": "unknown",
+      "rgb_observation": "projects/dual_arm_plug_transfer/runs/plug_new_task_20261009_0954/capture/20261009T015023054844Z_0548df36/observation.json",
+      "scene": "White charger remains seated in the original table-supported strip; left fingers flank it but one contact boundary is occluded. Right jaw is empty.",
+      "user_current_reply": "断开了,你尝试夹住,如果夹不动就是夹紧了，然后再往上拔出记得录像",
+      "power_disconnected_confirmation": true,
+      "recording_requested": true,
+      "recording_started": false,
+      "task_budget_activated": false,
+      "actual_pair_run_count": 0,
+      "current_control_host": null,
+      "next_required_information": "Whether the empty right jaw is physically fully closed. Negative opening cannot be clipped or interpreted as grip; no guarded gripper zero calibration tool currently exposed.",
+      "left_preparation_limitation": "Current possible contact cannot be silently labelled empty for the existing empty-jaw prepare/initialization entry.",
+      "physical_stop_verified": null,
+      "grasp_verified": false,
+      "task_success": false
+    },
+    "goal_turn_classification": "progress: startup result verified, new RGB and zero-TX CAN evidence obtained, first-task budget capability implemented and tested",
+    "unresolved_blocker_occurrence": 1,
+    "limitations": [
+      "No physical gripping, extraction, insertion or task video has occurred this turn.",
+      "Do not activate the new timed execution window while physical preparation is unresolved.",
+      "No old coordinates, grasp records, physical permissions or target caches transferred."
+    ],
+    "later_same_turn_execution": {
+      "validation": "artifacts/gripper_zero_20261009/validation.json",
+      "recording_started_and_closed": true,
+      "calibration_failed_after_one_send": true,
+      "latest_right_width_mm": -1.33,
+      "task_budget_activated": false
+    }
+  },
+  "closed_empty_gripper_zero_20261009": {
+    "schema_version": 1,
+    "date": "2026-10-09",
+    "scope": "One explicitly supervised, manufacturer closed-empty-jaw zero calibration and failed physical outcome",
+    "user_goal_preserved": true,
+    "user_power_confirmation": "断开了,你尝试夹住,如果夹不动就是夹紧了，然后再往上拔出记得录像",
+    "user_right_empty_jaw_physical_zero_confirmation": "已完全合拢、两指接触",
+    "implementation": {
+      "tool": "robot_calibrate_empty_gripper_zero_once",
+      "official_api": "calibrate_gripper(timeout=1.0)",
+      "maximum_actual_attempts": 1,
+      "exact_frame": "0x159 00000000000000ae",
+      "targets_or_arm_enable_sent": 0,
+      "dedicated_calibration_offset_envelope_mm": [
+        -10,
+        1
+      ],
+      "normal_motion_bounds_changed": false,
+      "claim": "per-boot/arm shared SQLite with pending gate before TX",
+      "failure": "no retry; shared platform latch; original receipt preserved",
+      "new_task_budget": "1000/10800 capability implemented, not activated"
+    },
+    "checks": {
+      "final_related_tests": {
+        "count": 125,
+        "passed": 125,
+        "log": "artifacts/gripper_zero_20261009/final_tests.log"
+      },
+      "pre_execution_related_tests": {
+        "count": 123,
+        "passed": 123,
+        "log": "artifacts/gripper_zero_20261009/integration_tests.log"
+      },
+      "test_counts_overlap": true,
+      "compileall_robot_tools_exit_code": 0,
+      "fast_regressions": {
+        "count": 387,
+        "passed": 387,
+        "log": "artifacts/reset_task_budget_20261009/fast_tests.log"
+      },
+      "historical_ledger_regressions": "148 run / 25 errors, identical failures in before-change snapshot; see reset_task_budget_20261009 validation",
+      "diff_check_exit_code": 0,
+      "video": {
+        "front": {
+          "decoded_frames": 1307,
+          "fps": 15.0,
+          "dimensions": [
+            640,
+            480
+          ],
+          "all_reported_frames_decoded": true
+        },
+        "left_hand": {
+          "decoded_frames": 1307,
+          "fps": 15.0,
+          "dimensions": [
+            640,
+            480
+          ],
+          "all_reported_frames_decoded": true
+        },
+        "right_hand": {
+          "decoded_frames": 1307,
+          "fps": 15.0,
+          "dimensions": [
+            640,
+            480
+          ],
+          "all_reported_frames_decoded": true
+        }
+      },
+      "bundle_check": "Only known preexisting 调试过程.md source/checksum mismatch; final check stored separately"
+    },
+    "review": {
+      "scope": "separate frame/ACK/lock/claim review before operation; source hashes archived",
+      "pre_execution_review": "artifacts/gripper_zero_20261009/pre_execution_review.json",
+      "executed_source": "artifacts/gripper_zero_20261009/executed_source",
+      "executed_source_hashes_verified": true,
+      "post_execution_changes": "Strengthened read-only audit of completed maintenance receipts; execution was already terminal with no active host. Executed source reconstructed byte-exact and checked against its frozen hashes."
+    },
+    "actual": {
+      "run_id": "gripper_zero_360e67687fc9448684a3c3b50532a286",
+      "receipt": "projects/piperx_cloth_demo/runs/gripper_zero_360e67687fc9448684a3c3b50532a286/result.json",
+      "ok": false,
+      "status": "aborted_after_dispatch",
+      "errors": [
+        {
+          "type": "RuntimeError",
+          "detail": "Manufacturer zero ACK missing; no retry"
+        }
+      ],
+      "hardware_commands_sent": 1,
+      "transmission_counts": {
+        "left": {
+          "attempted_frames": 0,
+          "sent_frames": 0,
+          "blocked_frames": 0
+        },
+        "right": {
+          "attempted_frames": 1,
+          "sent_frames": 1,
+          "blocked_frames": 0
+        }
+      },
+      "calibration_acknowledged": false,
+      "automatic_retry": false,
+      "gripper_enabled": {
+        "left": false,
+        "right": false
+      },
+      "reported_changes": {
+        "left": {
+          "joint_delta_deg": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "flange_delta_mm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "gripper_reported_before_mm": 30.729999999999997,
+          "gripper_reported_after_mm": 30.729999999999997
+        },
+        "right": {
+          "joint_delta_deg": [
+            0.0,
+            0.0,
+            0.0,
+            -0.010000000000000968,
+            0.0,
+            0.0
+          ],
+          "flange_delta_mm": [
+            0.0030000000000030003,
+            -0.0049999999999980616,
+            0.001000000000001
+          ],
+          "gripper_reported_before_mm": -5.46,
+          "gripper_reported_after_mm": -1.33
+        }
+      },
+      "reported_aperture_change_is_not_measured_finger_displacement": true,
+      "post_fault_passive": [
+        "artifacts/gripper_zero_20261009/after_left.json",
+        "artifacts/gripper_zero_20261009/after_right.json"
+      ],
+      "latest_right_width_mm": -1.33,
+      "fault_latched": true,
+      "cause": "Manufacturer ACK not observed within timeout; underlying cause not established",
+      "physical_stop_verified": null,
+      "joint_targets_sent": 0,
+      "clamping_targets_sent": 0,
+      "plug_extracted": false,
+      "plug_inserted": false,
+      "task_success": false
+    },
+    "recording": {
+      "status": "closed",
+      "started_at": 1791511581.4795947,
+      "finished_at": 1791511670.425241,
+      "elapsed_wall_s": 88.94564628601074,
+      "frames": {
+        "front": 1307,
+        "left_hand": 1307,
+        "right_hand": 1307
+      },
+      "device_frame_gaps": {
+        "front": 0,
+        "left_hand": 0,
+        "right_hand": 0
+      },
+      "cleanup_errors": [],
+      "coverage": "Preparation and this calibration failure, not a completed plug-transfer task",
+      "folder": "artifacts/gripper_zero_20261009/recording/continuous_recording"
+    },
+    "completion_audit": {
+      "joint_enable": "proved by prior startup receipt and new passive feedback",
+      "gripper_ready": "contradicted by disabled flags and negative aperture",
+      "higher_task_budget": "implemented and tested, not activated",
+      "grasp_extract_insert": "not performed or verified",
+      "requested_recording": "actual three-view preparation/failure recording closed and decoded",
+      "overall": "incomplete"
+    },
+    "goal_turn_classification": "progress: current condition established, budget path repaired, bounded calibration capability implemented/tested, one physical calibration attempt and new terminal evidence",
+    "blocking_condition": "Right gripper calibration was sent once but ACK is missing and reported opening remains negative; failed/pending history must not be cleared or replayed",
+    "blocker_consecutive_goal_turns": 1,
+    "next_action": "Diagnose or obtain appropriate manufacturer/operator recovery for the right jaw; no new targets or repeated calibration under this failure. Preserve unresolved left near-contact preparation requirement."
+  },
+  "gripper_ack_diagnostics_repair_20261009": {
+    "schema_version": 1,
+    "date": "2026-10-09",
+    "scope": "Offline calibration ACK diagnostics repair; physical left clamp/lift remains incomplete",
+    "hardware_accessed": false,
+    "hardware_commands_sent": 0,
+    "cameras_opened": false,
+    "new_recording": false,
+    "right_commands_sent": 0,
+    "left_commands_sent": 0,
+    "live_ledger_modified": false,
+    "historical_receipt_modified": false,
+    "implementation": [
+      "Retain up to 64 original 0x476 frames with arm/channel/flags and original source plus host receive timestamps; overflow fails qualification",
+      "Distinguish observed success/negative/conflicting/no matching ACK from SDK boolean; both fresh matching success and SDK True required",
+      "Keep one exact calibration frame, prior enable/state/width limits, failed claim and no retry unchanged",
+      "Separate guarded-send timing from SDK completion; preserve callback chaining without taking the dispatch lock",
+      "Archive diagnostic trace even after SDK exception; freeze future request profile and selected source hashes"
+    ],
+    "validation": {
+      "related_tests": {
+        "count": 156,
+        "passed": 156,
+        "log": "artifacts/gripper_ack_repair_20261009/related_tests.log"
+      },
+      "fast_tests": {
+        "count": 387,
+        "passed": 387,
+        "log": "artifacts/gripper_ack_repair_20261009/fast_tests.log"
+      },
+      "compileall_exit_code": 0,
+      "initial_environment_error": "System Python 3.8 cannot run pre-existing Path.is_relative_to; 42 setup errors. Reran with existing pi0_infer interpreter successfully; no dependency changes.",
+      "test_counts_include_inherited_cases": true,
+      "review": "Sequential local review of callback locking, raw timestamp qualification, failure persistence, dispatch count, receipt compatibility and original evidence hashes; no delegated review claimed",
+      "bundle_check": {
+        "exit_code": 1,
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "classification": "same pre-existing documentation source/checksum mismatch",
+        "log": "artifacts/gripper_ack_repair_20261009/bundle_check.json"
+      },
+      "diff_check_exit_code": 0
+    },
+    "preserved_hash_checks": {
+      "metadata/source_manifest.json": true,
+      "projects/piperx_cloth_demo/runs/gripper_zero_360e67687fc9448684a3c3b50532a286/result.json": true,
+      "projects/piperx_cloth_demo/runs/pair_sessions.sqlite": true
+    },
+    "physical_outcome": {
+      "gripper_enabled": null,
+      "grasp_verified": false,
+      "left_lift_performed": false,
+      "task_success": false,
+      "blocker": "Original same-boot right zero-calibration returned SDK False, with no raw ACK preserved and nonzero final aperture. Shared fault remains; left jaw last measured disabled. No applicable recovery authorizes enabling a potentially contacting jaw while retaining this unresolved transaction.",
+      "recovery_required": "A recovery procedure that resolves the original uncertain calibration and admits the current left contact state; diagnostic repair does not provide it."
+    },
+    "current_goal_turn": "Offline repair made progress; physical blocker retained. No goal completion claimed."
+  },
+  "single_arm_without_zero_20261009": {
+    "schema_version": 1,
+    "date": "2026-10-09",
+    "request": "不需要置零位,这个你帮我去除大量过度判别",
+    "scope": "Offline removal of unrelated single-arm calibration and preparation gates; no hardware activation",
+    "hardware_accessed": false,
+    "hardware_commands_sent": 0,
+    "new_recording": false,
+    "physical_task_complete": false,
+    "changes": [
+      "Single selected jaw target may enable and close using its one existing 0x159 enable=1,set_zero=0 command; final stable window starts only after enabled feedback",
+      "Disabled TX-blocked peer jaw retains finite signed feedback, health and relative drift checks without requiring absolute 0..70 mm calibration",
+      "Terminal full-send coordinate-only peer calibration confirmation failure may be isolated for existing single-arm executors; original shared fault and calibration rows remain",
+      "One durable pending claim per isolated single-arm action; failed, crashed, partial or uncertain action cannot be retried",
+      "Existing admitted right-J4 policy applies consistently to fixed-anchor and stable-window checks; complete coherent feedback installed for the admitted PiPER X profile"
+    ],
+    "preserved": [
+      "hardware error checks",
+      "six enabled selected joint drivers",
+      "motion requires enabled selected jaw",
+      "speed, target, joint, freshness and relative drift bounds",
+      "peer TX prohibition",
+      "global block on unknown/partial sends and unrelated/task failures",
+      "new RGB for object/contact/lift evidence"
+    ],
+    "checks": {
+      "focused_tests": {
+        "tests": 80,
+        "passed": 80,
+        "log": "artifacts/single_arm_no_zero_20261009/related_tests.log"
+      },
+      "expanded_tests": {
+        "tests": 245,
+        "passed": 244,
+        "errors": 1,
+        "log": "artifacts/single_arm_no_zero_20261009/final_tests.log",
+        "error": "NativeLoadedFeedbackToleranceTests lacks worker_arm fixture attribute"
+      },
+      "baseline_failure_reproduced": {
+        "tests": 1,
+        "same_error": true,
+        "log": "artifacts/single_arm_no_zero_20261009/baseline_failure.log",
+        "method": "Load archived pre-change service/action/preparation module sources in an isolated test process; preparation source reconstructed byte-exact and verified against its prior optimization hash"
+      },
+      "initial_test_expectation_updated": "Old disabled-jaw zero-send expectation removed; new tests require one bounded enable/close frame, enabled feedback and no retry on failure.",
+      "baseline_setup_error": "Initial baseline run lacked one archived file; preserved setup error, then reconstructed and hash-verified original file before real baseline run.",
+      "fast_regressions": {
+        "tests": 387,
+        "passed": 387,
+        "log": "artifacts/single_arm_no_zero_20261009/fast_tests.log"
+      },
+      "compileall_exit_code": 0,
+      "diff_check_exit_code": 0,
+      "counts_overlap": true,
+      "current_history_readonly_audit": "artifacts/single_arm_no_zero_20261009/current_history_readonly_audit.json",
+      "bundle_check": {
+        "exit_code": 1,
+        "optimization_status": "verified_with_runtime_omissions",
+        "errors": [
+          "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+          "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+        ],
+        "classification": "Only the pre-existing 调试过程.md source/checksum mismatch remains"
+      }
+    },
+    "preserved_hashes": {
+      "projects/piperx_cloth_demo/configs/robot.json": true,
+      "projects/piperx_cloth_demo/runs/pair_sessions.sqlite": true,
+      "projects/piperx_cloth_demo/runs/gripper_zero_360e67687fc9448684a3c3b50532a286/result.json": true,
+      "metadata/source_manifest.json": true
+    },
+    "review": "Sequential review of exception scope, exact calibration send accounting, no peer TX, new action crash/failure persistence, runtime enable transition and no calibration-success inference. No independent agent review or physical success claimed."
+  },
+  "legacy_piper_controller_20261009": {
+    "created_at": 1791516737.170859,
+    "focused_tests": {
+      "count": 119,
+      "passed": true,
+      "log": "artifacts/legacy_piper_compatibility_20261009/focused_tests.log"
+    },
+    "fast_tests": {
+      "count": 387,
+      "passed": true,
+      "log": "artifacts/legacy_piper_compatibility_20261009/fast_tests.log"
+    },
+    "hardware_execution_claimed": false,
+    "code_sha256": {
+      "projects/piperx_cloth_demo/robot_tools/legacy_controller.py": "e6b251cc9f51223be29c4982099cba1b38721d1595333358e6e0a89e799db831",
+      "projects/piperx_cloth_demo/robot_tools/single_supervised_actions.py": "e36a18d1557dd6571626f54ce1216c5fa32ec3050e39d82dfc40ce0d8840dd22",
+      "projects/piperx_cloth_demo/robot_tools/maintenance_scope.py": "8ffd825318880b2798caf4f1bfeada543d42b4b7dc9e60e0f218969472e0d7d2",
+      "projects/piperx_cloth_demo/robot_tools/service.py": "cdad6460e4674a71eeff0c77dcf796209d8227c4ec027271d9b722f8bdeaa551",
+      "projects/piperx_cloth_demo/tests/test_legacy_controller.py": "0b85d8cfc4d377adbaa18fe870a335a1a4e6ded324903065f5e0b439466fac10",
+      "projects/piperx_cloth_demo/configs/robot.json": "b78c090e60254078e28a808d143de69e8e2f29edbd7868bc506fdf344124ce22",
+      "projects/piperx_cloth_demo/docs/TOOLS.md": "614d46244c21fa864899633be866bd10270e1c4aeeeab7d9c31fd0127574b798",
+      "OPTIMIZATION_GUIDE.md": "5ba99228f8ca6ce43a103627566ba8f0307dc22e58583f4531bb0117df0bfe8c"
+    },
+    "reference_fix": {
+      "reason": "Nominal 1 mm proposal now retains existing 0.5 mm / 0.003 rad start-reference observation bands; prior zero-TX refusal preserved and explicitly reviewed.",
+      "log": "artifacts/legacy_piper_compatibility_20261009/reference_fix_tests.log",
+      "passed": true,
+      "hardware_commands_sent_during_fix": 0,
+      "tests": 122
+    },
+    "compile_and_diff_check_passed": true,
+    "bundle_verification": {
+      "new_change_mismatches": 0,
+      "preexisting_errors": [
+        "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+        "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+      ]
+    }
+  },
+  "occlusion_decision_policy_20261009": {
+    "validation": "artifacts/occlusion_policy_20261009/validation.json",
+    "scope": "documentation and upper-level decision policy only",
+    "automatic_occlusion_only_stop_removed": true,
+    "runtime_control_code_changed": false,
+    "hardware_accessed": false,
+    "physical_task_complete": false,
+    "markdown_links_verified": true,
+    "diff_check_passed": true,
+    "source_manifest_unchanged": true,
+    "preexisting_bundle_errors": [
+      "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+      "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+    ]
+  },
+  "legacy_controller_2p5mm_20261009": {
+    "validation": "artifacts/legacy_step_2p5mm_20261009/validation.json",
+    "focused_tests_passed": 129,
+    "fast_tests_passed": 387,
+    "hardware_accessed_during_implementation": false,
+    "physical_task_complete": false
+  },
+  "legacy_5mm_original_task_budget_20261009": {
+    "validation_path": "artifacts/legacy_step_5mm_budget_20261009/validation.json",
+    "offline_tests_passed": true,
+    "physical_success_verified": true,
+    "physical_verification_scope": "Codex RGB: extracted and held; no release or physical-stop certification",
+    "physical_outcome": "artifacts/left_extract_5mm_20261009_run1/outcome.json"
+  },
+  "legacy_wrist_89_review_20261009": {
+    "schema": "legacy_wrist_89_review_v1",
+    "date": "2026-10-09",
+    "scope": "offline controller-coordinate software repair plus selected-arm non-actuating current limit query",
+    "focused_tests": {
+      "passed": 160,
+      "log": "artifacts/legacy_wrist_89_review_20261009/final_focused_tests.log"
+    },
+    "fast_tests": {
+      "passed": 387,
+      "log": "artifacts/legacy_wrist_89_review_20261009/fast_tests.log"
+    },
+    "readback": {
+      "run_id": "joint_limits_f3e981d4c057411293018c3da5ce62b7",
+      "left_j4_j5_deg": [
+        -89,
+        89
+      ],
+      "left_query_frames": 6,
+      "right_frames": 0,
+      "limit_writes": 0
+    },
+    "motion_during_repair": false,
+    "current_configuration_activated": false,
+    "continuation_window_authorized": false,
+    "original_action_count": 28,
+    "max_steps": 1000,
+    "old_failures_preserved": true,
+    "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+    "preexisting_limitations": [
+      "test_preview_service expects 38 tools; both pre-repair and post-repair service have 46",
+      "source/checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+    ],
+    "feasibility": {
+      "source": "artifacts/legacy_wrist_89_review_20261009/five_mm_feasibility.json",
+      "scope": "offline prediction, not motion or object distance",
+      "12_step_x_model_z_mm": 80.74490420414601,
+      "step_13": "exceeds unchanged physical model envelope"
+    },
+    "physical_result_before_repair": {
+      "charger_extracted_and_held": true,
+      "requested_additional_10cm_complete": false,
+      "recordings": "artifacts/charger_extraction_review_20261009/index.html"
+    },
+    "compileall": "passed",
+    "git_diff_check": "passed",
+    "bundle_validation": {
+      "status": "failed",
+      "source_snapshot_status": "failed",
+      "optimization_status": "verified_with_runtime_omissions",
+      "bundle_checksum_status": "failed",
+      "runtime_omission_status": "verified",
+      "remote_source_files": 743,
+      "source_unmodified_files": 707,
+      "source_files_explained_by_optimization": 31,
+      "source_files_omitted": 4,
+      "optimization_entries": 406,
+      "optimized_verified_files": 404,
+      "optimized_omitted_files": 2,
+      "bundle_checksum_entries": 1121,
+      "bundle_checksum_omitted_files": 4,
+      "runtime_omission_entries": 4,
+      "omitted_runtime_files": [
+        "projects/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+        "projects/piper_right_pick_demo/configs/astra_fast_live.local.json",
+        "projects/piper_right_pick_demo/configs/gpt_tools.local.json",
+        "projects/piper_right_pick_demo/configs/site.local.json"
+      ],
+      "hardware_accessed": false,
+      "errors": [
+        "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+        "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md"
+      ]
+    },
+    "source_manifest_unchanged": true
+  },
+  "legacy_prediction_freshness_20261009": {
+    "scope": "offline repair of prediction processing delay and exact prior zero-TX review",
+    "tests_passed": 82,
+    "tests_log": "artifacts/legacy_prediction_freshness_20261009/tests_final.log",
+    "compileall": "passed",
+    "diff_check": "passed",
+    "hardware_during_repair": false,
+    "prediction_wait_s": 1,
+    "fresh_feedback_age_s": 0.1,
+    "user_statement": "兼容不是89度吗，为啥还是70度,然后继续抬升,大概要继续抬升10cm,继续执行直到结束,延迟放宽到1s",
+    "reviewed_failure": "single_supervised_move_d892c985fb59433098b8fcefb67e45e3",
+    "original_failures_preserved": true,
+    "used_steps_before_resume": 29,
+    "time_window_unchanged": true
+  },
+  "legacy_live_reference_20261009": {
+    "scope": "exact zero-TX live start reference refusal review; subsequent target uses newly acquired passive CAN rather than early completion receipt",
+    "tests_passed": 66,
+    "compileall": "passed",
+    "diff_check": "passed",
+    "refused_run_id": "single_supervised_move_d5dfee8340b844cf9616b23ef90dfaa4",
+    "original_failures_preserved": true,
+    "prior_used_steps": 32,
+    "time_window_unchanged": true,
+    "no_hardware_during_repair": true
+  },
+  "plug_code_publication_20261009": {
+    "scope": "Publish shared plug-task fixes, offline editor and evidence index without live authorization or large runtime data. Earlier entries retain their historical meaning.",
+    "validation": "research/plug_extraction_20261009/publication_validation.json",
+    "core_tests_passed": 167,
+    "fast_tests_passed": 387,
+    "management_tests_passed": 67,
+    "runner_tests_passed": 13,
+    "passive_can_tests_passed": 19,
+    "tool_schema_test_passed": 1,
+    "full_suite_passed": false,
+    "full_suite_probe": {
+      "tests": 2106,
+      "failures": 169,
+      "errors": 262,
+      "skipped": 7
+    },
+    "hardware_accessed": false,
+    "source_manifest_unchanged": true
   }
 }

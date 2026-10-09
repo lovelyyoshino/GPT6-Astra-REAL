@@ -5,6 +5,8 @@ feedback nor grants dispatch; its identity and artifact references are resolved
 by the owning host, not authenticated by a dictionary or hash.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import validate_policy, joints_within
 import hashlib
 import json
 import math
@@ -61,7 +63,7 @@ def anchor_deviation(anchor, state):
 
 def summarize_retention_trace(*, arm, identity, probe_event_id, trace_id, trace_sha256,
                               original_anchor, samples, now, release=False,
-                              release_jaw_anchor_m=None):
+                              release_jaw_anchor_m=None, feedback_policy=None):
     """Summarize a new dual-arm window against its explicit fixed body anchor.
 
     The adapter supplies the immutable probe anchor for static grasps, or the
@@ -80,13 +82,16 @@ def summarize_retention_trace(*, arm, identity, probe_event_id, trace_id, trace_
             or advances < BOUNDS["minimum_feedback_advances"]
             or not 0 <= now-samples[-1]["observed_at_s"] <= BOUNDS["feedback_age_s"]):
         raise ValueError("Static retention needs a current three-second/20-advance dual-arm trace")
-    spans = _stable(samples)
+    feedback_policy = validate_policy(feedback_policy)
+    spans = _stable(samples, feedback_policy=feedback_policy)
     deviations = [anchor_deviation(original_anchor, sample["arms"][arm]) for sample in samples]
     maximum = {name: max(item[name] for item in deviations) for name in deviations[0]}
     limits = {"joint_rad": BOUNDS["joint_span_rad"], "position_m": BOUNDS["position_span_m"],
-              "rotation_rad": BOUNDS["rotation_span_rad"], "jaw_m": BOUNDS["jaw_span_m"]}
-    if any(maximum[name] > value for name, value in limits.items()
-           if not (release and name == "jaw_m")):
+              "rotation_rad": rotation_tolerance(feedback_policy,arm), "jaw_m": BOUNDS["jaw_span_m"]}
+    if (any(not joints_within(feedback_policy, arm, original_anchor["joints_rad"],sample["arms"][arm]["joints_rad"])
+            for sample in samples)
+            or any(maximum[name] > value for name, value in limits.items()
+                   if name != "joint_rad" and not (release and name == "jaw_m"))):
         raise ValueError("Static retention drifted from its original candidate anchor")
     if release_jaw_anchor_m is not None:
         if (not release or type(release_jaw_anchor_m) not in (int, float)
@@ -101,6 +106,12 @@ def summarize_retention_trace(*, arm, identity, probe_event_id, trace_id, trace_
             "feedback_advances": advances, "health": "healthy", "mode": "stationary",
             "anchor": copy.deepcopy(original_anchor), "observed": measured_anchor(samples[-1]["arms"][arm]),
             "spans": spans[arm], "anchor_deviation": maximum}
+    if feedback_policy is not None:
+        qs = [sample["arms"][arm]["joints_rad"] for sample in samples]
+        result.update(feedback_observation=feedback_policy,
+            joint_spans_rad=[max(v)-min(v) for v in zip(*qs)],
+            joint_anchor_deviation_rad=[max(abs(v-a) for v in values)
+                for a,values in zip(original_anchor["joints_rad"], zip(*qs))])
     if identity is not None:
         result["identity"] = identity
     if probe_event_id is not None:

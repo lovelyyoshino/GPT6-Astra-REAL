@@ -7,6 +7,8 @@ establish empty jaws and clearance, hold the device lock, and durably journal
 events. No caller target, arm command, retry, calibration or stop is available.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import PROFILE_KEY, validate_policy, joint_tolerances, joints_within, describe
 import math
 
 from .takeover import LIMITS, SIDES, _Takeover, _allowed_integer
@@ -30,6 +32,9 @@ class _SingleGripperPrepare(_Takeover):
         if not isinstance(arm, str) or arm not in SIDES:
             raise ValueError("arm must be explicitly left or right")
         super().__init__(profile, journal_callback)
+        self.feedback_policy = validate_policy(profile.get(PROFILE_KEY))
+        if self.feedback_policy is not None:
+            self.report["feedback_observation"] = describe(self.feedback_policy)
         self.arm = arm
         self.passive_arm = "left" if arm == "right" else "right"
         self.passive_enable_flags = None
@@ -55,7 +60,7 @@ class _SingleGripperPrepare(_Takeover):
             preparation_does_not_validate_position_hold=True,
             joint_limits_changed=False,
             joint_values_recorded_without_task_motion_qualification=True,
-            joint_feedback_tolerances_rad={s: [LIMITS["joint_rad"]] * 6 for s in SIDES},
+            joint_feedback_tolerances_rad={s: joint_tolerances(self.feedback_policy, s) for s in SIDES},
             rotation_distance_limit_rad=LIMITS["joint_rad"],
             rotation_distance_basis="SO(3) angle between manufacturer Rz(yaw) Ry(pitch) Rx(roll) quaternions",
             pose_rpy_component_rad_diagnostic_only=True,
@@ -69,6 +74,11 @@ class _SingleGripperPrepare(_Takeover):
     def connect(self):
         super().connect()
         for side, robot in self.robots.items():
+            if self.feedback_policy is not None:
+                from .coherent_feedback import install
+                if self.profile['arms'][side]['model'] != 'piper_x':
+                    raise RuntimeError('Bounded feedback profile requires PiPER X')
+                install(robot)
             robot._send_msg = lambda *a, _side=side, **k: self._deny(
                 _side, "Arm SDK TX forbidden during single-gripper preparation")
             robot._send_msgs = robot._send_msg
@@ -106,6 +116,10 @@ class _SingleGripperPrepare(_Takeover):
             raise RuntimeError(side + " joint/gripper enable flags must be known booleans")
         self.report["gripper_enabled"][side] = flags[6]
         if side == self.passive_arm:
+            maintenance = self.profile.get('single_arm_maintenance_scope')
+            if maintenance and (maintenance['selected_arm'] != self.arm
+                    or maintenance['excluded_arm'] != self.passive_arm or flags[6]):
+                raise RuntimeError('Isolated maintenance jaw must remain disabled and passive')
             mode = state["arm_status"]["ctrl_mode"]
             if self.passive_enable_flags is None:
                 self.passive_enable_flags = list(flags)
@@ -153,7 +167,17 @@ class _SingleGripperPrepare(_Takeover):
         return tf.euler_convert_quat(roll, pitch, yaw)
 
     def check_drift(self, side, current, origin):
-        super().check_drift(side, current, origin)
+        if self.feedback_policy is None:
+            super().check_drift(side, current, origin)
+        else:
+            drift = {"joint_rad": max(abs(a-b) for a,b in zip(current["joints_rad"], origin["joints_rad"])),
+                     "position_m": math.dist(current["pose_m_rad"][:3], origin["pose_m_rad"][:3]),
+                     "gripper_m": abs(current["gripper"]["width_m"]-origin["gripper"]["width_m"])}
+            for key,value in drift.items():
+                self.max_drift[side][key] = max(self.max_drift[side][key],value)
+            if (not joints_within(self.feedback_policy, side, current["joints_rad"], origin["joints_rad"])
+                    or any(drift[key] > LIMITS[key] for key in ("position_m","gripper_m"))):
+                raise RuntimeError(side + " drift exceeds task-bound joint/position/jaw tolerance")
         component = max(abs(math.remainder(a - b, 2 * math.pi))
                         for a, b in zip(current["pose_m_rad"][3:], origin["pose_m_rad"][3:]))
         self.max_drift[side]["pose_rpy_component_rad"] = max(
@@ -161,8 +185,8 @@ class _SingleGripperPrepare(_Takeover):
         angular = self.rotation_distance(current["pose_m_rad"], origin["pose_m_rad"])
         self.max_drift[side]["rotation_distance_rad"] = max(
             self.max_drift[side]["rotation_distance_rad"], angular)
-        if angular > LIMITS["joint_rad"]:
-            raise RuntimeError(side + " pose SO(3) rotation drift exceeds 0.003 rad")
+        if angular > rotation_tolerance(self.feedback_policy,side):
+            raise RuntimeError(side + " pose SO(3) rotation drift exceeds task observation bound")
 
     def frame_spec(self, kind, side):
         if side != self.arm:

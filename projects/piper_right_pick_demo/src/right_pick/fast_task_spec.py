@@ -113,7 +113,7 @@ def recipe_contract(definition, *, mode="single_arm", worker_arm="right"):
         initial_condition=initial, goal=goal, constraints=constraints, steps=steps,
         source="user_declarative_recipe", dispatch_policy="one_arm_moves_at_a_time",
         implementation="offline_contract_only", execution_available=False,
-        budget=dict(max_cycles=128, max_model_calls=64, max_elapsed_s=900,
+        budget=dict(max_cycles=1000, max_model_calls=1000, max_elapsed_s=10800,
                     max_no_progress=2, max_rejections=1, max_observer_moves=2),
         observer_branch="observer_reposition" if mode == "worker_with_observer" else None,
         finish="task_evidence_and_run_reference_separately_verified")

@@ -5,6 +5,7 @@ The live adapter must match each source to its still-current target cache. No
 source grants an action, load/hold qualification, new target, or larger budget.
 """
 import copy
+from .feedback_tolerance import validate_policy, joint_tolerances, joints_within
 import math
 
 from . import arms
@@ -18,7 +19,7 @@ SOURCE_SCHEMA = "piper_pair_joint_initialization_receipt_v1"
 
 
 def resolve_initialization_ingress(initialization_sources, *, identity, origin, current,
-                                   effective_joint_limits_rad, cached_target=None):
+                                   effective_joint_limits_rad, cached_target=None, feedback_policy=None):
     """Return frozen per-side feedback limits, leaving nominal limits untouched.
 
 Only a same-owner/connection completed seed/recovery targeting J2's exact lower
@@ -34,6 +35,7 @@ anchor guards. Missing sources return the original strict nominal intervals.
     @_input_errors
     def resolve():
         selected = _identity(identity)["arm"]
+        policy = validate_policy(feedback_policy)
         _need(type(effective_joint_limits_rad) is dict and set(effective_joint_limits_rad) == set(SIDES),
               "ingress_limits_schema")
         limits = {}
@@ -54,6 +56,7 @@ anchor guards. Missing sources return the original strict nominal intervals.
             if source is None:
                 continue
             _need(type(source) is dict and source.get("schema") == SOURCE_SCHEMA, "initialization_source_schema", side)
+            _need(validate_policy(source.get("feedback_observation")) == policy, "initialization_source_observation_policy", side)
             old_identity = _identity(source["identity"])
             _need(old_identity["arm"] == side and all(old_identity[key] == identity[key] for key in
                   ("run_id", "owner", "epoch", "connection_id", "model", "firmware_profile")),
@@ -115,16 +118,30 @@ anchor guards. Missing sources return the original strict nominal intervals.
             finished_q = _vec(states[side]["joints_rad"], 6, "completion joints")
             original_q = _vec(original["arms"][side]["joints_rad"], 6, "initialization origin joints")
             _need(_enum(states[side]["arm_status"].get("mode_feedback"), (1,))
-                  and max(abs(a-b) for a,b in zip(finished_q,target)) <= BAND_RAD,
+                  and joints_within(policy, side, finished_q,target),
                   "initialization_source_not_arrived", side)
             strict = all(lo <= q <= hi for q,(lo,hi) in zip(finished_q, limits[side]))
             _need(type(source["strict_nominal"]) is bool and source["strict_nominal"] == strict
                   and source["within_feedback_tolerance"] is True,
                   "initialization_source_verdict", side)
             violations = []
+            selection = source.get('target_selection')
+            if selection is not None:
+                from .bounded_joint_step import STEP
+                _need(policy is not None and side == 'right' and type(selection) is dict
+                      and set(selection) == {'mode','j2_interior_margin_rad','j4_reserve_m',
+                                             'nearest_boundary_endpoint_m','chosen_endpoint_upper_m'}
+                      and selection['mode'] == 'j2_interior_for_endpoint_reserve_v1'
+                      and selection['j2_interior_margin_rad'] == STEP['joint_margin_rad']
+                      and original_q[1] < limits[side][1][0]
+                      and 0 < _num(selection['j4_reserve_m'],'J4 reserve')
+                      and 0 <= _num(selection['nearest_boundary_endpoint_m'],'nearest endpoint')
+                      and 0 <= _num(selection['chosen_endpoint_upper_m'],'chosen endpoint') <= .015,
+                      'initialization_source_target_selection', side)
             for i, (q, sent, (lo, hi)) in enumerate(zip(original_q,target,limits[side])):
                 if not lo <= q <= hi:
-                    _need(((i == 1 and q < lo and sent == lo) or (i == 2 and q > hi and sent == hi))
+                    j2_target = encode_joint_target([lo + STEP['joint_margin_rad']]*6)[1][0] if selection is not None and i == 1 else lo
+                    _need(((i == 1 and q < lo and sent == j2_target) or (i == 2 and q > hi and sent == hi))
                           and abs(sent-q) <= .10, "initialization_source_original_boundary", side)
                     violations.append(i)
                 else:
@@ -144,7 +161,7 @@ anchor guards. Missing sources return the original strict nominal intervals.
                     _need(_num(state["fragment_timestamps_s"][part], "ingress fragment") > ended,
                           "ingress_feedback_precedes_completion", side)
                 for i,(value,goal,(lo,hi)) in enumerate(zip(q,target,limits[side])):
-                    _need(abs(value-goal) <= BAND_RAD, "ingress_left_initial_target_band", side)
+                    _need(abs(value-goal) <= joint_tolerances(policy,side)[i], "ingress_left_initial_target_band", side)
                     allowed = (i in eligible and ((i == 1 and lo-BAND_RAD <= value <= hi)
                                                   or (i == 2 and lo <= value <= hi+BAND_RAD)))
                     _need(lo <= value <= hi or allowed, "ingress_nonboundary_violation", side)

@@ -7,6 +7,8 @@ path. No task algorithm, retry, stop, reset, disable or automatic next action is
 provided, and the original full-backend hold gate is unchanged.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import PROFILE_KEY, validate_policy, joints_within, describe
 import math
 import threading
 import time
@@ -41,10 +43,23 @@ class _SingleSupervisedAction(_SupervisedAction):
         if not isinstance(arm, str) or arm not in SIDES or kind not in ("move", "gripper"):
             raise ValueError("Explicit left/right arm and known action kind required")
         super().__init__(profile, journal, arm, kind, target)
+        from .legacy_controller import policy, step_limits
+        self.legacy_controller = policy(profile, arm) if kind == 'move' else None
+        if self.legacy_controller is not None:
+            if profile.get('single_arm_maintenance_scope', {}).get('reviewed_zero_tx_model_refusal') != self.legacy_controller:
+                raise RuntimeError('Legacy controller requires durable reviewed zero-TX continuation')
+            self.report['legacy_controller_compatibility'] = copy.deepcopy(self.legacy_controller)
+            self.report['physical_model'] = 'piper_x'
+            self.report['controller_coordinate_model'] = 'piper'
+            self.report['legacy_step_limits'] = step_limits(self.legacy_controller)
+        self.feedback_policy = validate_policy(profile.get(PROFILE_KEY))
+        if self.feedback_policy is not None:
+            self.report["feedback_observation"] = describe(self.feedback_policy)
         self.passive_arm = "left" if arm == "right" else "right"
         self.enable_states, self.control_modes = {}, {}
         self.baseline_window, self.dispatch_anchor = None, None
         self.boundary_reference = None
+        self.jaw_enable_seen = False
         self.frame_limit = 4 if kind == "move" else 1
         for drift in self.max_drift.values():
             drift["rotation_distance_rad"] = 0.0
@@ -61,6 +76,7 @@ class _SingleSupervisedAction(_SupervisedAction):
             feedback_boundary_policy=copy.deepcopy(FEEDBACK_BOUNDARY_POLICY),
             boundary_recovery_required=False, boundary_recovery=None,
             passive_arm_motion_qualified=False,
+            calibration_required=False, gripper_enable_requested=False,
             rotation_distance_basis="SO(3), manufacturer Rz(yaw) Ry(pitch) Rx(roll)",
             mode_frame_can_activate_cached_target=kind == "move",
             partial_frames_can_mix_old_targets=kind == "move",
@@ -138,7 +154,32 @@ class _SingleSupervisedAction(_SupervisedAction):
     def connect(self):
         _LinearHold.connect(self)
         self.quaternion = _SingleGripperPrepare._manufacturer_quaternion
+        if self.legacy_controller is not None:
+            from pyAgxArm.api.constants import ROBOT_JOINT_LIMIT_PRESET
+            self.joint_limits[self.arm] = {
+                key: (max(bounds[0], ROBOT_JOINT_LIMIT_PRESET['piper'][key][0]),
+                      min(bounds[1], ROBOT_JOINT_LIMIT_PRESET['piper'][key][1]))
+                for key, bounds in self.joint_limits[self.arm].items()}
+            self.report['joint_limits_source'] = 'Intersection of physical Piper X and legacy Piper SDK limits; no controller limit writes'
+            if self.legacy_controller.get('reviewed_wrist_limit_failure') is not None:
+                verified=self.profile.get('single_arm_maintenance_scope',{}).get('verified_wrist_recovery')
+                reference=self.legacy_controller['reviewed_wrist_limit_failure']
+                if (not verified or verified.get('original_failure_run_id')!=reference['run_id']
+                        or verified.get('limits_run_id')!=reference['limits_run_id']
+                        or verified.get('limits_sha256')!=reference['limits_sha256']
+                        or verified.get('joint5_limits_tenth_deg')!=[-890,890]):
+                    raise RuntimeError('J5 physical-model continuation requires audited current controller readback')
+                physical=ROBOT_JOINT_LIMIT_PRESET['piper_x']['joint5']
+                self.joint_limits[self.arm]['joint5']=(max(physical[0],math.radians(-89)),
+                                                      min(physical[1],math.radians(89)))
+                self.report['joint_limits_source']='J5: physical Piper X intersected with audited controller +/-89 readback; other joints retain original intersection; no limit writes'
+                self.report['verified_wrist_recovery']=copy.deepcopy(verified)
         for side, robot in self.robots.items():
+            if self.feedback_policy is not None:
+                from .coherent_feedback import install
+                if self.profile['arms'][side]['model'] != 'piper_x':
+                    raise RuntimeError('Bounded feedback profile requires PiPER X')
+                install(robot)
             if side == self.passive_arm or self.kind == "gripper":
                 robot._send_msg = lambda *a, _side=side, **k: self._deny(
                     _side, "Arm SDK TX forbidden for this single action")
@@ -190,13 +231,25 @@ class _SingleSupervisedAction(_SupervisedAction):
             flags = _SingleGripperPrepare.enable_flags(state)
             if any(type(flag) is not bool for flag in flags):
                 raise RuntimeError(side + " requires seven known enable flags")
-            if selected and not all(flags):
-                raise RuntimeError("Selected arm requires six joint drivers and gripper continuously enabled")
+            if selected and (not all(flags[:6]) or self.kind == 'move' and not flags[6]):
+                raise RuntimeError("Selected joints must be enabled; arm motion also requires an enabled gripper")
+            maintenance = self.profile.get('single_arm_maintenance_scope')
+            if maintenance and (maintenance['selected_arm'] != self.arm
+                    or maintenance['excluded_arm'] != self.passive_arm
+                    or not selected and flags[6]):
+                raise RuntimeError('Isolated maintenance jaw must remain disabled and passive')
             if side not in self.enable_states:
                 self.enable_states[side] = flags[:]
                 self.control_modes[side] = status["ctrl_mode"]
-            if flags != self.enable_states[side] or status["ctrl_mode"] != self.control_modes[side]:
+            enabling_jaw = selected and self.kind == 'gripper' and self.active and not self.enable_states[side][6]
+            if (flags[:6] != self.enable_states[side][:6]
+                    or not enabling_jaw and flags[6] != self.enable_states[side][6]
+                    or status["ctrl_mode"] != self.control_modes[side]):
                 raise RuntimeError(side + " control mode or joint/gripper enable state changed")
+            if selected:
+                if self.jaw_enable_seen and not flags[6]:
+                    raise RuntimeError('Selected gripper enable feedback regressed')
+                self.jaw_enable_seen = self.jaw_enable_seen or flags[6]
             moving = self.active and self.kind == "move" and selected
             if (not _allowed_integer(status.get("teach_status"), (0,))
                     or not _allowed_integer(status.get("motion_status"), (0, 1) if moving else (0,))
@@ -217,17 +270,24 @@ class _SingleSupervisedAction(_SupervisedAction):
             if selected:
                 self.check_selected_joint_bounds(state, violations)
             _pose_frames(state["pose_m_rad"])
-            if not 0 <= state["gripper"]["width_m"] <= 0.070:
+            # A disabled passive jaw's coordinate offset is not an actuator
+            # target. Keep its signed value, health and relative drift checks.
+            if (selected or flags[6]) and not 0 <= state["gripper"]["width_m"] <= 0.070:
                 raise RuntimeError(side + " jaw width outside 0..70 mm feedback range")
             if self.anchor is not None:
                 self.check_envelope(side, state, moving)
         self.check_freshness(states)
         return states
 
+    def _stationary_body_reference(self, side, ordinary_reference):
+        """Select a fixed body origin; fresh baseline/jaw references stay separate."""
+        return ordinary_reference
+
     def check_envelope(self, side, state, moving):
         # Preserve the original baseline for every stationary component. Only
         # the selected moving arm uses the last checked dispatch pose as start.
-        origin = self.dispatch_anchor if moving else self.anchor[side]
+        origin = (self.dispatch_anchor if moving else
+                  self._stationary_body_reference(side, self.anchor[side]))
         pose, start = state["pose_m_rad"], origin["pose_m_rad"]
         qdelta = max(abs(a - b) for a, b in zip(state["joints_rad"], origin["joints_rad"]))
         distance, rotation = math.dist(pose[:3], start[:3]), self.rotation_distance(pose, start)
@@ -236,6 +296,11 @@ class _SingleSupervisedAction(_SupervisedAction):
                             ("rotation_distance_rad", rotation), ("gripper_m", abs(width - baseline_width))):
             self.max_drift[side][name] = max(self.max_drift[side][name], value)
         if moving:
+            if self.legacy_controller is not None:
+                from .legacy_controller import model_delta
+                self.report['physical_model_observed_delta'] = model_delta(
+                    self.profile, origin['joints_rad'], state['joints_rad'], self.rotation_distance,
+                    self.legacy_controller)
             vector = [b - a for a, b in zip(start[:3], self.target[:3])]
             length2 = sum(v * v for v in vector)
             fraction = max(0, min(1, sum((pose[i] - start[i]) * vector[i] for i in range(3)) / length2)) if length2 else 0
@@ -244,8 +309,9 @@ class _SingleSupervisedAction(_SupervisedAction):
                     or math.dist(pose[:3], nearest) > BOUNDS["segment_margin_m"]
                     or rotation > self.rotation_distance(self.target, start) + BOUNDS["rotation_margin_rad"]):
                 raise RuntimeError("Selected arm left observed segment/joint envelope; no stop command available")
-        elif (qdelta > BOUNDS["joint_span_rad"] or distance > BOUNDS["position_span_m"]
-              or rotation > BOUNDS["rotation_span_rad"]):
+        elif (not joints_within(self.feedback_policy, side, origin["joints_rad"], state["joints_rad"])
+              or distance > BOUNDS["position_span_m"]
+              or rotation > rotation_tolerance(self.feedback_policy,side)):
             raise RuntimeError(side + " stationary arm exceeded joint/XYZ/SO(3) envelope")
         if self.active and self.kind == "gripper" and side == self.arm:
             low, high = sorted((self.dispatch_anchor["gripper"]["width_m"], self.target))
@@ -254,19 +320,37 @@ class _SingleSupervisedAction(_SupervisedAction):
         elif abs(width - baseline_width) > LIMITS["gripper_m"]:
             raise RuntimeError(side + " uncommanded jaw drift exceeds 2 mm")
 
+    def validate_start(self, state):
+        if self.legacy_controller is None:
+            return super().validate_start(state)
+        from .legacy_controller import policy, check_up_target
+        from .linear_hold import PROBE
+        policy(self.profile, self.arm)  # Expiry checked again immediately before sending.
+        current = state[self.arm]
+        fk = arms.vendor_fk('piper', current['joints_rad'], self.profile['sdk_path'])['pose_m_rad']
+        pos = math.dist(fk[:3], current['pose_m_rad'][:3])
+        angle = self.rotation_distance(fk, current['pose_m_rad'])
+        if pos > LIMITS['position_m'] or angle > PROBE['orientation_rad']:
+            raise RuntimeError('Legacy controller FK does not agree with current raw flange feedback')
+        check_up_target(current['pose_m_rad'], self.target, self.rotation_distance, self.legacy_controller)
+        self.report.update(controller_fk_flange_m_rad=fk,
+                           controller_fk_feedback_position_error_m=pos,
+                           controller_fk_feedback_rotation_error_rad=angle)
+
     # Pure observed-window helpers: six joint spans, XYZ bounding diagonal,
     # jaw span and exact pairwise SO(3) diameter; no home dispatch is inherited.
     new_window = _HomeArm.new_window
     extend_window = _HomeArm.extend_window
     window_spans = staticmethod(_HomeArm.window_spans)
 
-    @classmethod
-    def window_stable(cls, window):
-        return all(s["joint_rad"] <= BOUNDS["joint_span_rad"]
+    def window_stable(self, window):
+        # Use the same admitted per-axis policy as the fixed-anchor check;
+        # the old maximum-axis duplicate rejected an already allowed J4 span.
+        return all(joints_within(self.feedback_policy, side, window[side]['qlow'], window[side]['qhigh'])
                    and s["position_m"] <= BOUNDS["position_span_m"]
                    and s["jaw_m"] <= BOUNDS["jaw_span_m"]
-                   and s["rotation_rad"] <= BOUNDS["rotation_span_rad"]
-                   for s in cls.window_spans(window).values())
+                   and s["rotation_rad"] <= rotation_tolerance(self.feedback_policy, side)
+                   for side, s in self.window_spans(window).items())
 
     def prepare(self):
         deadline = time.monotonic() + LIMITS["warmup_s"]
@@ -319,9 +403,33 @@ class _SingleSupervisedAction(_SupervisedAction):
         state = self.checked(self.read())
         if self.kind == "move":
             self.validate_move(state)  # Existing target bounds and manufacturer FK agreement.
+            if (self.legacy_controller is not None
+                    and self.legacy_controller.get('reviewed_wrist_limit_failure') is not None):
+                from .legacy_joint_prediction import predict
+                from .legacy_controller import model_delta
+                prediction_started=time.monotonic()
+                prediction=predict(self.profile,state[self.arm]['joints_rad'],self.target,
+                    self.joint_limits[self.arm],self.legacy_controller,self.rotation_distance)
+                prediction_elapsed=time.monotonic()-prediction_started
+                self.report['endpoint_prediction_duration_s']=prediction_elapsed
+                self.report['endpoint_prediction_wait_limit_s']=1.0
+                if prediction_elapsed>1.0:
+                    raise RuntimeError('Legacy endpoint prediction exceeded 1 s computation window; no send')
+                self.report['pre_send_endpoint_prediction']=prediction
+                # Numerical work/imports may take longer than a feedback frame.
+                # Acquire once after it, then recheck the unchanged target and
+                # the same predicted endpoint against this fresh measured start.
+                state=self.checked(self.read())
+                self.validate_move(state)
+                prediction['physical_model_delta_from_dispatch_feedback']=model_delta(
+                    self.profile,state[self.arm]['joints_rad'],prediction['joints_rad'],
+                    self.rotation_distance,self.legacy_controller)
+                self.report['feedback_refreshed_after_endpoint_prediction']=True
         if not self.extend_window(self.baseline_window, state):
             raise RuntimeError("Starting feedback changed after durable intent")
         self.dispatch_anchor = copy.deepcopy(state[self.arm])
+        self.report['gripper_enable_requested'] = (self.kind == 'gripper'
+            and not state[self.arm]['gripper']['foc_status']['driver_enable_status'])
         self.report["dispatch_feedback"] = copy.deepcopy(state)
         ticket = {"side": self.arm, "thread": threading.get_ident(), "kind": "action", "frames": frames,
                   "comm_calls": 0, "bus_calls": 0, "error": None}
@@ -342,8 +450,8 @@ class _SingleSupervisedAction(_SupervisedAction):
         self.report["target_calls_sent"] = 1
         self.emit("single_supervised_action_sent_unconfirmed", {"finished_unix_s": self.sent_at, "kind": self.kind})
 
-    def record_outcome(self, state, stable):
-        super().record_outcome(state, stable)
+    def record_outcome(self, state, stable, *, target_kind=None):
+        super().record_outcome(state, stable, target_kind=target_kind)
         self.report.update(raw_mode_feedback={s: state[s]["arm_status"]["mode_feedback"] for s in SIDES},
                            move_l_mode_confirmed=self.mode_l_confirmed,
                            feedback_all_after_send=self.sent_at is not None and self.all_after(state, self.sent_at))
@@ -355,7 +463,8 @@ class _SingleSupervisedAction(_SupervisedAction):
         while time.monotonic() < deadline:
             state = self.checked(self.read())
             self.record_outcome(state, False)
-            if self.all_after(state, self.sent_at):
+            if (self.all_after(state, self.sent_at)
+                    and state[self.arm]['gripper']['foc_status']['driver_enable_status'] is True):
                 if began is None:
                     began, previous, advances = time.monotonic(), state, 0
                     window = self.new_window(state)
@@ -364,7 +473,8 @@ class _SingleSupervisedAction(_SupervisedAction):
                     window = self.new_window(state)
                 elif self.advanced(previous, state):
                     previous, advances = state, advances + 1
-                    if time.monotonic() - began >= BOUNDS["stable_s"] and advances >= BOUNDS["minimum_feedback_advances"]:
+                    if (time.monotonic() - began >= BOUNDS["stable_s"] and advances >= BOUNDS["minimum_feedback_advances"]
+                            and self.jaw_enable_seen):
                         # Deliberately retain bounded-observation semantics:
                         # stable may coexist with motion_status=1 or jaw error.
                         self.record_outcome(state, True)
@@ -384,6 +494,8 @@ class _SingleSupervisedAction(_SupervisedAction):
                       arm_target_commands_sent=max(0, count - 1) if self.kind == "move" else 0,
                       gripper_target_commands_sent=count if self.kind == "gripper" else 0,
                       passive_arm_commands_sent=self.counts[self.passive_arm]["sent_frames"],
+                      gripper_enable_observed=self.jaw_enable_seen,
+                      gripper_enable_commands_sent=int(self.report['gripper_enable_requested'] and count > 0),
                       original_enable_flags=copy.deepcopy(self.enable_states),
                       original_control_modes=copy.deepcopy(self.control_modes))
         return report
@@ -399,7 +511,7 @@ def move_once(profile, journal, arm, target_pose_m_rad):
 
 
 def gripper_once(profile, journal, arm, width_m, nominal_force_N):
-    """One enabled-jaw target in 0..55 mm at nominal 0.2; no grasp inference."""
+    """One jaw target/enable in 0..55 mm at nominal 0.2; no zeroing or grasp inference."""
     if not isinstance(arm, str) or arm not in SIDES or not callable(journal):
         raise ValueError("Explicit left/right arm and synchronous journal required")
     if (type(width_m) not in (int, float) or not math.isfinite(width_m) or not 0 <= width_m <= 0.055

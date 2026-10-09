@@ -8,6 +8,8 @@ target, a global .05 rad orientation budget, or an exceptional hold transaction.
 Unknown cached/mixed targets remain an explicit supervised-operation risk.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import validate_policy, joint_tolerances, joints_within, model_still_limits
 
 from . import arms
 from .bounded_joint_step import STEP
@@ -100,16 +102,47 @@ def _feedback_bounds(q, start, limits, side):
         _need(low <= value <= high, "feedback_joint_limit", side+"/joint%d" % (i+1))
 
 
+def _endpoint_reserved_target(q0, nearest, limits, model, *, arm, policy, visual):
+    """One explicit inward J2 candidate; raw feedback and limits stay intact.
+
+    Reserve the full accepted J4 observation angle in target selection, before
+    claiming an event. This is a different finite target, never a waived runtime
+    endpoint check or a search for a favorable feedback sample.
+    """
+    if not (visual and policy is not None and arm == 'right' and q0[1] < limits[1][0]):
+        return nearest, None
+    from .joint_model_bounds import sum_upper, sum_products_upper
+    mdh = model['mdh']
+    radius = sum_upper([abs(mdh[3][0])] + [abs(v) for row in mdh[4:] for v in row[:2]])
+    reserve = sum_products_upper([radius], [joint_tolerances(policy, arm)[3]])
+    origin = fk_matrix(mdh, q0)
+    def endpoint(target):
+        return _error(origin, fk_matrix(mdh, encode_joint_target(target)[1]))[0]
+    original = endpoint(nearest)
+    if sum_upper([original, reserve]) <= RECOVERY['target_displacement_m']:
+        return nearest, None
+    candidate = nearest[:]
+    candidate[1] = limits[1][0] + STEP['joint_margin_rad']
+    encoded = encode_joint_target(candidate)[1]
+    upper = sum_upper([endpoint(candidate), reserve])
+    _need(limits[1][0] < encoded[1] < limits[1][1]
+          and abs(encoded[1]-q0[1]) <= STARTUP_RECOVERY['joint_excursion_rad']
+          and upper <= RECOVERY['target_displacement_m'], 'initialization_endpoint_reserve_unavailable')
+    return candidate, dict(mode='j2_interior_for_endpoint_reserve_v1',
+        j2_interior_margin_rad=STEP['joint_margin_rad'], j4_reserve_m=reserve,
+        nearest_boundary_endpoint_m=original, chosen_endpoint_upper_m=upper)
+
+
 @_input_errors
 def plan_joint_initialization(context, *, now):
-    """Freeze a measured legal seed or exact nearest J2/J3 boundary candidate.
+    """Freeze a measured seed, nearest boundary, or scoped inward J2 target.
 
     Sources retain the joint_path shapes, or geometry explicitly tags the
     attended RGB initialization branch. Cached targets and budgets are absent.
     Both branches require a host-resolved unloaded evidence source.
     The target is derived from the original sample, never reanchored by current.
     """
-    _need(type(context) is dict and set(context) == CONTEXT_KEYS and context.get("schema") == SCHEMA, "context_schema")
+    _need(type(context) is dict and CONTEXT_KEYS <= set(context) <= CONTEXT_KEYS | {"feedback_observation"} and context.get("schema") == SCHEMA, "context_schema")
     now, identity = _num(now, "now"), _identity(context["identity"])
     arm, peer = identity["arm"], next(s for s in SIDES if s != identity["arm"])
     origin, current = copy.deepcopy(context["origin"]), copy.deepcopy(context["current"])
@@ -131,18 +164,26 @@ def plan_joint_initialization(context, *, now):
     violations = {side: _violations(original[side]["joints_rad"], limits[side]) for side in SIDES}
     purpose = "startup_j2_j3" if violations[arm] else "seed_current"
     requested = [max(lo, min(hi, q)) for q, (lo, hi) in zip(q0, limits[arm])]
+    geom = copy.deepcopy(context['geometry'])
+    visual = type(geom) is dict and geom.get('schema') == VISUAL_GEOMETRY_SCHEMA
+    feedback_policy = validate_policy(context.get('feedback_observation'))
+    _need(feedback_policy is None or visual, 'feedback_policy_requires_rgb_latch_only')
+    requested, target_selection = _endpoint_reserved_target(q0, requested, limits[arm], model,
+        arm=arm, policy=feedback_policy, visual=visual)
     raw, encoded = encode_joint_target(requested)
     _need(_within(requested, limits[arm]) and _within(encoded, limits[arm])
           and all(lo <= v <= hi for v, (lo, hi) in zip(raw, raw_limits[arm])), "target_joint_limit")
     for i, (initial, wanted, sent, (lo, hi)) in enumerate(zip(q0, requested, encoded, limits[arm])):
         if not lo <= initial <= hi:
             boundary = lo if initial < lo else hi
-            _need(wanted == boundary and sent == boundary, "recovery_requires_exact_nearest_boundary")
+            interior = target_selection is not None and i == 1
+            _need((interior and wanted == lo + STEP['joint_margin_rad'])
+                  or (not interior and wanted == boundary and sent == boundary),
+                  "recovery_requires_exact_nearest_boundary")
             _need(abs(sent-initial) <= STARTUP_RECOVERY["joint_excursion_rad"], "recovery_excursion_limit")
         else:
             _need(max(abs(wanted-initial), abs(sent-initial)) <= MONITOR_RAD, "seed_quantization_excursion", "joint%d" % (i+1))
-    geom = copy.deepcopy(context["geometry"])
-    visual = type(geom) is dict and geom.get("schema") == VISUAL_GEOMETRY_SCHEMA
+    bands = joint_tolerances(feedback_policy, arm)
     rgb_deadline = None
     if visual:
         rgb_deadline = _visual_geometry(geom, identity, origin, now)
@@ -166,7 +207,7 @@ def plan_joint_initialization(context, *, now):
     rounding = [abs(a-b) for a, b in zip(requested, encoded)]
     # Exactly the legacy startup sweep: actual delta plus observation band and
     # quantization. No ordinary MOVE_J hold reserve or .05-radian budget added.
-    excursions = [abs(b-a)+MONITOR_RAD+error for a,b,error in zip(q0,encoded,rounding)]
+    excursions = [abs(b-a)+band+error for a,b,error,band in zip(q0,encoded,rounding,bands)]
     active_sweep = passive_sweep = relative = None
     if not visual:
         active_sweep = sum(r*d for r,d in zip(radii[arm],excursions))
@@ -175,19 +216,22 @@ def plan_joint_initialization(context, *, now):
         _need(relative <= clearance, "relative_sweep_exceeds_clearance")
     flange_radii = [r-STEP["link_body_allowance_m"] for r in _radii(model["mdh"],0.)]
     flange_bounds = {arm: sum(r*d for r,d in zip(flange_radii,excursions)),
-                     peer: sum(r*MONITOR_RAD for r in flange_radii)}
+                     peer: sum(r*b for r,b in zip(flange_radii,joint_tolerances(feedback_policy,peer)))}
     transient_band = TRANSIENT_BAND_RAD if visual else MONITOR_RAD
     tracking_policy = {"mode": "bounded_postsend_settling" if visual else "strict",
         "transient_band_rad": transient_band,
         "max_cumulative_outside_band_s": MAX_CUMULATIVE_OUTSIDE_BAND_S if visual else 0.,
         "max_origin_excursion_rad": STARTUP_RECOVERY["joint_excursion_rad"],
         "settle_tolerance_rad": MONITOR_RAD}
+    if feedback_policy is not None:
+        tracking_policy.pop("settle_tolerance_rad")
+        tracking_policy["settle_tolerances_rad"] = bands[:]
     # A separate RX-only interval, never an enlarged target or a send envelope.
     # Its half-width is the TOTAL .025 band, not .003 + .025. Hard feedback
     # limits, the frozen-origin cap and both measured 20 mm envelopes still
     # intersect this interval in the monitor. The adapter owns cumulative time.
-    strict_envelope = {"low_rad": [min(a,b)-MONITOR_RAD for a,b in zip(q0,requested)],
-                       "high_rad": [max(a,b)+MONITOR_RAD for a,b in zip(q0,requested)]}
+    strict_envelope = {"low_rad": [min(a,b)-band for a,b,band in zip(q0,requested,bands)],
+                       "high_rad": [max(a,b)+band for a,b,band in zip(q0,requested,bands)]}
     postsend_envelope = {
         "low_rad": [min(a,b)-transient_band for a,b in zip(q0,encoded)],
         "high_rad": [max(a,b)+transient_band for a,b in zip(q0,encoded)]} if visual else copy.deepcopy(strict_envelope)
@@ -201,6 +245,7 @@ def plan_joint_initialization(context, *, now):
                       and model_origin[side][i][3]+flange_bounds[side] <= hi
                       for i,(lo,hi) in enumerate(zip(wlo,whi))), "model_workspace_envelope", side)
     plan = {"schema": PLAN_SCHEMA, "purpose": purpose, "identity": identity,
+        "feedback_observation": feedback_policy,
         "origin": origin, "origin_sha256": context["origin_sha256"], "model": model,
         "sources": {**sources, "controller_limits": copy.deepcopy(context["controller_limits"]["source"])},
         "effective_joint_limits_rad": limits, "effective_joint_limits_raw": raw_limits,
@@ -236,6 +281,8 @@ def plan_joint_initialization(context, *, now):
         "scope": ("RGB-supervised local startup: visual corridor substitutes for unknown metric clearance and absolute workspace; "
                   if visual else "Metric-bounded supervised startup; ")+
                  "raw telemetry and physical-model FK remain independent; no TX, cache establishment, loaded hold, collision proof or physical stop"}
+    if target_selection is not None:
+        plan['target_selection'] = target_selection
     plan["plan_sha256"] = evidence_sha256(plan)
     validate_joint_initialization_sample(plan,current,now=now,phase="pre_dispatch")
     return plan
@@ -257,6 +304,8 @@ def validate_joint_initialization_sample(plan, sample, *, now, phase="active", m
     now = _num(now,"now")
     identity, origin = plan["identity"], plan["origin"]
     visual = plan["geometry"].get("schema") == VISUAL_GEOMETRY_SCHEMA
+    feedback_policy = validate_policy(plan.get("feedback_observation"))
+    _need(feedback_policy is None or visual, "feedback_policy_requires_rgb_latch_only")
     settling = phase == "settling"
     _need(not settling or visual and plan["tracking_policy"]["mode"] == "bounded_postsend_settling",
           "settling_requires_rgb_supervision")
@@ -281,7 +330,7 @@ def validate_joint_initialization_sample(plan, sample, *, now, phase="active", m
                       "recovery_excursion_limit")
             allowed_modes = (1,) if mode_confirmed else (base["arm_status"]["mode_feedback"],1)
         else:
-            _need(max(abs(a-b) for a,b in zip(q,start)) <= MONITOR_RAD, "stationary_joint_anchor", side)
+            _need(joints_within(feedback_policy, side, q, start), "stationary_joint_anchor", side)
             _need(state["arm_status"]["motion_status"] == 0, "stationary_motion_status", side)
             allowed_modes = (base["arm_status"]["mode_feedback"],)
         _need(state["arm_status"]["mode_feedback"] in allowed_modes, "movement_mode_changed", side)
@@ -293,8 +342,9 @@ def validate_joint_initialization_sample(plan, sample, *, now, phase="active", m
         model_pose = fk_matrix(plan["model"]["mdh"],q)
         model_m,model_r = _error(plan["model_original_flange_transform"][side],model_pose)
         max_m = RECOVERY["active_displacement_m"] if active else POSITION_STILL_M
-        _need(raw_m <= max_m and (active or raw_r <= ROTATION_STILL_RAD), "controller_relative_pose_envelope", side)
-        _need(model_m <= max_m and (active or model_r <= ROTATION_STILL_RAD), "model_relative_pose_envelope", side)
+        _need(raw_m <= max_m and (active or raw_r <= rotation_tolerance(feedback_policy,side)), "controller_relative_pose_envelope", side)
+        model_max_m, model_max_r = model_still_limits(feedback_policy, side, plan["model"]["mdh"], max_m,ROTATION_STILL_RAD)
+        _need(model_m <= (max_m if active else model_max_m) and (active or model_r <= model_max_r), "model_relative_pose_envelope", side)
         if not visual:
             wlo,whi = plan["geometry"]["workspace_min_m"],plan["geometry"]["workspace_max_m"]
             _need(all(lo <= model_pose[i][3] <= hi for i,(lo,hi) in enumerate(zip(wlo,whi))), "model_workspace_envelope", side)
@@ -317,7 +367,7 @@ def validate_joint_initialization_sample(plan, sample, *, now, phase="active", m
         _need(max(abs(a-b) for a,b in zip(states[arm]["joints_rad"],plan["encoded_target_joints_rad"])) <= STARTUP_RECOVERY["joint_excursion_rad"], "recovery_excursion_limit")
     joint_error=max(abs(a-b) for a,b in zip(states[arm]["joints_rad"],plan["encoded_target_joints_rad"]))
     target_observed=(phase in ("active", "settling") and mode_confirmed and states[arm]["arm_status"]["mode_feedback"] == 1
-        and states[arm]["arm_status"]["motion_status"] == 0 and joint_error <= MONITOR_RAD
+        and states[arm]["arm_status"]["motion_status"] == 0 and joints_within(feedback_policy, arm, states[arm]["joints_rad"],plan["encoded_target_joints_rad"])
         and target_m <= RECOVERY["fk_position_tolerance_m"] and target_r <= RECOVERY["fk_orientation_tolerance_rad"])
     return {"sample_id":sample["sample_id"], "origin_sha256":plan["origin_sha256"], "plan_sha256":claimed,
         "within_initialization_envelope":True, "arms":results, "strict_nominal":strict,

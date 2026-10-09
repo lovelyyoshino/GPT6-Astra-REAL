@@ -3,10 +3,11 @@
 No image interpretation, file access, robot construction or metric inference.
 The host owns saved-image validation and actual scene/target provenance.
 """
+from .task_roles import resolve_task_roles, role_fields
 
 INITIALIZATION_SCHEMA = "piper_rgb_supervised_initialization_v1"
 JOINT_PATH_SCHEMA = "piper_rgb_supervised_joint_path_v1"
-COARSE_JOINT_PATH_SCHEMA = "piper_rgb_supervised_coarse_approach_v1"
+COARSE_JOINT_PATH_SCHEMA = "piper_rgb_supervised_coarse_approach_v2"
 LOADED_JOINT_PATH_SCHEMA = "piper_rgb_supervised_loaded_joint_path_v1"
 LOADED_CONTEXT_SCHEMA = "piper_rgb_loaded_episode_v1"
 LOADED_OPERATIONS = ("extract_segment", "transport", "insert_segment")
@@ -19,15 +20,16 @@ def validate_loaded_context(context, identity, geometry):
     from .joint_path import _need, _num, _text, _hash, _vec, evidence_sha256
 
     _need(type(context) is dict and set(context) ==
-          {"schema", "event_id", "operation", "worker", "peer", "object_scene"}
+          {"schema", "event_id", "operation", "worker", "peer", "object_scene"} | set(role_fields(context))
           and context["schema"] == LOADED_CONTEXT_SCHEMA, "loaded_context_schema")
-    _need(identity["arm"] == "right", "loaded_worker_arm")
+    worker_arm, support_arm = resolve_task_roles(context)
+    _need(identity["arm"] == worker_arm, "loaded_worker_arm")
     _text(context["event_id"], "loaded event id")
     evidence = geometry["evidence"]
     _need(context["operation"] in LOADED_OPERATIONS
           and context["operation"] == evidence["operation"], "loaded_operation_mismatch")
     episode_fields = {"episode_id", "arm", "run_id", "owner", "epoch", "object_id"}
-    for role, arm in (("worker", "right"), ("peer", "left")):
+    for role, arm in (("worker", worker_arm), ("peer", support_arm)):
         item = context[role]
         _need(type(item) is dict and set(item) == {"identity", "revision", "probe_event_id",
               "probe_trace_sha256", "requested_width_m", "original_anchor", "local_anchor"},

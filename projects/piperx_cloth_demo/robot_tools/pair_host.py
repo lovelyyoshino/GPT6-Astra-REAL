@@ -7,6 +7,8 @@ Contact support is a device capability, never a caller-provided boolean.
 from __future__ import annotations
 
 import copy
+from .feedback_tolerance import PROFILE_KEY, task_policy, joints_within
+from .task_roles import PROFILE_KEY as TASK_ROLES_KEY, resolve_task_roles, role_fields
 import hashlib
 import json
 import math
@@ -20,7 +22,8 @@ from .execution import ExclusiveExecution, Journal
 from .fault_feedback import diagnostic_value
 from .host_grasp import GraspBindingError, HostGrasps
 from .grasp_episode import is_resolved_release
-from .pair_ledger import PairLedger, platform_fault, activated_execution_budget
+from .pair_ledger import (PairLedger, platform_fault, activated_execution_budget,
+                         initial_rx_round_requires_preparation)
 
 RGB_MAX_AGE_S = 30.0
 CONTACT_OPERATIONS = frozenset(("grip_supported", "grip_test", "extract_segment", "insert_segment",
@@ -31,6 +34,10 @@ OPERATIONS = CONTACT_OPERATIONS | frozenset(("approach", "align", "transport", "
 
 class PairHostError(RuntimeError):
     pass
+
+
+class _PairClosing(PairHostError):
+    """Expected guard refusal when a clean close interrupts an idle RX read."""
 
 
 class _RefreshRGBRequired(PairHostError):
@@ -56,11 +63,16 @@ class PairHost:
                  connection_mode="ready"):
         if type(connection_mode) is not str or connection_mode not in ("ready", "prepare"):
             raise ValueError("connection_mode must be ready or prepare")
-        if type(max_steps) is not int or not 1 <= max_steps <= 500:
-            raise ValueError("Pair max_steps must be a bounded positive integer (expanded cap 500)")
-        if (type(max_duration_s) not in (int, float) or not 0 < max_duration_s <= 3600
+        from .pair_task_enrollment import preparation_only
+        if preparation_only(Path(runs) / "pair_sessions.sqlite", run_id) and connection_mode != "prepare":
+            raise ValueError("This audited task enrollment requires a fresh preparation connection")
+        if initial_rx_round_requires_preparation(Path(runs) / "pair_sessions.sqlite", run_id) and connection_mode != "prepare":
+            raise ValueError("Initial RX recovery requires a fresh preparation connection")
+        if type(max_steps) is not int or not 1 <= max_steps <= 1000:
+            raise ValueError("Pair max_steps must be a bounded positive integer (expanded cap 1000)")
+        if (type(max_duration_s) not in (int, float) or not 0 < max_duration_s <= 10800
                 or not math.isfinite(max_duration_s)):
-            raise ValueError("Pair max_duration_s must be finite, positive and at most 3600")
+            raise ValueError("Pair max_duration_s must be finite, positive and at most 10800")
         if (max_steps > 128 or max_duration_s > 900) and not activated_execution_budget(
                 Path(runs) / "pair_sessions.sqlite", run_id,
                 max_steps=max_steps, max_duration_s=max_duration_s):
@@ -70,6 +82,11 @@ class PairHost:
         if (not isinstance(task, dict) or not isinstance(task.get("task_id"), str)
                 or not task["task_id"] or task.get("roles") != {"left": "task", "right": "task"}):
             raise ValueError("A frozen task_id and two task-arm roles are required")
+        resolve_task_roles(self.task)
+        if role_fields(self.task):
+            self.profile[TASK_ROLES_KEY] = role_fields(self.task)
+        else:
+            self.profile.pop(TASK_ROLES_KEY, None)
         clearance = task.get("site_context", {}).get("workspace_clearance", {})
         if (not isinstance(clearance, dict) or clearance.get("source") != "user"
                 or not isinstance(clearance.get("statement"), str) or not clearance["statement"].strip()):
@@ -77,6 +94,8 @@ class PairHost:
         if device_factory is None:
             from .pair_device import GuardedPairDevice
             device_factory = GuardedPairDevice
+        self.feedback_policy = task_policy(self.task)
+        self.profile[PROFILE_KEY] = copy.deepcopy(self.feedback_policy)
         self.factory, self.clock, self.background = device_factory, clock, background
         self.connection_mode = connection_mode
         self.task_ready, self.readiness = False, None
@@ -91,14 +110,18 @@ class PairHost:
         sources = ("pair_host.py", "pair_device.py", "pair_ledger.py", "single_supervised_actions.py",
                    "supervised_actions.py", "linear_hold.py", "takeover.py", "home_arm.py",
                    "single_gripper_prepare.py", "arms.py", "execution.py", "service.py", "server.py",
-                   "contact_receipt.py", "fault_feedback.py", "motion_effect.py",
+                   "contact_receipt.py", "supported_contact_measurement.py", "fault_feedback.py", "motion_effect.py",
                    "host_grasp.py", "grasp_store.py", "grasp_episode.py", "retention_receipt.py",
                    "host_joint.py", "pair_joint_adapter.py", "joint_path.py", "joint_geometry.py",
                    "hold_transaction.py", "model_compatibility.py", "pair_preparation.py", "pair_limits.py", "joint_sources.py",
                    "joint_initialization.py", "pair_initialization.py", "joint_ingress.py",
                    "joint_model_bounds.py", "site_geometry_records.py", "rgb_supervision.py",
                    "tracking_observation.py", "host_loaded.py", "loaded_episode.py", "pair_restart.py", "pair_round.py",
-                   "pair_continuation.py")
+                   "pair_continuation.py", "pair_task_enrollment.py", "reboot_startup.py", "arm_power_cycle.py", "feedback_tolerance.py",
+                   "preparation_continuation.py", "coherent_feedback.py", "feedback_continuation.py",
+                   "initialization_continuation.py", "endpoint_continuation.py", "task_roles.py", "plug_recipe.py",
+                   "controller_limits.py", "configuration_recovery.py", "round_rgb_continuation.py", "manual_gripper_continuation.py",
+                   "supported_gripper_recovery.py", "host_recovery.py", "startup_reset.py", "gripper_zero.py")
         code = {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in sources}
         contract = {"task": self.task, "arms": self.profile["arms"], "cameras": self.profile["cameras"],
                     "sdk_commit_audited": self.profile.get("sdk_commit_audited"), "code": code}
@@ -115,6 +138,7 @@ class PairHost:
         self._fault_record_lock = threading.Lock()
         self._fault_record_attempted = False
         self._fault_reason = self._fault_record_error = None
+        self._failure_receipt_persistence_error = None
         self._feedback_lock = threading.Lock()
         self._fault_feedback = None
         self._fault_feedback_journal_error = None
@@ -151,6 +175,25 @@ class PairHost:
         finally:
             self._fault_record_lock.release()
 
+    def _finish_failed_receipt(self, event_id, receipt):
+        """Use the success path's JSON boundary without hiding persistence loss.
+
+        SDK IntEnum/finite scalar values may serialize as ordinary JSON even
+        though the ledger deliberately accepts only exact built-in types.
+        Nonfinite/unserializable evidence remains rejected and the original
+        receipt is retained in memory; never scrub it or retry a claimed step.
+        """
+        stage = "normalize"
+        try:
+            receipt = json.loads(json.dumps(receipt, allow_nan=False))
+            stage = "ledger_finish"
+            self.ledger.finish(self.owner, event_id, receipt, success=False)
+        except Exception as exc:
+            self._failure_receipt_persistence_error = {
+                "event_id": event_id, "stage": stage,
+                "type": type(exc).__name__, "detail": str(exc)[:4096]}
+        return receipt
+
     def _guard(self):
         with self.guard_lock:
             return self._guard_locked()
@@ -165,8 +208,10 @@ class PairHost:
         self._check_guard_context()
 
     def _check_guard_context(self):
-        if self.fault_event.is_set() or self.quit_event.is_set():
+        if self.fault_event.is_set():
             raise PairHostError("Pair latched or closing; no further target frames")
+        if self.quit_event.is_set():
+            raise _PairClosing("Pair closing; no further target frames")
         now = self.clock()
         if type(now) not in (int, float) or not math.isfinite(now) or now < 0:
             self._fault("Invalid clock during pair feedback or frame dispatch")
@@ -178,8 +223,10 @@ class PairHost:
         if self.active_event_id is not None and self.dispatch_rgb_deadline is not None and now > self.dispatch_rgb_deadline:
             self._fault("RGB shared scene expired before the next guarded operation")
             raise PairHostError("Pair RGB scene is stale")
-        if self.fault_event.is_set() or self.quit_event.is_set():
+        if self.fault_event.is_set():
             raise PairHostError("Pair latched or closing; no further target frames")
+        if self.quit_event.is_set():
+            raise _PairClosing("Pair closing; no further target frames")
 
     @property
     def capabilities(self):
@@ -213,6 +260,9 @@ class PairHost:
         self.lease.__enter__()
         claimed = False
         try:
+            from .pair_task_enrollment import preparation_only
+            if preparation_only(self.runs / "pair_sessions.sqlite", self.run_id) and self.connection_mode != "prepare":
+                raise PairHostError("This audited task enrollment requires a fresh preparation connection")
             self.ledger.claim(self.owner)
             claimed = True
             self.device = self.factory(self.profile, lambda event, data: self.journal.append(event, **data), self._guard)
@@ -280,6 +330,10 @@ class PairHost:
                 elif self.active_event_id is None:
                     self._guard()
                     self._sample(self.device.observe())
+        except _PairClosing:
+            # close() has already blocked new work. A read interrupted by its
+            # own guard is not a device fault; other errors still latch below.
+            pass
         except Exception as exc:
             self._fault("Idle monitor: " + str(exc))
         finally:
@@ -457,7 +511,7 @@ class PairHost:
 
     def _joint_context(self, event_id, payload, scene):
         """Resolve non-proposal facts before claiming the physical attempt."""
-        from .joint_path import SCHEMA, evidence_sha256, plan_joint_path, encode_joint_target
+        from .joint_path import SCHEMA, COARSE_PROFILE_LIMITS, evidence_sha256, plan_joint_path, encode_joint_target
         loaded = payload.get("loaded_observation") is not None
         coarse = payload.get("motion_profile") == "coarse_approach"
         if payload["operation"] not in ("approach", "align", "release_retreat", "extract_segment", "transport", "insert_segment"):
@@ -487,7 +541,7 @@ class PairHost:
             raise PairHostError("Source provider has no explicit ordinary RGB joint basis")
         sources = resolver(resolved_scene, arm)
         if visual:
-            refresh = self._rgb_dispatch_window(scene, event_id, "after_source_resolution")
+            refresh = self._rgb_dispatch_window(scene, event_id, "after_source_resolution", payload.get("motion_profile"))
             if refresh is not None:
                 raise _RefreshRGBRequired(refresh)
         required_sources = {"model_catalog", "urdf_source", "controller_limits"}
@@ -521,14 +575,16 @@ class PairHost:
         context = {"schema": SCHEMA, "identity": identity, **copy.deepcopy(sources),
                    "origin": origin, "origin_sha256": evidence_sha256(origin), "current": copy.deepcopy(origin),
                    "cached_target": copy.deepcopy(binding["cached_target"]),
-                   "budget": {"max_translation_m": .035 if coarse else .020,
-                              "max_rotation_rad": .08 if coarse else .05}, "unloaded_evidence": None}
+                   "budget": {"max_translation_m": COARSE_PROFILE_LIMITS["process_translation_m"] if coarse else .020,
+                              "max_rotation_rad": COARSE_PROFILE_LIMITS["process_rotation_rad"] if coarse else .05}, "unloaded_evidence": None}
         context["geometry"]["origin_sample_id"] = origin["sample_id"]
         if loaded:
             context["loaded_context"] = loaded_context
         if visual and not loaded:
             context["unloaded_evidence"] = {"origin_sample_id": origin["sample_id"],
                                            "source": copy.deepcopy(sources["geometry"]["source"])}
+        if self.feedback_policy is not None:
+            context["feedback_observation"] = copy.deepcopy(self.feedback_policy)
         initialization_sources = getattr(self.device, "joint_initialization_sources", None)
         if callable(initialization_sources):
             context["initialization_sources"] = initialization_sources()
@@ -568,32 +624,38 @@ class PairHost:
                 and receipt["hardware_commands_sent"] == 0 and receipt.get("fault_latched") is False
                 and type(receipt.get("requirements")) is list and bool(receipt["requirements"]))
 
-    def _preparation_idle(self):
+    def _preparation_idle(self, *, recovery_observation=False):
         if not self.opened or self.active_event_id is not None:
             raise PairHostError("Open idle pair host required for preparation or queries")
         self._guard()
+        if not recovery_observation:
+            from .host_recovery import SupportedRecovery
+            SupportedRecovery(self).require_resolved()
         if any(self.grasp_states.values()) or any(
                 state["status"] != "empty" and not is_resolved_release(state) for state in self.grasps.states()):
             raise PairHostError("Preparation/query cannot run with an unresolved or retained grasp")
 
-    def _rgb_dispatch_window(self, scene, event_id, stage):
+    def _rgb_dispatch_window(self, scene, event_id, stage, motion_profile=None):
         """Reject an impossible RGB window before claiming any physical attempt.
 
-        The existing baseline and final stable windows are only a necessary
-        minimum, not a prediction or guarantee of movement/IO completion.
+        Reserve the baseline plus the finite-motion/IO and final-stability
+        minimum. This does not promise completion or reserve the full maximum
+        observation timeout; the original live deadlines remain authoritative.
         No scene timestamp, task budget, event or grasp state is changed.
         """
-        from .single_supervised_actions import BOUNDS
+        from .pair_joint_adapter import rgb_joint_execution_window_budget
         self._check_guard_context()
         deadline = scene["rgb_received_at"] + RGB_MAX_AGE_S
         remaining = deadline - self.last_clock
-        required = 2 * BOUNDS["stable_s"]
+        budget = rgb_joint_execution_window_budget(motion_profile)
+        required = budget["preclaim_required_s"]
         if remaining > required:
             return None
         return {"status": "refresh_required", "reason": "insufficient_rgb_execution_window",
             "event_id": event_id, "observation_id": scene["observation_id"], "stage": stage,
             "rgb_deadline": deadline, "remaining_rgb_window_s": remaining,
             "required_rgb_window_s": required, "window_is_completion_guarantee": False,
+            "execution_window_budget": budget,
             "hardware_commands_sent": 0, "event_claimed": False, "steps_consumed": 0,
             "fault_latched": False, "automatic_retry": False}
 
@@ -836,6 +898,8 @@ class PairHost:
                            "source": {"ref": "pair_event:"+event_id+":unloaded_observation",
                                       "sha256": evidence_sha256(semantic_evidence)}}}
             context["geometry"]["origin_sample_id"] = origin["sample_id"]
+            if self.feedback_policy is not None:
+                context["feedback_observation"] = copy.deepcopy(self.feedback_policy)
             plan = plan_joint_initialization(context, now=self.clock())
             peer = "right" if arm == "left" else "left"
             payload = {"kind": "initialization", "request": request, "bindings": bindings,
@@ -971,6 +1035,16 @@ class PairHost:
                         receipt["source_publication"] = publication
                         self.joint_sources_diagnostic = None
                     receipt["sample"] = self._sample(self.device.observe())
+                elif operation in ("supported_recovery_open", "supported_recovery_confirm"):
+                    from .host_recovery import SupportedRecovery
+                    receipt = SupportedRecovery(self).execute(operation, payload)
+                    if receipt.get("ok") is not True:
+                        raise PairHostError("Supported jaw recovery failed; no automatic retry")
+                elif operation == "supported_contact_observe":
+                    from .host_recovery import SupportedRecovery
+                    receipt = SupportedRecovery(self).execute_contact_observation(payload)
+                    if receipt.get("ok") is not True:
+                        raise PairHostError("Current supported contact observation failed; no automatic retry")
                 else:
                     raise PairHostError("Unknown claimed preparation operation")
                 self._guard()
@@ -978,14 +1052,13 @@ class PairHost:
                     "execution_mode": operation, "object_task_success": None,
                     "physical_stop_verified": None}, allow_nan=False))
                 self.ledger.finish(self.owner, event_id, receipt, success=True)
+                if operation == "supported_contact_observe":
+                    self.grasps.record_observed_candidate(event_id, payload, receipt)
         except BaseException as exc:
             self._fault("Claimed preparation/query failed or uncertain: " + str(exc))
             receipt = {"ok": False, "event_id": event_id, "error": str(exc),
                        "device_receipt": receipt, "physical_stop_verified": None, "automatic_retry": False}
-            try:
-                self.ledger.finish(self.owner, event_id, receipt, success=False)
-            except Exception:
-                pass
+            receipt = self._finish_failed_receipt(event_id, receipt)
         finally:
             with self.state_lock:
                 try:
@@ -998,7 +1071,7 @@ class PairHost:
 
     def promote_ready(self):
         with self.state_lock:
-            self._preparation_idle()
+            self._preparation_idle(recovery_observation=True)
             if not callable(getattr(self.device, "promote_ready", None)):
                 raise PairHostError("Device has no same-connection readiness transition")
             try:
@@ -1023,13 +1096,30 @@ class PairHost:
                release_retreat_observation=None, admission_mode=None,
                unloaded_observation=None, corridor_observation=None, loaded_observation=None,
                source_object_id=None, target_object_id=None, motion_profile=None,
-               far_from_target_observation=None):
+               far_from_target_observation=None, probe_support_observation=None,
+               probe_support_relation=None):
+        from .host_recovery import SupportedRecovery
+        recovery = SupportedRecovery(self).admit_probe(arm, kind, operation, grasp_object_id,
+            probe_support_observation, probe_support_relation)
         event_id = _identifier(event_id, "event_id")
         if arm not in ("left", "right") or operation not in OPERATIONS:
             raise PairHostError("Explicit arm and supported operation required")
+        if self.feedback_policy is not None and kind == "move":
+            raise PairHostError("Task observation profile requires RGB-supervised joint motion")
         target = self._target(kind, target)
         payload = {"observation_id": observation_id, "peer_receipt_id": peer_receipt_id,
                    "arm": arm, "kind": kind, "target": target, "operation": operation}
+        if probe_support_observation is not None or probe_support_relation is not None:
+            if (kind != 'gripper' or operation != 'grip_supported'
+                    or type(probe_support_observation) is not str
+                    or not 1 <= len(probe_support_observation.strip()) <= 4000
+                    or '\x00' in probe_support_observation
+                    or probe_support_relation != 'independent_support_present'):
+                raise PairHostError('Support description applies only to a supported jaw probe')
+            payload.update(probe_support_observation=probe_support_observation,
+                           probe_support_relation=probe_support_relation)
+        if recovery is not None:
+            payload['reacquisition_proposal_sha256'] = recovery['proposal']['proposal_sha256']
         loaded = any(v is not None for v in (loaded_observation, source_object_id, target_object_id))
         coarse = motion_profile is not None or far_from_target_observation is not None
         if coarse:
@@ -1048,9 +1138,9 @@ class PairHost:
             raise PairHostError("Loaded joint operations require their explicit current RGB grasp branch")
         if loaded:
             from .loaded_episode import OPERATIONS as LOADED_OPERATIONS
-            if (arm != "right" or kind != "joint" or operation not in LOADED_OPERATIONS
+            if (arm != resolve_task_roles(self.task)[0] or kind != "joint" or operation not in LOADED_OPERATIONS
                     or admission_mode != "rgb_supervised" or unloaded_observation is not None):
-                raise PairHostError("Explicit RGB loaded right-joint extract/transport/insert required")
+                raise PairHostError("Explicit RGB loaded frozen-worker joint extract/transport/insert required")
             for description in (loaded_observation, corridor_observation):
                 if type(description) is not str or not 1 <= len(description.strip()) <= 4000 or "\x00" in description:
                     raise PairHostError("Describe current retained plug, fixed strip and whole-arm corridor")
@@ -1128,7 +1218,7 @@ class PairHost:
                     or (not visual_joint and self.clock()-scene["rgb_received_at"] > RGB_MAX_AGE_S)):
                 raise PairHostError("Current host-issued shared scene and independent peer receipt required")
             if visual_joint:
-                refresh = self._rgb_dispatch_window(scene, event_id, "before_source_resolution")
+                refresh = self._rgb_dispatch_window(scene, event_id, "before_source_resolution", payload.get("motion_profile"))
                 if refresh is not None:
                     return refresh
             pending_contact = self.unresolved_gripper_probe
@@ -1194,8 +1284,10 @@ class PairHost:
                 except _RefreshRGBRequired as exc:
                     return exc.receipt
                 execution_mode = "joint"
-            if visual_joint:
-                refresh = self._rgb_dispatch_window(scene, event_id, "before_claim")
+            if visual_joint or execution_mode in ("contact_probe", "contact_probe_release"):
+                # Contact also needs baseline/response time. Insufficient RGB
+                # reserve is a refresh request before any episode or claim.
+                refresh = self._rgb_dispatch_window(scene, event_id, "before_claim", payload.get("motion_profile"))
                 if refresh is not None:
                     return refresh
             if execution_mode == "contact_probe":
@@ -1250,7 +1342,8 @@ class PairHost:
                         context=joint_context, event_id=event_id, deadline_at=self.deadline,
                         operation=payload["operation"], hold_bridge=self.active_joint_bridge)
                 elif execution_mode == "contact_probe":
-                    receipt = self.device.execute_gripper_probe(payload["arm"], payload["target"])
+                    from .host_recovery import SupportedRecovery
+                    receipt = SupportedRecovery(self).execute_probe(payload)
                 elif execution_mode == "contact_probe_release":
                     receipt = self.device.release_gripper_probe(payload["arm"], payload["target"])
                 else:
@@ -1274,7 +1367,7 @@ class PairHost:
                     encoded = (receipt.get("joint_path_plan") or {}).get("encoded_target_joints_rad")
                     if (type(after) is not list or type(encoded) is not list or len(after) != 6 or len(encoded) != 6
                             or any(type(v) not in (int, float) or not math.isfinite(v) for v in after+encoded)
-                            or max(abs(a-b) for a, b in zip(after, encoded)) > .003):
+                            or not joints_within(self.feedback_policy, payload["arm"], after, encoded)):
                         raise PairHostError("Missing fresh joint arrival within the encoded-target tolerance")
                     values = (0., 0.)  # Cartesian arrival is not a joint receipt requirement.
                 else:
@@ -1336,10 +1429,7 @@ class PairHost:
             receipt = {"ok": False, "event_id": event_id, "error": str(exc),
                        "device_receipt": receipt, "physical_stop_verified": None,
                        "automatic_retry": False}
-            try:
-                self.ledger.finish(self.owner, event_id, receipt, success=False)
-            except Exception:
-                pass
+            receipt = self._finish_failed_receipt(event_id, receipt)
         finally:
             with self.state_lock:
                 try:
@@ -1374,6 +1464,8 @@ class PairHost:
             self._guard()
             if not self.task_ready:
                 raise PairHostError("Pair preparation incomplete; task readiness required for retention")
+            from .host_recovery import SupportedRecovery
+            SupportedRecovery(self).check_retention(episode_id)
             return self.grasps.retain(event_id, episode_id, observation_id, visual_description,
                                       object_relation, support_relation)
 
@@ -1401,7 +1493,10 @@ class PairHost:
                     return {"event_id": event_id, "status": "pending" if stored["status"] == "pending"
                             else ("completed" if stored["success"] else "fault"), "receipt": stored["receipt"],
                             "recorded_owner": stored["owner"]}
-                return {"event_id": event_id, "status": action["status"], "receipt": copy.deepcopy(action["receipt"])}
+                persistence_error = self._failure_receipt_persistence_error
+                return {"event_id": event_id, "status": action["status"], "receipt": copy.deepcopy(action["receipt"]),
+                        "failure_receipt_persistence_error": copy.deepcopy(persistence_error)
+                            if persistence_error is not None and persistence_error["event_id"] == event_id else None}
             try:
                 # Diagnostic polling must not append clock faults or renew
                 # ledger time after dispatch has already been latched.
@@ -1432,6 +1527,7 @@ class PairHost:
                     "grasp_states": self.grasp_states,
                     "grasp_episodes": grasp_episodes, "grasp_read_error": grasp_error,
                     "fault_reason": self._fault_reason, "fault_record_error": self._fault_record_error,
+                    "failure_receipt_persistence_error": copy.deepcopy(self._failure_receipt_persistence_error),
                     "fault_feedback": feedback,
                     "fault_feedback_read_state": ("closed" if not self.opened or self.quit_event.is_set()
                         else "deferred_active_action" if self.active_event_id is not None and
@@ -1476,6 +1572,8 @@ class PairHost:
         try:
             if self.device is not None:
                 try:
+                    from .host_recovery import SupportedRecovery
+                    SupportedRecovery(self).require_resolved()
                     if any(s["status"] != "empty" and not is_resolved_release(s) for s in self.grasps.states()):
                         self._fault("Closing with durable unreleased grasp; target state remains unresolved")
                 except Exception as exc:

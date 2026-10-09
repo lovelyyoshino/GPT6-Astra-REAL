@@ -12,19 +12,51 @@ class _JointLimitsInspection(_FirmwareInspection):
     FRAME_KINDS = tuple("joint_%d" % i for i in range(1, 7))
     SCOPE = "One manufacturer angle/velocity limit query per joint per arm; no configuration or actuation"
 
-    def __init__(self, profile, journal_callback):
+    def __init__(self, profile, journal_callback, arm=None):
+        if arm is not None and arm not in SIDES:
+            raise ValueError('Explicit left/right query arm required')
+        self.query_arm = arm
+        self.query_sides = (arm,) if arm is not None else SIDES
+        self.query_enable_states = {}
+        if arm is not None:
+            self.CONTROL_MODES = (0, 1, 2)
         super().__init__(profile, journal_callback)
         self.windows = {side: {} for side in SIDES}
         self.active_joint = dict.fromkeys(SIDES)
         self.report.pop("firmware")
-        self.report.update(operation="inspect_joint_limits", joint_limits={side: {} for side in SIDES},
+        self.report.update(operation="inspect_joint_limits", selected_arm=arm,
+                           query_sides=list(self.query_sides),
+                           joint_limits={side: {} for side in SIDES},
                            controller_limits_changed=False, sdk_joint_limits_changed=False,
                            limits_are_motion_permission=False,
                            speed_unit_note="Manufacturer parser scales raw speed by 0.01 rad/s; "
                                            "message comments say 0.001 rad/s. Both raw and SDK values "
                                            "are retained; this query does not authorize a speed.")
 
+    def connect(self):
+        super().connect()
+        if self.query_arm is not None:
+            from .coherent_feedback import install
+            for side, robot in self.robots.items():
+                if self.profile['arms'][side]['model'] == 'piper_x':
+                    install(robot)
+
+    def check_enable_state(self, side, state):
+        if self.query_arm is None:
+            return super().check_enable_state(side, state)
+        flags = [state['drivers'][str(i)]['foc_status'].get('driver_enable_status')
+                 for i in range(1,7)] + [state['gripper']['foc_status'].get('driver_enable_status')]
+        if any(type(x) is not bool for x in flags):
+            raise RuntimeError('Joint-limit query requires known enable flags')
+        if side == self.query_arm and (not all(flags[:6]) or state['arm_status']['ctrl_mode'] != 1):
+            raise RuntimeError('Selected query arm requires enabled joints and CAN control')
+        if side in self.query_enable_states and self.query_enable_states[side] != flags:
+            raise RuntimeError('Joint-limit query observed changed enable flags')
+        self.query_enable_states[side] = flags
+
     def frame_spec(self, kind, side):
+        if side not in self.query_sides:
+            raise RuntimeError('Unselected arm TX forbidden during joint-limit query')
         if kind not in self.FRAME_KINDS:
             raise RuntimeError("Joint limit inspection exposes only fixed query frames")
         return 0x472, bytes((self.FRAME_KINDS.index(kind) + 1, 1, 0, 0, 0, 0, 0, 0))
@@ -153,7 +185,7 @@ class _JointLimitsInspection(_FirmwareInspection):
         self.emit("joint_limits_received", {"side": side, "joint_index": joint, "result": entry})
 
     def perform(self):
-        for side in SIDES:
+        for side in self.query_sides:
             for joint in range(1, 7):
                 self.query_joint(side, joint)
         self.checked(self.read())
@@ -171,7 +203,7 @@ class _JointLimitsInspection(_FirmwareInspection):
         return report
 
 
-def inspect_joint_limits(profile, journal_callback):
+def inspect_joint_limits(profile, journal_callback, arm=None):
     """Query at most twelve joint limits under the caller's exclusive device lock.
 
     Reuses firmware inspection's fresh CAN-controlled/enabled/fault-free state
@@ -181,4 +213,4 @@ def inspect_joint_limits(profile, journal_callback):
     """
     if not callable(journal_callback):
         raise TypeError("A synchronous journal_callback(event, data) is required")
-    return _JointLimitsInspection(profile, journal_callback).run()
+    return _JointLimitsInspection(profile, journal_callback, arm).run()

@@ -140,7 +140,7 @@ class HostRGBJointTests(unittest.TestCase):
         with patch.object(self.sources, "rgb_joint_basis", side_effect=AssertionError("Must reject before IO")):
             result = self.service.call(TOOL, request)
         self.assertEqual(result["status"], "refresh_required")
-        self.assertEqual(result["required_rgb_window_s"], 6.)
+        self.assertEqual(result["required_rgb_window_s"], 12.)
         self.assertFalse(result["event_claimed"])
         self.assertFalse(result["fault_latched"])
         self.assert_no_claim(request, before)
@@ -151,13 +151,44 @@ class HostRGBJointTests(unittest.TestCase):
         self.assertEqual(completed["status"], "completed", completed.get("receipt"))
         self.assertEqual(self.host.ledger.peek_status()["steps"], 5)
 
+    def test_claim_reserves_motion_time_and_rejects_exact_minimum_without_claim(self):
+        self.prepared()
+        for index, remaining in enumerate((7.905, 11.999, 12.0)):
+            request = self.step(event="short-window-%d" % index)
+            before = self.frame_record()
+            rgb_deadline = self.host.latest["rgb_received_at"] + 30.
+            self.clock.sleep(rgb_deadline-self.clock.time()-remaining)
+            with patch.object(self.sources, "rgb_joint_basis", side_effect=AssertionError("No source IO")):
+                result = self.service.call(TOOL, request)
+            self.assertEqual(result["status"], "refresh_required")
+            self.assertEqual(result["required_rgb_window_s"], 12.)
+            self.assertEqual(result["rgb_deadline"], rgb_deadline)
+            self.assertEqual(result["steps_consumed"], 0)
+            self.assertFalse(result["fault_latched"])
+            self.assertFalse(result["execution_window_budget"]["covers_full_observation_timeout"])
+            self.assertEqual(result["execution_window_budget"]["postsend_observation_timeout_s"], 20.)
+            self.assert_no_claim(request, before)
+
+    def test_just_enough_claim_window_still_dispatches_once(self):
+        self.prepared()
+        request = self.step()
+        before, peer_before = len(self.ids("right")), self.ids("left")
+        rgb_deadline = self.host.latest["rgb_received_at"] + 30.
+        self.clock.sleep(rgb_deadline-self.clock.time()-12.1)
+        result = self.execute(request)
+        self.assertEqual(result["status"], "completed", result.get("receipt"))
+        self.assertEqual(self.ids("right")[before:], [0x151, 0x155, 0x156, 0x157])
+        self.assertEqual(self.ids("left"), peer_before)
+        self.assertEqual(result["receipt"]["rgb_dispatch_window"]["rgb_deadline"], rgb_deadline)
+        self.assertEqual(result["receipt"]["rgb_dispatch_window"]["required_postsend_window_s"], 9.)
+
     def test_source_cost_rechecks_window_before_claim(self):
         self.prepared()
         request, before = self.step(), self.frame_record()
         original = self.sources.rgb_joint_basis
         def delayed(scene, arm):
             result = original(scene, arm)
-            self.clock.sleep(24.1)
+            self.clock.sleep(18.1)
             return result
         with patch.object(self.sources, "rgb_joint_basis", side_effect=delayed):
             result = self.service.call(TOOL, request)
@@ -172,7 +203,7 @@ class HostRGBJointTests(unittest.TestCase):
         original = self.host._joint_context
         def delayed(*args):
             result = original(*args)
-            self.clock.sleep(24.1)
+            self.clock.sleep(18.1)
             return result
         with patch.object(self.host, "_joint_context", side_effect=delayed):
             result = self.service.call(TOOL, request)
@@ -187,7 +218,7 @@ class HostRGBJointTests(unittest.TestCase):
         original = self.host.ledger.begin
         def delayed(*args):
             result = original(*args)
-            self.clock.sleep(24.1)
+            self.clock.sleep(19.)
             return result
         with patch.object(self.host.ledger, "begin", side_effect=delayed):
             result = self.execute(request)
@@ -198,6 +229,8 @@ class HostRGBJointTests(unittest.TestCase):
         receipt = result["receipt"]["device_receipt"]
         self.assertEqual(receipt["hardware_commands_sent"], 0)
         self.assertIn("insufficient_rgb_postsend_window", str(receipt["errors"]))
+        self.assertGreater(receipt["rgb_dispatch_window"]["remaining_rgb_window_s"], 3.)
+        self.assertLess(receipt["rgb_dispatch_window"]["remaining_rgb_window_s"], 9.)
         self.assertFalse(receipt["rgb_dispatch_window"]["claimed_event_or_budget_released"])
         self.assertTrue(self.service.call(TOOL, request)["replayed"])
         self.assertEqual(self.frame_record(), before)

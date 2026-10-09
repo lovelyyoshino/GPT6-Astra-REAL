@@ -132,7 +132,7 @@ class PlugTransferRecipeTests(unittest.TestCase):
             current = reopened.current("plug-transfer", include_contract=True)
             self.assertEqual(current["next"], report["next"])
             self.assertEqual(current["contract"]["roles"]["peer_arm"], "left")
-            self.assertEqual(current["seconds_left"], 893.)
+            self.assertEqual(current["seconds_left"], 10793.)
             self.assertEqual(current["contract_sha256"], report["contract_sha256"])
             event = synthetic_receipt(current, current["cycles"] + 1)
             event.update(status="unknown", evidence=[], partial_send=True)

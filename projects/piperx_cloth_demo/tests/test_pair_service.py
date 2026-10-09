@@ -125,7 +125,8 @@ class PairServiceTests(unittest.TestCase):
         self.assertEqual(set(specs), {"robot_pair_" + suffix for suffix in
                          ("open", "observe", "submit_once", "retain_grasp", "confirm_release", "status", "cancel", "close",
                           "prepare_gripper", "inspect_joint_limits", "promote_ready",
-                          "initialize_joint_target", "publish_geometry", "confirm_loaded_response")})
+                          "initialize_joint_target", "publish_geometry", "confirm_loaded_response",
+                          "recover_supported_gripper", "confirm_recovery_release", "observe_supported_contact")})
         for spec in specs.values():
             self.assertFalse(spec["inputSchema"]["additionalProperties"])
         for field in ("peer_held", "contact_step_supported", "physical_stop_verified",
@@ -148,16 +149,16 @@ class PairServiceTests(unittest.TestCase):
 
     def test_explicit_budget_schema_reaches_host_but_does_not_grant_a_new_epoch(self):
         self.service.persistent = True
-        args = {**OPEN, "max_steps":500, "max_duration_s":3600}
+        args = {**OPEN, "max_steps":1000, "max_duration_s":10800}
         with patch("robot_tools.pair_host.PairHost", return_value=self.host) as constructor:
             self.service.call("robot_pair_open", args)
-        self.assertEqual(constructor.call_args.args[4:6], (500,3600))
+        self.assertEqual(constructor.call_args.args[4:6], (1000,10800))
         self.service.pair_host = None
         with self.assertRaisesRegex(ValueError, "explicitly activated"):
             self.service.call("robot_pair_open", args)
         self.assertIsNone(self.service.pair_host)
         self.assertFalse((self.root/"runs/pair_sessions.sqlite").exists())
-        for changed in ({"max_steps":501}, {"max_duration_s":3601}):
+        for changed in ({"max_steps":1001}, {"max_duration_s":10801}):
             with patch("robot_tools.pair_host.PairHost") as constructor, self.assertRaises(ValueError):
                 self.service.call("robot_pair_open", {**args, **changed})
             constructor.assert_not_called()

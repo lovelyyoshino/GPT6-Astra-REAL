@@ -113,6 +113,39 @@ class HostGrasps:
             os.close(fd)
         return sha
 
+    def record_observed_candidate(self, event_id, payload, receipt):
+        """Bind a new zero-TX observation without rewriting the earlier failed send."""
+        state = self.active(payload["arm"])
+        stored = self.host.ledger.event(event_id)
+        if (state is None or state["status"] != "empty" or stored is None
+                or stored["status"] != "complete" or not stored["success"]
+                or stored["payload"] != payload or stored["receipt"] != receipt
+                or receipt.get("candidate_basis") != "existing_target_observation"):
+            raise ValueError("Observed candidate requires this owner's exact completed zero-TX event")
+        request = payload["request"]
+        candidate = copy.deepcopy(receipt["current_contact_candidate"])
+        if candidate["existing_target_ref"]["event_id"] != payload["source_event_id"]:
+            raise ValueError("Observed candidate cannot replace the audited existing target")
+        for key, value in (("identity", state["identity"]), ("event_id", event_id),
+                           ("observation_id", request["observation_id"]),
+                           ("requested_width_m", candidate["existing_target_ref"]["requested_width_m"])):
+            if key in candidate and candidate[key] != value:
+                raise ValueError("Observed candidate binding changed " + key)
+            candidate[key] = copy.deepcopy(value)
+        measurement = self.bind_measurement(receipt["candidate_measurement"], state, event_id)
+        scene = self.scene(state, request["observation_id"])
+        visual = {"identity": state["identity"], "evidence_id": "visual_"+uuid.uuid4().hex,
+                  "observation_id": scene["observation_id"], "source": "rgb_and_user_contact_observation",
+                  "producer_ref": "outer_codex_rgb_and_user_contact_report", "object_relation": request["contact_relation"],
+                  "support_relation": request["support_relation"],
+                  "bilateral_contact_source": copy.deepcopy(receipt["audited_existing_contact"]["bilateral_contact_source"])}
+        visual["artifact_sha256"] = self._artifact({**visual, "scene": scene,
+            "visual_description": request["visual_description"],
+            "observation_proposal_sha256": payload["observation_proposal_sha256"],
+            "independent_visual_verification": False})
+        return self.append(state, "observed_candidate_"+uuid.uuid4().hex, "record_observed_candidate",
+            {"candidate": candidate, "measurement": measurement, "scene": scene, "visual": visual})
+
     def scene(self, state, observation_id):
         latest = self.host.latest
         if latest is None or latest["observation_id"] != observation_id:

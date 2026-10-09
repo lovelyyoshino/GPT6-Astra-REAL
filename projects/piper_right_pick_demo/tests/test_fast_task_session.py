@@ -8,6 +8,7 @@
   - v1.0.0 (2026-10-07): 验证重启、重复事件、角色分支、事务冲突和总预算。
 """
 from concurrent.futures import ThreadPoolExecutor
+import copy
 import json
 from pathlib import Path
 import sqlite3
@@ -15,7 +16,9 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
+from right_pick import fast_task_pipeline, fast_task_spec
 from right_pick.fast_task_pipeline import BoundedTaskPipeline, TASK_RECIPES
 from right_pick.fast_task_session import TaskSessionStore
 
@@ -47,6 +50,55 @@ class PersistentTaskTests(unittest.TestCase):
         return self.store.append(report["run_id"], expected_revision=report["revision"],
                                  event_id="cycle-" + str(number), kind="cycle",
                                  payload=receipt(report, number, **changes))
+
+    def test_legacy_default_budget_reopens_without_changing_frozen_history(self):
+        definition = dict(schema_version="astra_recipe_v1", task_id="legacy-recipe",
+                          initial_condition="Marker rests on table", goal="Inspect marker",
+                          constraints=[], steps=[dict(id="look", operation="inspect", goal="Inspect marker"),
+                                                  dict(id="verify", operation="stable_verify", goal="Verify stability")])
+        for module, name, task_id, kwargs in (
+                (fast_task_pipeline, "task_contract", "pen", {}),
+                (fast_task_spec, "recipe_contract", "legacy-recipe", {"task_definition": definition})):
+            with self.subTest(task_id=task_id):
+                original = getattr(module, name)
+                def legacy(*args, **options):
+                    contract = original(*args, **options)
+                    contract["budget"].update(max_cycles=128, max_model_calls=64, max_elapsed_s=900)
+                    return contract
+                with patch.object(module, name, side_effect=legacy):
+                    initial = self.store.initialize(task_id, task_id, **kwargs)
+                    progress = self.append(initial)
+                with sqlite3.connect(self.path) as db:
+                    frozen = db.execute("SELECT config, contract, created_wall FROM task_sessions WHERE run_id=?",
+                                        (task_id,)).fetchone()
+                self.now[0] += 5
+                current = self.store.current(task_id, include_contract=True)
+                self.assertEqual((current["cycles"], current["revision"], current["seconds_left"]), (1, 1, 895))
+                self.assertEqual(current["contract"]["budget"]["max_cycles"], 128)
+                self.assertEqual(current["contract_sha256"], progress["contract_sha256"])
+                self.assertEqual(self.store.initialize(task_id, task_id, **kwargs)["seconds_left"], 895)
+                with self.assertRaisesRegex(ValueError, "different frozen"):
+                    self.store.initialize(task_id, task_id, budget={"max_elapsed_s":10800}, **kwargs)
+                with sqlite3.connect(self.path) as db:
+                    self.assertEqual(frozen, db.execute(
+                        "SELECT config, contract, created_wall FROM task_sessions WHERE run_id=?", (task_id,)).fetchone())
+
+    def test_legacy_compatibility_refuses_other_contract_changes(self):
+        self.store.initialize("old", "pen")
+        with sqlite3.connect(self.path) as db:
+            stored = db.execute("SELECT contract FROM task_sessions WHERE run_id='old'").fetchone()[0]
+        legacy = json.loads(stored)
+        legacy["budget"].update(max_cycles=128, max_model_calls=64, max_elapsed_s=900)
+        for mutate in (lambda c: c.update(goal="Different task goal"),
+                       lambda c: c["budget"].update(max_no_progress=3),
+                       lambda c: c["budget"].update(max_rejections=True),
+                       lambda c: c["budget"].update(max_elapsed_s=901)):
+            changed = copy.deepcopy(legacy)
+            mutate(changed)
+            with sqlite3.connect(self.path) as db:
+                db.execute("UPDATE task_sessions SET contract=? WHERE run_id='old'", (json.dumps(changed),))
+            with self.assertRaisesRegex(ValueError, "Task contract changed"):
+                self.store.current("old")
 
     def test_reopening_and_reinitializing_preserve_progress_and_total_budget(self):
         report = self.store.initialize("pen-a", "pen", budget={"max_elapsed_s": 10})

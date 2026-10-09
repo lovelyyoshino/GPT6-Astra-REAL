@@ -98,6 +98,56 @@ class InitializationFixture(SingleActionFixture):
 
 
 class PairInitializationTests(InitializationFixture):
+    def test_slow_feedback_journal_preserves_three_second_rx_window_and_single_dispatch(self):
+        ctx=self.opened_context()
+        def delayed(event,data):
+            if event=='feedback' and self.device._action.auxiliary_executor is not None:
+                self.clock.sleep(.08)
+        self.journal_hook=delayed
+        result=self.execute(ctx)
+        self.assertTrue(result['ok'],result.get('errors'))
+        self.assertEqual(self.ids(),[0x151,0x155,0x156,0x157])
+        self.assertEqual(self.ids('right'),[])
+        self.assertGreaterEqual(result['baseline_duration_s'],3.)
+        self.assertGreaterEqual(result['observed_stable_duration_s'],3.)
+        self.assertAlmostEqual(result['initialization_observation_timing']['maximum_s']['journal_s'],.08)
+        self.assertGreaterEqual(result['observed_feedback_advances'],20)
+
+    def test_slow_validation_still_fails_without_retry_or_timestamp_renewal(self):
+        ctx=self.opened_context();original=adapter.validate_joint_initialization_sample
+        def delayed(*args,**kwargs):
+            result=original(*args,**kwargs);self.clock.sleep(.051);return result
+        with patch.object(adapter,'validate_joint_initialization_sample',side_effect=delayed):
+            result=self.execute(ctx)
+        self.assertFalse(result['ok']);self.assertEqual(self.ids(),[])
+        self.assertIn('50 ms',result['errors'][0]['detail'])
+        failure=result['tracking_observation']['first_failure']
+        self.assertIsNotNone(failure['sample'])
+        self.assertEqual(len([event for event,data in self.events if event=='initialization_feedback_rejected']),1)
+        self.assertFalse(result['cache_established'])
+
+    def test_peer_drift_during_log_is_observed_on_next_sample_without_sending(self):
+        ctx=self.opened_context();changed=[]
+        def drift(event,data):
+            if event=='feedback' and self.device._action.auxiliary_executor is not None and not changed:
+                changed.append(True);self.clock.sleep(.08);self.joints['right'][0]+=.02
+        self.journal_hook=drift
+        result=self.execute(ctx)
+        self.assertFalse(result['ok']);self.assertEqual(self.ids(),[]);self.assertEqual(self.ids('right'),[])
+        self.assertFalse(result['cache_established'])
+
+    def test_cancellation_during_feedback_log_is_not_hidden_by_reordering(self):
+        ctx=self.opened_context();cancelled=[]
+        def journal(event,data):
+            if event=='feedback' and self.device._action.auxiliary_executor is not None:
+                cancelled.append(True);self.clock.sleep(.08)
+        def guard():
+            if cancelled:raise RuntimeError('cancelled during journal')
+        self.journal_hook=journal;self.guard_hook=guard
+        result=self.execute(ctx)
+        self.assertFalse(result['ok']);self.assertEqual(self.ids(),[])
+        self.assertIn('cancelled during journal',result['errors'][0]['detail'])
+
     def test_p_startup_disabled_jaws_complete_once_preserves_peer_and_jaws(self):
         ctx = self.opened_context()
         original = copy.deepcopy(ctx)

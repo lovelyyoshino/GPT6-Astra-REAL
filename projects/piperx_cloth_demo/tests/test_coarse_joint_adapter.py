@@ -15,8 +15,8 @@ class CoarseJointAdapterTests(fixture.JointFixture):
     def coarse(self):
         context, _ = self.make_context()
         target = context['origin']['arms']['right']['joints_rad'][:]
-        target[1] += math.radians(3)
-        target[2] -= math.radians(3)
+        target[1] += math.radians(10)
+        target[2] -= math.radians(10)
         context, target = fixture.visual_joint_context(context, target)
         geometry = context['geometry']
         geometry['schema'] = COARSE_JOINT_PATH_SCHEMA
@@ -24,20 +24,22 @@ class CoarseJointAdapterTests(fixture.JointFixture):
             'Synthetic RGB: both empty arms are distant from all task contacts; '
             'the complete arm and attached camera corridor is visible and clear.')
         geometry['source']['sha256'] = joint_path.evidence_sha256(geometry['evidence'])
-        context['budget'] = {'max_translation_m': .035, 'max_rotation_rad': .08}
+        context['budget'] = {'max_translation_m': .120, 'max_rotation_rad': .40}
         return context, target
 
-    def test_three_degree_centimeter_candidate_uses_four_frames_and_original_arrival(self):
+    def test_ten_degree_centimeter_candidate_uses_four_frames_and_original_arrival(self):
         context, target = self.coarse()
         result = self.execute(context, target)
         self.assertTrue(result['ok'], result.get('errors'))
+        self.assertEqual(result['joint_validation_timing']['static_geometry_policy'],
+                         'pure_immutable_numeric_box_memoized_at_admission')
         self.assert_four_frames(result)
         plan = result['joint_path_plan']
         self.assertEqual(result['motion_profile'], 'coarse_approach')
         self.assertEqual(result['original_event']['motion_profile'], 'coarse_approach')
-        self.assertGreater(plan['model_endpoint_displacement_m'], .01)
-        self.assertLessEqual(plan['model_endpoint_displacement_m'], .02)
-        self.assertAlmostEqual(plan['tracking_policy']['max_origin_excursion_rad'], math.radians(3)+.003)
+        self.assertGreater(plan['model_endpoint_displacement_m'], .03)
+        self.assertLessEqual(plan['model_endpoint_displacement_m'], .10)
+        self.assertAlmostEqual(plan['tracking_policy']['max_origin_excursion_rad'], math.radians(20)+.003)
         self.assertEqual(plan['tracking_policy']['transient_band_rad'], .025)
         self.assertGreaterEqual(result['observed_stable_duration_s'], 3.)
         self.assertGreaterEqual(result['observed_feedback_advances'], 20)
@@ -46,7 +48,28 @@ class CoarseJointAdapterTests(fixture.JointFixture):
         self.assertFalse(plan['hold_supported'])
         self.assertFalse(result['grasp_verified'])
 
-    def test_same_three_degree_target_still_rejected_by_ordinary_profile(self):
+    def test_delayed_coarse_arrival_fits_original_rgb_without_relaxing_stability(self):
+        context, target = self.coarse()
+        origin = context['origin']['arms']['right']['joints_rad'][:]
+        def progressing(dt, state):
+            fraction = min(1., dt/13.)
+            state['joints_rad'] = [a+(b-a)*fraction for a,b in zip(origin,target)]
+        self.response(progressing)
+        result = self.execute(context, target)
+        self.assertTrue(result['ok'], result.get('errors'))
+        self.assert_four_frames(result)
+        self.assertGreaterEqual(result['observed_stable_duration_s'], 3.)
+        self.assertEqual(result['rgb_dispatch_window']['required_postsend_window_s'], 21.)
+        self.assertTrue(result['rgb_dispatch_window']['execution_window_budget']['covers_full_observation_timeout'])
+
+    def test_coarse_short_window_stops_before_first_frame_even_if_preclaim_was_fresh(self):
+        context, target = self.coarse()
+        self.clock.sleep(7.)
+        result = self.execute(context, target)
+        self.assert_latched_once(result, [])
+        self.assertIn('insufficient_rgb_postsend_window', str(result['errors']))
+
+    def test_same_ten_degree_target_still_rejected_by_ordinary_profile(self):
         context, target = self.coarse()
         context, target = fixture.visual_joint_context(context, target)
         context['budget'] = {'max_translation_m': .020, 'max_rotation_rad': .05}
@@ -112,7 +135,7 @@ class CoarseJointAdapterTests(fixture.JointFixture):
 
     def test_raw_pose_guard_still_independent_from_model(self):
         context, target = self.coarse()
-        self.response(lambda dt, state: state['pose_m_rad'].__setitem__(0, state['pose_m_rad'][0]+.0351))
+        self.response(lambda dt, state: state['pose_m_rad'].__setitem__(0, state['pose_m_rad'][0]+.1201))
         result = self.execute(context, target)
         self.assert_latched_once(result, [0x151, 0x155, 0x156, 0x157])
         self.assertEqual(result['tracking_observation']['first_failure']['code'], 'controller_relative_pose_envelope')

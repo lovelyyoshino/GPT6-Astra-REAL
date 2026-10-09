@@ -17,6 +17,7 @@ CORRIDOR = initialization.CORRIDOR
 
 
 class HostLoadedJointTests(unittest.TestCase):
+    worker_arm, support_arm = "right", "left"
     open = ordinary.HostRGBJointTests.open
     ids = ordinary.HostRGBJointTests.ids
     check_async_errors = ordinary.HostRGBJointTests.check_async_errors
@@ -54,7 +55,7 @@ class HostLoadedJointTests(unittest.TestCase):
                        release_support_relation="independent_support_present")
         else:
             self.contacts.add(side)
-            req["grasp_object_id"] = "strip" if side == "left" else "plug"
+            req["grasp_object_id"] = "plug" if side == self.worker_arm else "strip"
         return self.execute(req)
 
     def retained_pair(self):
@@ -73,12 +74,12 @@ class HostLoadedJointTests(unittest.TestCase):
 
     def loaded_request(self, operation="extract_segment", event="extract"):
         scene=self.observe()
-        target=[math.radians(v/1000) for v in self.device.joint_binding("right")["cached_target"]["target_raw"]]
+        target=[math.radians(v/1000) for v in self.device.joint_binding(self.worker_arm)["cached_target"]["target_raw"]]
         target[0]+=.001  # Synthetic tiny translation/rotation, no contact axis claim.
         return {"event_id":event,"observation_id":scene["observation_id"],
-            "peer_receipt_id":scene["peer_receipts"]["left"]["receipt_id"],"arm":"right","kind":"joint",
+            "peer_receipt_id":scene["peer_receipts"][self.support_arm]["receipt_id"],"arm":self.worker_arm,"kind":"joint",
             "operation":operation,"target_joints_rad":target,"admission_mode":"rgb_supervised",
-            "loaded_observation":"Synthetic RGB: retained plug, left fingers and table support fixed strip",
+            "loaded_observation":"Synthetic RGB: retained plug, support fingers and table support fixed strip",
             "corridor_observation":CORRIDOR,"source_object_id":"source-socket","target_object_id":"left-target-socket"}
 
     def confirm_loaded(self, action_event, relation, *, response="progress", event=None):
@@ -192,6 +193,7 @@ class LoadedRequestTests(unittest.TestCase):
         # No device, locks, DB or sources exist: all three malformed requests
         # must be rejected at the public argument boundary, not after a claim.
         host=PairHost.__new__(PairHost)
+        host.feedback_policy = None  # Frozen strict-default policy, without opening a host.
         for operation in ("extract_segment","transport","insert_segment"):
             with self.subTest(operation=operation),self.assertRaisesRegex(PairHostError,"explicit current RGB"):
                 host.submit("missing-scope","scene","peer","right","joint",[.1]*6,operation)

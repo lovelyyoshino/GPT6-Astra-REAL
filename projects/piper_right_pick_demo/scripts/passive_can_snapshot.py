@@ -31,7 +31,25 @@ def plain(value):
     return str(value)
 
 
-def collect(channel, seconds, include_pose_trace=False):
+RECEIVE_GROUPS = (("X_axis", "Y_axis", "Z_axis", "RX_axis", "RY_axis", "RZ_axis"),
+                  tuple("joint_%d" % n for n in range(1, 7)))
+GROUP_SPAN_S = .002
+
+
+def complete_receive_groups(times):
+    """Timestamp-only grouping, never select samples by their measured values."""
+    for group in RECEIVE_GROUPS:
+        stamps = [times.get(name) for name in group]
+        if not all(type(t) in (int, float) and math.isfinite(t) for t in stamps):
+            return False
+        if any(stamps[i] != stamps[i+1] for i in (0, 2, 4)):
+            return False
+        if not stamps[0] < stamps[2] < stamps[4] or stamps[4]-stamps[0] > GROUP_SPAN_S:
+            return False
+    return True
+
+
+def collect(channel, seconds, include_pose_trace=False, coherent_pose_trace=False):
     if isinstance(seconds, bool) or not isinstance(seconds, (int, float)) or not math.isfinite(seconds) or not .2 <= seconds <= 15:
         raise ValueError("seconds must be within [0.2, 15]")
     version = importlib.metadata.version("piper_sdk")
@@ -90,6 +108,11 @@ def collect(channel, seconds, include_pose_trace=False):
                        "pose_trace_units": {"joints_raw": "0.001 degree",
                            "end_pose_raw": "position: 0.001 mm; Euler angles: 0.001 degree; vendor J6 reference"},
                        "pose_trace_note": "Latest actually received fields; not a simultaneous device measurement. Use per-field receipt times and frame_skew_s to assess alignment."})
+        if coherent_pose_trace:
+            output.update(pose_trace_assembly={"schema":"piper_complete_receive_groups_v1",
+                "max_group_receive_span_s":GROUP_SPAN_S,"complete_groups_only":True,
+                "firmware_cycle_ids_available":False,"whole_snapshot_atomic":False},
+                pose_trace_incomplete_updates=0)
     # Linux struct can_frame is transport framing, not a handwritten Piper protocol.
     frame_format = struct.Struct("=IB3x8s")
     with socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW) as receiver:
@@ -168,6 +191,10 @@ def collect(channel, seconds, include_pose_trace=False):
                         latest_pose[name] = fields[name]
                         field_wall_times[name] = received
                         field_monotonic_times[name] = received_monotonic
+                    if coherent_pose_trace and not (complete_receive_groups(field_wall_times)
+                                                     and complete_receive_groups(field_monotonic_times)):
+                        output['pose_trace_incomplete_updates'] += 1
+                        continue
                     if (len(latest_pose) == 12 and
                             (last_trace_at is None or received_monotonic - last_trace_at >= .01)):
                         output["pose_trace"].append({
@@ -215,13 +242,18 @@ def main():
     argument_parser.add_argument("--seconds", default=3.0, type=float)
     argument_parser.add_argument("--pose-trace", action="store_true",
                                  help="record complete joint/end feedback at up to 100 Hz, with per-field receipt times")
+    argument_parser.add_argument("--coherent-pose-trace", action="store_true",
+                                 help="record only ordered complete pose/joint receive groups; implies --pose-trace")
     args = argument_parser.parse_args()
     if not math.isfinite(args.seconds) or not .2 <= args.seconds <= 15:
         argument_parser.error("--seconds must be within [0.2, 15]")
     if not args.channel or len(args.channel) > 15 or any(c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-" for c in args.channel):
         argument_parser.error("invalid CAN interface name")
     try:
-        output = collect(args.channel, args.seconds, include_pose_trace=args.pose_trace)
+        kwargs = {"include_pose_trace":args.pose_trace or args.coherent_pose_trace}
+        if args.coherent_pose_trace:
+            kwargs["coherent_pose_trace"] = True
+        output = collect(args.channel, args.seconds, **kwargs)
         print(json.dumps(output, indent=2, ensure_ascii=False, allow_nan=False))
         return 0 if output["frames_received"] else 2
     except Exception as exc:

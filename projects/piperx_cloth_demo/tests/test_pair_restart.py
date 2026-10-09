@@ -302,7 +302,7 @@ class RestartTests(unittest.TestCase):
 
     def test_explicit_policy_has_hard_caps_and_default_policy_is_unchanged(self):
         before=self.rows()
-        for overrides in ({'max_steps':501},{'max_duration_s':3601},{'max_steps':True},
+        for overrides in ({'max_steps':1001},{'max_duration_s':10801},{'max_steps':True},
                 {'max_duration_s':float('inf')},{'budget_mode':'automatic'},
                 {'budget_mode':'preserve_parent_ceiling'}):
             with self.subTest(overrides=overrides),self.assertRaises((PairLedgerError,ValueError)):
@@ -318,17 +318,17 @@ class RestartTests(unittest.TestCase):
         # this is not a repair/activation of any real run or device connection.
         for source in Path(pair_host.__file__).parent.glob('*.py'):
             (self.root/'robot_tools'/source.name).write_bytes(source.read_bytes())
-        proposal=self.explicit_proposal()
+        proposal=self.explicit_proposal(max_steps=1000,max_duration_s=10800)
         self.activate(proposal,self.explicit_authorization(proposal))
         before=self.rows()
-        host=pair_host.PairHost(self.root/'runs',self.contract,'new',self.contract['task'],500,3600,
+        host=pair_host.PairHost(self.root/'runs',self.contract,'new',self.contract['task'],1000,10800,
             device_factory=lambda *args:self.fail('No device construction'),clock=lambda:self.now,background=False)
         self.addCleanup(host.close)
         status=host.status()['ledger']
-        self.assertEqual((status['max_steps'],status['max_duration_s']),(500,3600))
-        self.assertEqual(status['execution_lineage']['cumulative_step_ceiling'],502)
+        self.assertEqual((status['max_steps'],status['max_duration_s']),(1000,10800))
+        self.assertEqual(status['execution_lineage']['cumulative_step_ceiling'],1002)
         self.assertEqual(self.rows()['pair_runs'][0],before['pair_runs'][0])
-        for run,steps,duration in (('random',500,3600),('new',499,3600),('new',500,3599)):
+        for run,steps,duration in (('random',1000,10800),('new',999,10800),('new',1000,10799)):
             with self.subTest(run=run,steps=steps,duration=duration),self.assertRaises(ValueError):
                 pair_host.PairHost(self.root/'runs',self.contract,run,self.contract['task'],steps,duration,
                     device_factory=lambda *args:self.fail('No device construction'),clock=lambda:self.now,background=False)

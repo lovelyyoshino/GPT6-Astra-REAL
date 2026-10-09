@@ -112,13 +112,13 @@ def loaded_joint_context(ctx=None, requested=None, *, operation="extract_segment
 def coarse_joint_context(ctx=None, requested=None):
     """Synthetic explicit coarse RGB source; not a measured clearance."""
     base = copy.deepcopy(ctx if ctx is not None else context())
-    requested = requested if requested is not None else target(base, 2, -math.radians(2))
+    requested = requested if requested is not None else target(base, 2, -math.radians(10))
     ctx, requested = visual_joint_context(base, requested)
     ctx["geometry"]["schema"] = jp.COARSE_JOINT_PATH_SCHEMA
     evidence = ctx["geometry"]["evidence"]
     evidence["far_from_target_observation"] = "Synthetic: both empty jaws are far from the object and contact."
     ctx["geometry"]["source"]["sha256"] = jp.evidence_sha256(evidence)
-    ctx["budget"] = {"max_translation_m": .035, "max_rotation_rad": .08}
+    ctx["budget"] = {"max_translation_m": .120, "max_rotation_rad": .40}
     return ctx, requested
 
 
@@ -915,14 +915,88 @@ class CoarseJointPathTests(unittest.TestCase):
     def rehash(plan):
         plan["plan_sha256"] = jp.evidence_sha256({k:v for k,v in plan.items() if k != "plan_sha256"})
 
-    def test_centimetre_two_degree_both_arms_with_exact_four_frames_and_no_hold(self):
+    def test_three_to_ten_cm_requested_and_encoded_bounds(self):
+        # Solve only synthetic test targets from the pinned robot FK. No IK,
+        # object location or trajectory is introduced into the runtime.
+        base = context()
+        model, _, _ = jp._load_model(base["model_catalog"], base["urdf_source"])
+        start = target(base, delta=0.)
+        origin = fk_matrix(model["mdh"], start)
+        for distance, accepted in ((.0299, False), (.0301, True),
+                                   (.0999, True), (.1001, False)):
+            low, high = 0., math.radians(20)
+            for _ in range(50):
+                amount = (low + high) / 2
+                wanted = start[:]
+                wanted[1] -= .02
+                wanted[2] -= amount
+                actual = matrix_error(origin, fk_matrix(model["mdh"], wanted))["position_error_m"]
+                if actual < distance:
+                    low = amount
+                else:
+                    high = amount
+            ctx, wanted = coarse_joint_context(base, wanted)
+            with self.subTest(distance=distance):
+                if not accepted:
+                    self.assert_code("model_endpoint_displacement", jp.plan_joint_path,
+                                     ctx, wanted, now=100.01)
+                else:
+                    plan = jp.plan_joint_path(ctx, wanted, now=100.01)
+                    self.assertGreaterEqual(plan["model_endpoint_displacement_m"], .03)
+                    self.assertLessEqual(plan["model_endpoint_displacement_m"], .10)
+                    self.assertEqual(plan["profile_limits"]["speed_percent"], 1)
+                    measured = sample(100.02)
+                    measured["arms"]["right"]["joints_rad"] = plan["encoded_target_joints_rad"][:]
+                    self.assertTrue(jp.validate_joint_path_sample(plan, measured, now=100.02)["within_joint_path_envelope"])
+
+    def test_quantization_cannot_round_a_target_across_either_translation_boundary(self):
+        base = context()
+        model, _, _ = jp._load_model(base["model_catalog"], base["urdf_source"])
+        start = target(base, delta=0.)
+        origin = fk_matrix(model["mdh"], start)
+
+        def distance(q):
+            return matrix_error(origin, fk_matrix(model["mdh"], q))["position_error_m"]
+
+        for boundary, inward in ((.030, 1), (.100, -1)):
+            for requested_inside in (True, False):
+                found = False
+                # Vary the other joint to find both rounding directions on the
+                # real SDK grid; no mocked encoder or enlarged epsilon.
+                for offset in range(10, 31):
+                    desired = boundary + inward * (1e-9 if requested_inside else -1e-9)
+                    low, high = 0., math.radians(20)
+                    for _ in range(50):
+                        amount = (low + high) / 2
+                        wanted = start[:]
+                        wanted[1] -= offset / 1000
+                        wanted[2] -= amount
+                        if distance(wanted) < desired:
+                            low = amount
+                        else:
+                            high = amount
+                    _, encoded = jp.encode_joint_target(wanted)
+                    inside = .030 <= distance(encoded) <= .100
+                    if inside == requested_inside:
+                        continue
+                    found = True
+                    ctx, wanted = coarse_joint_context(base, wanted)
+                    with self.subTest(boundary=boundary, requested_inside=requested_inside):
+                        self.assertEqual(.030 <= distance(wanted) <= .100, requested_inside)
+                        self.assert_code("model_endpoint_displacement", jp.plan_joint_path,
+                                         ctx, wanted, now=100.01)
+                    break
+                self.assertTrue(found, (boundary, requested_inside))
+
+    def test_six_centimetre_ten_degree_both_arms_with_exact_four_frames_and_no_hold(self):
         for side in ("left", "right"):
             ctx, q = coarse_joint_context(context(arm=side))
             before = copy.deepcopy(ctx)
             plan = jp.plan_joint_path(ctx, q, now=100.01)
             self.assertEqual(ctx, before)
-            self.assertGreaterEqual(plan["model_endpoint_displacement_m"], .010)
-            self.assertAlmostEqual(plan["model_endpoint_rotation_rad"], math.radians(2))
+            self.assertGreaterEqual(plan["model_endpoint_displacement_m"], .030)
+            self.assertLessEqual(plan["model_endpoint_displacement_m"], .100)
+            self.assertAlmostEqual(plan["model_endpoint_rotation_rad"], math.radians(10))
             self.assertEqual(plan["motion_profile"], "coarse_approach")
             self.assertEqual(plan["profile_limits"], jp.COARSE_PROFILE_LIMITS)
             self.assertEqual(plan["frames"], joint_hold_frames(plan["target_raw"]))
@@ -940,14 +1014,14 @@ class CoarseJointPathTests(unittest.TestCase):
                     self.assertLessEqual(lo, v)
                     self.assertLessEqual(v, hi)
 
-    def test_three_degrees_limit_and_original_profile_are_distinct(self):
+    def test_twenty_degrees_limit_and_original_profile_are_distinct(self):
         base = context()
-        ctx, q = coarse_joint_context(base, target(base, 0, math.radians(3)))
+        ctx, q = coarse_joint_context(base, target(base, 0, math.radians(20)))
         plan = jp.plan_joint_path(ctx, q, now=100.01)
         self.assertGreater(plan["encoded_target_joints_rad"][0]-base["origin"]["arms"]["right"]["joints_rad"][0], .05)
-        ctx, q = coarse_joint_context(base, target(base, 0, math.radians(3)+.0001))
+        ctx, q = coarse_joint_context(base, target(base, 0, math.radians(20)+.0001))
         self.assert_code("joint_step_limit", jp.plan_joint_path, ctx, q, now=100.01)
-        regular, q = visual_joint_context(base, target(base, 0, math.radians(2)))
+        regular, q = visual_joint_context(base, target(base, 0, math.radians(10)))
         self.assert_code("joint_step_limit", jp.plan_joint_path, regular, q, now=100.01)
         regular, q = visual_joint_context()
         old = jp.plan_joint_path(regular, q, now=100.01)
@@ -955,17 +1029,17 @@ class CoarseJointPathTests(unittest.TestCase):
         self.assertGreater(old["remaining_hold_budget"]["required_translation_m"], 0.)
         self.assertAlmostEqual(old["remaining_hold_budget"]["required_rotation_rad"], .018)
 
-    def test_exact_positive_negative_3000_millidegrees_and_off_grid_overrun(self):
-        for initial, direction in ((10000,1),(20000,1),(13000,-1),(-10000,-1),(-13000,1)):
+    def test_exact_positive_negative_20000_millidegrees_and_off_grid_overrun(self):
+        for initial, direction in ((10000,1),(20000,1),(120000,-1),(-10000,-1),(-120000,1)):
             with self.subTest(initial=initial,direction=direction):
                 raw=RAW[:];raw[0]=initial
                 base=context(raw)
                 goal=target(base,delta=0.)
-                goal[0]=math.radians((initial+direction*3000)/1000)
+                goal[0]=math.radians((initial+direction*20000)/1000)
                 ctx,q=coarse_joint_context(base,goal)
                 plan=jp.plan_joint_path(ctx,q,now=100.01)
-                self.assertEqual(plan["target_raw"][0]-initial,direction*3000)
-                for amount in (3001.,3000.0001):
+                self.assertEqual(plan["target_raw"][0]-initial,direction*20000)
+                for amount in (20001.,20000.0001):
                     goal[0]=math.radians((initial+direction*amount)/1000)
                     ctx,q=coarse_joint_context(base,goal)
                     self.assert_code("joint_step_limit",jp.plan_joint_path,ctx,q,now=100.01)
@@ -1001,7 +1075,7 @@ class CoarseJointPathTests(unittest.TestCase):
         self.assert_code("visual_evidence_hash_mismatch",jp.plan_joint_path,ctx,q,now=100.01)
 
     def test_unknown_tags_and_loaded_or_recovery_cannot_fall_back(self):
-        for tag in ("piper_rgb_supervised_coarse_approach_v2", "unknown", None):
+        for tag in ("piper_rgb_supervised_coarse_approach_v1", "piper_rgb_supervised_coarse_approach_v3", "unknown", None):
             ctx,q=coarse_joint_context()
             ctx["geometry"]["schema"]=tag
             self.assert_code("geometry_schema",jp.plan_joint_path,ctx,q,now=100.01)
@@ -1060,7 +1134,7 @@ class CoarseJointPathTests(unittest.TestCase):
         plan=jp.plan_joint_path(ctx,q,now=100.01)
         origin=plan["origin"]["arms"]["right"]["joints_rad"]
         requested=origin[:]
-        for i in (0,4,5):requested[i]+=.03
+        for i in (0,4,5):requested[i]+=.14
         raw,encoded=jp.encode_joint_target(requested)
         plan.update(requested_target_joints_rad=requested,encoded_target_joints_rad=encoded,
                     target_raw=raw,frames=joint_hold_frames(raw))
@@ -1068,7 +1142,7 @@ class CoarseJointPathTests(unittest.TestCase):
         plan["geometry"]["source"]["sha256"]=jp.evidence_sha256(plan["geometry"]["evidence"])
         plan["joint_envelope"]={"low_rad":[min(v)-.003 for v in zip(origin,requested,encoded)],
                                 "high_rad":[max(v)+.003 for v in zip(origin,requested,encoded)]}
-        cap=math.radians(3)+.003
+        cap=math.radians(20)+.003
         plan["postsend_joint_envelope"]={
             "low_rad":[max(min(a,b)-.025,a-cap) for a,b in zip(origin,encoded)],
             "high_rad":[min(max(a,b)+.025,a+cap) for a,b in zip(origin,encoded)]}
@@ -1077,23 +1151,23 @@ class CoarseJointPathTests(unittest.TestCase):
         self.assert_code("coarse_independent_box_budget",jp.validate_joint_path_sample,
                          plan,sample(100.02),now=100.02)
 
-    def test_twenty_mm_endpoint_from_current_as_well_as_origin(self):
+    def test_hundred_mm_endpoint_from_current_as_well_as_origin(self):
         base=context()
         # Find the endpoint boundary using official FK; the current sample
-        # moves a legal .002 rad away, making the SAME target >20 mm from it.
+        # moves a legal .002 rad away, making the SAME target >100 mm from it.
         model,_,_=jp._load_model(base["model_catalog"],base["urdf_source"])
         start=target(base,delta=0.)
         a=fk_matrix(model["mdh"],start)
-        lo,hi=0.,.052
+        lo,hi=0.,math.radians(20)
         for _ in range(45):
             mid=(lo+hi)/2
-            wanted=start[:];wanted[2]-=mid;wanted[3]-=.01
-            if matrix_error(a,fk_matrix(model["mdh"],wanted))["position_error_m"]<.0198:lo=mid
+            wanted=start[:];wanted[2]-=mid;wanted[1]-=.02
+            if matrix_error(a,fk_matrix(model["mdh"],wanted))["position_error_m"]<.0998:lo=mid
             else:hi=mid
-        wanted=start[:];wanted[2]-=lo;wanted[3]-=.01
+        wanted=start[:];wanted[2]-=lo;wanted[1]-=.02
         ctx,q=coarse_joint_context(base,wanted)
         plan=jp.plan_joint_path(ctx,q,now=100.01)
-        self.assertLess(plan["model_endpoint_displacement_m"],.020)
+        self.assertLess(plan["model_endpoint_displacement_m"],.100)
         ctx["current"]["arms"]["right"]["joints_rad"][2]+=.002
         self.assert_code("model_endpoint_displacement",jp.plan_joint_path,ctx,q,now=100.01)
         ctx,q=coarse_joint_context(base,wanted)
@@ -1107,7 +1181,7 @@ class CoarseJointPathTests(unittest.TestCase):
         plan=jp.plan_joint_path(ctx,q,now=100.01)
         policy=plan["tracking_policy"]
         self.assertEqual(policy,{"mode":"bounded_postsend_settling","transient_band_rad":.025,
-            "max_cumulative_outside_band_s":1.,"max_origin_excursion_rad":math.radians(3)+.003,
+            "max_cumulative_outside_band_s":1.,"max_origin_excursion_rad":math.radians(20)+.003,
             "settle_tolerance_rad":.003})
         observed=sample(100.02)
         observed["arms"]["right"]["joints_rad"][5]+=.015743
@@ -1122,8 +1196,8 @@ class CoarseJointPathTests(unittest.TestCase):
         ctx,q=coarse_joint_context()
         plan=jp.plan_joint_path(ctx,q,now=100.01)
         for change,code in (
-            (lambda s:s["arms"]["right"]["pose_m_rad"].__setitem__(0,s["arms"]["right"]["pose_m_rad"][0]+.0351),"controller_relative_pose_envelope"),
-            (lambda s:s["arms"]["right"]["pose_m_rad"].__setitem__(5,s["arms"]["right"]["pose_m_rad"][5]+.0801),"controller_relative_pose_envelope"),
+            (lambda s:s["arms"]["right"]["pose_m_rad"].__setitem__(0,s["arms"]["right"]["pose_m_rad"][0]+.1201),"controller_relative_pose_envelope"),
+            (lambda s:s["arms"]["right"]["pose_m_rad"].__setitem__(5,s["arms"]["right"]["pose_m_rad"][5]+.4001),"controller_relative_pose_envelope"),
             (lambda s:s["arms"]["left"]["joints_rad"].__setitem__(0,.2),"stationary_joint_anchor"),
             (lambda s:s["arms"]["right"]["gripper"].update(width_m=.03),"jaw_anchor_drift"),
             (lambda s:s["arms"]["right"]["arm_status"].update(mode_feedback=2),"same_move_j_mode_required")):
@@ -1131,6 +1205,23 @@ class CoarseJointPathTests(unittest.TestCase):
             self.assert_code(code,jp.validate_joint_path_sample,plan,observed,now=100.02,phase="settling")
         self.assert_code("stale_sample",jp.validate_joint_path_sample,plan,sample(100.02),now=100.08,phase="settling")
         self.assert_code("visual_rgb_expired",jp.validate_joint_path_sample,plan,sample(130.01),now=130.01,phase="settling")
+
+    def test_geometry_reuse_never_caches_feedback_or_hides_changed_model(self):
+        from robot_tools.joint_model_bounds import flange_box_bounds
+        jp._fixed_flange_box.cache_clear()
+        ctx,q=coarse_joint_context()
+        plan=jp.plan_joint_path(ctx,q,now=100.01)
+        misses=jp._fixed_flange_box.cache_info().misses
+        with patch('robot_tools.joint_model_bounds.flange_box_bounds',wraps=flange_box_bounds) as bound:
+            self.assertTrue(jp.validate_joint_path_sample(plan,sample(100.02),now=100.02)['within_joint_path_envelope'])
+            self.assertEqual(bound.call_count,0)
+            self.assert_code('stale_sample',jp.validate_joint_path_sample,plan,sample(100.02),now=100.08)
+            changed=copy.deepcopy(plan);changed['model']['mdh'][1][2]+=10.
+            self.rehash(changed)
+            with self.assertRaises(jp.JointPathError):
+                jp.validate_joint_path_sample(changed,sample(100.02),now=100.02)
+            self.assertEqual(bound.call_count,1)
+        self.assertEqual(jp._fixed_flange_box.cache_info().misses,misses+1)
 
 
 if __name__ == "__main__":

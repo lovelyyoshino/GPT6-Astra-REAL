@@ -728,6 +728,55 @@ class PairHostTests(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertEqual(device.closes, 1)
 
+    def _close_during_idle_observation(self, observation_error=None):
+        self.host.open()
+        device = self.devices[0]
+        entered, proceed = threading.Event(), threading.Event()
+        errors = []
+        def observation():
+            entered.set()
+            if not proceed.wait(2):
+                raise RuntimeError('Synthetic observation gate timed out')
+            if observation_error is not None:
+                raise observation_error
+            # The real adapter calls the host guard during its RX-only read.
+            device.guard()
+            raise AssertionError('Closing host must refuse the guarded read')
+        def run(call):
+            try:
+                call()
+            except Exception as exc:
+                errors.append(exc)
+        poller = threading.Thread(target=lambda: run(self.host.poll))
+        closer = threading.Thread(target=lambda: run(self.host.close))
+        with patch.object(device, 'observe', side_effect=observation):
+            poller.start()
+            try:
+                self.assertTrue(entered.wait(1))
+                closer.start()
+                self.assertTrue(self.host.quit_event.wait(1))
+            finally:
+                proceed.set()
+                poller.join(2)
+                if closer.ident is not None:
+                    closer.join(2)
+        self.assertFalse(poller.is_alive())
+        self.assertFalse(closer.is_alive())
+        self.assertEqual(errors, [])
+        self.assertEqual(device.frame_attempts, 0)
+        self.assertEqual(device.closes, 1)
+
+    def test_clean_close_during_guarded_idle_read_does_not_create_fault(self):
+        self._close_during_idle_observation()
+        self.assertFalse(self.host.close()['fault_latched'])
+        self.assertEqual(self.host.ledger.peek_status()['status'], 'detached')
+        self.assertIsNone(self.host.close()['physical_stop_verified'])
+
+    def test_close_does_not_hide_independent_feedback_error(self):
+        self._close_during_idle_observation(RuntimeError('Synthetic independent feedback fault'))
+        self.assert_pair_fault()
+        self.assertTrue(self.host.close()['fault_latched'])
+
     def test_contact_declarations_cannot_override_adapter_capability(self):
         self.profile["contact_step_supported"] = True
         self.profile["verification"] = {"contact_support_verified": True}

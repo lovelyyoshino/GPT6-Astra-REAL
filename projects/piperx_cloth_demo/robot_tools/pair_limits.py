@@ -121,11 +121,29 @@ class _LimitsExecutor:
                          and frame.data[0] == self.joint and frame.data[7] == 0 and frame.is_rx
                          and not any((frame.is_extended_id, frame.is_remote_frame, frame.is_error_frame,
                                       frame.is_fd, frame.bitrate_switch, frame.error_state_indicator)))
-                if not valid or window["response_frames"]:
-                    self._reject(side, record, "Unexpected or duplicate joint-limit response")
+                if not valid:
+                    self._reject(side, record, "Unexpected joint-limit response")
                     return None
-                if time.monotonic()-self.sent_monotonic > RESPONSE_TIMEOUT_S:
+                elapsed = time.monotonic()-self.sent_monotonic
+                if not 0 <= elapsed <= RESPONSE_TIMEOUT_S:
                     self._reject(side, record, "Joint-limit response exceeded one-second deadline")
+                    return None
+                record.update(side=side, valid_can_data_frame=True, request_elapsed_s=elapsed)
+                if window["response_frames"]:
+                    first = window["response_frames"][0]
+                    duplicates = window["identical_duplicate_frames"]
+                    previous = duplicates[-1] if duplicates else first
+                    if record["payload_hex"] != first["payload_hex"]:
+                        self._reject(side, record, "Conflicting joint-limit response")
+                    elif stamp < previous["timestamp"] or now < previous["received_unix_s"]:
+                        self._reject(side, record, "Joint-limit response timestamp regressed")
+                    elif 1 + len(duplicates) >= MAX_WINDOW_FRAMES:
+                        self._reject(side, record, "Joint-limit identical reply budget exceeded")
+                    else:
+                        # 0x473 carries a value, not a unique transaction ID.
+                        # Keep the first canonical value and all bounded equal
+                        # RX evidence. No new request or window extension.
+                        duplicates.append(record)
                     return None
                 window["response_frames"].append(record)
             except Exception as exc:
@@ -178,7 +196,9 @@ class _LimitsExecutor:
             started = time.time()
             self.sent_monotonic = time.monotonic()
             self.window = {"active": True, "request_started_unix_s": started,
-                           "response_frames": [], "ignored_stale_frames": [], "rejected_frames": []}
+                           "response_frames": [], "ignored_stale_frames": [], "rejected_frames": [],
+                           "duplicate_policy": "same_window_identical_payload_v1",
+                           "identical_duplicate_frames": []}
             self.report["joint_limits"][side][str(self.joint)] = {
                 "status": "unconfirmed", "response_evidence": self.window, "raw_response_hex": ""}
             receipt = self.report["query_receipts"][side][str(self.joint)]

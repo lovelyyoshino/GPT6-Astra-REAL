@@ -152,6 +152,42 @@ class JointObservationSchedulingTests(JointFixture):
         self.assertIsNotNone(self.device._fault)
         self.assertEqual(result["retries"], 0)
 
+    def test_planning_yields_to_receiver_before_first_baseline_snapshot(self):
+        ctx, target = self.visual()
+        pending = [False]
+        original_plan, original_sleep = adapter.plan_joint_path, self.clock.sleep
+        def plan(*args, **kwargs):
+            result = original_plan(*args, **kwargs)
+            pending[0] = True
+            return result
+        def sleep(duration):
+            original_sleep(duration)
+            if duration >= adapter.BOUNDS['poll_s']:
+                pending[0] = False
+        def snapshot(robot, state):
+            if pending[0] and robot.side == 'right':
+                state['fragment_timestamps_s']['driver_state_1'] -= .061
+        self.hook = snapshot
+        with patch.object(adapter, 'plan_joint_path', side_effect=plan), patch.object(self.clock, 'sleep', side_effect=sleep):
+            result = self.execute(ctx, target)
+        self.assertTrue(result['ok'], result.get('errors'))
+        self.assertEqual(self.ids(), [0x151, 0x155, 0x156, 0x157])
+        self.assertEqual(result['initial_rx_schedule']['rejected_samples_retried'], 0)
+        self.assertFalse(result['initial_rx_schedule']['timestamps_renewed'])
+
+    def test_cancel_during_initial_receiver_yield_is_zero_tx(self):
+        ctx, target = self.visual()
+        original = self.clock.sleep
+        def sleep(duration):
+            original(duration)
+            if self.device._action.joint_executor is not None:
+                self.guard_error = 'cancel during receiver scheduling'
+        with patch.object(self.clock, 'sleep', side_effect=sleep):
+            result = self.execute(ctx, target)
+        self.zero_tx_fault(result)
+        self.assertIsNone(result['before'])
+        self.assertIn('cancel during receiver scheduling', str(result['errors']))
+
     def test_slow_guard_and_durable_journal_precede_next_fresh_sample(self):
         ctx, target = self.visual()
         original = self.device._action.journal
@@ -417,7 +453,15 @@ class RGBJointAdapterTests(JointFixture):
         self.assertLess(check["remaining_rgb_window_s"], 3.)
         self.assertFalse(check["claimed_event_or_budget_released"])
 
-    def test_first_bus_guard_delay_rechecks_postsend_window(self):
+    def test_real_four_point_nine_second_first_bus_window_is_refused_without_tx(self):
+        # The real failed segment had 4.905 s left before its first frame:
+        # the old >3 s guard sent, then RGB expired during final observation.
+        self.assert_first_bus_window_refused(4.905)
+
+    def test_exact_nine_second_first_bus_window_is_refused_without_tx(self):
+        self.assert_first_bus_window_refused(9.)
+
+    def assert_first_bus_window_refused(self, remaining):
         ctx, target = self.make_visual()
         delayed = False
         def guard():
@@ -425,13 +469,36 @@ class RGBJointAdapterTests(JointFixture):
             if self.device._action.ticket is not None and not delayed:
                 delayed = True
                 deadline = ctx["geometry"]["evidence"]["rgb_received_at"] + 30.
-                self.clock.sleep(deadline-self.clock.time()-2.9)
+                self.clock.sleep(deadline-self.clock.time()-remaining)
         self.guard_hook = guard
         result = self.execute(ctx, target)
         self.assert_latched_once(result, [])
         self.assertEqual(result["hardware_commands_sent"], 0)
         self.assertIn("insufficient_rgb_postsend_window", result["errors"][-1]["detail"])
         self.assertEqual(result["rgb_dispatch_window"]["stage"], "before_first_bus_frame")
+        self.assertEqual(result["rgb_dispatch_window"]["required_postsend_window_s"], 9.)
+        self.assertAlmostEqual(result["rgb_dispatch_window"]["remaining_rgb_window_s"], remaining)
+        self.assertFalse(result["rgb_dispatch_window"]["claimed_event_or_budget_released"])
+
+    def test_first_bus_window_above_minimum_still_sends_and_retains_deadline(self):
+        ctx, target = self.make_visual()
+        deadline = ctx["geometry"]["evidence"]["rgb_received_at"] + 30.
+        delayed = False
+        def guard():
+            nonlocal delayed
+            if self.device._action.ticket is not None and not delayed:
+                delayed = True
+                self.clock.sleep(deadline-self.clock.time()-9.01)
+        self.guard_hook = guard
+        result = self.execute(ctx, target)
+        self.assertTrue(result["ok"], result.get("errors"))
+        self.assertEqual(self.ids(), [0x151, 0x155, 0x156, 0x157])
+        self.assertEqual(self.ids("left"), [])
+        self.assertEqual(result["rgb_dispatch_window"]["rgb_deadline"], deadline)
+        self.assertEqual(result["rgb_dispatch_window"]["required_postsend_window_s"], 9.)
+        self.assertFalse(result["rgb_dispatch_window"]["window_is_completion_guarantee"])
+        self.assertEqual(result["joint_validation_timing"]["static_geometry_policy"],
+                         "coarse_box_memoization_not_applicable")
 
     def test_rgb_expiry_during_final_sample_validation_prevents_first_frame(self):
         ctx, target = self.make_visual()
@@ -683,6 +750,34 @@ class RGBJointSettlingTests(JointFixture):
 
 
 class PairJointAdapterTests(JointFixture):
+    def test_joint_diagnostics_use_radians_after_arrival_without_cartesian_target_error(self):
+        ctx, target = self.make_context()
+        result = self.execute(ctx, target)
+        self.assertTrue(result["ok"], result.get("errors"))
+        self.assertIsNone(result["pose_error"])
+        expected = [abs(actual-requested) for actual, requested in
+                    zip(result["after"]["right"]["joints_rad"], target)]
+        self.assertEqual(result["joint_error"], {"absolute_rad": expected,
+                         "max_abs_rad": max(expected), "reference": "requested_target"})
+        self.assertLess(result["joint_error"]["max_abs_rad"], .00001)
+        self.assertEqual(self.ids(), [0x151, 0x155, 0x156, 0x157])
+        self.assertEqual(self.ids("left"), [])
+        self.assertEqual(result["hardware_commands_sent"], 4)
+
+    def test_failed_joint_send_preserves_angle_baseline_diagnostic_without_fake_meters(self):
+        ctx, target = self.make_context()
+        self.robots["right"].fail_id = 0x151
+        result = self.execute(ctx, target)
+        self.assertFalse(result["ok"])
+        self.assertFalse(result["arrival_confirmed"])
+        self.assertIsNone(result["pose_error"])
+        expected = [abs(actual-requested) for actual, requested in
+                    zip(result["before"]["right"]["joints_rad"], target)]
+        self.assertEqual(result["joint_error"]["absolute_rad"], expected)
+        self.assertAlmostEqual(result["joint_error"]["max_abs_rad"], .001)
+        self.assertEqual(self.ids(), [])
+        self.assertEqual(self.ids("left"), [])
+
     def test_unestablished_cache_is_explicit_zero_tx_bootstrap_gap(self):
         ctx, target = self.make_context(known_cache=False)
         with self.assertRaisesRegex(RuntimeError, "bootstrap gap"):

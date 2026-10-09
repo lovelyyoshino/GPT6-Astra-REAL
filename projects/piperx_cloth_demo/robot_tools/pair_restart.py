@@ -176,9 +176,9 @@ def prepare_restart(path, run_id, *, close_log, new_run_id, max_steps=125, max_d
     _need(run_id != new_run_id, "The original terminal run cannot be overwritten")
     _need(budget_mode in ("preserve_parent_ceiling", "explicit_user_budget_request"), "Unknown budget policy")
     explicit = budget_mode == "explicit_user_budget_request"
-    _need(type(max_steps) is int and 1 <= max_steps <= (500 if explicit else 128), "Bounded new step allocation required")
+    _need(type(max_steps) is int and 1 <= max_steps <= (1000 if explicit else 128), "Bounded new step allocation required")
     duration = _number(max_duration_s, "max_duration_s", positive=True)
-    _need(duration <= (3600 if explicit else 900), "New attempt exceeds its budget policy duration cap")
+    _need(duration <= (10800 if explicit else 900), "New attempt exceeds its budget policy duration cap")
     source = Path(path).resolve(strict=True)
     db = sqlite3.connect(source.as_uri()+"?mode=ro", uri=True)
     db.row_factory = sqlite3.Row

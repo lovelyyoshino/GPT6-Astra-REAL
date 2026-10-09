@@ -109,7 +109,7 @@ class FakeVendorParser:
 
 
 class PassiveCanSnapshotTests(unittest.TestCase):
-    def run_capture(self, events, include_trace=True, seconds=.2):
+    def run_capture(self, events, include_trace=True, seconds=.2, coherent=False):
         clock = FakeClock()
         receiver = ReceiveOnlySocket(clock, events)
         factory = mock.Mock(return_value=receiver)
@@ -134,7 +134,8 @@ class PassiveCanSnapshotTests(unittest.TestCase):
             if include_trace is None:
                 result = snapshot.collect("can2", seconds)
             else:
-                result = snapshot.collect("can2", seconds, include_pose_trace=include_trace)
+                result = snapshot.collect("can2", seconds, include_pose_trace=include_trace,
+                                          coherent_pose_trace=coherent)
         factory.assert_called_once_with(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
         self.assertEqual(receiver.bound_to, ("can2",))
         self.assertTrue(receiver.closed)
@@ -241,6 +242,41 @@ class PassiveCanSnapshotTests(unittest.TestCase):
             self.assertEqual(snapshot.main(), 0)
         collect.assert_called_once_with("can2", 3.0, include_pose_trace=True)
         self.assertEqual(json.loads(output.getvalue()), result)
+
+    def test_coherent_trace_waits_for_last_pose_frame_without_changing_values(self):
+        events=[(at*.1,frame) for at,frame in complete_events()]
+        events += [(.0201,can_frame(0x2A2,100,101)),(.0202,can_frame(0x2A3,200,201)),
+                   (.0251,can_frame(0x2A2,300,301)),(.0252,can_frame(0x2A3,400,401)),
+                   (.0253,can_frame(0x2A4,500,501))]
+        output=self.run_capture(events,coherent=True);trace=output['pose_trace']
+        self.assertEqual(len(trace),2)
+        self.assertEqual(trace[1]['end_pose_raw'],dict(zip(snapshot.RECEIVE_GROUPS[0],(300,301,400,401,500,501))))
+        self.assertAlmostEqual(trace[1]['field_received_at_s']['X_axis'],1700000000.0251)
+        self.assertGreater(output['pose_trace_incomplete_updates'],0)
+        self.assertEqual(output['frames_received'],11)
+        self.assertTrue(output['pose_trace_assembly']['complete_groups_only'])
+
+    def test_coherent_trace_missing_or_slow_fragment_does_not_publish_mixture(self):
+        # Three-frame groups span 10 ms here, well beyond the 2 ms receive rule.
+        events=[(at*5,frame) for at,frame in complete_events()]
+        result=self.run_capture(events,coherent=True)
+        self.assertEqual(result['pose_trace'],[])
+        self.assertEqual(result['frames_received'],6)
+        self.assertEqual(len(result['raw_frame_latest']),6)
+
+    def test_coherent_timestamp_check_rejects_orphans_and_keeps_groups_independent(self):
+        good={name:1.+.0001*(i//2) for group in snapshot.RECEIVE_GROUPS for i,name in enumerate(group)}
+        self.assertTrue(snapshot.complete_receive_groups(good))
+        for mutation in ({'RY_axis':.99,'RZ_axis':.99},{'joint_5':1.01,'joint_6':1.01},
+                         {'X_axis':float('nan')},{'joint_4':None}):
+            self.assertFalse(snapshot.complete_receive_groups({**good,**mutation}))
+
+    def test_cli_complete_group_mode_implies_trace(self):
+        with mock.patch.object(sys,'argv',[str(_PATH),'--coherent-pose-trace']), \
+                mock.patch.object(snapshot,'collect',return_value={'frames_received':6}) as call, \
+                mock.patch.object(sys,'stdout',io.StringIO()):
+            self.assertEqual(snapshot.main(),0)
+        call.assert_called_once_with('can2',3.0,include_pose_trace=True,coherent_pose_trace=True)
 
     def test_commands_preserve_nonlocal_latest_when_local_loopback_arrives(self):
         events = [(.010, can_frame(0x155, 111, -112)),

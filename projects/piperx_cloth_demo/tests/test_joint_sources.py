@@ -282,6 +282,26 @@ class JointSourcesTests(unittest.TestCase):
         self.save_sources()
         self.assertIn("controller_limit_reply_invalid", self.codes())
 
+    def test_bounded_identical_duplicate_evidence_is_accepted_and_checked(self):
+        original = copy.deepcopy(self.capture)
+        for mutation in ('valid', 'payload', 'side', 'late', 'policy', 'flood'):
+            with self.subTest(mutation=mutation):
+                self.capture = copy.deepcopy(original)
+                window = self.capture['joint_limits']['right']['4']['response_evidence']
+                f = copy.deepcopy(window['response_frames'][0])
+                f.update(side='right', valid_can_data_frame=True, request_elapsed_s=.03)
+                f['timestamp'] += .000096; f['received_unix_s'] += .000096
+                window.update(duplicate_policy='same_window_identical_payload_v1', identical_duplicate_frames=[f])
+                if mutation == 'payload': f['payload_hex'] = '00'*8
+                if mutation == 'side': f['side'] = 'left'
+                if mutation == 'late': f['request_elapsed_s'] = 1.001
+                if mutation == 'policy': window['duplicate_policy'] = 'unbounded'
+                if mutation == 'flood': window['identical_duplicate_frames'] = [f]*32
+                self.save_sources()
+                codes = self.codes()
+                if mutation == 'valid': self.assertFalse(codes, codes)
+                else: self.assertTrue(any(c.startswith('controller_limit_') for c in codes), codes)
+
     def test_stale_reply_cannot_use_a_recent_capture_end_time(self):
         self.capture["joint_limits"]["right"]["1"]["response_evidence"]["response_frames"][0]["timestamp"] = 80.
         self.save_sources()

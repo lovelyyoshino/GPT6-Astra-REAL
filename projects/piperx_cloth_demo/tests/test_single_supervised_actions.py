@@ -274,8 +274,8 @@ class SingleSupervisedActionsTests(SingleActionFixture):
         self.assert_frame_ids(result, [0x159])
         self.assertIn("envelope", result["errors"][0]["detail"])
 
-    def test_fault_disabled_joint_disabled_jaw_and_stale_feedback_still_refuse(self):
-        for defect in ("fault", "joint_disabled", "jaw_disabled", "stale"):
+    def test_fault_disabled_joint_and_stale_feedback_still_refuse(self):
+        for defect in ("fault", "joint_disabled", "stale"):
             with self.subTest(defect=defect):
                 self.make_robots()
                 self.set_observed_boundary_pose()

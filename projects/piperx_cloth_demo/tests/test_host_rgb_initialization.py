@@ -312,7 +312,7 @@ class HostRGBInitializationTests(unittest.TestCase):
         with patch.object(self.sources, "initialization_basis", side_effect=AssertionError("No source IO")):
             result = self.service.call(TOOL, request)
         self.assertEqual(result["status"], "refresh_required")
-        self.assertEqual(result["required_rgb_window_s"], 6.)
+        self.assertEqual(result["required_rgb_window_s"], 12.)
         self.no_claim()
 
     def test_initialization_slow_sources_refresh_without_claim(self):

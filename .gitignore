@@ -10,3 +10,5 @@ artifacts/
 *.sqlite-shm
 /projects/piperx_cloth_demo/runs/pair_*/
 /projects/piperx_cloth_demo/runs/execution.lock
+# New device logs, receipts and recordings stay local; tracked baselines remain.
+/projects/piperx_cloth_demo/runs/

@@ -76,6 +76,37 @@ class JointLimitsTests(TakeoverFixture):
         return joint_limits.inspect_joint_limits(
             PROFILE, journal or (lambda event, data: self.events.append((event, data))))
 
+    def test_selected_left_queries_keep_disabled_peer_rx_only(self):
+        self.stack.enter_context(patch('robot_tools.coherent_feedback.install'))
+        def hook(robot, state):
+            if robot.side == 'right':
+                state['arm_status']['ctrl_mode'] = 0
+                for driver in state['drivers'].values():
+                    driver['foc_status']['driver_enable_status'] = False
+                state['gripper']['width_m'] = -.00546
+        self.hook = hook
+        result = joint_limits.inspect_joint_limits(PROFILE, lambda *args:None, arm='left')
+        self.assertTrue(result['ok'],result)
+        self.assertEqual(result['joint_limit_queries_sent'],6)
+        self.assertEqual(self.robots['right'].sent,[])
+        self.assertEqual(result['joint_limits']['right'],{})
+        self.assertFalse(result['controller_limits_changed'])
+        self.assertEqual(result['actuator_commands_sent'],0)
+
+    def test_selected_query_guard_rejects_unselected_side(self):
+        inspector = joint_limits._JointLimitsInspection(PROFILE,lambda *args:None,'left')
+        for kind in inspector.FRAME_KINDS:
+            with self.assertRaisesRegex(RuntimeError,'Unselected arm TX forbidden'):
+                inspector.frame_spec(kind,'right')
+
+    def test_selected_query_retains_no_retry_after_missing_reply(self):
+        self.stack.enter_context(patch('robot_tools.coherent_feedback.install'))
+        self.robots['left'].no_reply_joint=3
+        result=joint_limits.inspect_joint_limits(PROFILE,lambda *args:None,arm='left')
+        self.assertFalse(result['ok'])
+        self.assertEqual(result['joint_limit_queries_sent'],3)
+        self.assertEqual(self.robots['right'].sent,[])
+
     def test_twelve_fixed_queries_and_signed_limit_evidence_without_motion(self):
         result = self.run_tool()
         self.assertTrue(result["ok"], result)

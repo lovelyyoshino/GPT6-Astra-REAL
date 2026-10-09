@@ -25,6 +25,17 @@ def _json(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
 
 
+def _legacy_budget_contract(frozen, current):
+    """Allow only the 128/64/900 -> 1000/1000/10800 default transition."""
+    old_budget = dict(max_cycles=128, max_model_calls=64, max_elapsed_s=900,
+                      max_no_progress=2, max_rejections=1, max_observer_moves=2)
+    new_budget = dict(old_budget, max_cycles=1000, max_model_calls=1000, max_elapsed_s=10800)
+    return (_json(frozen.get("budget")) == _json(old_budget)
+            and _json(current.get("budget")) == _json(new_budget)
+            and _json({k: v for k, v in frozen.items() if k != "budget"})
+            == _json({k: v for k, v in current.items() if k != "budget"}))
+
+
 def _identifier(value, name):
     if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,95}", value):
         raise PipelineContractError(name + " must be 1..96 letters, digits, dots, underscores or hyphens")
@@ -81,8 +92,11 @@ class TaskSessionStore:
         config = json.loads(row["config"])
         replay_clock = [0.0]
         ledger = BoundedTaskPipeline(**config, clock=lambda: replay_clock[0])
-        if _json(ledger.contract) != row["contract"]:
+        frozen_contract = json.loads(row["contract"])
+        if (_json(ledger.contract) != row["contract"]
+                and not _legacy_budget_contract(frozen_contract, ledger.contract)):
             raise PipelineContractError("Task contract changed; existing run requires explicit migration")
+        ledger.contract = frozen_contract
         events = connection.execute("SELECT * FROM task_events WHERE run_id=? ORDER BY revision", (run_id,)).fetchall()
         for revision, event in enumerate(events, 1):
             if event["revision"] != revision or event["elapsed"] < replay_clock[0]:
@@ -141,7 +155,11 @@ class TaskSessionStore:
             old = connection.execute("SELECT config, contract FROM task_sessions WHERE run_id=?", (run_id,)).fetchone()
             if old is not None:
                 if old["config"] != config or old["contract"] != contract:
-                    raise PipelineContractError("Existing run has a different frozen task, roles or budget")
+                    frozen_config = json.loads(old["config"])
+                    requested_config = dict(values, budget=dict(frozen_config["budget"], **(budget or {})))
+                    if (not _legacy_budget_contract(json.loads(old["contract"]), ledger.contract)
+                            or _json(requested_config) != old["config"]):
+                        raise PipelineContractError("Existing run has a different frozen task, roles or budget")
             else:
                 now = self._now()
                 connection.execute("INSERT INTO task_sessions VALUES (?, ?, ?, ?, ?, 0, 0)",

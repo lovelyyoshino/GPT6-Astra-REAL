@@ -24,9 +24,9 @@ PYTHONPATH=src python3 -m right_pick.fast_task_pipeline --task pen --mode worker
 
 建立接触与利用已建立的支撑分阶段处理，按 [接触与微调](../piper-manipulation/references/bounded-contact.md) 用一次低速接触和新反馈逐步建立证据。不要要求左臂第一次接触插排之前已固定插排；左臂建立抓持时右臂是静止侧，右臂真正拔出时才需要左臂的当前固定证据和适用带载支撑。用户已授权这类任务就直接推进宿主允许的有界步骤，不另问是否允许轻触。
 
-当前真实适配器已实现 `retained_target_stationary`、`gripper_contact_observation` 和 `gripper_static_retention`：首次有界闭爪可返回接触候选；带 `grasp_object_id` 的候选在同库按臂登记。动作后新 RGB 与适配器新三秒 trace 经 `robot_pair_retain_grasp` 零 TX 保留原目标，另一空臂可接近、对齐或试夹。两臂的 episode/原始锚点/释放分别保存；候选和静态保持都不能当作左臂已能带载固定。通用 `contact_step_supported`、`contact_support_verified` 不被提升为真；右臂拔插已有独立的 RGB 带载事件合同，按 [接触分支](../piper-manipulation/references/bounded-contact.md) 绑定双臂原抓持记录、当前局部锚与每段新图响应。此分支仍不提供物理停止或插拔力认证。MOVE_L/夹爪路径的 `robot_pair_cancel` 只阻止新增软件发送；未知停止继续记为 null。客户端意外退出或带未解除候选关闭会持久锁存，不静默断开后重派。
+当前真实适配器已实现 `retained_target_stationary`、`gripper_contact_observation` 和 `gripper_static_retention`：首次有界闭爪可返回接触候选；带 `grasp_object_id` 的候选在同库按臂登记。动作后新 RGB 与适配器新三秒 trace 经 `robot_pair_retain_grasp` 零 TX 保留原目标，另一空臂可接近、对齐或试夹。两臂的 episode/原始锚点/释放分别保存；候选和静态保持都不能当作左臂已能带载固定。通用 `contact_step_supported`、`contact_support_verified` 不被提升为真；拔插工作臂已有独立的 RGB 带载事件合同，按 [接触分支](../piper-manipulation/references/bounded-contact.md) 绑定双臂原抓持记录、当前局部锚与每段新图响应。此分支仍不提供物理停止或插拔力认证。MOVE_L/夹爪路径的 `robot_pair_cancel` 只阻止新增软件发送；未知停止继续记为 null。客户端意外退出或带未解除候选关闭会持久锁存，不静默断开后重派。
 
-`tasks/plug_transfer_left.json` 定义左臂固定插排、右臂拔插及双侧释放后的新图证据；这是可复用 recipe，不自带实机资格。旧 `execution.py` paired 仍为 near-time 发送，通用 fast CLI/`./astra` 协同仍离线。适配范围与剩余缺口见 [协同审查](../../../projects/piper_right_pick_demo/docs/ATOMIC_SKILLS_AND_DUAL_COORDINATION.md)。
+`tasks/plug_transfer_left.json` 保留默认左臂固定、右臂拔插；新任务以 `worker_arm`／`support_arm` 显式冻结反向分工时，通过 `plug_recipe.render_plug_recipe` 派生同一任务。左侧目标插孔身份和双侧释放后的新图证据不变，源 recipe 与派生文件分别绑定哈希，不自带实机资格。旧 `execution.py` paired 仍为 near-time 发送，通用 fast CLI/`./astra` 协同仍离线。适配范围与剩余缺口见 [协同审查](../../../projects/piper_right_pick_demo/docs/ATOMIC_SKILLS_AND_DUAL_COORDINATION.md)。
 
 PiPER X 的新增 `kind=joint` 路径将官方模型几何与控制器原始位姿分开，沿用单次派发和账本。同连接准备、十二关节限位查询、来源读取及首次目标初始化已接入生产工具，按 [在线接续分流](../piper-task-pipeline/references/online-readiness.md) 复用同 owner 和预算，不启用独立旧发送入口。`robot_pair_initialize_joint_target` 接受当前 P/J/L 起点，按独立监督合同建立合法非零目标或完成适用 J2/J3 边界恢复；完整四帧、新 J 反馈及三秒稳定到位后才生成真实缓存，另一臂和夹爪原锚点保留。未知旧缓存激活与部分更新风险仍明确记录；普通关节路径的已知缓存、0.05 rad 总旋转及 hold 条件不是该初始化的前提。
 

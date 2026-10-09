@@ -6,6 +6,8 @@ enables arm motors or claims a physical stop. Known disabled flags are readiness
 facts; malformed feedback, drift or an uncertain dispatch remain sticky faults.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import window_joints_within
 import threading
 import time
 
@@ -63,13 +65,12 @@ class _PreparationObserver(_SingleGripperPrepare):
     extend_window = _SingleSupervisedAction.extend_window
     window_spans = staticmethod(_SingleSupervisedAction.window_spans)
 
-    @classmethod
-    def window_stable(cls, window):
-        return all(s["joint_rad"] <= LIMITS["joint_rad"]
+    def window_stable(self, window):
+        return all(window_joints_within(self.feedback_policy, side, window[side])
                    and s["position_m"] <= LIMITS["position_m"]
                    and s["jaw_m"] <= LIMITS["gripper_m"]
-                   and s["rotation_rad"] <= LIMITS["joint_rad"]
-                   for s in cls.window_spans(window).values())
+                   and s["rotation_rad"] <= rotation_tolerance(self.feedback_policy,side)
+                   for side,s in self.window_spans(window).items())
 
 
 def _read(device, checker):

@@ -180,7 +180,7 @@ class PreviewServiceTests(unittest.TestCase):
         self.assertIn("not a geometric path", svg)
 
     def test_tools_have_explicit_strict_schemas(self):
-        self.assertEqual(len(TOOL_SCHEMAS), 38)
+        self.assertEqual(len(TOOL_SCHEMAS), 46)
         names = {tool["name"] for tool in TOOL_SCHEMAS}
         self.assertEqual(len(names), len(TOOL_SCHEMAS))
         self.assertTrue({"robot_single_arm_move_once", "robot_single_arm_gripper_once"} <= names)

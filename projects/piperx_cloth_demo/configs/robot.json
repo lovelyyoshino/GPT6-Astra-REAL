@@ -28,7 +28,12 @@
     "right": "piper_x",
     "source": "2026-10-07 current user explicitly confirmed: 现场两臂都是 PiPER X. This supersedes the 2026-10-04 PiPER statement.",
     "status": "user_confirmed",
-    "previous_profile": "artifacts/piper_x_capability_review_1791347348345247360/robot_profile_before_model_correction.json"
+    "previous_profile": "artifacts/piper_x_capability_review_1791347348345247360/robot_profile_before_model_correction.json",
+    "latest_reconfirmation": {
+      "date": "2026-10-08",
+      "statement": "我就是piper x的手臂,帮我piper x的手臂配置,而不是",
+      "scope": "The installed arms remain configured as piper_x. This user confirmation does not assert controller settings were changed or physical task execution succeeded."
+    }
   },
   "verification": {
     "physical_models_and_firmware": false,
@@ -82,6 +87,7 @@
     "controller_limits_written": false,
     "numeric_guard_overrides_changed": false,
     "activation_scope": "Offline model correction only. The combined verification flag is not a universal gate for every supervised tool. Model-dependent entrypoints must not treat this edit as live motion qualification; reconcile current controller/model limits and frames before dispatch.",
+    "firmware_profile_note": "arms.*.model=piper_x selects the PiPER X driver, MDH, nominal joint limits and motor torque coefficients. arms.*.firmware=default selects the SDK protocol profile for the recorded S-V1.6-5 firmware; default is not the ordinary PiPER model. Selecting a model does not write controller firmware or stored limits.",
     "effective_nominal_range_changes_deg": {
       "joint4": {
         "old_sdk_rad_approx": [

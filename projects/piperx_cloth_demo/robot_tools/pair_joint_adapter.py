@@ -7,6 +7,8 @@ are all required. Fault replacement has its own durable bridge and transaction;
 it never clears the original fault or authorizes a later task action.
 """
 import copy
+from .task_roles import PROFILE_KEY as TASK_ROLES_KEY, resolve_task_roles
+from .feedback_tolerance import validate_policy, joints_within
 import math
 import threading
 import time
@@ -26,6 +28,44 @@ from .tracking_observation import TrackingObservation
 
 
 RGB_JOINT_SEND_SCHEMA = "piper_rgb_supervised_joint_send_v1"
+
+
+def rgb_joint_execution_window_budget(motion_profile=None):
+    """Minimum admission reserve for the supervised finite joint operation.
+
+    Completed field segments took about eight seconds including the baseline.
+    Reserve 3 s baseline + 6 s movement/dispatch/IO + 3 s final stability.
+    The 20 s observation timeout is a maximum wait, not promised execution
+    time. Reserving it all would leave only 6 s of the unchanged 30 s RGB age
+    for the model's three-view supervision and RPC, defeating this workflow.
+    These minima are not completion guarantees: the original RGB/task/50 ms
+    feedback guards and observation timeout still reject any actual overrun.
+    """
+    baseline = BOUNDS["stable_s"]
+    if motion_profile == "coarse_approach":
+        # The 20-degree coarse envelope outgrew the small-step empirical
+        # reserve. Keep the original RGB deadline; reserve the complete
+        # bounded arrival/stability observation plus one second of dispatch IO.
+        observation = BOUNDS["timeout_s"]
+        return {"baseline_s": baseline,
+                "postsend_observation_timeout_s": observation,
+                "final_stable_window_s": BOUNDS["stable_s"],
+                "dispatch_and_io_reserve_s": 1.0,
+                "preclaim_required_s": baseline + observation + 1.0,
+                "postsend_required_s": observation + 1.0,
+                "minimum_admission_only": True,
+                "covers_full_observation_timeout": True,
+                "motion_profile": motion_profile}
+    motion_and_io = 6.0
+    final_stable = BOUNDS["stable_s"]
+    return {"baseline_s": baseline,
+            "postsend_observation_timeout_s": BOUNDS["timeout_s"],
+            "final_stable_window_s": final_stable,
+            "motion_dispatch_and_io_reserve_s": motion_and_io,
+            "preclaim_required_s": baseline + motion_and_io + final_stable,
+            "postsend_required_s": motion_and_io + final_stable,
+            "minimum_admission_only": True,
+            "covers_full_observation_timeout": False}
 
 
 def checked_identity(device, identity):
@@ -62,12 +102,14 @@ def _loaded_binding(device, context, event_id, operation, identity):
             raise ValueError("Loaded grasp evidence requires its dedicated RGB path")
         return None
     validate_loaded_context(loaded, identity, geometry)
+    worker_arm, support_arm = resolve_task_roles(device._action.profile.get(TASK_ROLES_KEY, {}))
     if (loaded["event_id"] != event_id or loaded["operation"] != operation
-            or identity["worker_id"] != event_id or identity["arm"] != "right"):
+            or identity["worker_id"] != event_id or identity["arm"] != worker_arm
+            or resolve_task_roles(loaded) != (worker_arm, support_arm)):
         raise ValueError("Loaded event, selected worker and operation must match exactly")
-    for role, side in (("worker", "right"), ("peer", "left")):
+    for role, side in (("worker", worker_arm), ("peer", support_arm)):
         expected, record = loaded[role], device._action.grasps[side]
-        statuses = ("retained_static", "retained_local") if side == "right" else ("retained_static",)
+        statuses = ("retained_static", "retained_local") if role == "worker" else ("retained_static",)
         if record is None or record["status"] not in statuses:
             raise RuntimeError("Loaded motion requires the live retained worker and static peer")
         for field, actual in (("identity", record["identity"]), ("probe_event_id", record["probe_event_id"]),
@@ -75,7 +117,7 @@ def _loaded_binding(device, context, event_id, operation, identity):
                 ("original_anchor", record["original_anchor"]), ("local_anchor", grasp_body_anchor(record))):
             if expected[field] != actual:
                 raise RuntimeError("Loaded live grasp binding differs: " + role + "." + field)
-    record = device._action.grasps["right"]
+    record = device._action.grasps[worker_arm]
     for previous in record.get("loaded_history", []):
         if previous["action_event_id"] == event_id:
             raise RuntimeError("A completed loaded event cannot be replayed by the adapter")
@@ -92,6 +134,8 @@ class _JointExecutor:
     def __init__(self, device, context, event_id, deadline_at, bridge):
         self.device, self.action = device, device._action
         self.context = copy.deepcopy(context)
+        if validate_policy(context.get("feedback_observation")) != self.action.feedback_policy:
+            raise RuntimeError("Observation policy differs from frozen device task")
         self.identity = checked_identity(device, context["identity"])
         self.event_id, self.deadline_at, self.bridge = event_id, deadline_at, bridge
         self.thread = threading.get_ident()
@@ -116,7 +160,8 @@ class _JointExecutor:
 
     def loaded_body_delegated(self, side):
         return (self.loaded_context is not None and self.phase == "normal"
-                and side == "right" == self.identity["arm"] and bool(self.frames) and self.plan is not None
+                and side == resolve_task_roles(self.loaded_context)[0] == self.identity["arm"]
+                and bool(self.frames) and self.plan is not None
                 and self.plan.get("loaded_context") == self.loaded_context)
 
     def _time(self):
@@ -247,15 +292,15 @@ class _JointExecutor:
         action.report.update(baseline_duration_s=self.last_sample_monotonic-start_monotonic,
                             baseline_spans=action.window_spans(action.baseline_window),
                             baseline_feedback_advances=advances)
-        action.record_outcome(state, False)
+        action.record_outcome(state, False, target_kind="joint")
         self.final_fresh(sample)
 
     def target_observed(self, states):
         arm = self.identity["arm"]
         return (self.action.all_after(states, self.action.sent_at)
             and states[arm]["arm_status"]["motion_status"] == 0
-            and max(abs(q-t) for q,t in zip(states[arm]["joints_rad"],
-                                           self.plan["encoded_target_joints_rad"])) <= .003)
+            and joints_within(self.action.feedback_policy, arm, states[arm]["joints_rad"],
+                             self.plan["encoded_target_joints_rad"]))
 
     def check_states(self, states):
         if self.tracking.first_failure is not None:
@@ -267,7 +312,12 @@ class _JointExecutor:
                            for v in state.get("fragment_timestamps_s", {}).values() if _finite(v)]
         diagnostic = {"entry_at": now, "oldest_fragment_age_at_entry_s":
             max((now-v for v in stamps_at_entry), default=None), "checked_at": None,
-            "oldest_fragment_age_at_exit_s": None, "validation_elapsed_s": None}
+            "oldest_fragment_age_at_exit_s": None, "validation_elapsed_s": None,
+            "static_geometry_policy": (
+                "pure_immutable_numeric_box_memoized_at_admission"
+                if self.plan.get("motion_profile") == "coarse_approach"
+                else "coarse_box_memoization_not_applicable"),
+            "live_feedback_age_limit_s": .05}
         self.action.report["joint_validation_timing"] = diagnostic
         sample = pair_sample(self.identity, states, now=now)
         settling = (self.phase == "normal" and self.action.active
@@ -328,15 +378,17 @@ class _JointExecutor:
             return
         now = self._time()
         remaining = self.plan["visual_rgb_deadline"] - now
-        required = BOUNDS["stable_s"]
+        budget = rgb_joint_execution_window_budget(self.plan.get("motion_profile"))
+        required = budget["postsend_required_s"]
         self.action.report["rgb_dispatch_window"] = {
             "stage": stage, "checked_at": now, "rgb_deadline": self.plan["visual_rgb_deadline"],
             "remaining_rgb_window_s": remaining, "required_postsend_window_s": required,
+            "execution_window_budget": budget,
             "sufficient": remaining > required, "window_is_completion_guarantee": False,
             "returned_frames": len(self.frames), "automatic_retry": False,
             "claimed_event_or_budget_released": False}
         if remaining <= required:
-            raise RuntimeError("insufficient_rgb_postsend_window: original RGB deadline cannot fit the final stable window; no first frame sent, claimed event remains faulted")
+            raise RuntimeError("insufficient_rgb_postsend_window: original RGB deadline cannot fit the minimum movement/IO and final-stability reserve; no first frame sent, claimed event remains faulted")
 
     def send_frame(self, side, original, frame, *args, **kwargs):
         self.encoder_guard()
@@ -664,6 +716,20 @@ def execute_joint(device, arm, target, *, context, event_id, deadline_at,
         runner.context["current"] = current
         runner.plan = plan_joint_path(runner.context, target, now=time.time(), recovery_mode=recovery_mode)
         action.joint_executor = runner
+        # Planning can occupy the Python worker while the two independent SDK
+        # receiver threads wait to decode queued frames. Yield once BEFORE the
+        # first baseline snapshot, just as between ordinary baseline samples.
+        # This is not a retry of rejected telemetry: every subsequently read
+        # timestamp still faces the original 50 ms limit and all task guards.
+        runner.encoder_guard()
+        rx_yield_began = time.monotonic()
+        time.sleep(BOUNDS["poll_s"])
+        action.report["initial_rx_schedule"] = {
+            "requested_yield_s": BOUNDS["poll_s"],
+            "elapsed_s": time.monotonic()-rx_yield_began,
+            "before_first_baseline_sample": True,
+            "rejected_samples_retried": 0,
+            "timestamps_renewed": False}
         runner.prepare()
         action.emit("pair_joint_intent", {"event_id": event_id, "plan": runner.plan})
         runner.encoder_guard()
@@ -722,8 +788,8 @@ def execute_joint(device, arm, target, *, context, event_id, deadline_at,
                         if (not action.extend_window(window, states)
                                 or not action.all_after(states, action.sent_at)
                                 or states[arm]["arm_status"]["motion_status"] != 0
-                                or max(abs(q-t) for q, t in zip(states[arm]["joints_rad"],
-                                    runner.plan["encoded_target_joints_rad"])) > .003):
+                                or not joints_within(action.feedback_policy, arm, states[arm]["joints_rad"],
+                                    runner.plan["encoded_target_joints_rad"])):
                             raise RuntimeError("Loaded completion changed during receipt recording")
                         runner.final_fresh(sample)
                         record = action.grasps[arm]
@@ -743,6 +809,7 @@ def execute_joint(device, arm, target, *, context, event_id, deadline_at,
                     action.active = False
                     action.anchor = copy.deepcopy(action.idle_anchor)
                     device._baseline_duration, device._advances = runner.last_sample_monotonic-began_monotonic, advances
+                    action.record_outcome(states, True, target_kind="joint")
                     action.report.update(ok=True, status="joint_target_arrived_and_stationary_observed",
                         arrival_confirmed=True, controller_at_target=True, observed_stable=True,
                         observed_stable_duration_s=device._baseline_duration,

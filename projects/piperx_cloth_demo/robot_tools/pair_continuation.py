@@ -256,7 +256,9 @@ def _snapshot(db, run_id, *, zero_tx=False):
     return snapshot, event, device
 
 
-def _observations(passive_paths, rgb_observation, visual_observation, contract, failed_at, now):
+def _observations(passive_paths, rgb_observation, visual_observation, contract, failed_at, now,
+                  *, orientation_metric='euler_span_bound'):
+    _need(orientation_metric in ('euler_span_bound','so3_diameter'), 'Unknown archived orientation metric')
     _need(type(passive_paths) is dict and set(passive_paths) == {"left","right"}, "Two actual passive records required")
     _need(type(visual_observation) is str and 0 < len(visual_observation.strip()) <= 4000,
           "Preserve the operator's actual current empty-jaw/no-contact image interpretation")
@@ -287,8 +289,23 @@ def _observations(passive_paths, rgb_observation, visual_observation, contract, 
             times = [_number(row.get("field_received_at_s",{}).get(key), "field timestamp") for row in trace]
             _need(all(a <= b for a,b in zip(times,times[1:]))
                   and all(0 <= at-t <= .1 for at,t in zip(stamps,times)), "Passive fields are stale or regress")
+        euler_span = sum(spans[k] for k in ("RX_axis","RY_axis","RZ_axis"))
+        rotation_span = euler_span
+        orientation = None
+        if orientation_metric == 'so3_diameter':
+            from .contact_receipt import _rotation_span
+            # Retain every per-axis limit above. The overall angle is the
+            # pairwise SO(3) diameter, not the looser sum of Euler-axis spans.
+            poses = [[row['end_pose_raw'][key]*(1e-6 if i < 3 else math.pi/180000)
+                      for i,key in enumerate(('X_axis','Y_axis','Z_axis','RX_axis','RY_axis','RZ_axis'))]
+                     for row in trace]
+            rotation_span = _rotation_span(poses)
+            orientation = {'method':'pairwise_so3_diameter',
+                'convention':'Rz(yaw) Ry(pitch) Rx(roll)', 'sample_count':len(trace),
+                'euler_span_sum_bound_rad':euler_span, 'so3_diameter_rad':rotation_span,
+                'overall_limit_rad':.003, 'individual_euler_axis_limit_rad':.003}
         _need(math.sqrt(sum(spans[k]**2 for k in ("X_axis","Y_axis","Z_axis"))) <= .0005
-              and sum(spans[k] for k in ("RX_axis","RY_axis","RZ_axis")) <= .003,
+              and rotation_span <= .003,
               "Passive whole-position/rotation observation bound exceeded")
         status = data.get("raw_frame_latest",{}).get("0x2A1",{})
         status_bytes = bytes.fromhex(status.get("payload_hex", ""))
@@ -310,6 +327,8 @@ def _observations(passive_paths, rgb_observation, visual_observation, contract, 
         _need(type(width) is int and 0 <= width <= 70000, "Measured current jaw width required")
         passive[side] = {"source":ref,"started_at":began,"ended_at":ended,"sample_count":len(trace),
                          "spans":spans,"jaw_width_m":width*1e-6,"jaw_whole_window_observed":False}
+        if orientation is not None:
+            passive[side]['orientation_observation'] = orientation
     raw, ref = _file(rgb_observation); rgb = json.loads(raw)
     _need(set(rgb.get("cameras",{})) == {"front","left_hand","right_hand"}, "Actual three-view RGB required")
     pictures = {}

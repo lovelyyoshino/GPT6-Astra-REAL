@@ -118,6 +118,96 @@ def _execution_scope(db, run_id=None, *, writable=False):
     Enrollment is an offline administrative transition, never a normal claim.
     In particular, an arbitrary new run ID cannot select a fresh fault scope.
     """
+    observed = db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_contact_observations'").fetchone()
+    if observed:
+        head = db.execute('SELECT * FROM pair_supported_contact_observations ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_supported_contact_observations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited existing-contact observation')
+    contact = db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_contact_reacquisitions'").fetchone()
+    if contact:
+        head = db.execute('SELECT * FROM pair_supported_contact_reacquisitions ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_supported_contact_reacquisitions', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited supported contact reacquisition')
+    opening = db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_gripper_opening_continuations'").fetchone()
+    if opening:
+        head = db.execute('SELECT * FROM pair_supported_gripper_opening_continuations ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_supported_gripper_opening_continuations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited further-opening continuation')
+    recovery = db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_gripper_recoveries'").fetchone()
+    if recovery:
+        head = db.execute('SELECT * FROM pair_supported_gripper_recoveries ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_supported_gripper_recoveries', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited supported jaw recovery')
+    manual = db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_manual_gripper_continuations'").fetchone()
+    if manual:
+        head = db.execute('SELECT * FROM pair_manual_gripper_continuations ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_manual_gripper_continuations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the explicitly authorized manual gripper continuation')
+    rgb = db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_round_rgb_continuations'").fetchone()
+    if rgb:
+        head = db.execute('SELECT * FROM pair_round_rgb_continuations ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_round_rgb_continuations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the same-budget RGB continuation')
+    endpoint = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_endpoint_continuations'").fetchone()
+    if endpoint:
+        head = db.execute('SELECT * FROM pair_endpoint_continuations ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_endpoint_continuations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited endpoint continuation')
+    initialization = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_initialization_continuations'").fetchone()
+    if initialization:
+        head = db.execute('SELECT * FROM pair_initialization_continuations ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_initialization_continuations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited initialization continuation')
+    feedback = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_feedback_continuations'").fetchone()
+    if feedback:
+        head = db.execute('SELECT * FROM pair_feedback_continuations ORDER BY ordinal DESC LIMIT 1').fetchone()
+        parent = db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_feedback_continuations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited feedback continuation')
+    preparation = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_preparation_continuations'").fetchone()
+    if preparation:
+        head = db.execute("SELECT * FROM pair_preparation_continuations ORDER BY ordinal DESC LIMIT 1").fetchone()
+        parent = db.execute("SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1").fetchone()
+        if head is not None and parent is not None and head['round_ordinal'] == parent['ordinal']:
+            if run_id == head['run_id']:
+                return 'pair_preparation_continuations', 'ordinal', head['ordinal'], head
+            if writable:
+                raise PairLedgerFault('Run is outside the audited preparation continuation')
     rounds = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_rounds'").fetchone()
     if rounds:
         head = db.execute("SELECT * FROM pair_rounds ORDER BY ordinal DESC LIMIT 1").fetchone()
@@ -150,6 +240,10 @@ def _execution_scope(db, run_id=None, *, writable=False):
                 return "pair_execution_epochs", "ordinal", head["ordinal"], head
             if writable:
                 raise PairLedgerFault("Run is outside the explicitly authorized active execution epoch")
+    if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_reset_task_budgets'").fetchone():
+        initial = db.execute("SELECT run_id FROM pair_reset_task_budgets LIMIT 1").fetchone()
+        if initial is not None and writable and run_id != initial["run_id"]:
+            raise PairLedgerFault("Run is outside the explicitly enrolled post-reset task")
     row = db.execute("SELECT * FROM pair_scope WHERE id=1").fetchone()
     return "pair_scope", "id", 1, row
 
@@ -176,6 +270,58 @@ def activated_execution_budget(path, run_id, *, max_steps, max_duration_s):
     try:
         db.execute("PRAGMA query_only=ON")
         db.execute("BEGIN")
+        return _activated_execution_budget_db(db, run_id, max_steps=max_steps, max_duration_s=max_duration_s)
+    finally:
+        db.close()
+
+
+def _activated_execution_budget_db(db, run_id, *, max_steps, max_duration_s):
+    """Same immutable budget audit on an existing read-only history snapshot."""
+    try:
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_reset_task_budgets'").fetchone():
+            table, _, _, _ = _execution_scope(db, run_id)
+            if table == "pair_scope":
+                from .startup_reset import audit_task_budget
+                return audit_task_budget(db, run_id, max_steps=max_steps, max_duration_s=max_duration_s)
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_contact_observations'").fetchone():
+            observed=db.execute('SELECT * FROM pair_supported_contact_observations ORDER BY ordinal DESC LIMIT 1').fetchone()
+            current=db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+            if observed is not None and current is not None and observed['round_ordinal']==current['ordinal']:
+                from .supported_gripper_recovery import audit_existing_contact_budget
+                return audit_existing_contact_budget(db,run_id,max_steps=max_steps,max_duration_s=max_duration_s)
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_contact_reacquisitions'").fetchone():
+            contact=db.execute('SELECT * FROM pair_supported_contact_reacquisitions ORDER BY ordinal DESC LIMIT 1').fetchone()
+            current_round=db.execute('SELECT ordinal FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+            if contact is not None and current_round is not None and contact['run_id']==run_id and contact['round_ordinal']==current_round['ordinal']:
+                from .supported_gripper_recovery import audit_contact_budget
+                return audit_contact_budget(db,run_id,max_steps=max_steps,max_duration_s=max_duration_s)
+        # Older contact tables stay intact when a restricted successor round
+        # is appended. Select the matching current round before those parents.
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_rounds'").fetchone():
+            current=db.execute('SELECT * FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+            if current is not None and current['run_id']==run_id:
+                record=json.loads(current['record_json'])
+                if record['proposal'].get('parent_kind')=='supported_contact_zero_tx_fault':
+                    from .pair_round import _audit_round_enrollment
+                    run=db.execute('SELECT * FROM pair_runs WHERE run_id=?',(run_id,)).fetchone()
+                    if run is None or run['max_steps']!=max_steps or run['max_duration']!=max_duration_s:return False
+                    if (record['proposal'].get('budget_policy')!='explicit_user_new_round'
+                            or json.loads(run['contract_json'])!=record['new_contract']):
+                        raise PairLedgerError('Restricted contact round must retain its explicit budget and frozen run contract')
+                    _audit_round_enrollment(db,current,run,parent_kind='supported_contact_zero_tx_fault')
+                    return True
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_contact_reacquisitions'").fetchone():
+            from .supported_gripper_recovery import audit_contact_budget
+            return audit_contact_budget(db, run_id, max_steps=max_steps, max_duration_s=max_duration_s)
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_gripper_opening_continuations'").fetchone():
+            from .supported_gripper_recovery import audit_opening_budget
+            return audit_opening_budget(db, run_id, max_steps=max_steps, max_duration_s=max_duration_s)
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_supported_gripper_recoveries'").fetchone():
+            from .supported_gripper_recovery import audit_budget
+            return audit_budget(db, run_id, max_steps=max_steps, max_duration_s=max_duration_s)
+        if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_manual_gripper_continuations'").fetchone():
+            from .manual_gripper_continuation import audit_budget
+            return audit_budget(db, run_id, max_steps=max_steps, max_duration_s=max_duration_s)
         if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_rounds'").fetchone():
             scope = db.execute("SELECT * FROM pair_rounds ORDER BY ordinal DESC LIMIT 1").fetchone()
             if scope is not None:
@@ -187,6 +333,12 @@ def activated_execution_budget(path, run_id, *, max_steps, max_duration_s):
                 budget = proposal["new_budget"]
                 start_policy = proposal.get("budget_start_policy", "include_repair_time")
                 run = db.execute("SELECT * FROM pair_runs WHERE run_id=?", (run_id,)).fetchone()
+                if db.execute("SELECT 1 FROM sqlite_master WHERE name='pair_round_rgb_continuations'").fetchone():
+                    continuation = db.execute('SELECT * FROM pair_round_rgb_continuations WHERE run_id=? AND round_ordinal=?',
+                                              (run_id,scope['ordinal'])).fetchone()
+                    if continuation is not None:
+                        from .round_rgb_continuation import audit_row
+                        audit_row(db,continuation,run)
                 parent = db.execute("SELECT * FROM pair_runs WHERE run_id=?", (scope["parent_run_id"],)).fetchone()
                 return (proposal.get("budget_policy") == "explicit_user_new_round"
                     and proposal["new_run_id"] == run_id and proposal["parent_run_id"] == scope["parent_run_id"]
@@ -194,17 +346,18 @@ def activated_execution_budget(path, run_id, *, max_steps, max_duration_s):
                         == proposal["proposal_sha256"] == scope["proposal_sha256"]
                     and digest(authorization) == scope["authorization_sha256"]
                     and authorization["source"] == "user_message"
-                    and authorization["decision"] == "authorize_explicit_new_round"
+                    and authorization["decision"] == ('authorize_repaired_continuation'
+                        if start_policy == 'preserve_parent_deadline' else 'authorize_explicit_new_round')
                     and authorization["proposal_sha256"] == scope["proposal_sha256"]
                     and _json_object(authorization["new_budget"], "budget") == _json_object(budget, "budget")
-                    and start_policy in ("include_repair_time", "after_repair_before_online_execution")
+                    and start_policy in ("include_repair_time", "after_repair_before_online_execution", 'preserve_parent_deadline')
                     and proposal["authorization_not_before"] <= authorization["received_at"] <= budget["started_at"]
                     and ((start_policy == "include_repair_time" and authorization["received_at"] == budget["started_at"])
-                         or (start_policy == "after_repair_before_online_execution"
+                         or (start_policy in ("after_repair_before_online_execution", 'preserve_parent_deadline')
                              and authorization.get("budget_start_policy") == start_policy))
                     and budget["started_at"] <= proposal["created_at"] <= record["activated_at"] < proposal["deadline_s"]
-                    and type(budget["max_steps"]) is int and 1 <= budget["max_steps"] <= 500
-                    and type(budget["max_duration_s"]) in (int,float) and 0 < budget["max_duration_s"] <= 3600
+                    and type(budget["max_steps"]) is int and 1 <= budget["max_steps"] <= 1000
+                    and type(budget["max_duration_s"]) in (int,float) and 0 < budget["max_duration_s"] <= 10800
                     and budget["max_steps"] == max_steps and budget["max_duration_s"] == max_duration_s
                     and run is not None and parent is not None
                     and run["started_at"] == budget["started_at"]
@@ -212,6 +365,44 @@ def activated_execution_budget(path, run_id, *, max_steps, max_duration_s):
                     and run["max_steps"] == max_steps and run["max_duration"] == max_duration_s
                     and json.loads(run["contract_json"]) == record["new_contract"] == proposal["reviewed_contract"]
                     and proposal["parent_run"] == dict(parent)
+                    and (proposal.get('parent_kind', 'clean') == 'clean' or
+                         (proposal.get('parent_kind') == 'query_duplicate_fault'
+                          and start_policy == 'after_repair_before_online_execution'
+                          and max_steps == parent['max_steps']-parent['steps']
+                          and max_duration_s == parent['max_duration']) or
+                         (proposal.get('parent_kind') == 'zero_tx_freshness_fault'
+                          and start_policy == 'preserve_parent_deadline'
+                          and max_steps == parent['max_steps']-parent['steps']
+                          and proposal['deadline_s'] == parent['started_at']+parent['max_duration']
+                          and record.get('new_budget_allocated') is False) or
+                         (proposal.get('parent_kind') == 'postsend_rgb_expiry_fault'
+                          and start_policy == 'after_repair_before_online_execution'
+                          and proposal['authorization_not_before'] >= parent['started_at']+parent['max_duration']
+                          and record.get('new_budget_allocated') is True) or
+                         (proposal.get('parent_kind') == 'initial_rx_zero_tx_fault'
+                          and start_policy == 'after_repair_before_online_execution'
+                          and record.get('new_budget_allocated') is True
+                          and _audited_initial_rx_budget(db, run, scope)) or
+                         (proposal.get('parent_kind') == 'completed_unloaded_joint_fault'
+                          and start_policy == 'after_repair_before_online_execution'
+                          and proposal['authorization_not_before'] >= parent['started_at']+parent['max_duration']
+                          and record.get('new_budget_allocated') is True
+                          and record.get('required_connection_mode') == proposal.get('required_connection_mode') == 'prepare'
+                          and _audited_completed_unloaded_budget(db, run, scope)) or
+                         (proposal.get('parent_kind') == 'configuration_maintenance_fault'
+                          and start_policy == 'after_repair_before_online_execution'
+                          and record.get('new_budget_allocated') is True
+                          and record.get('required_connection_mode') == proposal.get('required_connection_mode') == 'prepare'
+                          and _audited_configuration_budget(db, run, scope)) or
+                         (proposal.get('parent_kind') == 'postreboot_supervised_plug_task'
+                          and proposal.get('schema') == 'piper_postreboot_supervised_task_v1'
+                          and start_policy == 'after_repair_before_online_execution'
+                          and proposal['authorization_not_before'] >= parent['started_at']+parent['max_duration']
+                          and record.get('new_budget_allocated') is True
+                          and record.get('required_connection_mode') == proposal.get('required_connection_mode') == 'prepare'
+                          and proposal.get('startup',{}).get('known_frames_returned') == 4
+                          and proposal.get('startup',{}).get('failed_result_preserved') is True
+                          and proposal.get('task',{}).get('envelope',{}).get('task') == record['new_contract']['task']))
                     and proposal["cumulative_step_ceiling"] == proposal["snapshot"]["cumulative_prior_steps"]+max_steps)
         if not db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_execution_epochs'").fetchone():
             return False
@@ -234,8 +425,8 @@ def activated_execution_budget(path, run_id, *, max_steps, max_duration_s):
             and authorization["proposal_sha256"] == scope["proposal_sha256"]
             and authorization["new_budget"] == budget
             and proposal["authorization_not_before"] < authorization["received_at"] <= record["activated_at"]
-            and type(budget["max_steps"]) is int and 1 <= budget["max_steps"] <= 500
-            and type(budget["max_duration_s"]) in (int, float) and 0 < budget["max_duration_s"] <= 3600
+            and type(budget["max_steps"]) is int and 1 <= budget["max_steps"] <= 1000
+            and type(budget["max_duration_s"]) in (int, float) and 0 < budget["max_duration_s"] <= 10800
             and budget == {"max_steps":max_steps, "max_duration_s":max_duration_s}
             and run is not None and parent is not None
             and run["max_steps"] == max_steps and run["max_duration"] == max_duration_s
@@ -244,8 +435,93 @@ def activated_execution_budget(path, run_id, *, max_steps, max_duration_s):
             and proposal["cumulative_step_ceiling"] == parent["steps"]+max_steps)
     except (KeyError, TypeError, ValueError) as exc:
         raise PairLedgerError("Malformed activated execution budget") from exc
-    finally:
-        db.close()
+
+
+UNOPENED_REPAIR_SOURCES = frozenset({'pair_round.py', 'pair_ledger.py', 'pair_host.py'})
+
+
+def effective_contract_json(db, run, scope):
+    """Resolve a frozen contract, including one append-only unopened repair.
+
+    The original run and enrollment rows remain the source of budget and task
+    identity. A revision changes code only; it cannot clear a fault or supply
+    targets, feedback, readiness, or a new execution scope.
+    """
+    if 'contract_json' in scope.keys():
+        return scope['contract_json']
+    original = run['contract_json']
+    if not db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_unopened_round_revisions'").fetchone():
+        return original
+    row = db.execute('SELECT * FROM pair_unopened_round_revisions WHERE run_id=?', (run['run_id'],)).fetchone()
+    if row is None:
+        return original
+    try:
+        revision = json.loads(row['record_json'])
+        registration = json.loads(scope['record_json'])
+        proposal = registration['proposal']
+        old, new = json.loads(original), revision['new_contract']
+        digest = lambda value: hashlib.sha256(_json_object(value, 'contract revision').encode()).hexdigest()
+        before = revision['old_run']
+        expected_audit = {'original_snapshot_sha256': proposal['snapshot_sha256'],
+            'original_proposal_sha256': proposal['proposal_sha256'],
+            'historical_observations_only': True, 'fresh_host_admission_required': True}
+        valid = (revision['schema'] == 'piper_unopened_round_code_repair_v2'
+            and proposal.get('parent_kind') == 'initial_rx_zero_tx_fault'
+            and old == registration['new_contract'] == proposal['reviewed_contract'] == revision['old_contract']
+            and revision['original_round_record_sha256'] == digest(registration)
+            and before['contract_json'] == original and before['run_id'] == run['run_id']
+            and type(before['steps']) is int and before['steps'] == 0
+            and all(before[k] == run[k] for k in ('started_at', 'max_steps', 'max_duration'))
+            and revision['owner_at_revision'] is None and revision['events_at_revision'] == []
+            and type(revision['hardware_commands_sent']) is int and revision['hardware_commands_sent'] == 0
+            and revision['new_budget_allocated'] is False
+            and revision['required_connection_mode'] == 'prepare'
+            and revision['historical_audit'] == expected_audit
+            and registration['activated_at'] <= row['at'] == revision['revised_at'] < proposal['deadline_s']
+            and revision['deadline_s'] == run['started_at'] + run['max_duration'] == proposal['deadline_s']
+            and {k:v for k,v in old.items() if k != 'code'} == {k:v for k,v in new.items() if k != 'code'}
+            and set(old['code']) == set(new['code'])
+            and {k for k in old['code'] if old['code'][k] != new['code'][k]} == UNOPENED_REPAIR_SOURCES)
+        if not valid:
+            raise PairLedgerError('Invalid unopened-round contract revision')
+        return _json_object(new, 'effective contract')
+    except (KeyError, TypeError, ValueError) as exc:
+        raise PairLedgerError('Malformed unopened-round contract revision') from exc
+
+
+def _audited_initial_rx_budget(db, run, scope):
+    # Import only on administrative recognition, never in the feedback loop.
+    # Checking a tag or a self-reported zero counter alone is insufficient.
+    from .pair_round import audit_unopened_enrollment
+    audit_unopened_enrollment(db, scope, run)
+    effective_contract_json(db, run, scope)
+    return True
+
+
+def _audited_completed_unloaded_budget(db, run, scope):
+    from .pair_round import audit_completed_unloaded_round
+    audit_completed_unloaded_round(db, scope, run)
+    return True
+
+
+def _audited_configuration_budget(db, run, scope):
+    from .pair_round import _audit_round_enrollment
+    _audit_round_enrollment(db, scope, run, parent_kind='configuration_maintenance_fault')
+    return True
+
+
+def initial_rx_round_requires_preparation(path, run_id):
+    """Read-only connection-mode routing; grants no recovery or motion."""
+    source = Path(path).resolve()
+    if not source.exists():
+        return False
+    with sqlite3.connect(source.as_uri() + '?mode=ro', uri=True) as db:
+        db.row_factory = sqlite3.Row
+        if not db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pair_rounds'").fetchone():
+            return False
+        row = db.execute('SELECT * FROM pair_rounds ORDER BY ordinal DESC LIMIT 1').fetchone()
+        return (row is not None and row['run_id'] == run_id
+                and json.loads(row['record_json'])['proposal'].get('parent_kind') == 'initial_rx_zero_tx_fault')
 
 
 def platform_state(path, *, run_id=None):
@@ -520,8 +796,9 @@ class PairLedger:
                            "VALUES(?,?,?,?,?)", (self.run_id, self.contract_json, max_steps, self.max_duration_s, now))
             table, key, value, scope = _execution_scope(db, self.run_id, writable=True)
             self._scope_binding = (table, key, value)
-            effective_contract = (scope["contract_json"] if table in ("pair_continuations", "pair_predispatch_continuations")
-                                  else existing["contract_json"] if existing is not None else self.contract_json)
+            stored_run = existing if existing is not None else db.execute(
+                'SELECT * FROM pair_runs WHERE run_id=?', (self.run_id,)).fetchone()
+            effective_contract = effective_contract_json(db, stored_run, scope)
             if (effective_contract != self.contract_json or existing is not None and (existing["max_steps"] != max_steps
                   or existing["max_duration"] != self.max_duration_s)):
                 raise ValueError("Existing run contract and budgets are frozen")
@@ -623,9 +900,16 @@ class PairLedger:
                 "remaining_s": remaining_s, "remaining": {"steps": remaining_steps, "duration_s": remaining_s},
                 "fault": fault, "global_fault": fault, "fault_latched": fault is not None,
                 "pending_event_id": pending["event_id"] if pending else None,
-                "contract": json.loads(scope["contract_json"] if "contract_json" in scope.keys()
-                                       else run["contract_json"]), "physical_stop_verified": None}
-        if "previous_owner" in scope.keys():
+                "contract": json.loads(effective_contract_json(db, run, scope)), "physical_stop_verified": None}
+        if "round_ordinal" in scope.keys():
+            field = ('endpoint_continuation' if 'initialization_ordinal' in scope.keys() else
+                     'initialization_continuation' if 'feedback_ordinal' in scope.keys() else
+                     'feedback_continuation' if 'preparation_ordinal' in scope.keys() else 'preparation_continuation')
+            result[field] = {'ordinal':scope['ordinal'],
+                'proposal_sha256':scope['proposal_sha256'], 'old_fault_preserved':True,
+                'original_run_deadline_preserved':True, 'new_budget_allocated':False}
+            scope = db.execute('SELECT * FROM pair_rounds WHERE ordinal=?', (scope['round_ordinal'],)).fetchone()
+        elif "previous_owner" in scope.keys():
             result["continuation"] = {"ordinal":scope["ordinal"], "failed_event_id":scope["failed_event_id"],
                 "proposal_sha256":scope["proposal_sha256"], "old_fault_preserved":True,
                 "original_run_deadline_preserved":True, "new_budget_allocated":False}
@@ -701,6 +985,8 @@ class PairLedger:
                     self._latch(db, "step_budget_exhausted", now, owner)
                     error = PairLedgerFault("Step budget exhausted; database fault latched")
                 else:
+                    from .supported_gripper_recovery import check_request
+                    check_request(db, self.run_id, owner, payload)
                     step = run["steps"] + 1
                     db.execute("INSERT INTO pair_events(run_id,event_id,payload_json,payload_digest,step,status,owner,began_at) "
                                "VALUES(?,?,?,?,?,'pending',?,?)", (self.run_id, event_id, encoded, digest, step, owner, now))

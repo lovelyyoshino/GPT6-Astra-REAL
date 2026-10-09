@@ -5,6 +5,8 @@ Construction is offline. open()/connect_for_preparation() connect without sendin
 actuator commands. A retained stationary target is not loaded support or a stop.
 """
 import copy
+from .feedback_tolerance import rotation_tolerance
+from .feedback_tolerance import joints_within, window_joints_within
 import hashlib
 import json
 import math
@@ -30,6 +32,131 @@ CAPABILITIES = {"retained_target_stationary": True, "contact_support_verified": 
                 "gripper_contact_observation": True, "gripper_static_retention": True}
 
 
+def _require_later_recovery_target(continuation, target):
+    prior = continuation["prior_opening_target_m"]
+    previous_encoded = round(prior * 1e6) / 1e6
+    if any(value <= max(prior, previous_encoded)
+           for value in (target, round(target * 1e6) / 1e6)):
+        raise RuntimeError("Continued opening must exceed the previous requested and encoded target; no replay")
+
+
+def _validated_opening_continuation(source, arm, target, now):
+    """Check the manager's bound provenance, not certify its archived history.
+
+    The ledger manager verifies the complete old send, closed owner and passive
+    trace. This adapter checks its exact source binding and fresh body/jaw RX;
+    an envelope or hash alone is never evidence of physical support or stopping.
+    """
+    if type(source) is not dict:
+        raise ValueError("Supported residual source must be an object")
+    if "audited_opening_continuation" not in source:
+        return None
+    value = source["audited_opening_continuation"]
+    required = {"schema", "arm", "source_receipt_sha256", "prior_opening_event_id",
+                "prior_opening_receipt_sha256", "prior_opening_target_m", "prior_opening_finished_at",
+                "audit_proposal_sha256", "residual_jaw_anchor"}
+    if (type(value) is not dict or set(value) != required
+            or value["schema"] != "piper_supported_opening_continuation_v1" or value["arm"] != arm):
+        raise ValueError("Exact audited opening continuation schema and arm required")
+    jaw = value["residual_jaw_anchor"]
+    if type(jaw) is not dict or set(jaw) != {"width_m", "observed_at", "source"}:
+        raise ValueError("Separate residual jaw observation and source provenance required")
+    provenance = jaw["source"]
+    if (type(provenance) is not dict or set(provenance) != {"path", "sha256"}
+            or type(provenance["path"]) is not str or not 1 <= len(provenance["path"]) <= 4096
+            or "\x00" in provenance["path"] or not Path(provenance["path"]).is_absolute()):
+        raise ValueError("Absolute passive source path and SHA256 provenance required")
+    for sha in (value["source_receipt_sha256"], value["prior_opening_receipt_sha256"],
+                value["audit_proposal_sha256"], provenance["sha256"]):
+        if type(sha) is not str or len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha):
+            raise ValueError("Audited opening source provenance requires exact SHA256 digests")
+    event = value["prior_opening_event_id"]
+    if (type(event) is not str or not 1 <= len(event) <= 128 or event.strip() != event
+            or any(ord(c) < 32 or ord(c) == 127 for c in event)):
+        raise ValueError("Prior complete opening event identity required")
+    original = {key: item for key, item in source.items() if key != "audited_opening_continuation"}
+    if digest(original) != value["source_receipt_sha256"]:
+        raise ValueError("Original failed source receipt changed after the continuation audit")
+    completed = source.get("candidate_probe", {}).get("completed_at")
+    numbers = (jaw["width_m"], jaw["observed_at"], value["prior_opening_target_m"],
+               value["prior_opening_finished_at"], completed, now)
+    if (any(type(v) not in (float, int) or not math.isfinite(v) for v in numbers)
+            or not 0 <= jaw["width_m"] <= .070 or not 0 <= value["prior_opening_target_m"] <= .055
+            or not 0 <= completed <= value["prior_opening_finished_at"] < jaw["observed_at"] <= now):
+        raise ValueError("Audited opening and later residual observation chronology/width required")
+    _require_later_recovery_target(value, target)
+    return copy.deepcopy(value)
+
+
+def _validated_supported_reacquisition(source, arm, now):
+    """Bind audited opening evidence without interpreting it as separation."""
+    if type(source) is not dict:
+        raise ValueError("Supported reacquisition source must be an object")
+    value = source.get("audited_supported_reacquisition")
+    required = {"schema", "arm", "source_receipt_sha256", "opening_event_id",
+                "opening_receipt_sha256", "opening_finished_at", "audit_proposal_sha256", "opening_jaw_anchor"}
+    if (type(value) is not dict or set(value) not in (required, required | {"completed_probe_continuation"})
+            or value["schema"] != "piper_supported_reacquisition_v1" or value["arm"] != arm):
+        raise ValueError("Exact audited supported reacquisition schema and arm required")
+    jaw = value["opening_jaw_anchor"]
+    if type(jaw) is not dict or set(jaw) != {"width_m", "observed_at", "source"}:
+        raise ValueError("Successful opening jaw observation and source provenance required")
+    provenance = jaw["source"]
+    if (type(provenance) is not dict or set(provenance) != {"path", "sha256"}
+            or type(provenance["path"]) is not str or not 1 <= len(provenance["path"]) <= 4096
+            or "\x00" in provenance["path"] or not Path(provenance["path"]).is_absolute()):
+        raise ValueError("Absolute opening source path and SHA256 provenance required")
+    for sha in (value["source_receipt_sha256"], value["opening_receipt_sha256"],
+                value["audit_proposal_sha256"], provenance["sha256"]):
+        if type(sha) is not str or len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha):
+            raise ValueError("Audited reacquisition provenance requires exact SHA256 digests")
+    event = value["opening_event_id"]
+    if (type(event) is not str or not 1 <= len(event) <= 128 or event.strip() != event
+            or any(ord(c) < 32 or ord(c) == 127 for c in event)):
+        raise ValueError("Successful opening event identity required")
+    original = {key: item for key, item in source.items() if key != "audited_supported_reacquisition"}
+    if digest(original) != value["source_receipt_sha256"]:
+        raise ValueError("Original failed source receipt changed after the reacquisition audit")
+    completed = source.get("candidate_probe", {}).get("completed_at")
+    numbers = (jaw["width_m"], jaw["observed_at"], value["opening_finished_at"], completed, now)
+    if (any(type(v) not in (float, int) or not math.isfinite(v) for v in numbers)
+            or not 0 <= jaw["width_m"] <= .070
+            or not 0 <= completed < jaw["observed_at"] <= value["opening_finished_at"] <= now):
+        raise ValueError("Successful opening after the original probe requires finite measured width and chronology")
+    if "completed_probe_continuation" in value:
+        continuation = value["completed_probe_continuation"]
+        fields = {"schema", "arm", "failed_event_id", "failed_receipt_sha256", "prior_sent_target_m",
+                  "failed_finished_at", "consumed_probe_count", "remaining_probe_count", "residual_jaw_anchor"}
+        if (type(continuation) is not dict or set(continuation) != fields
+                or continuation["schema"] != "piper_completed_contact_continuation_v1"
+                or continuation["arm"] != arm
+                or type(continuation["consumed_probe_count"]) is not int or continuation["consumed_probe_count"] != 2
+                or type(continuation["remaining_probe_count"]) is not int or continuation["remaining_probe_count"] != 1):
+            raise ValueError("Exact completed-probe continuation with two consumed and one remaining probe required")
+        residual = continuation["residual_jaw_anchor"]
+        if type(residual) is not dict or set(residual) != {"width_m", "observed_at", "source"}:
+            raise ValueError("Separate completed-probe residual jaw provenance required")
+        provenance = residual["source"]
+        if (type(provenance) is not dict or set(provenance) != {"path", "sha256"}
+                or type(provenance["path"]) is not str or not 1 <= len(provenance["path"]) <= 4096
+                or "\x00" in provenance["path"] or not Path(provenance["path"]).is_absolute()):
+            raise ValueError("Absolute residual jaw source path and SHA256 provenance required")
+        for sha in (continuation["failed_receipt_sha256"], provenance["sha256"]):
+            if type(sha) is not str or len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha):
+                raise ValueError("Completed-probe provenance requires exact SHA256 digests")
+        event = continuation["failed_event_id"]
+        if (type(event) is not str or not 1 <= len(event) <= 128 or event.strip() != event
+                or event == value["opening_event_id"] or any(ord(c) < 32 or ord(c) == 127 for c in event)):
+            raise ValueError("Distinct completed-probe failure event identity required")
+        numbers = (residual["width_m"], residual["observed_at"], continuation["prior_sent_target_m"],
+                   continuation["failed_finished_at"])
+        if (any(type(v) not in (float, int) or not math.isfinite(v) for v in numbers)
+                or not 0 <= residual["width_m"] <= .070 or not 0 <= continuation["prior_sent_target_m"] <= .055
+                or not value["opening_finished_at"] < continuation["failed_finished_at"] < residual["observed_at"] <= now):
+            raise ValueError("Completed-probe failure and newer residual jaw require finite width and chronology")
+    return copy.deepcopy(value)
+
+
 class _PairAction(_SingleSupervisedAction):
     """One mutable action context, permanently owning the guarded SDK objects."""
 
@@ -45,6 +172,15 @@ class _PairAction(_SingleSupervisedAction):
         self.retention_trace = None
         self.joint_executor = None
         self.auxiliary_executor = None
+        self.supported_reacquisition = None
+        self.supported_contact_observation = None
+
+    def window_stable(self, window):
+        return all(window_joints_within(self.feedback_policy, side, window[side])
+                   and spans["position_m"] <= BOUNDS["position_span_m"]
+                   and spans["jaw_m"] <= BOUNDS["jaw_span_m"]
+                   and spans["rotation_rad"] <= rotation_tolerance(self.feedback_policy,side)
+                   for side,spans in self.window_spans(window).items())
 
     def _executor(self):
         if self.joint_executor is not None and self.auxiliary_executor is not None:
@@ -61,6 +197,15 @@ class _PairAction(_SingleSupervisedAction):
         if any(item is not None and item["status"] == "loaded_pending_visual" for item in self.grasps.values()):
             raise RuntimeError("Loaded response awaits new visual confirmation; no new CAN transmission")
 
+    def require_supported_reacquisition_tx(self, side, kind):
+        if self.supported_contact_observation is not None:
+            self._deny(side, "Existing supported contact permits only zero-TX observation and static retention")
+        context = self.supported_reacquisition
+        if context is not None and (context["closure_finished"] or side != context["arm"]
+                or kind != "gripper" or self.probe_mode != "close" or self.target != context["target_m"]
+                or sum(row["attempted_frames"] for row in self.totals().values()) != context["attempts_before"]):
+            self._deny(side, "Supported reacquisition permits only its current selected-jaw closure")
+
     def connect(self):
         # Keep the inherited passive construction and exact comm/bus guards.
         # Unlike Single.connect(), do not permanently disable one chosen side.
@@ -68,6 +213,12 @@ class _PairAction(_SingleSupervisedAction):
         self.quaternion = _SingleGripperPrepare._manufacturer_quaternion
         for side in SIDES:
             robot, jaw = self.robots[side], self.grippers[side]
+            if self.feedback_policy is not None:
+                from .coherent_feedback import install
+                cfg = self.profile['arms'][side]
+                if cfg['model'] != 'piper_x' or cfg['firmware'] != 'default':
+                    raise RuntimeError('Task feedback grouping requires PiPER X/default')
+                install(robot)
             for name in ("_send_msg", "_send_msgs"):
                 sender = getattr(robot, name)
                 setattr(robot, name, self._sender(side, "move", sender))
@@ -82,6 +233,7 @@ class _PairAction(_SingleSupervisedAction):
     def _sender(self, side, kind, original):
         def send(*args, **kwargs):
             self.require_no_loaded_pending_tx()
+            self.require_supported_reacquisition_tx(side, kind)
             executor = self._executor()
             if executor is None:
                 self.guard()
@@ -97,6 +249,7 @@ class _PairAction(_SingleSupervisedAction):
         original = comm.send_bus.send
         def send(*args, **kwargs):
             self.require_no_loaded_pending_tx()
+            self.require_supported_reacquisition_tx(side, self.kind)
             executor = self._executor()
             if executor is not None:
                 return executor.send_frame(side, original, *args, **kwargs)
@@ -150,6 +303,31 @@ class _PairAction(_SingleSupervisedAction):
                 samples.append({"observed_at_s": at, "arms": copy.deepcopy(states)})
         return result
 
+    def checked_current_completion(self):
+        """Post-classification RX only: host guard BEFORE collecting feedback.
+
+        A guard may read/hash durable evidence. Its latency must not age an
+        already-read sample. Freshness/health/envelope limits are unchanged;
+        stale actual feedback still fails, with no waiting, TX or retries.
+        """
+        if self._executor() is not None or self.probe_trace is not None or self.retention_trace is not None:
+            raise RuntimeError("Current completion read requires finished probe classification")
+        self.guard()
+        states = self.read()
+        checked = self._checked_after_guard(states)
+        self.report["completion_feedback_order"] = "host_guard_then_read_then_validate"
+        return checked
+
+    def _stationary_body_reference(self, side, ordinary_reference):
+        # An audited re-closing changes only the jaw reference. Reusing a new
+        # connection/action body origin would intersect two equal envelopes
+        # and reject feedback still inside the immutable audited body bound.
+        if self.supported_reacquisition is not None:
+            return self.supported_reacquisition["body_anchors"][side]
+        if self.supported_contact_observation is not None:
+            return self.supported_contact_observation["body_anchors"][side]
+        return super()._stationary_body_reference(side, ordinary_reference)
+
     def _checked_after_guard(self, states):
         """Pure feedback checks; never reenter the host guard or sender."""
         if self.auxiliary_executor is not None:
@@ -163,11 +341,38 @@ class _PairAction(_SingleSupervisedAction):
             self.boundary_origins.setdefault(side, list(states[side]["joints_rad"]))
         result = (super().checked(states) if self.joint_executor is None
                   else self.joint_executor.check_states(states))
+        observed_contact = self.supported_contact_observation
+        if observed_contact is not None:
+            for side in SIDES:
+                jaw = (observed_contact["jaw_anchor_m"] if side == observed_contact["arm"]
+                       else observed_contact["body_anchors"][side]["width_m"])
+                if abs(states[side]["gripper"]["width_m"]-jaw) > BOUNDS["jaw_span_m"]:
+                    raise RuntimeError("Existing supported-contact jaw left its fixed observed anchor: " + side)
+        reacquisition = self.supported_reacquisition
+        if reacquisition is not None:
+            # This survives per-action resets and candidate installation. The
+            # opening changed only a jaw reference, never either body's origin.
+            for side in SIDES:
+                original = reacquisition["body_anchors"][side]
+                deviation = anchor_deviation(original, states[side])
+                if (not joints_within(self.feedback_policy, side, original["joints_rad"], states[side]["joints_rad"])
+                        or deviation["position_m"] > BOUNDS["position_span_m"]
+                        or deviation["rotation_rad"] > rotation_tolerance(self.feedback_policy, side)):
+                    raise RuntimeError("Supported reacquisition body left its original anchor: " + side)
+                selected = side == reacquisition["arm"]
+                if (not selected or reacquisition["closure_finished"]
+                        or sum(row["sent_frames"] for row in self.totals().values()) == reacquisition["sent_before"]):
+                    jaw_anchor = reacquisition["jaw_anchor_m"] if selected else original["width_m"]
+                    if abs(states[side]["gripper"]["width_m"]-jaw_anchor) > BOUNDS["jaw_span_m"]:
+                        raise RuntimeError("Supported reacquisition jaw left its observed anchor: " + side)
         if self.probe_mode is not None and self.sent_at is None:
             width = states[self.arm]["gripper"]["width_m"]
             # Bound both the requested and manufacturer-encoded widths before
             # every frame. Quantization cannot enlarge a 5 mm probe or release.
             encoded = round(self.target * 1e6) / 1e6
+            pending = self.grasps[self.arm]
+            if pending is not None and pending.get("audited_opening_continuation") is not None:
+                _require_later_recovery_target(pending["audited_opening_continuation"], self.target)
             for target in (self.target, encoded):
                 before, after = (width, target) if self.probe_mode == "close" else (target, width)
                 if not probe_closure_within_bound(before, after):
@@ -180,14 +385,16 @@ class _PairAction(_SingleSupervisedAction):
             deviation = anchor_deviation(grasp_body_anchor(pending), states[side])
             delegated = (self.joint_executor is not None and self.active
                          and self.joint_executor.loaded_body_delegated(side))
-            if not delegated and (deviation["joint_rad"] > BOUNDS["joint_span_rad"]
+            if not delegated and (not joints_within(self.feedback_policy, side, grasp_body_anchor(pending)["joints_rad"], states[side]["joints_rad"])
                     or deviation["position_m"] > BOUNDS["position_span_m"]
-                    or deviation["rotation_rad"] > BOUNDS["rotation_span_rad"]):
+                    or deviation["rotation_rad"] > rotation_tolerance(self.feedback_policy,side)):
                 raise RuntimeError("Grasp arm changed from its original candidate anchor: " + side)
             releasing = (self.active and side == self.arm and self.probe_mode == "release"
                          and self.sent_at is not None)
             jaw_anchor = (pending["release_opening"]["observed_width_m"]
                           if pending["status"] == "release_opened" else pending["original_anchor"]["width_m"])
+            if pending["status"] == "recovery_residual" and pending.get("audited_opening_continuation") is not None:
+                jaw_anchor = pending["audited_opening_continuation"]["residual_jaw_anchor"]["width_m"]
             if not releasing and abs(states[side]["gripper"]["width_m"]-jaw_anchor) > BOUNDS["jaw_span_m"]:
                 raise RuntimeError("Unresolved probe jaw or retained jaw changed from its settled observation: " + side)
             if pending.get("retention_contract") is not None and time.time() >= pending["retention_contract"]["valid_until"]:
@@ -195,11 +402,12 @@ class _PairAction(_SingleSupervisedAction):
         if self.idle_anchor is not None:
             for side in SIDES:
                 current, origin = states[side], self.idle_anchor[side]
+                body_origin = self._stationary_body_reference(side, origin)
                 commanded = self.active and side == self.arm
                 if not (commanded and self.kind == "move"):
-                    if (max(abs(a-b) for a, b in zip(current["joints_rad"], origin["joints_rad"])) > BOUNDS["joint_span_rad"]
-                            or math.dist(current["pose_m_rad"][:3], origin["pose_m_rad"][:3]) > BOUNDS["position_span_m"]
-                            or self.rotation_distance(current["pose_m_rad"], origin["pose_m_rad"]) > BOUNDS["rotation_span_rad"]):
+                    if (not joints_within(self.feedback_policy, side, current["joints_rad"], body_origin["joints_rad"])
+                            or math.dist(current["pose_m_rad"][:3], body_origin["pose_m_rad"][:3]) > BOUNDS["position_span_m"]
+                            or self.rotation_distance(current["pose_m_rad"], body_origin["pose_m_rad"]) > rotation_tolerance(self.feedback_policy,side)):
                         raise RuntimeError(side + " changed from persistent stationary arm anchor")
                 if not (commanded and self.kind == "gripper"):
                     if abs(current["gripper"]["width_m"]-origin["gripper"]["width_m"]) > LIMITS["gripper_m"]:
@@ -256,6 +464,7 @@ class GuardedPairDevice:
         self._release_confirmations = {side: None for side in SIDES}
         self._task_ready = False
         self._preparation = None
+        self._supported_recovery_opening = None
 
     @property
     def capabilities(self):
@@ -405,6 +614,8 @@ class GuardedPairDevice:
         if arm not in SIDES or kind not in ("move", "gripper"):
             raise ValueError("Explicit left/right arm and move/gripper kind required")
         if kind == "move":
+            if self._action.feedback_policy is not None:
+                raise RuntimeError("Task observation profile requires RGB-supervised joint motion")
             target = arms._six_finite(target)
             _pose_frames(target)
         elif type(target) not in (int, float) or not math.isfinite(target) or not 0 <= target <= 0.055:
@@ -569,6 +780,7 @@ class GuardedPairDevice:
         physical stop or a global capability. Original probe history survives.
         """
         identity = identity_checked(identity, arm)
+        from .task_roles import PROFILE_KEY as TASK_ROLES_KEY, resolve_task_roles
         with self._operation:
             self._usable()
             action = self._action
@@ -579,7 +791,8 @@ class GuardedPairDevice:
             try:
                 record = action.grasps[arm]
                 pending = record.get("loaded_pending") if record is not None else None
-                if (arm != "right" or record is None or record["status"] != "loaded_pending_visual"
+                if (arm != resolve_task_roles(action.profile.get(TASK_ROLES_KEY, {}))[0]
+                        or record is None or record["status"] != "loaded_pending_visual"
                         or record["identity"] != identity or type(pending) is not dict
                         or pending["action_event_id"] != action_event_id or pending["plan_sha256"] != plan_sha256
                         or pending["local_anchor"] != record.get("local_anchor")):
@@ -666,7 +879,8 @@ class GuardedPairDevice:
                 trace_sha = digest(trace)
                 summary_args = dict(arm=arm, identity=identity,
                     probe_event_id=probe_event_id, trace_id=trace_id, trace_sha256=trace_sha,
-                    original_anchor=grasp_body_anchor(record), samples=trace, now=time.time())
+                    original_anchor=grasp_body_anchor(record), samples=trace, now=time.time(),
+                    feedback_policy=action.feedback_policy)
                 measurement = (summarize_release_confirmation(release_opening=record["release_opening"],
                                **summary_args) if releasing else summarize_retention_trace(**summary_args))
                 action.journal("static_grasp_trace", {"arm": arm, "identity": identity,
@@ -718,6 +932,9 @@ class GuardedPairDevice:
                               object_release_verified=None,
                               scope="Measured opened jaw only; host visual confirmation still required" if releasing else
                               "Static original support and peer unloaded preparation only; no loaded contact or stop")
+                if action.supported_contact_observation is not None:
+                    result.update(candidate_basis="existing_target_observation",
+                                  scope="Same existing target, static observation only; all new TX blocked")
                 if releasing:
                     result["release_opening"] = copy.deepcopy(record["release_opening"])
             except BaseException as exc:
@@ -786,7 +1003,212 @@ class GuardedPairDevice:
         """Open once; tracked objects remain unresolved until host confirmation."""
         return self._bounded_gripper_action(arm, target, release=True)
 
-    def _bounded_gripper_action(self, arm, target, *, release):
+    def recover_supported_gripper(self, arm, target, *, source_receipt):
+        """Host-only audited residual opening; never transfer a grasp/cache."""
+        return self._bounded_gripper_action(arm, target, release=True, recovery_source=source_receipt)
+
+    def reacquire_supported_gripper(self, arm, target, *, source_receipt):
+        """One of at most three audited closures; no empty/released/grasp claim."""
+        return self._bounded_gripper_action(arm, target, release=False, reacquisition_source=source_receipt)
+
+    def observe_supported_contact(self, arm, *, source_receipt):
+        """Create a distinct current-contact candidate from new RX only.
+
+        The old failed send remains a failed send. The manager binds its full
+        history and bilateral-contact evidence; this connection can thereafter
+        only observe/retain the same target, never close, release or move.
+        """
+        from .supported_contact_measurement import validate_source, measure
+        with self._operation:
+            self._usable()
+            action = self._action
+            result = {"ok": False, "arm": arm, "completion_mode": "supported_contact_observe",
+                "kind": "observation", "candidate_basis": "existing_target_observation",
+                "target_calls_sent": 0, "physical_stop_verified": None, "grasp_verified": False,
+                "enable_commands_sent": 0, "stop_commands_sent": 0, "retries": 0,
+                "contact_support_verified": False, "loaded": False, "nominal_force_N": None,
+                "force_calibrated": False, "automatic_retry": False, "errors": [],
+                "original_target_resent": False, "empty_jaw_verified": None, "object_release_verified": None}
+            before = action.totals()
+            try:
+                if (action.supported_contact_observation is not None or action.supported_reacquisition is not None
+                        or self._supported_recovery_opening is not None or any(action.grasps.values())
+                        or any(self._joint_cache.values()) or any(v for row in before.values() for v in row.values())):
+                    raise RuntimeError("Existing-contact observation requires a fresh connection without prior sends or candidates")
+                admission, anchors = validate_source(source_receipt, arm, time.time())
+                action.supported_contact_observation = {"arm": arm, "body_anchors": anchors,
+                    "jaw_anchor_m": admission["residual_jaw_anchor"]["width_m"],
+                    "audit": admission, "source_sha256": digest(source_receipt)}
+                self._observe()
+                action.reset_action(arm, "gripper", admission["prior_sent_target_m"])
+                action.retention_trace = []
+                action.prepare()  # Fresh 3 s/20 advances; no dispatch or force command.
+                trace = action.retention_trace
+                action.retention_trace = None
+                trace_sha = digest(trace)
+                candidate, measurement = measure(arm=arm, source=source_receipt, samples=trace,
+                    trace_id="existing_contact_"+uuid.uuid4().hex, trace_sha256=trace_sha,
+                    now=time.time(), feedback_policy=action.feedback_policy)
+                action.journal("existing_supported_contact_trace", {"arm": arm, "sha256": trace_sha,
+                    "trace": trace, "admission": copy.deepcopy(admission), "candidate": candidate})
+                after = action.checked_current_completion()
+                if (action.totals() != before or not 0 <= time.time()-measurement["ended_at"] <= BOUNDS["feedback_age_s"]
+                        or abs(after[arm]["gripper"]["width_m"]-candidate["observed_width_m"]) > BOUNDS["jaw_span_m"]
+                        or after[arm]["gripper"]["width_m"]-admission["prior_sent_target_m"] <= LIMITS["gripper_m"]):
+                    raise RuntimeError("Current supported-contact observation changed before completion")
+                # A new candidate has a new measured jaw reference. Both body
+                # anchors and the historical send/failed receipt stay intact.
+                action.supported_contact_observation["jaw_anchor_m"] = candidate["observed_width_m"]
+                action.grasps[arm] = {"status": "contact_candidate", "arm": arm,
+                    "candidate_basis": "existing_target_observation",
+                    "requested_width_m": admission["prior_sent_target_m"],
+                    "observed_width_m": candidate["observed_width_m"], "sent_at": admission["failed_sent_at"],
+                    "trace_sha256": trace_sha, "original_anchor": copy.deepcopy(measurement["anchor"]),
+                    "identity": None, "probe_event_id": None, "current_contact_candidate": copy.deepcopy(candidate),
+                    "candidate_measurement": copy.deepcopy(measurement), "target_may_remain_active": True,
+                    "grasp_verified": False, "physical_stop_verified": None}
+                after = action.checked_current_completion()
+                self._baseline_duration = measurement["ended_at"]-measurement["started_at"]
+                self._advances = measurement["feedback_advances"]
+                result.update(ok=True, status="observed_supported_contact_candidate",
+                    current_contact_candidate=candidate, candidate_measurement=measurement,
+                    audited_existing_contact=copy.deepcopy(admission), sample=self._sample(after),
+                    before=copy.deepcopy(action.report["before"]), after=copy.deepcopy(after),
+                    baseline_duration_s=self._baseline_duration, baseline_feedback_advances=self._advances,
+                    target_may_remain_active=True)
+            except BaseException as exc:
+                self._fault = str(exc)
+                result.update(status="pair_device_fault", error=type(exc).__name__+": "+str(exc))
+                result["errors"].append({"type": type(exc).__name__, "detail": str(exc)})
+            finally:
+                action.retention_trace = None
+                action.ticket = None
+            totals = action.totals()
+            counts = {side: {key: value-before[side][key] for key, value in row.items()}
+                      for side, row in totals.items()}
+            result.update(hardware_commands_sent=sum(row["sent_frames"] for row in counts.values()),
+                passive_arm_commands_sent=sum(row["sent_frames"] for side, row in counts.items() if side != arm),
+                transmission_counts=counts, session_transmission_counts=totals,
+                grasp_states=self.grasp_states, guard_violations=copy.deepcopy(action.violations))
+            return copy.deepcopy(result)
+
+    def _install_supported_reacquisition(self, arm, source, *, target):
+        action = self._action
+        existing = action.supported_reacquisition
+        if existing is not None:
+            if (existing["arm"] != arm or existing["source_sha256"] != digest(source)
+                    or not existing["closure_finished"] or existing["last_outcome"] != "target_arrived"
+                    or existing["probe_count"] >= 3 or any(action.grasps.values()) or any(self._joint_cache.values())):
+                raise RuntimeError("Reacquisition needs the same source and preceding target arrival without a candidate; at most three probes")
+            prior = min(existing["target_m"], round(existing["target_m"]*1e6)/1e6)
+            if any(value >= prior for value in (target, round(target*1e6)/1e6)):
+                raise RuntimeError("Next supported closure must be below the previous requested and encoded target; no replay")
+            self._observe()  # Keep both old bodies and the previous measured jaw.
+            existing.update(target_m=target, closure_finished=False, last_outcome=None,
+                probe_count=existing["probe_count"]+1,
+                attempts_before=sum(row["attempted_frames"] for row in action.totals().values()),
+                sent_before=sum(row["sent_frames"] for row in action.totals().values()))
+            return
+        if (self._supported_recovery_opening is not None
+                or any(action.grasps.values()) or any(self._joint_cache.values())
+                or any(v for row in action.totals().values() for v in row.values())):
+            raise RuntimeError("Reacquisition must be the first physical operation of the fresh connection")
+        envelope = _validated_supported_reacquisition(source, arm, time.time())
+        continuation = envelope.get("completed_probe_continuation")
+        jaw = envelope["opening_jaw_anchor"]
+        consumed = 0
+        if continuation is not None:
+            prior = continuation["prior_sent_target_m"]
+            if any(value >= min(prior, round(prior*1e6)/1e6) for value in (target, round(target*1e6)/1e6)):
+                raise RuntimeError("Completed probe continuation requires a strictly smaller new target; no replay")
+            jaw = continuation["residual_jaw_anchor"]
+            consumed = continuation["consumed_probe_count"]
+        sample = self._observe()
+        origins = {side: copy.deepcopy(source["candidate_measurement"]["anchor"])
+                   if side == arm else measured_anchor(source["before"][side]) for side in SIDES}
+        context = {"arm": arm, "target_m": target, "body_anchors": origins,
+                   "jaw_anchor_m": jaw["width_m"],
+                   "closure_finished": False, "audit": envelope, "source_sha256": digest(source),
+                   "probe_count": consumed+1, "last_outcome": None, "attempts_before": 0, "sent_before": 0}
+        # Keep this separately from grasps: no old residual is promoted into a
+        # candidate, and the ordinary closure path still requires no candidate.
+        action.supported_reacquisition = context
+        action._checked_after_guard(sample["arms"])
+
+    def _install_supported_residual(self, arm, source, *, target):
+        action = self._action
+        if (self._supported_recovery_opening is not None or any(action.grasps.values())
+                or any(self._joint_cache.values())
+                or any(v for row in action.totals().values() for v in row.values())):
+            raise RuntimeError("Recovery must be the first physical operation of the fresh connection")
+        continuation = _validated_opening_continuation(source, arm, target, time.time())
+        sample = self._observe()
+        measurement = source["candidate_measurement"]
+        for side in SIDES:
+            current = sample["arms"][side]
+            origin = measurement["anchor"] if side == arm else measured_anchor(source["before"][side])
+            deviation = anchor_deviation(origin, current)
+            jaw_anchor = (continuation["residual_jaw_anchor"]["width_m"]
+                          if side == arm and continuation is not None else origin["width_m"])
+            if (not joints_within(action.feedback_policy, side, origin["joints_rad"], current["joints_rad"])
+                    or deviation["position_m"] > BOUNDS["position_span_m"]
+                    or deviation["rotation_rad"] > rotation_tolerance(action.feedback_policy, side)
+                    or abs(current["gripper"]["width_m"]-jaw_anchor) > BOUNDS["jaw_span_m"]):
+                raise RuntimeError("Current body/jaw differs from the audited supported residual: " + side)
+        action.grasps[arm] = {"status": "recovery_residual", "arm": arm,
+            "requested_width_m": source["candidate_probe"]["requested_width_m"],
+            "observed_width_m": measurement["observed"]["width_m"],
+            "sent_at": source["candidate_probe"]["sent_at"],
+            "trace_sha256": source["candidate_probe"]["trace_sha256"],
+            "original_anchor": copy.deepcopy(measurement["anchor"]),
+            "identity": None, "probe_event_id": None,
+            "failed_receipt_preserved": True, "grasp_verified": False,
+            "target_may_remain_active": True, "physical_stop_verified": None}
+        if continuation is not None:
+            action.grasps[arm]["audited_opening_continuation"] = continuation
+
+    def confirm_supported_recovery_release(self):
+        """Fresh three-second RX-only trace; host separately records separation RGB."""
+        with self._operation:
+            self._usable()
+            action = self._action
+            opening = self._supported_recovery_opening
+            if opening is None or any(action.grasps.values()):
+                raise RuntimeError("Confirmation requires this connection's completed recovery opening")
+            arm, target = opening["arm"], opening["target_width_m"]
+            before = action.totals()
+            try:
+                self._observe()
+                action.reset_action(arm, "gripper", target)
+                action.retention_trace = []
+                action.prepare()
+                trace = action.retention_trace
+                action.retention_trace = None
+                trace_sha = digest(trace)
+                measurement = summarize_retention_trace(arm=arm, identity=None, probe_event_id=None,
+                    trace_id="recovery_release_"+uuid.uuid4().hex, trace_sha256=trace_sha,
+                    original_anchor=opening["anchor"], samples=trace, now=time.time(),
+                    feedback_policy=action.feedback_policy)
+                action.journal("supported_recovery_separation_trace", {"trace": trace,
+                    "trace_sha256": trace_sha, "opening": copy.deepcopy(opening)})
+                after = action.checked_current_completion()
+                if (action.totals() != before
+                        or abs(after[arm]["gripper"]["width_m"]-target) > LIMITS["gripper_m"]):
+                    raise RuntimeError("Recovery opening changed before separation confirmation")
+                self._baseline_duration = measurement["ended_at"]-measurement["started_at"]
+                self._advances = measurement["feedback_advances"]
+                return {"ok": True, "status": "recovery_release_observed", "arm": arm,
+                    "hardware_commands_sent": 0, "target_calls_sent": 0,
+                    "measurement": measurement, "opening": copy.deepcopy(opening),
+                    "sample": self._sample(after), "physical_stop_verified": None,
+                    "grasp_verified": False, "session_transmission_counts": action.totals()}
+            except BaseException as exc:
+                self._fault = str(exc)
+                raise
+            finally:
+                action.retention_trace = None
+
+    def _bounded_gripper_action(self, arm, target, *, release, recovery_source=None, reacquisition_source=None):
         if arm not in SIDES:
             raise ValueError("Explicit left/right arm required")
         if type(target) not in (int, float) or not math.isfinite(target) or not 0 <= target <= .055:
@@ -795,6 +1217,24 @@ class GuardedPairDevice:
             self._usable()
             action = self._action
             action.require_no_loaded_pending_tx()
+            if reacquisition_source is not None:
+                if release or recovery_source is not None:
+                    raise RuntimeError("Supported reacquisition only allows one new closure")
+                try:
+                    self._install_supported_reacquisition(arm, reacquisition_source, target=target)
+                except BaseException as exc:
+                    self._fault = str(exc)
+                    raise
+            elif action.supported_reacquisition is not None:
+                raise RuntimeError("Supported reacquisition cannot send another jaw target")
+            if recovery_source is not None:
+                if not release:
+                    raise RuntimeError("Recovery only allows a supported opening")
+                try:
+                    self._install_supported_residual(arm, recovery_source, target=target)
+                except BaseException as exc:
+                    self._fault = str(exc)
+                    raise
             pending = action.grasps[arm]
             if release and pending is None:
                 raise RuntimeError("Release requires an unresolved probe on the same arm")
@@ -844,8 +1284,14 @@ class GuardedPairDevice:
                                    "contact_support_verified": False, "physical_stop_verified": None,
                                    "target_cancellation_verified": False, "automatic_retry": False}
                 else:
+                    body_reference = None
+                    if reacquisition_source is not None:
+                        body_reference = {side: {key: copy.deepcopy(anchor[key])
+                                                 for key in ("joints_rad", "pose_m_rad")}
+                                          for side, anchor in action.supported_reacquisition["body_anchors"].items()}
                     observation = classify_gripper_probe(arm=arm, requested_width_m=target,
-                        sent_at=action.sent_at, baseline_samples=trace["baseline"], post_samples=trace["post"])
+                        sent_at=action.sent_at, baseline_samples=trace["baseline"], post_samples=trace["post"],
+                        feedback_policy=action.feedback_policy, stationary_body_reference=body_reference)
                 observation["trace_summary"] = {"sha256": digest,
                     "baseline_samples": len(trace["baseline"]), "post_samples": len(trace["post"]),
                     "baseline_started_at_s": trace["baseline"][0]["observed_at_s"],
@@ -860,12 +1306,17 @@ class GuardedPairDevice:
                     start = max(i for i, item in enumerate(trace["post"]) if item["observed_at_s"] <= cutoff)
                     stable_trace = trace["post"][start:]
                     original = grasp_body_anchor(pending) if release else measured_anchor(stable_trace[0]["arms"][arm])
+                    if reacquisition_source is not None:
+                        original = copy.deepcopy(action.supported_reacquisition["body_anchors"][arm])
+                        # The new contact creates only a new jaw observation.
+                        # Its body remains tied to the original source probe.
+                        original["width_m"] = stable_trace[0]["arms"][arm]["gripper"]["width_m"]
                     measured = summarize_retention_trace(arm=arm,
                         identity=pending.get("identity") if release else None,
                         probe_event_id=pending.get("probe_event_id") if release else None,
                         trace_id=("release_" if release else "probe_")+digest[:32], trace_sha256=digest,
                         original_anchor=original, samples=stable_trace,
-                        now=stable_trace[-1]["observed_at_s"], release=release)
+                        now=stable_trace[-1]["observed_at_s"], release=release, feedback_policy=action.feedback_policy)
                     if release:
                         action.report["release_measurement"] = measured
                     else:
@@ -877,9 +1328,9 @@ class GuardedPairDevice:
                             "trace_sha256": digest,
                             "conservative_closure_displacement_m": observation["conservative_closure_displacement_m"],
                             "target_may_remain_active": True}
-                # Classification and hashing take real time. Get new feedback;
-                # never retimestamp the classified trace to renew its validity.
-                after = action.checked(action.read())
+                # Finish host bookkeeping before acquiring completion feedback.
+                # Never retimestamp the classified trace or relax receive limits.
+                after = action.checked_current_completion()
                 width = after[arm]["gripper"]["width_m"]
                 if abs(width-observation["observed_width_m"]) > BOUNDS["jaw_span_m"]:
                     raise RuntimeError("Jaw changed while classifying the probe response")
@@ -915,12 +1366,46 @@ class GuardedPairDevice:
                 action.active = False
                 action.probe_mode = None
                 action.anchor = copy.deepcopy(action.idle_anchor)
-                action.checked(after)
+                if reacquisition_source is not None:
+                    action.supported_reacquisition.update(closure_finished=True, jaw_anchor_m=width)
+                # The final guard can also block on the persistent ledger.
+                # Read again after it, including under the newly installed
+                # stationary/grasp anchors; never reuse its pre-guard sample.
+                after = action.checked_current_completion()
+                if recovery_source is not None and pending.get("audited_opening_continuation") is not None:
+                    # Anonymous opening has cleared its local residual above.
+                    # The last fresh read must still use the original body's
+                    # anchor, not merely this connection's newer idle anchor.
+                    original = pending["original_anchor"]
+                    deviation = anchor_deviation(original, after[arm])
+                    if (not joints_within(action.feedback_policy, arm, original["joints_rad"], after[arm]["joints_rad"])
+                            or deviation["position_m"] > BOUNDS["position_span_m"]
+                            or deviation["rotation_rad"] > rotation_tolerance(action.feedback_policy, arm)):
+                        raise RuntimeError("Final opening body changed from its original candidate anchor: " + arm)
+                if abs(after[arm]["gripper"]["width_m"]-width) > BOUNDS["jaw_span_m"]:
+                    raise RuntimeError("Jaw changed during final probe completion")
+                if observation["arrival_confirmed"] and abs(after[arm]["gripper"]["width_m"]-target) > LIMITS["gripper_m"]:
+                    raise RuntimeError("Jaw left the final arrival tolerance")
                 self._baseline_duration = action.report["observed_stable_duration_s"]
                 self._advances = action.report["observed_feedback_advances"]
                 action.report.update(ok=True, status=observation["outcome"],
                     arrival_confirmed=observation["arrival_confirmed"], observation_status=status,
                     sample=self._sample(after))
+                if reacquisition_source is not None:
+                    action.supported_reacquisition["last_outcome"] = observation["outcome"]
+                if recovery_source is not None:
+                    self._supported_recovery_opening = {"arm": arm, "target_width_m": target,
+                        "trace_sha256": digest, "finished_at": time.time(),
+                        "anchor": measured_anchor(after[arm])}
+                    if pending.get("audited_opening_continuation") is not None:
+                        # Retain the failed probe's entire body reference even
+                        # after opening; only its independently observed jaw
+                        # width changes for the RX-only separation check.
+                        anchor = copy.deepcopy(pending["original_anchor"])
+                        anchor["width_m"] = after[arm]["gripper"]["width_m"]
+                        self._supported_recovery_opening.update(anchor=anchor,
+                            original_anchor=copy.deepcopy(pending["original_anchor"]),
+                            audited_opening_continuation=copy.deepcopy(pending["audited_opening_continuation"]))
             except BaseException as exc:
                 self._fault = str(exc)
                 action.report.update(ok=False, status="pair_device_fault", arrival_confirmed=False, sample=None)
@@ -939,6 +1424,11 @@ class GuardedPairDevice:
                 hardware_commands_sent=sum(v["sent_frames"] for v in action.counts.values()),
                 passive_arm_commands_sent=action.counts[action.passive_arm]["sent_frames"],
                 guard_violations=copy.deepcopy(action.violations), connected=not self._closed)
+            if reacquisition_source is not None:
+                result.update(audited_supported_reacquisition=copy.deepcopy(action.supported_reacquisition["audit"]),
+                    reacquisition_original_anchor=copy.deepcopy(action.supported_reacquisition["body_anchors"][arm]),
+                    supported_probe_index=action.supported_reacquisition["probe_count"], max_supported_probes=3,
+                    empty_jaw_verified=None, object_release_verified=None)
             if release and "contact_observation" in result:
                 result["actual_opening_increase_m"] = result["contact_observation"]["actual_opening_increase_m"]
             return result
