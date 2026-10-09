@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import sqlite3
+import sys
 import tempfile
 from unittest.mock import patch
 
@@ -121,6 +122,66 @@ class StartupResetTests(fixtures.TakeoverFixture):
         self.assertEqual(hashlib.sha256(Path(enrollment["archive_path"]).read_bytes()).hexdigest(), enrollment["archive_sha256"])
         for robot in self.robots.values():
             self.assertEqual([f.arbitration_id for f in robot.sent], [0x151, 0x471])
+
+    def cycle_context(self):
+        from robot_tools import arm_power_cycle as cycle
+        self.stack.enter_context(patch.object(cycle, "check_processes"))
+        self.stack.enter_context(patch.object(cycle, "boot_identity", side_effect=lambda: dict(self.boot)))
+        self.stack.enter_context(patch.object(cycle, "project_roots", return_value=[self.root]))
+        self.stack.enter_context(patch.object(cycle, "ExclusiveExecution", side_effect=lambda p: nullcontext()))
+        return cycle
+
+    def test_cli_all_after_completed_reset_uses_new_cycle_without_rewriting_history(self):
+        reset.reset(self.root)
+        self.assertTrue(self.startup()["ok"])
+        before = self.rows()
+        cycle = self.cycle_context()
+        # New physical power cycle is simulated, with the host boot unchanged.
+        self.robots = {s: fixtures.FakeStartupRobot(s) for s in ("left", "right")}
+        self.sdk.AgxArmFactory.create_arm.side_effect = self.robots.values()
+        states = {s: self.snapshot(r, r.gripper) for s, r in self.robots.items()}
+        sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "tools"))
+        try:
+            import can_motor_enable as helper
+        finally:
+            sys.path.pop(0)
+        with patch.object(self.service, "read_state", return_value={
+                "ok": True, "state": {"status": "complete", "arms": states}}), \
+                patch("robot_tools.reboot_startup.check_processes"):
+            helper.execute(self.service, {"selected_arms": ["left", "right"]},
+                           ownership_check=lambda: helper.check_ownership(self.root),
+                           arm_cycle_confirmation=lambda arm: ("after-reset", cycle.confirmation(arm)))
+        after = self.rows()
+        for name, rows in before.items():
+            self.assertEqual(after[name], rows, name)
+        self.assertEqual(len(after[cycle.TABLE]), 1)
+        for robot in self.robots.values():
+            self.assertEqual([f.arbitration_id for f in robot.sent], [0x151, 0x471])
+        self.assertEqual(reset.inspect(self.root)["status"], "complete")
+
+    def test_cycle_cannot_replace_first_pending_or_failed_reset_startup(self):
+        reset.reset(self.root)
+        cycle = self.cycle_context()
+        for status in ("awaiting_startup", "pending", "failed"):
+            with self.subTest(status=status), sqlite3.connect(self.path) as db:
+                db.execute("UPDATE " + reset.TABLE + " SET status=?", (status,))
+            with self.assertRaises(RuntimeError):
+                cycle.inspect(self.root)
+        self.sdk.AgxArmFactory.create_arm.assert_not_called()
+
+    def test_completed_reset_does_not_bypass_failed_or_pending_cycle(self):
+        reset.reset(self.root)
+        self.assertTrue(self.startup()["ok"])
+        cycle = self.cycle_context()
+        enrollment = cycle.inspect(self.root)
+        self.assertIn("completed_reset_startup", enrollment)
+        cycle._reserve(self.path, "incomplete", "both", cycle.confirmation("both"),
+                       enrollment, self.root / "missing.json")
+        for status in ("pending", "failed"):
+            with sqlite3.connect(self.path) as db:
+                db.execute("UPDATE " + cycle.TABLE + " SET status=?", (status,))
+            with self.subTest(status=status), self.assertRaisesRegex(RuntimeError, "未决或失败"):
+                cycle.inspect(self.root)
 
     def test_confirmation_rejection_does_not_connect_or_change_new_latch(self):
         reset.reset(self.root)

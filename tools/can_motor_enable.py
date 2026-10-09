@@ -53,6 +53,12 @@ def check_ownership(project=PROJECT):
     reset_state = inspect_reset(project)
     if reset_state is not None:
         check_processes()
+        if reset_state["status"] == "complete":
+            # The reset latch protects its first startup, not every later
+            # physical power cycle in this Linux boot. Keep that receipt and
+            # use the existing independently claimed, confirmed cycle route.
+            from robot_tools.arm_power_cycle import inspect as inspect_arm_cycle
+            return inspect_arm_cycle(project)
         return reset_state
     # Source projects can still own hardware. Read their ledgers too; never
     # clear owners/faults or switch to a different project to evade a refusal.

@@ -8779,5 +8779,13 @@
     },
     "hardware_accessed": false,
     "source_manifest_unchanged": true
+  },
+  "can_reset_reenable_20261009": {
+    "validation": "research/validation/can_reset_reenable_20261009.json",
+    "targeted_tests_passed": 98,
+    "fast_tests_passed": 387,
+    "hardware_accessed": false,
+    "live_ledger_modified": false,
+    "startup_performed": false
   }
 }

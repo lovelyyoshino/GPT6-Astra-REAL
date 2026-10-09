@@ -1,0 +1,99 @@
+{
+  "schema": "can_reset_reenable_validation_v1",
+  "date": "2026-10-09",
+  "problem": "A completed first reset startup was returned as the next startup route and then categorically refused, preventing an independently confirmed later arm power cycle in the same host boot.",
+  "change": "Route completed reset history through the existing arm power-cycle inspection and executor; allow that route after a clean completed reset, preserving prior rows and archive. Awaiting, pending and failed first-startup states retain their existing behavior.",
+  "hardware_accessed": false,
+  "can_frames_sent": 0,
+  "startup_performed": false,
+  "source_manifest_unchanged": true,
+  "source_manifest_sha256": "cdbe40e199f0fa5415f63196f525306e3a7fe2f54e2be08542fbd6c955ee2a03",
+  "tests": {
+    "targeted": {
+      "count": 98,
+      "status": "passed",
+      "command": "PYTHONPATH=projects/piperx_cloth_demo:projects/piperx_cloth_demo/tests:tools/tests /home/agilex/miniconda3/envs/pi0_infer/bin/python -B -m unittest test_can_motor_enable test_startup_reset test_arm_power_cycle test_reboot_startup",
+      "log": "artifacts/can_reset_reenable_20261009/targeted_tests.log",
+      "sha256": "5c02a694065a27da1c65cc6997763054450bf33e91a8b31688a5d0d3068a68c3"
+    },
+    "fast": {
+      "count": 387,
+      "status": "passed",
+      "command": "PYTHONPATH=src python3 -B -m unittest discover -s tests -p 'test_fast*.py'",
+      "cwd": "projects/piper_right_pick_demo",
+      "log": "artifacts/can_reset_reenable_20261009/fast_tests.log",
+      "sha256": "9b2375eb58a670eea7c3d6a0b7d07a64e71ca8953a002349ca716761edf5c5ef"
+    },
+    "syntax": "passed",
+    "git_diff_check": "passed",
+    "distribution_bundle": {
+      "status": "passed",
+      "source_snapshot_status": "verified_with_optimization_overrides_with_runtime_omissions",
+      "optimization_status": "verified_with_runtime_omissions",
+      "bundle_checksum_status": "verified_with_runtime_omissions",
+      "runtime_omission_status": "verified",
+      "remote_source_files": 743,
+      "source_unmodified_files": 708,
+      "source_files_explained_by_optimization": 31,
+      "source_files_omitted": 4,
+      "optimization_entries": 352,
+      "optimized_verified_files": 350,
+      "optimized_omitted_files": 2,
+      "bundle_checksum_entries": 1067,
+      "bundle_checksum_omitted_files": 4,
+      "runtime_omission_entries": 4,
+      "omitted_runtime_files": [
+        "projects/piper_right_pick_demo/configs/astra_fast_codex.local.json",
+        "projects/piper_right_pick_demo/configs/astra_fast_live.local.json",
+        "projects/piper_right_pick_demo/configs/gpt_tools.local.json",
+        "projects/piper_right_pick_demo/configs/site.local.json"
+      ],
+      "hardware_accessed": false,
+      "errors": []
+    },
+    "local_worktree_bundle": {
+      "status": "failed_with_preserved_local_differences",
+      "errors": [
+        "Unexpected source change: projects/piper_right_pick_demo/调试过程.md",
+        "Unexpected source change: projects/piperx_cloth_demo/configs/robot.json",
+        "Optimized hash mismatch: projects/piperx_cloth_demo/configs/robot.json",
+        "Checksum mismatch: projects/piper_right_pick_demo/调试过程.md",
+        "Checksum mismatch: projects/piperx_cloth_demo/configs/robot.json"
+      ],
+      "explanation": "The two local-only files were deliberately preserved and excluded from this fix: active runtime compatibility authorization and an unrelated prose edit. The exported committed index passes bundle verification."
+    }
+  },
+  "current_ledger_read_only_check": {
+    "reset_status": "complete",
+    "route": "arm_power_cycle_startup",
+    "reset_id": "state_reset_a439cbf7ad1c43dea5ba3003d1f96f6c",
+    "completed_reset_retained": true,
+    "selected_arms": [
+      "left",
+      "right"
+    ],
+    "bindings_checked_without_device_connection": true,
+    "ledger_hashes_before": {
+      "/home/agilex/GPT6-Astra-REAL/projects/piperx_cloth_demo/runs/pair_sessions.sqlite": "32f64015ff229b3ea7fcab192c49dc5ee8d7bbb6e727926638cabd8d5cf3cc69"
+    },
+    "ledger_hashes_after": {
+      "/home/agilex/GPT6-Astra-REAL/projects/piperx_cloth_demo/runs/pair_sessions.sqlite": "32f64015ff229b3ea7fcab192c49dc5ee8d7bbb6e727926638cabd8d5cf3cc69"
+    },
+    "ledger_unchanged": true,
+    "hardware_accessed": false,
+    "can_frames_sent": 0,
+    "startup_performed": false
+  },
+  "code_sha256": {
+    "tools/can_motor_enable.py": "22aafd8297d14e7b09a4b68c7ba5c934e02757c69ce803920ee69f1182557e44",
+    "tools/tests/test_can_motor_enable.py": "28807e7f929be050210ec3c6fc8915efdf6e07c601f913dff9ea80de10fa1da9",
+    "projects/piperx_cloth_demo/robot_tools/arm_power_cycle.py": "8b1d45f61f6f456fd66f9993b6eb03b86b43a864900205c60c1f714080578bd6",
+    "projects/piperx_cloth_demo/tests/test_startup_reset.py": "e160879ae28555e7ce16e9b0dc014e59827fec2dc8a62c826ba5b810e2313907"
+  },
+  "limitations": [
+    "Standby/disabled telemetry alone does not prove a physical power cycle or an unloaded scene. The existing selected-arm confirmation and fresh guarded startup remain required.",
+    "No physical re-enable or recovery was attempted during this repair.",
+    "The previously recorded full historical suite failures were not rerun or claimed fixed by this routing change.",
+    "Local runtime compatibility configuration and unrelated prose edits remain outside the commit."
+  ]
+}

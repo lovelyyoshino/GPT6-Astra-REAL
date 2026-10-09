@@ -292,6 +292,41 @@ class MotorStartupTests(unittest.TestCase):
         self.service.call.assert_called_with("robot_startup_after_state_reset", {
             "arm": "both", "power_cycle_and_clearance_statement": CONFIRMATION})
 
+    def test_completed_reset_uses_independent_cycle_inspection(self):
+        route = {"route": "arm_power_cycle_startup"}
+        with patch("robot_tools.startup_reset.inspect", return_value={
+                "route": "state_reset_startup", "status": "complete"}), \
+                patch("robot_tools.reboot_startup.check_processes"), \
+                patch("robot_tools.arm_power_cycle.inspect", return_value=route) as inspect, \
+                patch("robot_tools.reboot_startup.inspect") as reboot:
+            self.assertEqual(helper.check_ownership(), route)
+            inspect.assert_called_once_with(helper.PROJECT)
+            reboot.assert_not_called()
+
+    def test_first_reset_startup_does_not_switch_to_cycle(self):
+        route = {"route": "state_reset_startup", "status": "awaiting_startup"}
+        with patch("robot_tools.startup_reset.inspect", return_value=route), \
+                patch("robot_tools.reboot_startup.check_processes"), \
+                patch("robot_tools.arm_power_cycle.inspect") as inspect:
+            self.assertEqual(helper.check_ownership(), route)
+            inspect.assert_not_called()
+
+    def test_completed_reset_does_not_bypass_cycle_refusal(self):
+        with patch("robot_tools.startup_reset.inspect", return_value={"status": "complete"}), \
+                patch("robot_tools.reboot_startup.check_processes"), \
+                patch("robot_tools.arm_power_cycle.inspect", side_effect=RuntimeError("pending cycle")):
+            with self.assertRaisesRegex(RuntimeError, "pending cycle"):
+                helper.execute(self.service, {"selected_arms": ["left", "right"]},
+                               ownership_check=helper.check_ownership)
+        self.service.call.assert_called_once_with("robot_read_state", {})
+
+    def test_failed_reset_inspection_cannot_select_cycle(self):
+        with patch("robot_tools.startup_reset.inspect", side_effect=RuntimeError("reset failed")), \
+                patch("robot_tools.arm_power_cycle.inspect") as inspect:
+            with self.assertRaisesRegex(RuntimeError, "reset failed"):
+                helper.check_ownership()
+            inspect.assert_not_called()
+
     def test_reset_main_never_constructs_a_device_service(self):
         with patch.object(helper, "check_bindings"), \
                 patch("robot_tools.startup_reset.reset", return_value={"reset_performed": True}) as reset, \

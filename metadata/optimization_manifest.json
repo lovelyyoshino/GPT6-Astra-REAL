@@ -230,8 +230,8 @@
       "local_path": ".agents/skills/piper-task-pipeline/references/online-readiness.md",
       "base_source_sha256": null,
       "pipeline_id": "hierarchical_piper_v1",
-      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success. User-requested single-arm operation without a zero-calibration prerequisite: one-command jaw enable/close, signed disabled-peer feedback, bounded isolation of terminal full-send coordinate maintenance, preserved faults and durable new action claims. Consistent admitted J4 window policy. Offline tests only; no hardware activation. Remove the upper-level automatic stop for partial target occlusion; combine current corridor, task facts, feedback and full receipts for bounded continuation. Keep visual unknown distinct from failure and success. Documentation only; executable limits, ledgers and historical evidence unchanged.",
-      "optimized_sha256": "63ddc565d1fd67468b1211926324727235bbcc381c7f8f6a1123477fd8c453d3"
+      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success. User-requested single-arm operation without a zero-calibration prerequisite: one-command jaw enable/close, signed disabled-peer feedback, bounded isolation of terminal full-send coordinate maintenance, preserved faults and durable new action claims. Consistent admitted J4 window policy. Offline tests only; no hardware activation. Remove the upper-level automatic stop for partial target occlusion; combine current corridor, task facts, feedback and full receipts for bounded continuation. Keep visual unknown distinct from failure and success. Documentation only; executable limits, ledgers and historical evidence unchanged. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
+      "optimized_sha256": "e7c5dbaaa85405e0355f5a347864577b6fe894d499966efa1fd1234beed3a389"
     },
     {
       "local_path": ".gitignore",
@@ -256,16 +256,16 @@
     },
     {
       "local_path": "OPTIMIZATION_GUIDE.md",
-      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success. Offline raw ACK diagnostics repair with bounded receive trace, explicit SDK/raw result comparison, accurate timing and future configuration provenance; preserve original fault, no new physical action or recovery claim. User-requested single-arm operation without a zero-calibration prerequisite: one-command jaw enable/close, signed disabled-peer feedback, bounded isolation of terminal full-send coordinate maintenance, preserved faults and durable new action claims. Consistent admitted J4 window policy. Offline tests only; no hardware activation. Explicit current-user legacy Piper controller coordinate interpretation on physical Piper X; <=1 mm supervised +Z only, intersected joint limits, independent physical-model envelope, expiring boot-bound authorization and zero-TX FK refusal review. Original faults, right TX block and new-failure latch preserved. Offline tests separate from hardware outcomes. Remove the upper-level automatic stop for partial target occlusion; combine current corridor, task facts, feedback and full receipts for bounded continuation. Keep visual unknown distinct from failure and success. Documentation only; executable limits, ledgers and historical evidence unchanged. Explicit user-bound 2.5 mm legacy-controller up profile with corresponding finite Piper X envelope; retain default 1 mm, original cumulative budget/deadline, joint/direction/peer guards and failed-send latch. Verified offline separately from physical results.; task-bound 5mm profile and original 3h/1000 all-action budget, no clock reset Audited legacy J5 +/-89 controller readback, selected-arm query, preserved failure and cumulative budget, pre-send endpoint prediction; explicit later time window only. Bounded 1s prediction then new feedback, exact zero-TX age review; no clock/counter reset. Exact zero-TX live reference review; fresh measured endpoint for each proposal.",
+      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success. Offline raw ACK diagnostics repair with bounded receive trace, explicit SDK/raw result comparison, accurate timing and future configuration provenance; preserve original fault, no new physical action or recovery claim. User-requested single-arm operation without a zero-calibration prerequisite: one-command jaw enable/close, signed disabled-peer feedback, bounded isolation of terminal full-send coordinate maintenance, preserved faults and durable new action claims. Consistent admitted J4 window policy. Offline tests only; no hardware activation. Explicit current-user legacy Piper controller coordinate interpretation on physical Piper X; <=1 mm supervised +Z only, intersected joint limits, independent physical-model envelope, expiring boot-bound authorization and zero-TX FK refusal review. Original faults, right TX block and new-failure latch preserved. Offline tests separate from hardware outcomes. Remove the upper-level automatic stop for partial target occlusion; combine current corridor, task facts, feedback and full receipts for bounded continuation. Keep visual unknown distinct from failure and success. Documentation only; executable limits, ledgers and historical evidence unchanged. Explicit user-bound 2.5 mm legacy-controller up profile with corresponding finite Piper X envelope; retain default 1 mm, original cumulative budget/deadline, joint/direction/peer guards and failed-send latch. Verified offline separately from physical results.; task-bound 5mm profile and original 3h/1000 all-action budget, no clock reset Audited legacy J5 +/-89 controller readback, selected-arm query, preserved failure and cumulative budget, pre-send endpoint prediction; explicit later time window only. Bounded 1s prediction then new feedback, exact zero-TX age review; no clock/counter reset. Exact zero-TX live reference review; fresh measured endpoint for each proposal. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
       "base_source_sha256": null,
-      "optimized_sha256": "89b25e9d8637774d159bb998dea5b865bd976978323c65818969dba1f538602a",
+      "optimized_sha256": "58912e730b79cb620d37b8c5378b07959894793247e8952329e1266dff4c174b",
       "pipeline_id": "hierarchical_piper_v1"
     },
     {
       "local_path": "README.md",
-      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards.",
+      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
       "base_source_sha256": null,
-      "optimized_sha256": "3fb94f7c7607851b4490c297a29b13e4efb41e731ec3406ade8245c65319b70e",
+      "optimized_sha256": "80e542367487f81f4dd94e199031f9eca98ef70772019fa1c593824261bde068",
       "pipeline_id": "hierarchical_piper_v1"
     },
     {
@@ -382,9 +382,9 @@
     },
     {
       "local_path": "metadata/generalization_validation_20261007.json",
-      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success. Offline raw ACK diagnostics repair with bounded receive trace, explicit SDK/raw result comparison, accurate timing and future configuration provenance; preserve original fault, no new physical action or recovery claim. User-requested single-arm operation without a zero-calibration prerequisite: one-command jaw enable/close, signed disabled-peer feedback, bounded isolation of terminal full-send coordinate maintenance, preserved faults and durable new action claims. Consistent admitted J4 window policy. Offline tests only; no hardware activation. Remove the upper-level automatic stop for partial target occlusion; combine current corridor, task facts, feedback and full receipts for bounded continuation. Keep visual unknown distinct from failure and success. Documentation only; executable limits, ledgers and historical evidence unchanged. Explicit user-bound 2.5 mm legacy-controller up profile with corresponding finite Piper X envelope; retain default 1 mm, original cumulative budget/deadline, joint/direction/peer guards and failed-send latch. Verified offline separately from physical results.; task-bound 5mm profile and original 3h/1000 all-action budget, no clock reset Audited legacy J5 +/-89 controller readback, selected-arm query, preserved failure and cumulative budget, pre-send endpoint prediction; explicit later time window only. Bounded 1s prediction then new feedback, exact zero-TX age review; no clock/counter reset. Exact zero-TX live reference review; fresh measured endpoint for each proposal.",
+      "change_reason": "Explicit first-task budget and bounded one-shot closed-empty-jaw calibration; actual failure retained, no physical task success. Offline raw ACK diagnostics repair with bounded receive trace, explicit SDK/raw result comparison, accurate timing and future configuration provenance; preserve original fault, no new physical action or recovery claim. User-requested single-arm operation without a zero-calibration prerequisite: one-command jaw enable/close, signed disabled-peer feedback, bounded isolation of terminal full-send coordinate maintenance, preserved faults and durable new action claims. Consistent admitted J4 window policy. Offline tests only; no hardware activation. Remove the upper-level automatic stop for partial target occlusion; combine current corridor, task facts, feedback and full receipts for bounded continuation. Keep visual unknown distinct from failure and success. Documentation only; executable limits, ledgers and historical evidence unchanged. Explicit user-bound 2.5 mm legacy-controller up profile with corresponding finite Piper X envelope; retain default 1 mm, original cumulative budget/deadline, joint/direction/peer guards and failed-send latch. Verified offline separately from physical results.; task-bound 5mm profile and original 3h/1000 all-action budget, no clock reset Audited legacy J5 +/-89 controller readback, selected-arm query, preserved failure and cumulative budget, pre-send endpoint prediction; explicit later time window only. Bounded 1s prediction then new feedback, exact zero-TX age review; no clock/counter reset. Exact zero-TX live reference review; fresh measured endpoint for each proposal. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
       "base_source_sha256": null,
-      "optimized_sha256": "1359d9b44baac59b27f58c61ec63a4fed5bd42fb8060a2f7bffbb0292257b5e6",
+      "optimized_sha256": "ace5ee889c3dff00998a5bdfd2d64ef5e760bf18f0db2036a1fa4b122a6cf415",
       "pipeline_id": "generic_astra_offline_v1"
     },
     {
@@ -999,8 +999,8 @@
       "local_path": "projects/piperx_cloth_demo/robot_tools/arm_power_cycle.py",
       "base_source_sha256": null,
       "pipeline_id": "arm_cycle_historical_audit_v1",
-      "optimized_sha256": "ebfad66a2de14f8a88369b649a4b10afe7f2fdbb1899fde2d6d0aab03f2c1f5b",
-      "change_reason": " Audit one completed single-arm power-cycle startup against request/result/wire journal and unchanged task-table hashes before projecting the later table from in-memory parent history. Preserve the real database, old fault, target-proximity requirements, joint limits and original budget. No task recovery or physical success is granted. Add audited preparation-only new-task admission after a completed single-arm power-cycle startup; preserve original faults and all motion/controller-limit guards; no target replay."
+      "optimized_sha256": "8b1d45f61f6f456fd66f9993b6eb03b86b43a864900205c60c1f714080578bd6",
+      "change_reason": " Audit one completed single-arm power-cycle startup against request/result/wire journal and unchanged task-table hashes before projecting the later table from in-memory parent history. Preserve the real database, old fault, target-proximity requirements, joint limits and original budget. No task recovery or physical success is granted. Add audited preparation-only new-task admission after a completed single-arm power-cycle startup; preserve original faults and all motion/controller-limit guards; no target replay. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only."
     },
     {
       "local_path": "projects/piperx_cloth_demo/robot_tools/arms.py",
@@ -2081,8 +2081,8 @@
       "local_path": "projects/piperx_cloth_demo/tests/test_startup_reset.py",
       "base_source_sha256": null,
       "pipeline_id": "hierarchical_piper_v1",
-      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards.",
-      "optimized_sha256": "4a84f4d7e679d55e84da6098cb28b8c280ec3ba2d909d64792e8eb5e5a2f0c84"
+      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
+      "optimized_sha256": "e160879ae28555e7ce16e9b0dc014e59827fec2dc8a62c826ba5b810e2313907"
     },
     {
       "local_path": "projects/piperx_cloth_demo/tests/test_supervised_actions.py",
@@ -2319,6 +2319,12 @@
       "pipeline_id": "generic_astra_offline_v1"
     },
     {
+      "local_path": "research/validation/can_reset_reenable_20261009.json",
+      "base_source_sha256": null,
+      "change_reason": "Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
+      "optimized_sha256": "81fe611c0b46b116587599573cb9424a80bcf649cbe1b882de2c61edecb7d737"
+    },
+    {
       "local_path": "research/validation/fast-tests.log",
       "change_reason": "Add reviewed generic task recipes, offline entry, bounded experience, evidence evaluation, tests or source research.",
       "base_source_sha256": null,
@@ -2406,8 +2412,8 @@
       "local_path": "tools/can_motor_enable.py",
       "base_source_sha256": null,
       "pipeline_id": "can_interface_setup",
-      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards.",
-      "optimized_sha256": "98c03b5ebb4d4dfeed97684b75e050cf0f712d5338a330fefceffe46571cb8cd"
+      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
+      "optimized_sha256": "22aafd8297d14e7b09a4b68c7ba5c934e02757c69ce803920ee69f1182557e44"
     },
     {
       "local_path": "tools/edit_plug_extraction_20261009.py",
@@ -2426,8 +2432,8 @@
       "local_path": "tools/tests/test_can_motor_enable.py",
       "base_source_sha256": null,
       "pipeline_id": "can_interface_setup",
-      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards.",
-      "optimized_sha256": "9939bf1b15ce5dcb6db3dc440a0ac50dc6b74d882c30403baeb3352d7e97f68e"
+      "change_reason": "Archive and reset prior-boot software task state at explicit startup; retain current startup latch, complete history and hardware guards. Route successful first reset startup to a separately confirmed arm power-cycle startup; preserve the original reset and all failure/unknown-send gates. Offline startup regression and read-only ledger validation only.",
+      "optimized_sha256": "28807e7f929be050210ec3c6fc8915efdf6e07c601f913dff9ea80de10fa1da9"
     },
     {
       "local_path": "tools/tests/test_verify_bundle.py",

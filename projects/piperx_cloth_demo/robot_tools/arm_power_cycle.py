@@ -245,14 +245,22 @@ def _ledger(path):
 def inspect(project):
     """Read-only eligibility; current hardware and operator evidence come later."""
     check_processes()
+    from .startup_reset import inspect as inspect_reset
+    reset_state = inspect_reset(project)
+    if reset_state is not None and reset_state["status"] != "complete":
+        raise RuntimeError("软件重置后的首次启动尚未完成，请使用原重置启动入口。")
     ledgers = [s for root in project_roots(project)
                if (s := _ledger(root / "runs/pair_sessions.sqlite")) is not None]
     if not ledgers:
         raise RuntimeError("无历史控制账本，请使用普通启动入口。")
-    if not any(s["state"]["owner"] is not None or s["state"]["fault_id"] is not None for s in ledgers):
+    if reset_state is None and not any(
+            s["state"]["owner"] is not None or s["state"]["fault_id"] is not None for s in ledgers):
         raise RuntimeError("当前账本已正常释放，请使用普通启动入口。")
-    return {"route": "arm_power_cycle_startup", "boot": boot_identity(), "ledgers": ledgers,
-            "physical_stop_verified": None, "task_motion_authorized": False}
+    result = {"route": "arm_power_cycle_startup", "boot": boot_identity(), "ledgers": ledgers,
+              "physical_stop_verified": None, "task_motion_authorized": False}
+    if reset_state is not None:
+        result["completed_reset_startup"] = reset_state
+    return result
 
 
 def has_startup_history(project):
